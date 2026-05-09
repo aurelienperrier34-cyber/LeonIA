@@ -328,7 +328,7 @@ body.map-mode .bg-scene { display: none; }
 #screen-1 .screen-subtitle { font-size: 1.1rem; color: #444; font-weight: 700; margin-bottom: 50px; }
 
 .character-grid { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%; margin-bottom: 35px; }
-.character-card { cursor: pointer; flex: 1 1 180px; max-width: 200px; position: relative; margin-top: 40px; }
+.character-card { cursor: pointer; flex: 1 1 180px; max-width: 200px; position: relative; margin-top: 40px; touch-action: manipulation; -webkit-tap-highlight-color: rgba(155,93,229,0.2); }
 
 /* Mobile : grille 2×2 compacte, tout visible sans scroll */
 @media (max-width: 640px), (orientation: portrait) and (max-width: 900px) {
@@ -345,7 +345,16 @@ body.map-mode .bg-scene { display: none; }
   #screen-1 .name-input-wrap input { padding: 8px 12px; font-size: 0.95rem; }
   #screen-1 .btn-large { padding: 10px 18px; font-size: 0.95rem; }
 }
-.character-card input { display: none; }
+/* iOS Safari : display:none sur radio empeche parfois onchange via label.
+   On le cache visuellement sans le retirer du flow tactile. */
+.character-card input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  z-index: -1;
+}
 
 .char-content {
   background: rgba(255,255,255,0.7); backdrop-filter: blur(10px);

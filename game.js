@@ -6894,9 +6894,17 @@ function _setupHoverSpeak() {
     if (!ev.target || !ev.target.closest) return;
     const target = ev.target.closest(sel);
     if (!target) return;
-    // Exception : .prompt-word (c2s7) est un jeu de selection rapide a 3 mots
-    // → on ne bloque PAS le clic, le hover suffit pour la lecture.
+    // Exceptions : pas de blocage 2-taps, le clic doit passer directement.
+    // - .prompt-word (c2s7) : selection rapide a 3 mots
+    // - .s4-card (c1s4) : cartes melangees, plus fiable d'avoir 1-tap = action
+    //   (la voix se declenche en parallele pour les enfants qui ne lisent pas)
     if (target.classList.contains('prompt-word')) return;
+    if (target.classList.contains('s4-card')) {
+      // Lit le label en parallele, ne bloque pas la selection
+      const textParallel = target.dataset.speak || target.textContent;
+      _hoverSpeakText(textParallel);
+      return;
+    }
     // Mode souris : pas d'interception, le hover s'occupe de la lecture
     // et le click confirme directement la selection.
     if (window._lastPointerType !== 'touch') return;
