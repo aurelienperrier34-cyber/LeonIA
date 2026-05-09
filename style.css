@@ -2635,10 +2635,10 @@ body.novel-mode #screen-c2s3 .scene-text .dialogue-bubble::before { display: non
 /* GÉANT : le sujet est nettement plus gros et pulse avec puissance.
    On utilise des % de la toile + une cap absolue pour ne jamais deborder. */
 .canvas-result.style-geant .result-subject {
-  width:  min(85%, 180px);
-  height: min(85%, 180px);
-  max-width: 90%;
-  max-height: 90%;
+  width:  95%;
+  height: 95%;
+  max-width: 95%;
+  max-height: 95%;
   animation: subjectGiantPulse 1.8s ease-in-out infinite;
   filter: var(--subject-glow, drop-shadow(0 4px 8px rgba(0,0,0,0.3))) drop-shadow(0 0 20px rgba(255,225,102,0.6));
 }
@@ -2687,6 +2687,33 @@ body.novel-mode #screen-c2s7 .prompt-word {
   padding: 5px 10px;
   font-size: 0.78rem;
   border-radius: 14px;
+  border: 2.5px solid;
+}
+/* Couleurs par catégorie pour aider l'enfant à comprendre la mécanique :
+   1 sujet (rose) + 1 couleur (cyan) + 1 style (vert) = 3 mots */
+body.novel-mode #screen-c2s7 .prompt-word[data-cat="subject"] {
+  border-color: #FF8FB1;
+  background: rgba(255, 143, 177, 0.18);
+}
+body.novel-mode #screen-c2s7 .prompt-word[data-cat="color"] {
+  border-color: #4FC3F7;
+  background: rgba(76, 195, 247, 0.18);
+}
+body.novel-mode #screen-c2s7 .prompt-word[data-cat="style"] {
+  border-color: #06D6A0;
+  background: rgba(6, 214, 160, 0.18);
+}
+body.novel-mode #screen-c2s7 .prompt-word[data-cat="subject"].selected {
+  background: rgba(255, 143, 177, 0.55);
+  box-shadow: 0 0 14px rgba(255, 143, 177, 0.7);
+}
+body.novel-mode #screen-c2s7 .prompt-word[data-cat="color"].selected {
+  background: rgba(76, 195, 247, 0.55);
+  box-shadow: 0 0 14px rgba(76, 195, 247, 0.7);
+}
+body.novel-mode #screen-c2s7 .prompt-word[data-cat="style"].selected {
+  background: rgba(6, 214, 160, 0.55);
+  box-shadow: 0 0 14px rgba(6, 214, 160, 0.7);
 }
 body.novel-mode #screen-c2s7 .tap-instruction {
   margin: 0 0 2px;

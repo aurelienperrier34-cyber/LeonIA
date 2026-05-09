@@ -35,7 +35,7 @@
     "tableau": 6,
     "format": "video",
     "narrateur": "Léon devient un peu plus sérieux...",
-    "leon": "« Mais attention : la machine n'a pas de cœur. Elle ne dessine pas parce qu'elle aime ça — elle crée ce qu'on lui demande, c'est tout ! »"
+    "leon": "« Mais attention ! Elle ne dessine pas parce qu'elle aime ça — elle crée ce qu'on lui demande, c'est tout ! »"
   },
   {
     "tableau": 7,

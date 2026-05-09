@@ -638,7 +638,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener  ('keydown', _keyHandler, true);
   document.addEventListener('keydown', _keyHandler, true);
 
-  console.log("IA Explorers — raccourcis : Chap1=Alt+0..8 | Chap2=Alt+Shift+1..9 | Chap3=Alt+A/Z/E/R/T/Y/U/I/O | Chap4=Alt+Shift+A/Z/E/R/T/Y/U/I | Chap5=Alt+W/X/C/V/B/N | Carte=Alt+M");
+  console.log("IA : Le monde de Léon — raccourcis : Chap1=Alt+0..8 | Chap2=Alt+Shift+1..9 | Chap3=Alt+A/Z/E/R/T/Y/U/I/O | Chap4=Alt+Shift+A/Z/E/R/T/Y/U/I | Chap5=Alt+W/X/C/V/B/N | Carte=Alt+M");
 
   // Plein écran : on tente sur CHAQUE geste utilisateur tant qu'on n'est pas
   // déjà en plein écran. Ça permet de récupérer si le premier clic n'a pas
@@ -2716,15 +2716,26 @@ const PROMPT_WORDS_C2 = {
 
 function selectPromptWord(btn) {
   const word = btn.dataset.w;
+  const cat  = btn.dataset.cat;
   const idx = state.c2WordsSelected.indexOf(word);
   if (idx !== -1) {
+    // Deselect : retire le mot
     state.c2WordsSelected.splice(idx, 1);
     btn.classList.remove('selected');
-  } else if (state.c2WordsSelected.length < 3) {
-    state.c2WordsSelected.push(word);
-    btn.classList.add('selected');
   } else {
-    return; // déjà 3 mots
+    // Avant d'ajouter le nouveau mot : on retire le mot deja selectionne
+    // dans la MEME categorie (sujet/couleur/style). Ainsi 1 seul par categorie.
+    document.querySelectorAll(`#c2s7-words .prompt-word[data-cat="${cat}"].selected`).forEach(otherBtn => {
+      const otherWord = otherBtn.dataset.w;
+      const otherIdx = state.c2WordsSelected.indexOf(otherWord);
+      if (otherIdx !== -1) state.c2WordsSelected.splice(otherIdx, 1);
+      otherBtn.classList.remove('selected');
+    });
+    // Puis ajoute le nouveau (capacite max 3 = 1 sujet + 1 couleur + 1 style)
+    if (state.c2WordsSelected.length < 3) {
+      state.c2WordsSelected.push(word);
+      btn.classList.add('selected');
+    }
   }
 
   // Si 3 mots choisis, on déclenche la génération
@@ -6852,6 +6863,9 @@ function _setupHoverSpeak() {
     if (!ev.target || !ev.target.closest) return;
     const target = ev.target.closest(sel);
     if (!target) return;
+    // Exception : .prompt-word (c2s7) est un jeu de selection rapide a 3 mots
+    // → on ne bloque PAS le clic, le hover suffit pour la lecture.
+    if (target.classList.contains('prompt-word')) return;
     // Mode souris : pas d'interception, le hover s'occupe de la lecture
     // et le click confirme directement la selection.
     if (window._lastPointerType !== 'touch') return;
