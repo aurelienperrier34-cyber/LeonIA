@@ -944,7 +944,9 @@ body.novel-mode .magic-machine { right: 50%; transform: translateX(50%); top: 15
   bottom: 16px;
   left: 16px;
   right: auto;
-  max-width: min(60%, 540px);
+  /* Reduit la largeur sur mobile pour ne pas masquer le personnage et la porte
+     de l'atelier (qui sont au centre/droite de la scene). */
+  max-width: min(45%, 480px);
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);

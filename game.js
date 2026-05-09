@@ -5926,11 +5926,20 @@ function applyStarCornerPosition() {
     el.style.top  = p.top  + 'px';
     el.style.left = p.left + 'px';
   });
-  // Aligne le bouton "retour carte" juste au-dessus de la pastille etoiles
+  // Aligne le bouton "retour carte" relativement a la pastille etoiles.
+  // - Si la pastille a assez de place au-dessus (>= 46px), on met le bouton au-dessus.
+  // - Sinon (cas mobile : pastille deja proche du haut), on place le bouton DESSOUS
+  //   pour eviter qu'ils se chevauchent.
   const backBtn = document.getElementById('btn-back-map-global');
   if (backBtn) {
-    // Hauteur du bouton ~38px + marge 8px = remonte de 46px par rapport au top de la pastille
-    backBtn.style.top  = Math.max(0, p.top - 46) + 'px';
+    const NEEDED_ABOVE = 46;          // hauteur du bouton + marge
+    const PILL_HEIGHT  = 42;          // hauteur approx de la pastille etoiles
+    const GAP          = 8;
+    if (p.top >= NEEDED_ABOVE) {
+      backBtn.style.top = (p.top - NEEDED_ABOVE) + 'px';
+    } else {
+      backBtn.style.top = (p.top + PILL_HEIGHT + GAP) + 'px';
+    }
     backBtn.style.left = p.left + 'px';
   }
 }
