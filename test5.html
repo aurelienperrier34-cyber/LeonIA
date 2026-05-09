@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body>
+<h1>Test 5 - capture l'erreur de parsing</h1>
+<p id="status">Chargement...</p>
+<pre id="errors" style="background:#ffeeee;padding:10px;white-space:pre-wrap"></pre>
+<script>
+window.addEventListener('error', function(e) {
+  const errBox = document.getElementById('errors');
+  errBox.textContent += 'ERROR caught: ' + (e.message || e.error) + '\n';
+  errBox.textContent += '  filename: ' + e.filename + '\n';
+  errBox.textContent += '  line: ' + e.lineno + ' col: ' + e.colno + '\n\n';
+}, true);
+</script>
+<script src="app.js?v=test5final" onerror="document.getElementById('errors').textContent += 'SCRIPT TAG onerror fired (404 ou bloque)\n'"></script>
+<script>
+const status = document.getElementById('status');
+status.textContent = 'apres app.js : toggleFullscreen est ' + (typeof toggleFullscreen);
+const errBox = document.getElementById('errors');
+if (errBox.textContent === '') errBox.textContent = '(aucune erreur capturee — parsing reussi)';
+</script>
+</body>
+</html>

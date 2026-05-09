@@ -1,0 +1,10 @@
+[
+  {
+    "tableau": 1,
+    "format": "video",
+    "narrateur": "Léon t'emmène dans une bibliothèque magique pleine de livres flottants. Près d'une table en bois, un petit robot blanc et turquoise t'attend...",
+    "leon": "« Voici Bot, mon assistant qui adore lire ! Il connaît plein de mots, il peut tenir une conversation comme nous ! »",
+    "prompt_image": "3D animated cartoon Pixar style, friendly old wizard-inventor smiling and gesturing welcomingly toward a small friendly cartoon robot named Bot standing on a wooden table beside him, (((Bot has a rectangular display screen as face showing big round black smiling eyes))), (((glowing teal antenna on top of head))), (((white and turquoise rounded body))), holding a small open glowing book, magical library setting with hundreds of softly floating books drifting through the air, glowing letters and words swirling around, warm wooden shelves filled with old illustrated books, fairy lights overhead, soft golden lamp light, child-friendly, 16:9 aspect ratio",
+    "prompt_animation": "Léon turns to gesture welcomingly toward Bot with an open hand and an inviting smile, his mouth moves as he speaks warmly, Bot's screen-face eyes blink and his teal antenna pulses with light, the small open book in his hands glows softly, the floating books drift gently in the air around them, fairy lights twinkle, slow gentle camera push-in."
+  }
+]

@@ -1,0 +1,318 @@
+{
+  "chapter": {
+    "id": 3,
+    "title": "Le détective des sons",
+    "subject": "L'IA et l'audio (voix, sons, musique)",
+    "badge": {
+      "label": "Maître des Oreilles",
+      "emoji": "🎧"
+    },
+    "map_icon": "🎵",
+    "node_position": { "top": "52%", "left": "70%" },
+    "shortcut": "Alt+Ctrl+1..9 (cf. chap 2 pour Alt+Shift)"
+  },
+
+  "concepts": [
+    {
+      "id": "concept_recognition",
+      "title": "Reconnaissance vocale",
+      "summary": "L'IA peut entendre et comprendre la voix humaine (Siri, Alexa, OK Google).",
+      "screen": "c3s2"
+    },
+    {
+      "id": "concept_synthesis",
+      "title": "Voix synthétique",
+      "summary": "L'IA peut parler avec une voix générée — elle n'a pas de bouche, c'est de l'imitation.",
+      "screen": "c3s4"
+    },
+    {
+      "id": "concept_music",
+      "title": "Génération musicale",
+      "summary": "L'IA peut composer des mélodies et même chanter.",
+      "screen": "c3s5"
+    },
+    {
+      "id": "concept_errors",
+      "title": "Limites et erreurs",
+      "summary": "L'IA ne comprend pas toujours bien — elle peut se tromper sur les mots et les sons.",
+      "screen": "c3s6"
+    }
+  ],
+
+  "scenes": [
+    {
+      "id": "c3s1",
+      "type": "narrative",
+      "title": "Léon t'invite dans son labo des sons",
+      "background": {
+        "type": "video",
+        "src": "assets/leon_labo_sons.mp4",
+        "loop": false,
+        "stop_after_seconds": 4
+      },
+      "narration": "Léon te tend un casque audio et te fait signe de le suivre dans une nouvelle salle pleine de microphones et de lumières...",
+      "leon": {
+        "audio": "assets/leon_c3s1.mp3",
+        "text": "« Bienvenue dans mon labo des sons ! Mets le casque, et écoute bien... »"
+      },
+      "actions": [
+        { "label": "Entrer dans le labo 🔊", "icon": "🎧", "to": "c3s2" }
+      ],
+      "leonardo_prompt": "3D animated cartoon Pixar style, friendly old wizard-inventor (white beard, round orange glasses, blue cap with golden lights, brown apron over orange shirt) handing a pair of headphones to the viewer, standing in front of a colorful sound laboratory door, microphones, sound wave decorations, fairy lights, warm magical lighting, 16:9 aspect ratio"
+    },
+
+    {
+      "id": "c3s2",
+      "type": "narrative",
+      "title": "Léon explique : l'IA écoute et comprend",
+      "background": {
+        "type": "video",
+        "src": "assets/leon_micro_ondes.mp4",
+        "loop": true
+      },
+      "narration": "Léon parle à un micro flottant. Sur l'écran, les ondes sonores se transforment en mots !",
+      "leon": {
+        "audio": "assets/leon_c3s2.mp3",
+        "text": "« Cette IA peut <strong>écouter</strong> ta voix et la transformer en mots écrits ! C'est comme ça que les assistants vocaux comprennent ce que tu dis. »"
+      },
+      "actions": [
+        { "label": "Trop fort ! 🤩", "icon": "🤩", "to": "c3s3" }
+      ],
+      "leonardo_prompt": "3D animated cartoon Pixar style, friendly wizard-inventor character speaking into a floating holographic microphone, glowing sound waves transforming into letters and words floating in the air, magical sound laboratory background, microphones on shelves, glowing crystals, warm lighting, 16:9"
+    },
+
+    {
+      "id": "c3s3",
+      "type": "demo",
+      "title": "Démo : reconnaissance vocale (sans micro réel)",
+      "description": "Affiche un faux assistant vocal qui 'écoute' un son préenregistré et transcrit ce qu'il a entendu, parfois avec une erreur drôle pour préparer le concept de limite.",
+      "background": {
+        "type": "video",
+        "src": "assets/labo_ecran_micro.mp4",
+        "loop": true
+      },
+      "demo_sequence": [
+        { "step": "tap_play", "icon": "▶️", "label": "Léon dit : « bonjour »" },
+        { "step": "show_waveform", "duration_ms": 1500 },
+        { "step": "transcribe", "result": "BON-JOUR ! ✅", "duration_ms": 1200 }
+      ],
+      "leon": {
+        "audio": "assets/leon_c3s3.mp3",
+        "text": "« Vois ! Elle a compris que je disais 'bonjour'. Elle a transformé ma voix en lettres ! »"
+      },
+      "actions": [
+        { "label": "Et la musique ? 🎶", "icon": "🎶", "to": "c3s4" }
+      ]
+    },
+
+    {
+      "id": "c3s4",
+      "type": "narrative",
+      "title": "Léon explique : l'IA peut parler",
+      "background": {
+        "type": "video",
+        "src": "assets/leon_voix_synthetique.mp4",
+        "loop": true
+      },
+      "narration": "Léon active une boîte parlante. Une voix robotique commence à chanter !",
+      "leon": {
+        "audio": "assets/leon_c3s4.mp3",
+        "text": "« Et l'IA peut aussi <strong>parler</strong> ! Mais attention : elle n'a pas de bouche. Elle imite une voix, c'est tout. »"
+      },
+      "actions": [
+        { "label": "Et chanter ? 🎤", "icon": "🎤", "to": "c3s5" }
+      ],
+      "leonardo_prompt": "3D animated cartoon Pixar style, friendly wizard-inventor with hand on a glowing speaker box that emits cartoon sound waves and musical notes, looking surprised and amused, magical sound lab, 16:9"
+    },
+
+    {
+      "id": "c3s5",
+      "type": "narrative",
+      "title": "Léon explique : l'IA peut composer de la musique",
+      "background": {
+        "type": "video",
+        "src": "assets/leon_machine_musique.mp4",
+        "loop": true
+      },
+      "narration": "Une grande machine pleine de touches s'allume seule et joue une mélodie fantastique...",
+      "leon": {
+        "audio": "assets/leon_c3s5.mp3",
+        "text": "« L'IA peut même <strong>inventer de la musique</strong> ! Elle a écouté plein de chansons, et maintenant elle compose elle-même ! »"
+      },
+      "actions": [
+        { "label": "Incroyable ! 🤯", "icon": "🤯", "to": "c3s6" }
+      ],
+      "leonardo_prompt": "3D animated cartoon Pixar style, friendly wizard-inventor amazed by a magical floating piano-like machine that plays itself, glowing musical notes flying out, colorful sparkles, warm magical sound laboratory, 16:9"
+    },
+
+    {
+      "id": "c3s6",
+      "type": "narrative",
+      "title": "Léon explique : l'IA peut se tromper",
+      "background": {
+        "type": "video",
+        "src": "assets/leon_erreurs_audio.mp4",
+        "loop": true
+      },
+      "narration": "Léon murmure quelque chose. L'écran affiche... n'importe quoi !",
+      "leon": {
+        "audio": "assets/leon_c3s6.mp3",
+        "text": "« Mais elle peut <strong>se tromper</strong> aussi ! Si tu parles trop vite ou s'il y a du bruit, elle comprend de travers ! »"
+      },
+      "actions": [
+        { "label": "À mon tour ! 🎮", "icon": "🎮", "to": "c3s7" }
+      ],
+      "leonardo_prompt": "3D animated cartoon Pixar style, friendly wizard-inventor amused puzzled, pointing at a holographic screen showing funny garbled text 'BLAH BLA BLOOP' next to a confused emoji, sound waves squiggling, magical sound lab, 16:9"
+    },
+
+    {
+      "id": "c3s7",
+      "type": "minigame",
+      "title": "Mini-jeu : 4 sons mystères",
+      "description": "L'enfant clique sur 4 boutons 'écouter'. Pour chaque son, l'IA propose une transcription parfois juste, parfois drôlement fausse. L'enfant doit rigoler et apprendre.",
+      "background": {
+        "type": "image",
+        "src": "assets/labo_4_micros.jpg"
+      },
+      "leon": {
+        "text": "« À toi ! Écoute les 4 sons et regarde ce que mon IA a 'entendu'. Elle a parfois une drôle d'imagination ! »"
+      },
+      "leonardo_prompt": "3D animated cartoon Pixar style, four colorful glowing microphones arranged in a row on a wooden workbench, each microphone with its own sound wave halo, large holographic display screen above them ready for transcriptions, magical sound laboratory background, warm lighting, no people visible, 16:9 aspect ratio",
+      "sounds": [
+        {
+          "id": "dog",
+          "label": "Son 1 🐕",
+          "audio": "assets/sound_dog.mp3",
+          "ai_transcription": "« WAOUF WAOUF ! »",
+          "verdict": "correct",
+          "comment": "L'IA a bien reconnu un chien !"
+        },
+        {
+          "id": "piano",
+          "label": "Son 2 🎹",
+          "audio": "assets/sound_piano.mp3",
+          "ai_transcription": "« Tatatata-tatouille »",
+          "verdict": "funny_wrong",
+          "comment": "L'IA a entendu de la musique mais elle dit n'importe quoi !"
+        },
+        {
+          "id": "thunder",
+          "label": "Son 3 ⛈️",
+          "audio": "assets/sound_thunder.mp3",
+          "ai_transcription": "« BOUM ! Patatra ! »",
+          "verdict": "correct",
+          "comment": "Bien deviné, c'est un orage !"
+        },
+        {
+          "id": "car",
+          "label": "Son 4 🚗",
+          "audio": "assets/sound_car.mp3",
+          "ai_transcription": "« Ouin ouin... un bébé qui pleure ? »",
+          "verdict": "funny_wrong",
+          "comment": "Oups, l'IA pensait que c'était un bébé !"
+        }
+      ],
+      "next_button": { "label": "Au quiz ! 🎮", "to": "c3s8", "show_after_all_played": true }
+    },
+
+    {
+      "id": "c3s8",
+      "type": "quiz",
+      "title": "Quiz Vrai/Faux",
+      "background": {
+        "type": "image",
+        "src": "assets/atelier_sans_leon.jpg"
+      },
+      "instruction": "🎮 Vrai ou Faux ?",
+      "questions": [
+        {
+          "id": 0,
+          "statement": "Une IA peut entendre et comprendre ce que tu dis.",
+          "correct_answer": true,
+          "concept": "concept_recognition"
+        },
+        {
+          "id": 1,
+          "statement": "L'IA a une vraie bouche pour parler.",
+          "correct_answer": false,
+          "concept": "concept_synthesis"
+        },
+        {
+          "id": 2,
+          "statement": "L'IA peut composer une musique toute seule.",
+          "correct_answer": true,
+          "concept": "concept_music"
+        },
+        {
+          "id": 3,
+          "statement": "L'IA comprend toujours parfaitement tout ce qu'elle entend.",
+          "correct_answer": false,
+          "concept": "concept_errors"
+        }
+      ],
+      "next_button": { "label": "Ouvrir le coffre ! 🏆", "to": "c3s9" }
+    },
+
+    {
+      "id": "c3s9",
+      "type": "victory",
+      "title": "Victoire — Maître des Oreilles",
+      "background": {
+        "type": "image",
+        "src": "assets/atelier_sans_leon.jpg"
+      },
+      "title_text": "🎉 Bravo {character_name} !",
+      "subtitle": "Chapitre 3 terminé — \"Le détective des sons\" !",
+      "rewards": [
+        {
+          "icon": "⭐",
+          "value_template": "+{stars_earned} ⭐",
+          "label": "Étoiles gagnées"
+        },
+        {
+          "icon": "🎧",
+          "value": "Maître<br>des Oreilles",
+          "label": "Badge débloqué !",
+          "is_new": true
+        }
+      ],
+      "actions": [
+        { "label": "Carte 🗺️", "to": "map", "primary": true }
+      ]
+    }
+  ],
+
+  "assets_to_generate": {
+    "videos_or_images": [
+      { "filename": "leon_labo_sons.mp4", "type": "video", "for": "c3s1" },
+      { "filename": "leon_micro_ondes.mp4", "type": "video", "for": "c3s2" },
+      { "filename": "labo_ecran_micro.mp4", "type": "video", "for": "c3s3" },
+      { "filename": "leon_voix_synthetique.mp4", "type": "video", "for": "c3s4" },
+      { "filename": "leon_machine_musique.mp4", "type": "video", "for": "c3s5" },
+      { "filename": "leon_erreurs_audio.mp4", "type": "video", "for": "c3s6" },
+      { "filename": "labo_4_micros.jpg", "type": "image", "for": "c3s7" }
+    ],
+    "audio_voices": [
+      { "filename": "leon_c3s1.mp3", "voice": "Léon" },
+      { "filename": "leon_c3s2.mp3", "voice": "Léon" },
+      { "filename": "leon_c3s3.mp3", "voice": "Léon" },
+      { "filename": "leon_c3s4.mp3", "voice": "Léon" },
+      { "filename": "leon_c3s5.mp3", "voice": "Léon" },
+      { "filename": "leon_c3s6.mp3", "voice": "Léon" }
+    ],
+    "audio_sounds": [
+      { "filename": "sound_dog.mp3", "type": "sound effect", "duration_s": 2 },
+      { "filename": "sound_piano.mp3", "type": "sound effect", "duration_s": 3 },
+      { "filename": "sound_thunder.mp3", "type": "sound effect", "duration_s": 3 },
+      { "filename": "sound_car.mp3", "type": "sound effect", "duration_s": 2 }
+    ]
+  },
+
+  "estimated_credits": {
+    "leonardo_videos": "6 × ~50 = 300",
+    "leonardo_image": "1 × 15 = 15",
+    "total_leonardo": 315,
+    "elevenlabs_voices": "6 voix courtes (~10s chacune)",
+    "free_sounds": "freesound.org (gratuit)"
+  }
+}

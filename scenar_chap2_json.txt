@@ -1,0 +1,46 @@
+[
+  {
+    "tableau": 1,
+    "format": "video",
+    "narrateur": "De retour à l'atelier, Léon t'invite à le suivre vers une porte mystérieuse...",
+    "leon": "« Suis-moi ! Je vais te montrer ma machine à images ! »"
+  },
+  {
+    "tableau": 2,
+    "format": "video",
+    "narrateur": "Au centre de la pièce, une machine étrange flotte au-dessus d'un établi.",
+    "leon": "« Cette machine peut dessiner avec des mots ! On lui parle, et elle crée une image ! »"
+  },
+  {
+    "tableau": 3,
+    "format": "video",
+    "narrateur": "Léon tape sa demande... La machine s'allume !",
+    "leon": "« Voilà ! L'IA a compris mes mots et a créé une image rien que pour nous ! »"
+  },
+  {
+    "tableau": 4,
+    "format": "video",
+    "narrateur": "Mais comment la machine sait-elle dessiner ?",
+    "leon": "« Elle a regardé des millions d'images avant ! C'est comme ça qu'elle a appris ! »"
+  },
+  {
+    "tableau": 5,
+    "format": "video",
+    "narrateur": "Léon a demandé à sa machine de dessiner 6 images... mais attention, 3 d'entre elles cachent un défaut !",
+    "leon": "« Regarde bien chaque dessin. La machine s'est trompée 3 fois. Sauras-tu trouver lesquelles ? »",
+    "prompt_image": "3D animated cartoon Pixar style. Léon stands on the LEFT THIRD of the scene, smiling warmly, his right hand making a welcoming gesture toward the right. On the RIGHT, (((his magical translucent holographic canvas — large rectangular floating glowing screen with abstract cosmic purple-blue-magenta swirl interior))), (((mounted on an ornate golden steampunk turntable pedestal with small glowing jewels in red, blue, orange and teal on its rim))), sitting on a rustic wooden table. Pink and cyan magical light streaks swirl around the canvas, sparkles and crystal shards floating in the air. (((Canvas content is INTENTIONALLY simple — only an abstract cosmic swirl, NO characters, NO objects depicted inside))). Background: cozy magical workshop with wooden shelves of glowing potion bottles, floating crystals, warm lanterns, fairy lights overhead, wooden walls. Soft warm amber + magical purple-teal contrast lighting, child-friendly atmosphere, 16:9 aspect ratio. Critical: lower-center area of the canvas kept uncluttered, only cosmic dust there.",
+    "prompt_animation": "Léon's mouth clearly opens and closes with visible lip movement as he speaks warmly to the viewer, gesturing welcomingly toward his magical canvas. The translucent holographic canvas glows softly and pulses gently with cosmic light, the abstract galaxy swirl inside slowly rotates. Pink and cyan magical light streaks drift around the canvas. Sparkles and tiny crystal shards float and twinkle gently in the air. Fairy lights overhead twinkle softly. Lanterns flicker warmly. Léon's body has subtle breathing motion. CRITICAL: keep the central display area of the canvas STABLE and uncluttered — only the surrounding glow/sparkles animate, the canvas interior should remain a slow cosmic swirl, NEVER show generated images appearing inside (those will be overlaid separately). Static camera with very subtle ambient breathing motion."
+  },
+  {
+    "tableau": 6,
+    "format": "video",
+    "narrateur": "Léon devient un peu plus sérieux...",
+    "leon": "« Mais attention : la machine n'a pas de cœur. Elle ne dessine pas parce qu'elle aime ça — elle crée ce qu'on lui demande, c'est tout ! »"
+  },
+  {
+    "tableau": 7,
+    "format": "image",
+    "narrateur": "Léon te tend les pinceaux numériques. À toi de jouer !",
+    "leon": "« À toi ! Choisis 3 mots : un sujet, une couleur, un style — et regarde ! »"
+  }
+]

@@ -1,0 +1,119 @@
+window.__CALIBRATION_DATA__ = {
+  "hero4Pos": {
+    "fille": {
+      "right": 0.875,
+      "bottom": 2.472,
+      "height": 47.5
+    },
+    "garcon": {
+      "right": 2.7474,
+      "bottom": 4.82639,
+      "height": 44
+    },
+    "renard": {
+      "right": 0.875,
+      "bottom": 2.472,
+      "height": 47.5
+    },
+    "robot": {
+      "right": 4.15626,
+      "bottom": 4.55324,
+      "height": 35.5
+    }
+  },
+  "starCornerPos": {
+    "top": 41,
+    "left": 53
+  },
+  "signZonePos": null,
+  "pointerPos": {
+    "top": 49.8611,
+    "left": 51.3281
+  },
+  "heroDestPos": {
+    "top": 71.25,
+    "left": 50.5469
+  },
+  "mapNodePositions": {
+    "1": {
+      "left": 20.2344,
+      "top": 90.4167
+    },
+    "2": {
+      "left": 42.3438,
+      "top": 77.6389
+    },
+    "3": {
+      "left": 60.7031,
+      "top": 64.1667
+    },
+    "4": {
+      "left": 77.0313,
+      "top": 46.8056
+    },
+    "5": {
+      "left": 89.1406,
+      "top": 23.75
+    }
+  },
+  "c2s5DefectPos": [
+    {
+      "left": 23.6719,
+      "top": 19.5833
+    },
+    {
+      "left": 38.2031,
+      "top": 19.0278
+    },
+    {
+      "left": 52.3438,
+      "top": 19.5833
+    },
+    {
+      "left": 24.1406,
+      "top": 43.4722
+    },
+    {
+      "left": 37.8906,
+      "top": 44.8611
+    },
+    {
+      "left": 52.7344,
+      "top": 44.7222
+    }
+  ],
+  "c2s2SpotPos": [
+    {
+      "left": 48.2927,
+      "top": 33.6698
+    },
+    {
+      "left": 33.9024,
+      "top": 51.4846
+    },
+    {
+      "left": 31.2195,
+      "top": 10.867
+    }
+  ],
+  "c5s3SpotPos": [
+    {
+      "left": 60.7813,
+      "top": 40.9722
+    }
+  ],
+  "c3s7MicPos": [
+    {
+      "left": 42.399999999999906,
+      "top": 196
+    },
+    {
+      "left": 50.799999999999955,
+      "top": 196
+    },
+    {
+      "left": 58.00000000000003,
+      "top": 200
+    }
+  ]
+};

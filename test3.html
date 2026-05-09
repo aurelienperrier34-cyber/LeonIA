@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body>
+<h1>Test 3 - mini vs gros app.js</h1>
+<p id="r1">test1: ?</p>
+<p id="r2">test2: ?</p>
+<script src="miniapp.js"></script>
+<script>
+document.getElementById('r1').textContent = 'miniapp.js : ' + (typeof toggleFullscreen === 'function' ? 'OK chargee' : 'FAIL undefined');
+</script>
+<script src="app.js"></script>
+<script>
+document.getElementById('r2').textContent = 'app.js : ' + (typeof isMobileDevice === 'function' ? 'OK chargee' : 'FAIL undefined');
+</script>
+</body>
+</html>

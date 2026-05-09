@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="IA : Le monde de Léon - Apprenez l'IA en vous amusant !">
+  <title>IA : Le monde de Léon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=2026050528">
+</head>
+<body>
+<!-- Overlay "Tourne ton téléphone" (portrait mobile uniquement) -->
+<div id="rotate-overlay" class="rotate-overlay">
+  <div class="rotate-inner">
+    <div class="rotate-phone">📱</div>
+    <h2>Pour jouer,<br>tourne ton téléphone !</h2>
+    <div class="rotate-arrow">↻</div>
+    <p class="rotate-hint">IA : Le monde de Léon est conçu pour l'écran horizontal</p>
+  </div>
+</div>
+
+<div class="av-toggles">
+  <button id="av-voice" class="av-btn" onclick="toggleVoices()" title="Voix on/off">🔊</button>
+  <button id="av-cc"    class="av-btn" onclick="toggleSubtitles()" title="Sous-titres on/off">CC</button>
+</div>
+
+<button id="btn-fullscreen" class="btn-fs" onclick="toggleFullscreen()" title="Plein écran">
+  <svg id="fs-icon-enter" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+  <svg id="fs-icon-exit" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="display:none"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
+</button>
+
+<div class="bg-scene">
+  <div class="cloud cloud1"></div>
+  <div class="cloud cloud2"></div>
+  <div class="cloud cloud3"></div>
+</div>
+
+<div class="app">
+  <header class="header" id="main-header" style="display:none;">
+    <div class="logo">IA <span>Explorers</span></div>
+    <div class="stars-display">
+      <span class="star-icon">⭐</span>
+      <span id="star-count" class="star-count-number">0</span>
+    </div>
+  </header>
+  
+  <div class="progress-wrap" id="main-progress" style="display:none;">
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <div class="progress-label" id="progress-label">Chapitre 1 · Écran 1/7</div>
+  </div>
+
+  <main id="app-container">
+
+    <!-- Pastille etoiles globale : visible sur toutes les scenes (sauf l'intro
+         et la map qui ont deja leur propre compteur). Calibree via Alt+S sur
+         la rue, position commune lue depuis localStorage 'starCornerPos'. -->
+    <div id="global-star-corner" class="street-star-corner global-star-corner" onclick="openAtelierShortcut && openAtelierShortcut()" title="Mes etoiles">
+      <span class="ssc-icon">⭐</span>
+      <span class="ssc-count" id="global-star-count">0</span>
+    </div>
+
+    <!-- Screen 0 : Intro -->
+    <div class="screen active" id="screen-0">
+      <div class="intro-container">
+        <h1 class="intro-title">IA <span>Explorers</span></h1>
+        <div class="intro-visual">
+          <img src="assets/avatar_robot_1776108872947.png?v=2" class="intro-avatar anim-float1" alt="Robot">
+          <img src="assets/avatar_renard_1776108778358.png?v=2" class="intro-avatar anim-float2" alt="Renard">
+        </div>
+        <p class="intro-subtitle">Apprendre à utiliser l'Intelligence Artificielle en s'amusant !</p>
+        <button class="btn btn-primary btn-large btn-bounce mt-md" onclick="toggleFullscreen(); goToScreen(1)">Démarrer l'Aventure 🚀</button>
+      </div>
+    </div>
+
+    <!-- Screen Map : Candy Saga Style Map -->
+    <div class="screen" id="screen-map">
+      
+      <div class="map-toolbar">
+        <button class="btn-back-map" onclick="goToScreen(1)">⬅ Personnage</button>
+        <div class="map-title-badge">Le monde de Léon</div>
+        <button id="btn-atelier-map" class="btn-atelier-map" onclick="openAtelier()" title="Mon Atelier">⭐ <span id="map-star-count">0</span></button>
+        <button id="btn-calib-map" type="button" class="calib-only" onclick="toggleMapCalib()">🎯 Calibrer</button>
+      </div>
+
+      <!-- Map panoramique style Pixar (sentier doré déjà dans l'image) -->
+      <div class="full-map-canvas full-map-pixar" id="the-map-canvas">
+        <img src="assets/map_world.jpg" class="map-bg-img" alt="Le monde de Léon">
+
+        <!-- Chapter Nodes positionnés sur les 5 lieux de l'image -->
+
+        <!-- Node 1 : Atelier steampunk (bas-gauche) -->
+        <div class="map-node node-unlocked" id="map-node-1" style="top: 80%; left: 10%;" onclick="startChapter(1)">
+          <div class="node-island candy-pulse">
+            <div class="node-icon">⚙️</div>
+          </div>
+          <div class="node-panel"><span>Chapitre 1</span><br>La drôle de machine</div>
+        </div>
+
+        <!-- Node 2 : Chevalet d'art -->
+        <div class="map-node node-locked" id="map-node-2" style="top: 70%; left: 28%;">
+          <div class="node-island">
+            <div class="node-icon locked-icon">🔒</div>
+          </div>
+          <div class="node-panel"><span>Chapitre 2</span><br>La fabrique à images</div>
+        </div>
+
+        <!-- Node 3 : Dôme musical (centre) -->
+        <div class="map-node node-locked" id="map-node-3" style="top: 55%; left: 48%;">
+          <div class="node-island">
+            <div class="node-icon locked-icon">🔒</div>
+          </div>
+          <div class="node-panel"><span>Chapitre 3</span><br>Le détective de sons</div>
+        </div>
+
+        <!-- Node 4 : Tour-bibliothèque -->
+        <div class="map-node node-locked" id="map-node-4" style="top: 30%; left: 67%;">
+          <div class="node-island">
+            <div class="node-icon locked-icon">🔒</div>
+          </div>
+          <div class="node-panel"><span>Chapitre 4</span><br>Bot le Bavard</div>
+        </div>
+
+        <!-- Node 5 : Observatoire (haut-droit) -->
+        <div class="map-node node-locked" id="map-node-5" style="top: 25%; left: 88%;">
+          <div class="node-island">
+            <div class="node-icon locked-icon">🔒</div>
+          </div>
+          <div class="node-panel"><span>Chapitre 5</span><br>Le toit aux étoiles</div>
+        </div>
+
+        <!-- Avatar du héros qui flotte au-dessus du prochain lieu -->
+        <img src="" id="map-hero-avatar" class="map-candy-avatar anim-bounce avatar-with-accessories">
+
+      </div>
+    </div>
+
+    <!-- Screen 1: Character Select -->
+    <div class="screen" id="screen-1">
+      <h1 class="screen-title mt-md">Qui sera ton héros ?</h1>
+      <p class="screen-subtitle">Choisis d'abord ton personnage pour explorer ce monde !</p>
+      
+      <div class="character-grid">
+        <label class="character-card">
+          <input type="radio" name="char" value="fille" onchange="selectChar(this.value)">
+          <div class="char-content">
+            <img src="assets/avatar_fille_1776108656117.png?v=2" alt="Fille" class="char-img avatar-with-accessories">
+            <div class="char-info"><span class="char-name">Une fille</span></div>
+          </div>
+        </label>
+        <label class="character-card">
+          <input type="radio" name="char" value="garcon" onchange="selectChar(this.value)">
+          <div class="char-content">
+            <img src="assets/avatar_garcon_1776108702967.png?v=2" alt="Garçon" class="char-img avatar-with-accessories">
+            <div class="char-info"><span class="char-name">Un garçon</span></div>
+          </div>
+        </label>
+        <label class="character-card">
+          <input type="radio" name="char" value="renard" onchange="selectChar(this.value)">
+          <div class="char-content">
+            <img src="assets/avatar_renard_1776108778358.png?v=2" alt="Renard" class="char-img avatar-with-accessories">
+            <div class="char-info"><span class="char-name">Un renard</span></div>
+          </div>
+        </label>
+        <label class="character-card">
+          <input type="radio" name="char" value="robot" onchange="selectChar(this.value)">
+          <div class="char-content">
+            <img src="assets/avatar_robot_1776108872947.png?v=2" alt="Robot" class="char-img avatar-with-accessories">
+            <div class="char-info"><span class="char-name">Un robot</span></div>
+          </div>
+        </label>
+      </div>
+
+      <div class="name-input-wrap" id="name-input-wrap">
+        <label for="char-name-input">Comment s'appelle ton personnage ?</label>
+        <input type="text" id="char-name-input" placeholder="Écris ici..." maxlength="12" oninput="updateName()">
+      </div>
+
+      <button class="btn btn-primary btn-large btn-bounce" id="btn-start" onclick="goToScreen('map')" disabled>Découvrir la Carte 🗺️</button>
+    </div>
+
+    <!-- Screen 2: The Street Immersive fullscreen -->
+    <div class="screen" id="screen-2">
+      <div class="immersive-scene street-bg">
+        <!-- Video de fond rue (Veo 3.1) - en pause au demarrage, demarre apres la narration -->
+        <video src="assets/street_1.mp4" id="street-bg-video" class="street-bg-video" muted loop playsinline preload="auto" poster="assets/street_1_poster.jpg"></video>
+
+        <!-- Pastille etoile en haut a gauche : couvre le watermark de l'editeur video
+             + raccourci futur vers Mon Atelier -->
+        <div id="street-star-corner" class="street-star-corner" onclick="openAtelierShortcut && openAtelierShortcut()" title="Mes etoiles">
+          <span class="ssc-icon">⭐</span>
+          <span class="ssc-count" id="street-star-count">0</span>
+        </div>
+
+        <!-- Bouton calibration pastille (cache par defaut, visible via enableCalibMode()) -->
+        <button id="btn-calib-star" type="button" class="calib-only btn-calib-star" onclick="toggleStarCalib()">🎯 Calibrer pastille</button>
+        <button id="btn-calib-sign" type="button" class="calib-only btn-calib-sign" onclick="toggleSignCalib()">🎯 Calibrer enseigne</button>
+        <button id="btn-calib-pointer" type="button" class="calib-only btn-calib-pointer" onclick="togglePointerCalib()">🎯 Calibrer pointeur</button>
+        <button id="btn-calib-hero" type="button" class="calib-only btn-calib-hero" onclick="toggleHeroDestCalib()">🎯 Calibrer destination heros</button>
+        <div class="immersive-bubble anim-pop-in" id="street-bubble">
+          Ce matin, tu te promènes dans la ville... Au bout de la rue, tu aperçois une étrange boutique magique : <strong>l'Atelier de Léon</strong>. Et si tu allais voir de plus près&nbsp;?
+          <span id="sign-hint" class="hint-line">✨ Touche l'enseigne pour entrer dans la boutique&nbsp;!</span>
+        </div>
+
+        <!-- Chroma-key vert ultra-robuste : Érosion forte ("cadre vert") et calcul asymétrique -->
+        <svg width="0" height="0" style="position:absolute">
+          <filter id="greenKey" color-interpolation-filters="sRGB">
+            <!-- Détection du vert : pénalité G x3 pour attraper aussi les verts sombres / halos -->
+            <feColorMatrix in="SourceGraphic" type="matrix" values="
+              1 0 0 0 0
+              0 1 0 0 0
+              0 0 1 0 0
+              1.5 -3.0 1.5 0 0.5" result="ALPHA_BASE"/>
+            <feComponentTransfer in="ALPHA_BASE" result="ALPHA_CONTRAST">
+              <feFuncA type="linear" slope="10" intercept="-1.5"/>
+            </feComponentTransfer>
+            <!-- Érosion 1.5px pour trimer les halos verts résiduels sur les bords -->
+            <feMorphology in="ALPHA_CONTRAST" operator="erode" radius="1.5" result="ALPHA_ERODE"/>
+            <feComposite in="SourceGraphic" in2="ALPHA_ERODE" operator="in" result="KEYED"/>
+            <!-- Seuil strict : alpha < 0.5 -> 0, alpha >= 0.5 -> 1 (pas de demi-transparences) -->
+            <feComponentTransfer in="KEYED">
+              <feFuncA type="discrete" tableValues="0 0 0 0 0 1 1 1 1 1"/>
+            </feComponentTransfer>
+          </filter>
+
+          <filter id="greenKeyShadow" color-interpolation-filters="sRGB">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="
+              1 0 0 0 0
+              0 1 0 0 0
+              0 0 1 0 0
+              1.5 -3.0 1.5 0 0.5" result="ALPHA_BASE"/>
+            <feComponentTransfer in="ALPHA_BASE" result="ALPHA_CONTRAST">
+              <feFuncA type="linear" slope="10" intercept="-1.5"/>
+            </feComponentTransfer>
+            <feMorphology in="ALPHA_CONTRAST" operator="erode" radius="1.5" result="ALPHA_ERODE"/>
+            <feComposite in="SourceGraphic" in2="ALPHA_ERODE" operator="in" result="KEYED"/>
+            <feComponentTransfer in="KEYED" result="CLEAN">
+              <feFuncA type="discrete" tableValues="0 0 0 0 0 1 1 1 1 1"/>
+            </feComponentTransfer>
+            <feDropShadow in="CLEAN" dx="0" dy="8" stdDeviation="6" flood-color="#000" flood-opacity="0.35"/>
+          </filter>
+
+          <filter id="leonGreenKey" color-interpolation-filters="sRGB">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1.0" result="MASK_BLUR"/>
+            <feColorMatrix in="MASK_BLUR" type="matrix" values="
+              1 0 0 0 0
+              0 1 0 0 0
+              0 0 1 0 0
+              1.0 -2.0 1.0 0 0.5" result="ALPHA_BASE"/>
+            <feComponentTransfer in="ALPHA_BASE" result="ALPHA_CONTRAST">
+              <feFuncA type="linear" slope="15" intercept="-2.0"/>
+            </feComponentTransfer>
+            <feMorphology in="ALPHA_CONTRAST" operator="erode" radius="1" result="ALPHA_ERODE"/>
+            <feComposite in="SourceGraphic" in2="ALPHA_ERODE" operator="in" />
+            <feColorMatrix type="matrix" values="
+              1 0 0 0 0
+              0.4 0.2 0.4 0 0
+              0 0 1 0 0
+              0 0 0 1 0"/>
+          </filter>
+
+          <filter id="aiGreenKey" color-interpolation-filters="sRGB">
+            <!-- Détection du vert -->
+            <feColorMatrix in="SourceGraphic" type="matrix" values="
+              1 0 0 0 0
+              0 1 0 0 0
+              0 0 1 0 0
+              1.2 -2.2 1.2 0 0.4" result="ALPHA_BASE"/>
+            <feComponentTransfer in="ALPHA_BASE" result="ALPHA_CONTRAST">
+              <feFuncA type="linear" slope="18" intercept="-1.5"/>
+            </feComponentTransfer>
+            <!-- Érosion pour trimer les halos verts -->
+            <feMorphology in="ALPHA_CONTRAST" operator="erode" radius="1.5" result="ALPHA_ERODE"/>
+            <feComposite in="SourceGraphic" in2="ALPHA_ERODE" operator="in" result="KEYED"/>
+            <!-- Spill Suppression : écrase le canal vert par un mix R/B -->
+            <feColorMatrix in="KEYED" type="matrix" values="
+              1 0 0 0 0
+              0.5 0.0 0.5 0 0
+              0 0 1 0 0
+              0 0 0 1 0" result="CLEAN"/>
+            <!-- Solidification : toute alpha partielle remontée à 100% -->
+            <feComponentTransfer in="CLEAN" result="SOLID">
+              <feFuncA type="linear" slope="10" intercept="0"/>
+            </feComponentTransfer>
+            <feDropShadow in="SOLID" dx="0" dy="8" stdDeviation="6" flood-color="#000" flood-opacity="0.35"/>
+          </filter>
+          
+          <!-- Chroma-key blanc (Luma Key) : supprime le fond blanc et les ombres claires au sol -->
+          <filter id="whiteKey" color-interpolation-filters="sRGB">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="
+              1 0 0 0 0
+              0 1 0 0 0
+              0 0 1 0 0
+              -0.34 -0.34 -0.34 0 0.80" result="LUMA"/>
+            <feComponentTransfer in="LUMA" result="ALPHA">
+              <feFuncA type="linear" slope="15" intercept="0"/>
+            </feComponentTransfer>
+            <!-- Nettoyage des bords de l'alpha (pour éviter un liseré blanc/gris semi-transparent) -->
+            <feColorMatrix in="ALPHA" type="matrix" values="
+              1 0 0 0 0
+              0 1 0 0 0
+              0 0 1 0 0
+              0 0 0 1 0"/>
+            <feComposite in="SourceGraphic" in2="ALPHA" operator="in"/>
+          </filter>
+
+          <!-- Filtre ULTRA SOFT : cible uniquement le vert pur saturé du fond chroma.
+               Pour persos avec t-shirt/details vert clair (ex: garcon). -->
+          <filter id="ultraSoftGreenKey" color-interpolation-filters="sRGB">
+            <!-- Detection ultra ciblee : G doit etre TRES dominant ET R+B doivent etre faibles -->
+            <feColorMatrix in="SourceGraphic" type="matrix" values="
+              1 0 0 0 0
+              0 1 0 0 0
+              0 0 1 0 0
+              0.4 -1.0 0.4 0 0.6" result="ALPHA_BASE"/>
+            <feComponentTransfer in="ALPHA_BASE" result="ALPHA_CONTRAST">
+              <feFuncA type="linear" slope="4" intercept="-0.7"/>
+            </feComponentTransfer>
+            <feMorphology in="ALPHA_CONTRAST" operator="erode" radius="0.4" result="ALPHA_ERODE"/>
+            <feComposite in="SourceGraphic" in2="ALPHA_ERODE" operator="in" result="KEYED"/>
+            <feComponentTransfer in="KEYED">
+              <feFuncA type="discrete" tableValues="0 0 1 1 1 1 1 1 1 1"/>
+            </feComponentTransfer>
+          </filter>
+
+          <!-- Filtre soft pour les persos qui ont des couleurs vertes (ex: Pixel le robot
+               avec ses lumieres LED vertes). Detection moins agressive du vert. -->
+          <filter id="softGreenKey" color-interpolation-filters="sRGB">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="
+              1 0 0 0 0
+              0 1 0 0 0
+              0 0 1 0 0
+              0.8 -1.6 0.8 0 0.5" result="ALPHA_BASE"/>
+            <feComponentTransfer in="ALPHA_BASE" result="ALPHA_CONTRAST">
+              <feFuncA type="linear" slope="6" intercept="-1.0"/>
+            </feComponentTransfer>
+            <feMorphology in="ALPHA_CONTRAST" operator="erode" radius="0.7" result="ALPHA_ERODE"/>
+            <feComposite in="SourceGraphic" in2="ALPHA_ERODE" operator="in" result="KEYED"/>
+            <feComponentTransfer in="KEYED">
+              <feFuncA type="discrete" tableValues="0 0 0 1 1 1 1 1 1 1"/>
+            </feComponentTransfer>
+          </filter>
+
+          <!-- (suppression du whiteKey doublon : les PNG avatars sont desormais nativement
+               transparents grace a transparentize_avatars.py, donc plus besoin du filter) -->
+        </svg>
+
+        <!-- Hero video de dos, en pause jusqu'au clic sur l'enseigne. display:none par defaut
+             + poster transparent 1x1 pour masquer la frame 0 (souvent : avatar de face avec fond blanc) -->
+        <video id="hero-video-2" class="hero-idle-street" muted loop playsinline preload="auto"
+               style="display:none; opacity:0;"
+               poster="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=">
+          <source id="hero-video-2-src" src="" type="video/mp4">
+        </video>
+
+        <!-- Marqueur de destination (debug, Shift+clic pour déplacer) -->
+        <div id="entry-marker" title="Destination du renard — Shift+clic pour déplacer"></div>
+
+        <!-- Zone cliquable invisible sur l'enseigne (texte deja dans rue.mp4) -->
+        <div class="neon-shop-target neon-shop-invisible" onclick="walkToShopAndEnter()" aria-label="Entrer dans l'atelier"></div>
+
+        <!-- Pointeur 👆 independant (calibrable separement de la zone) -->
+        <div id="sign-pointer" class="sign-pointer-free" aria-hidden="true">👆</div>
+
+        <!-- Marker destination du heros (calibrable) -->
+        <div id="hero-destination" class="hero-destination" aria-hidden="true"></div>
+
+      </div>
+      
+      <div class="parent-tip mt-md" onclick="toggleTip(this)">
+        <div class="parent-tip-icon">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path>
+          </svg>
+        </div>
+        <div class="parent-tip-content">
+          <div class="parent-tip-label">Infos Parents <span class="parent-tip-toggle">▼ Voir</span></div>
+          <p class="parent-tip-text">Avant d'entrer, demandez à votre enfant : « Sais-tu ce qu'est une Intelligence Artificielle ? » Accueillez ses idées sans les corriger pour l'instant !</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 3: The Shop -->
+    <div class="screen" id="screen-3">
+      <div class="story-scene full-height-scene">
+        <div class="scene-visual">
+           <!-- Léon video (background) -->
+           <video src="assets/Léon%20qui%20parle.mp4" poster="assets/atelier_sans_leon.jpg" class="leon-video-bg" muted playsinline preload="auto"></video>
+           <div class="watermark-cover"></div>
+        </div>
+        <div class="scene-text">
+          <p class="narration">Derrière le comptoir, voici <strong>Léon</strong>. Son atelier magique fabrique des choses grâce à l'IA !</p>
+          <p class="dialogue-who">👴 Léon dit :</p>
+          <div class="dialogue-bubble">«&nbsp;Ah, un explorateur&nbsp;! Veux-tu savoir ce que c'est, l'IA&nbsp;?&nbsp;»</div>
+        </div>
+      </div>
+      <div class="btn-choices answers-group" id="s3-answers">
+        <button class="btn-choice" onclick="goToScreen(4)"><span class="choice-icon">🙋</span> « Oui, s'il te plaît ! »</button>
+        <button class="btn-choice" onclick="goToScreen(4)"><span class="choice-icon">🤔</span> « Euh... c'est quoi déjà ? »</button>
+      </div>
+    </div>
+
+    <!-- Screen 4: Explanation -->
+    <div class="screen" id="screen-4">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <!-- Vidéo Léon devant la machine (sans fond vert, décor 100% plein) -->
+        <!-- poster = frame statique affichee immediatement (evite le flash blanc le temps du decodage video) -->
+        <video src="assets/Leon_devant_machine.mp4" poster="assets/Leon_devant_machine.jpg" id="leon-video-bg-4" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <!-- Héros de dos en overlay (tiers droit de la scène) -->
+        <img src="" id="hero-back-4" class="hero-back-overlay" alt="Héros de dos">
+        <video id="hero-back-video-4" class="hero-back-overlay hero-back-video" muted loop playsinline preload="auto" style="display:none"></video>
+        <div id="hero4-marker" class="calib-marker" style="display:none"></div>
+        <!-- Texte de dialogue superposé en bas -->
+        <div class="scene-text scene-4-text">
+          <p class="narration" id="s4-narration">Au cœur de l'atelier, Léon s'approche de sa machine mystérieuse.</p>
+          <p class="dialogue-who" id="s4-who">👴 Léon dit :</p>
+          <div class="dialogue-bubble anim-pop-in" id="s4-bubble">«&nbsp;L'IA, c'est une machine qui <strong>apprend</strong>. On lui montre plein d'exemples... et après, elle t'aide à créer&nbsp;!&nbsp;»</div>
+        </div>
+
+        <!-- Mini-jeu : construis un chat avec les bonnes caractéristiques -->
+        <div class="game-overlay s4-game-pill" id="s4-game-pill" style="display:none">
+          <p class="s4-instr">🔍 <strong>Pour reconnaître un chat, qu'a appris la machine&nbsp;? Tape les bonnes caractéristiques&nbsp;!</strong></p>
+          <p class="s4-progress"><span id="s4-trees-found">0</span> / 4</p>
+        </div>
+        <div class="s4-reveal" id="s4-reveal" style="display:none">
+          <div class="s4-silhouette" id="s4-silhouette">🐱</div>
+          <div class="s4-checks" id="s4-checks"></div>
+        </div>
+        <div class="s4-cards" id="s4-cards" style="display:none"></div>
+      </div>
+      <div class="answers-group scene-4-actions" id="s4-answers">
+        <button class="btn-choice" onclick="goToScreen(5)"><span class="choice-icon">💡</span> J'ai compris !</button>
+      </div>
+      <div class="parent-tip" onclick="toggleTip(this)">
+        <div class="parent-tip-icon">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+        </div>
+        <div class="parent-tip-content">
+          <div class="parent-tip-label">Infos Parents <span class="parent-tip-toggle">▼ Voir</span></div>
+          <p class="parent-tip-text">C'est la notion d'entraînement (Machine Learning). L'IA apprend avec des exemples, tout comme un enfant s'améliore avec l'entraînement.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 5: Tap game -->
+    <div class="screen" id="screen-5">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <!-- Fond de l'atelier continué — IMAGE FIXE (pas de video, le quizz a besoin de calme visuel) -->
+        <img src="assets/Leon_devant_machine.jpg" id="leon-video-bg-5" class="leon-machine-video" alt="Léon devant la machine">
+        <!-- Héros superposé au même endroit -->
+        <img src="" id="hero-back-5" class="hero-back-overlay" alt="Héros">
+        
+        <div class="scene-text scene-5-text">
+          <p class="dialogue-who">👴 Léon te lance un défi :</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Attention, l'IA ne sait pas tout faire&nbsp;! Sauras-tu trouver ce qu'elle ne peut <strong>pas</strong> faire&nbsp;?&nbsp;»</div>
+        </div>
+        
+        <!-- Fenêtre du mini-jeu (flottante en mode glassmorphism) -->
+        <div class="game-overlay tap-game" id="s5-game">
+          <p class="tap-instruction" id="s5-instruction">Appuie sur ce que l'IA ne peut PAS faire 👇</p>
+          <div class="tap-options answers-group" id="s5-answers">
+            <button class="tap-option" onclick="tapAnswer(this, false)">
+              <span class="opt-emoji">🎨</span><span class="opt-text">Dessiner une image</span>
+            </button>
+            <button class="tap-option" onclick="tapAnswer(this, true)">
+              <span class="opt-emoji">🤗</span><span class="opt-text">Faire un câlin</span>
+            </button>
+            <button class="tap-option" onclick="tapAnswer(this, false)">
+              <span class="opt-emoji">📖</span><span class="opt-text">Raconter une histoire</span>
+            </button>
+          </div>
+          <div class="tap-feedback" id="tap-feedback"></div>
+          <button class="btn btn-primary btn-large floating-btn" id="btn-to-6" onclick="goToScreen(6)">Continuons ! 🎉</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 6: Quiz -->
+    <div class="screen" id="screen-6">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <!-- Fond Léon + machine (même décor que screen 5) — IMAGE FIXE pour le quizz final -->
+        <img src="assets/Leon_devant_machine.jpg" id="leon-video-bg-6" class="leon-machine-video" alt="Léon devant la machine">
+        <!-- Le héros n'est pas affiché sur le quizz final (visuel epure pour la concentration) -->
+        <img src="" id="hero-back-6" class="hero-back-overlay" alt="Héros" style="display:none">
+
+        <!-- Panel quiz glassmorphism -->
+        <div class="game-overlay quiz-game-overlay" id="s6-game">
+          <p class="tap-instruction">🎮 Vrai ou Faux ?</p>
+          <div class="mini-game">
+            <div class="vf-item">
+              <p class="vf-statement">« L'IA peut apprendre des choses. »</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswer(this,0,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswer(this,0,false)">👎 Faux</button>
+              </div>
+            </div>
+            <div class="vf-item">
+              <p class="vf-statement">« L'IA est une vraie personne, comme toi. »</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswer(this,1,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswer(this,1,false)">👎 Faux</button>
+              </div>
+            </div>
+            <div class="vf-item">
+              <p class="vf-statement">« L'IA reconnaît un chat grâce à ses pattes, ses moustaches et ses oreilles. »</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswer(this,2,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswer(this,2,false)">👎 Faux</button>
+              </div>
+            </div>
+            <div class="vf-item">
+              <p class="vf-statement">« L'IA est triste quand on l'éteint. »</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswer(this,3,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswer(this,3,false)">👎 Faux</button>
+              </div>
+            </div>
+          </div>
+          <div class="score-display" id="score-display" style="display:none">
+            <div class="score-stars" id="score-stars"></div>
+            <div class="score-text" id="score-text"></div>
+          </div>
+          <button class="btn btn-primary btn-large floating-btn" id="btn-to-7" onclick="goToScreen(7)">Ouvrir le coffre ! 🏆</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 7: Win / End -->
+    <div class="screen" id="screen-7">
+      <div class="win-scene">
+        <!-- Fond atelier -->
+        <img src="assets/atelier_sans_leon.jpg" class="win-bg-img" alt="Atelier magique">
+        <!-- Overlay dégradé -->
+        <div class="win-overlay"></div>
+        <!-- Confettis (générés en JS) -->
+        <div class="confetti-container" id="confetti-container"></div>
+        <!-- Héros de face avec chroma-key -->
+        <img src="" id="hero-win-face" class="hero-win-face avatar-with-accessories" alt="Héros victoire">
+        <!-- Contenu bas -->
+        <div class="win-content">
+          <h2 class="win-title">🎉 Victoire <span id="win-name"></span> !</h2>
+          <p class="win-subtitle">Chapitre 1 terminé — "La drôle de machine" !</p>
+          <div class="win-cards">
+            <div class="win-card">
+              <div class="win-card-icon">⭐</div>
+              <p class="win-card-value" id="stars-earned"></p>
+              <p class="win-card-label">Étoiles gagnées</p>
+            </div>
+            <div class="win-card">
+              <div class="win-card-icon">🏆</div>
+              <p class="win-card-value">Apprenti<br>Inventeur</p>
+              <p class="win-card-label">Badge débloqué !</p>
+              <span class="unlock-badge">NOUVEAU</span>
+            </div>
+          </div>
+          <div class="win-actions">
+            <button class="btn win-btn-family" onclick="goToScreen(8)">Défi Famille 🏠</button>
+            <button class="btn btn-primary win-btn-map" onclick="goToScreen('map')">Carte 🗺️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 8: Family Mode -->
+    <div class="screen" id="screen-8">
+      <div class="family-scene">
+        <!-- Même fond que l'écran 7 -->
+        <img src="assets/atelier_sans_leon.jpg" class="win-bg-img" alt="Atelier magique">
+        <div class="win-overlay"></div>
+        <!-- Héros de face à droite -->
+        <img src="" id="hero-family" class="hero-family-img" alt="Héros">
+        <!-- Panneau contenu glassmorphism à gauche -->
+        <div class="family-content">
+          <div class="family-badge">👨‍👩‍👧 Mode Famille</div>
+          <h2 class="family-title">🔍 Détective Maison !</h2>
+
+          <!-- 1) Mission : objets IA à la maison -->
+          <div class="family-section">
+            <p class="family-section-label">🎯 Votre mission</p>
+            <p class="family-section-text">Cherchez ensemble des objets à la maison qui utilisent l'intelligence artificielle.</p>
+            <textarea class="family-input" id="family-mission-input" placeholder="Notez ici les objets que vous avez trouvés..." rows="2" oninput="onFamilyInput('mission')"></textarea>
+            <button class="btn-family-submit" id="family-mission-btn" onclick="submitFamilyAnswer('mission')" disabled>Valider ✓</button>
+            <div class="family-confirmation" id="family-mission-confirm">
+              <p><strong>👍 Bravo !</strong> Voici quelques objets connectés à l'IA chez nous :</p>
+              <ul>
+                <li>📱 <strong>Smartphones</strong> : Siri, l'assistant Google, le déverrouillage par visage</li>
+                <li>📺 <strong>Télés / box</strong> : recommandations Netflix, YouTube, Disney+</li>
+                <li>🔊 <strong>Enceintes connectées</strong> : Alexa, Google Home</li>
+                <li>🤖 <strong>Robots aspirateurs</strong>, <strong>thermostats intelligents</strong>, jouets parlants...</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 2) Question : as-tu déjà parlé à une IA -->
+          <div class="family-section">
+            <p class="family-section-label">🧒 Question</p>
+            <p class="family-section-text">« As-tu déjà parlé à une IA sans le savoir ? »</p>
+            <textarea class="family-input" id="family-question-input" placeholder="Écris ta réponse ici..." rows="2" oninput="onFamilyInput('question')"></textarea>
+            <button class="btn-family-submit" id="family-question-btn" onclick="submitFamilyAnswer('question')" disabled>Valider ✓</button>
+            <div class="family-confirmation" id="family-question-confirm">
+              <p><strong>🎯 Très probablement, oui !</strong> Tu as déjà parlé à une IA si :</p>
+              <ul>
+                <li>🗺️ Tu as utilisé un <strong>GPS</strong> qui te guide à voix haute</li>
+                <li>🎙️ Tu as dit « Dis Siri » ou « OK Google »</li>
+                <li>📞 Tu as appelé un service client et un robot t'a répondu</li>
+                <li>🌍 Tu as utilisé <strong>Google Traduction</strong> ou un sous-titre automatique</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 3) Imagine : une IA peut-elle créer toute seule -->
+          <div class="family-section">
+            <p class="family-section-label">🌟 Imagine</p>
+            <p class="family-section-text">« Une IA peut-elle vraiment créer une œuvre d'art toute seule ? Pourquoi ? »</p>
+            <textarea class="family-input" id="family-imagine-input" placeholder="Donnez votre avis en famille..." rows="2" oninput="onFamilyInput('imagine')"></textarea>
+            <button class="btn-family-submit" id="family-imagine-btn" onclick="submitFamilyAnswer('imagine')" disabled>Valider ✓</button>
+            <div class="family-confirmation" id="family-imagine-confirm">
+              <p><strong>🎨 Voici une image créée par une IA :</strong></p>
+              <img src="assets/purple_unicorn.jpg" alt="Œuvre créée par IA — licorne violette" class="family-ai-art">
+              <p class="family-ai-art-caption">Magnifique, non ? Mais l'IA a juste <strong>combiné</strong> des millions d'images de chevaux, de cornes et de couleurs vues sur internet. Sans <strong>humain pour lui demander</strong> et sans <strong>imagination propre</strong>, elle ne crée rien.</p>
+            </div>
+          </div>
+
+          <button class="btn btn-primary win-btn-map" onclick="goToScreen(7)">J'ai réussi ! 🏆</button>
+        </div>
+      </div>
+    </div>
+    <!-- ============================================================ -->
+    <!-- CHAPITRE 2 : LA FABRIQUE À IMAGES                              -->
+    <!-- ============================================================ -->
+
+    <!-- c2s1 : Léon devant la porte de la salle des images -->
+    <div class="screen" id="screen-c2s1">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/Leon_devant_porte.mp4" poster="assets/Leon_devant_porte.png" id="leon-video-c2s1" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">De retour à l'atelier, Léon t'invite à le suivre vers une porte mystérieuse...</p>
+          <p class="dialogue-who">👴 Léon dit :</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Suis-moi&nbsp;! Je vais te montrer ma <strong>machine à images</strong>&nbsp;!&nbsp;»</div>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions">
+        <button class="btn-choice" onclick="goToScreen('c2s2')"><span class="choice-icon">🚪</span> Entrer dans la salle</button>
+      </div>
+    </div>
+
+    <!-- c2s2 : Présentation de la machine -->
+    <div class="screen" id="screen-c2s2">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <!-- Poster machine_image.png (1672x941, 16:9) = chevalet + toile magique chap 2.
+             Converti en background-image CSS au DOMContentLoaded → apparition INSTANTANÉE. -->
+        <video src="assets/Leon_machine_image.mp4" poster="assets/machine_image.png" id="leon-video-c2s2" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+
+        <!-- 3 hotspots invisibles : pinceau flottant / toile lumineuse / paillettes magiques.
+             Revele via loupe magique au survol. Calibrables via toggleC2s2SpotCalib() (console). -->
+        <div class="c2s2-spot-zone" id="c2s2-spot-1" data-spot-id="brush"></div>
+        <div class="c2s2-spot-zone" id="c2s2-spot-2" data-spot-id="canvas"></div>
+        <div class="c2s2-spot-zone" id="c2s2-spot-3" data-spot-id="sparkles"></div>
+
+        <!-- Tooltip qui apparait quand un hotspot est trouve -->
+        <div class="c2s2-tooltip" id="c2s2-tooltip"></div>
+
+        <div class="scene-text scene-4-text">
+          <p class="narration">Au centre de la pièce, une machine étrange flotte au-dessus d'un établi.</p>
+          <p class="dialogue-who">👴 Léon dit :</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Cette machine peut <strong>dessiner avec des mots</strong>&nbsp;! On lui parle, et elle crée une image&nbsp;!&nbsp;»</div>
+        </div>
+
+        <!-- Mini-jeu : Inspecte la machine — trouve les 3 composants
+             Apparait apres le karaoke (onComplete), puis se masque pour laisser l'image. -->
+        <div class="game-overlay c2s2-inspect-game" id="c2s2-game" style="display:none">
+          <p class="tap-instruction">✨ <strong>Clique sur les 3 cercles dorés</strong>&nbsp;!</p>
+          <p class="c2s2-progress"><span id="c2s2-found-count">0</span> / 3 découverts</p>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions" id="c2s2-actions">
+        <button class="btn-choice c2s2-skip-btn" onclick="goToScreen('c2s3')"><span class="choice-icon">✨</span> Continuer</button>
+      </div>
+    </div>
+
+    <!-- c2s3 : Démonstration -->
+    <div class="screen" id="screen-c2s3">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/toile_vide.mp4" poster="assets/toile_sans_chat.jpg" id="leon-video-c2s3" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <!-- Texte qui s'écrit lettre par lettre directement sur la toile -->
+        <div class="canvas-typewriter" id="canvas-typewriter-c2s3">
+          <span class="prompt-text" id="prompt-typewriter-c2s3"></span><span class="prompt-cursor">▌</span>
+        </div>
+        <!-- Image du chat qui apparaît pixel par pixel (fragments générés en JS) -->
+        <div class="canvas-cat-zone" id="canvas-cat-c2s3"></div>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Léon tape sa demande... La machine s'allume !</p>
+          <p class="dialogue-who">👴 Léon dit :</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Voilà&nbsp;! L'IA a compris mes mots et a créé une image rien que pour nous&nbsp;!&nbsp;»</div>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions">
+        <button class="btn-choice" onclick="goToScreen('c2s4')"><span class="choice-icon">✨</span> Trop cool !</button>
+      </div>
+    </div>
+
+    <!-- c2s4 : Apprentissage (millions d'images) -->
+    <div class="screen" id="screen-c2s4">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/images_millions.mp4" poster="assets/machine_image.png" id="leon-video-c2s4" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Mais comment la machine sait-elle dessiner ?</p>
+          <p class="dialogue-who">👴 Léon explique :</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Elle a regardé des <strong>millions d'images</strong> avant&nbsp;! C'est comme ça qu'elle a appris&nbsp;!&nbsp;»</div>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions">
+        <button class="btn-choice" onclick="goToScreen('c2s5')"><span class="choice-icon">💡</span> J'ai compris !</button>
+      </div>
+      <div class="parent-tip" onclick="toggleTip(this)">
+        <div class="parent-tip-icon">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+        </div>
+        <div class="parent-tip-content">
+          <div class="parent-tip-label">Infos Parents <span class="parent-tip-toggle">▼ Voir</span></div>
+          <p class="parent-tip-text">Les modèles de génération d'images (Stable Diffusion, DALL·E, Midjourney) ont été entraînés sur des milliards d'images. Ils ne « créent » pas vraiment : ils recombinent ce qu'ils ont vu.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2s5 : L'IA peut se tromper -->
+    <div class="screen" id="screen-c2s5">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <!-- Fond statique : Léon devant sa toile magique (réutilisé de c2s4 poster).
+             TODO : remplacer par Leon_peinture.mp4 quand on aura régénéré une version 16:9. -->
+        <img src="assets/machine_image.png" id="leon-bg-c2s5" class="leon-machine-video" alt="Léon devant la toile magique">
+        <!-- Overlay : grille 2x3 des 6 dessins (3 corrects + 3 défectueux) -->
+        <img src="assets/chapitre_2/t5_grid.png?v=1" id="c2s5-grid" class="c2s5-grid-overlay" alt="6 dessins de l'IA">
+        <!-- 6 hot-spots invisibles sur la grille — 3 sont défectueux (data-defective="true")
+             Calibrables via Alt+F (drag) → calibration.json. -->
+        <div class="c2s5-defect-zone" id="c2s5-defect-1" data-defect-id="sun"   data-defective="false" title="Soleil"></div>
+        <div class="c2s5-defect-zone" id="c2s5-defect-2" data-defect-id="cat"   data-defective="true"  title="Chat (défaut)"></div>
+        <div class="c2s5-defect-zone" id="c2s5-defect-3" data-defect-id="puppy" data-defective="false" title="Chiot"></div>
+        <div class="c2s5-defect-zone" id="c2s5-defect-4" data-defect-id="girl"  data-defective="true"  title="Fille (défaut)"></div>
+        <div class="c2s5-defect-zone" id="c2s5-defect-5" data-defect-id="tulip" data-defective="false" title="Tulipe"></div>
+        <div class="c2s5-defect-zone" id="c2s5-defect-6" data-defect-id="dog"   data-defective="true"  title="Chien (défaut)"></div>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Léon a demandé à sa machine de dessiner 6 images... mais attention, 3 d'entre elles cachent un défaut&nbsp;!</p>
+          <p class="dialogue-who">👴 Léon dit :</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Regarde bien chaque dessin. La machine s'est trompée 3 fois. Sauras-tu trouver lesquelles&nbsp;?&nbsp;»</div>
+        </div>
+        <!-- Mini-jeu : panneau qui apparaît à la fin du karaoké -->
+        <div class="game-overlay c2s5-defect-game" id="c2s5-game" style="display:none">
+          <p class="tap-instruction" id="c2s5-instruction">🔍 <strong>Trouve les 3 défauts</strong> dans les dessins de l'IA&nbsp;!</p>
+          <p class="c2s5-progress"><span id="c2s5-found-count">0</span> / 3 trouvés</p>
+        </div>
+        <!-- Bulle indice glassmorphisme — apparaît 5s puis disparaît -->
+        <div class="c2s5-hint-bubble" id="c2s5-hint-bubble" style="display:none">
+          <span class="c2s5-hint-text" id="c2s5-hint-text"></span>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions" id="c2s5-actions">
+        <button class="btn-choice" id="c2s5-continue" onclick="goToScreen('c2s6')"><span class="choice-icon">✨</span> Continuer</button>
+      </div>
+    </div>
+
+    <!-- c2s6 : Pas d'émotion -->
+    <div class="screen" id="screen-c2s6">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/Leon_machine_image.mp4" poster="assets/Leon_devant_machine.jpg" id="leon-video-c2s6" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Léon devient un peu plus sérieux...</p>
+          <p class="dialogue-who">👴 Léon ajoute :</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Mais attention&nbsp;: la machine n'a <strong>pas de cœur</strong>. Elle ne dessine pas parce qu'elle aime ça — elle crée ce qu'on lui demande, c'est tout&nbsp;!&nbsp;»</div>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions">
+        <button class="btn-choice" onclick="goToScreen('c2s7')"><span class="choice-icon">🧠</span> Je veux essayer !</button>
+      </div>
+      <div class="parent-tip" onclick="toggleTip(this)">
+        <div class="parent-tip-icon">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+        </div>
+        <div class="parent-tip-content">
+          <div class="parent-tip-label">Infos Parents <span class="parent-tip-toggle">▼ Voir</span></div>
+          <p class="parent-tip-text">L'IA ne « crée » pas comme un artiste&nbsp;: elle n'a ni intention, ni émotion, ni inspiration. Elle calcule statistiquement la sortie la plus probable. C'est l'occasion d'expliquer à votre enfant que le dessin d'un humain raconte une histoire, exprime un sentiment&nbsp;: ce que la machine, elle, ne fait jamais vraiment.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2s7 : Mini-jeu — choisir 3 mots, voir l'image générée par "l'IA" -->
+    <div class="screen" id="screen-c2s7">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/toile_vide.mp4" poster="assets/toile_sans_chat.jpg" id="leon-video-c2s7" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+
+        <!-- Prompt typewriter sur la toile (apparaît quand 3 mots choisis) -->
+        <div class="canvas-typewriter" id="prompt-typewriter-c2s7"><span class="prompt-text-c7"></span><span class="prompt-cursor">▌</span></div>
+
+        <!-- Composition résultat sur la toile (sujet + aura + accessoire + label couleur) -->
+        <div class="canvas-result" id="canvas-result-c2s7">
+          <div class="result-aura" id="result-aura-c2s7"></div>
+          <span class="result-subject" id="result-subject-c2s7"></span>
+          <span class="result-accessory" id="result-accessory-c2s7"></span>
+          <span class="result-color-tag" id="result-color-tag-c2s7"></span>
+        </div>
+
+        <!-- Bulle de Léon en haut à droite (style c2s3) -->
+        <div class="scene-text scene-5-text">
+          <p class="narration">Léon te tend les pinceaux numériques. À toi de jouer&nbsp;!</p>
+          <p class="dialogue-who">👴 Léon te lance un défi :</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;À toi&nbsp;! Choisis <strong>3 mots</strong>&nbsp;: un sujet, une couleur, un style — et regarde&nbsp;!&nbsp;»</div>
+        </div>
+
+        <!-- Panel mini-jeu en bas -->
+        <div class="game-overlay c2-prompt-game" id="c2s7-game">
+          <p class="tap-instruction">Choisis <strong>3 mots</strong> 👇 (un sujet, une couleur, un style)</p>
+          <div class="prompt-words" id="c2s7-words">
+            <button class="prompt-word" data-cat="subject" data-w="chat">🐱 chat</button>
+            <button class="prompt-word" data-cat="subject" data-w="dragon">🐉 dragon</button>
+            <button class="prompt-word" data-cat="subject" data-w="licorne">🦄 licorne</button>
+            <button class="prompt-word" data-cat="color"   data-w="rouge">🟥 rouge</button>
+            <button class="prompt-word" data-cat="color"   data-w="bleu">🟦 bleu</button>
+            <button class="prompt-word" data-cat="color"   data-w="violet">🟣 violet</button>
+            <button class="prompt-word" data-cat="style"   data-w="volant">🦋 volant</button>
+            <button class="prompt-word" data-cat="style"   data-w="géant">🦣 géant</button>
+            <button class="prompt-word" data-cat="style"   data-w="rigolo">😜 rigolo</button>
+          </div>
+          <div class="c2s7-actions">
+            <button class="btn btn-secondary btn-large floating-btn" id="btn-c2s7-restart" onclick="resetC2s7()">↻ Recommencer</button>
+            <button class="btn btn-primary btn-large floating-btn" id="btn-to-c2s8" onclick="goToScreen('c2s8')">Au quiz ! 🎮</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2s8 : Quiz Vrai/Faux -->
+    <div class="screen" id="screen-c2s8">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <img src="assets/atelier_sans_leon.jpg" class="leon-machine-video" alt="Atelier">
+
+        <div class="game-overlay quiz-game-overlay" id="c2s8-game">
+          <p class="tap-instruction">🎮 Vrai ou Faux ?</p>
+          <div class="mini-game">
+            <div class="vf-item">
+              <p class="vf-statement">« L'IA peut créer une image avec des mots. »</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswerC2(this,0,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswerC2(this,0,false)">👎 Faux</button>
+              </div>
+            </div>
+            <div class="vf-item">
+              <p class="vf-statement">« L'IA dessine sans rien avoir jamais vu avant. »</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswerC2(this,1,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswerC2(this,1,false)">👎 Faux</button>
+              </div>
+            </div>
+            <div class="vf-item">
+              <p class="vf-statement">« L'IA peut faire des erreurs en dessinant. »</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswerC2(this,2,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswerC2(this,2,false)">👎 Faux</button>
+              </div>
+            </div>
+            <div class="vf-item">
+              <p class="vf-statement">« L'IA dessine parce qu'elle adore ça. »</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswerC2(this,3,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswerC2(this,3,false)">👎 Faux</button>
+              </div>
+            </div>
+          </div>
+          <div class="score-display" id="score-display-c2" style="display:none">
+            <div class="score-stars" id="score-stars-c2"></div>
+            <div class="score-text" id="score-text-c2"></div>
+          </div>
+          <button class="btn btn-primary btn-large floating-btn" id="btn-to-c2s9" onclick="goToScreen('c2s9')">Ouvrir le coffre ! 🏆</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- c2s9 : Victoire chapitre 2 -->
+    <div class="screen" id="screen-c2s9">
+      <div class="win-scene">
+        <img src="assets/atelier_sans_leon.jpg" class="win-bg-img" alt="Atelier magique">
+        <div class="win-overlay"></div>
+        <div class="confetti-container" id="confetti-container-c2"></div>
+        <img src="" id="hero-win-face-c2" class="hero-win-face avatar-with-accessories" alt="Héros victoire">
+        <div class="win-content">
+          <h2 class="win-title">🎉 Bravo <span id="win-name-c2"></span> !</h2>
+          <p class="win-subtitle">Chapitre 2 terminé — "La fabrique à images" !</p>
+          <div class="win-cards">
+            <div class="win-card">
+              <div class="win-card-icon">⭐</div>
+              <p class="win-card-value" id="stars-earned-c2"></p>
+              <p class="win-card-label">Étoiles gagnées</p>
+            </div>
+            <div class="win-card">
+              <div class="win-card-icon">🎨</div>
+              <p class="win-card-value">Artiste<br>Numérique</p>
+              <p class="win-card-label">Badge débloqué !</p>
+              <span class="unlock-badge">NOUVEAU</span>
+            </div>
+          </div>
+          <div class="win-actions">
+            <button class="btn btn-primary win-btn-map" onclick="goToScreen('map')">Carte 🗺️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- CHAPITRE 3 : LE DÉTECTIVE DES SONS                            -->
+    <!-- ============================================================ -->
+
+    <!-- c3s1 : Léon t'invite dans son labo des sons -->
+    <div class="screen" id="screen-c3s1">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/t1_bg.mp4" id="leon-video-c3s1" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t1_bg.jpg"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Léon te tend un casque audio et te fait signe de le suivre dans une nouvelle salle pleine de microphones et de lumières...</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Bienvenue dans mon labo des sons&nbsp;! Mets le casque, et écoute bien...&nbsp;»</div>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions">
+        <button class="btn-choice" onclick="goToScreen('c3s2')"><span class="choice-icon">🎧</span> Entrer dans le labo</button>
+      </div>
+    </div>
+
+    <!-- c3s2 : L'IA peut écouter et comprendre -->
+    <div class="screen" id="screen-c3s2">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/t2_bg.mp4" id="leon-video-c3s2" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t2_bg.jpg"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Léon parle à un micro... Aussitôt, des mots se mettent à danser dans l'air autour de lui&nbsp;!</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Cette IA peut <strong>écouter</strong> ta voix et la transformer en mots écrits&nbsp;! C'est comme ça que les assistants vocaux comprennent ce que tu dis.&nbsp;»</div>
+        </div>
+
+        <!-- Mini-jeu : attrape les mots qui dansent -->
+        <div class="c3s2-arena" id="c3s2-arena" style="display:none"></div>
+        <div class="game-overlay c3s2-game" id="c3s2-game" style="display:none">
+          <p class="c3s2-instr">🎤 <strong>Attrape les mots qui dansent&nbsp;!</strong></p>
+          <p class="c3s2-progress"><span id="c3s2-caught">0</span> / 7</p>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions">
+        <button class="btn-choice" onclick="goToScreen('c3s3')"><span class="choice-icon">🤩</span> Trop fort&nbsp;!</button>
+      </div>
+    </div>
+
+    <!-- c3s3 : Démo reconnaissance vocale -->
+    <div class="screen" id="screen-c3s3">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/t3_bg.mp4" id="leon-video-c3s3" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t3_bg.jpg"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Léon prononce le mot «&nbsp;bonjour&nbsp;». Sur l'écran, les ondes dansent puis... le mot s'écrit tout seul&nbsp;!</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Vois&nbsp;! Elle a compris que je disais 'bonjour'. Elle a transformé ma voix en lettres&nbsp;!&nbsp;»</div>
+        </div>
+
+        <!-- Mini-jeu : Aide la machine à écrire BONJOUR (tap les lettres dans l'ordre) -->
+        <div class="game-overlay c3s3-game" id="c3s3-game" style="display:none">
+          <p class="c3s3-instr">🎤 <strong>Aide la machine à écrire le mot&nbsp;!</strong></p>
+          <div class="c3s3-slots" id="c3s3-slots">
+            <span class="c3s3-slot" data-target="B"></span>
+            <span class="c3s3-slot" data-target="O"></span>
+            <span class="c3s3-slot" data-target="N"></span>
+            <span class="c3s3-slot" data-target="J"></span>
+            <span class="c3s3-slot" data-target="O"></span>
+            <span class="c3s3-slot" data-target="U"></span>
+            <span class="c3s3-slot" data-target="R"></span>
+          </div>
+          <div class="c3s3-letters" id="c3s3-letters"></div>
+          <p class="c3s3-feedback" id="c3s3-feedback"></p>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions">
+        <button class="btn-choice" onclick="goToScreen('c3s4')"><span class="choice-icon">🎶</span> Et la musique&nbsp;?</button>
+      </div>
+      <div class="parent-tip" onclick="toggleTip(this)">
+        <div class="parent-tip-icon">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+        </div>
+        <div class="parent-tip-content">
+          <div class="parent-tip-label">Infos Parents <span class="parent-tip-toggle">▼ Voir</span></div>
+          <p class="parent-tip-text">Quand Léon dit que l'IA «&nbsp;a compris&nbsp;», c'est un raccourci. En réalité, elle a juste <strong>transcrit</strong>&nbsp;: elle a reconnu des motifs sonores et les a associés à des lettres, sans saisir le sens du mot. C'est exactement ce que font Siri, Alexa ou la dictée vocale du téléphone. Si vous dites «&nbsp;avocat&nbsp;» à votre enfant, l'IA écrit le mot — mais elle ne sait pas s'il s'agit du fruit, du métier, ou d'un avocat de la défense. La compréhension du contexte est l'étape suivante (et bien plus difficile pour la machine).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3s4 : L'IA peut parler (synthèse vocale) -->
+    <div class="screen" id="screen-c3s4">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/t4_bg.mp4" id="leon-video-c3s4" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t4_bg.jpg"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Léon active une boîte parlante en métal doré. Une voix robotique chaleureuse commence à raconter une histoire&nbsp;!</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Et l'IA peut aussi <strong>parler</strong>&nbsp;! Mais attention&nbsp;: elle n'a pas de bouche. Elle imite une voix, c'est tout.&nbsp;»</div>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions">
+        <button class="btn-choice" onclick="goToScreen('c3s5')"><span class="choice-icon">🎤</span> Et chanter&nbsp;?</button>
+      </div>
+      <div class="parent-tip" onclick="toggleTip(this)">
+        <div class="parent-tip-icon">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+        </div>
+        <div class="parent-tip-content">
+          <div class="parent-tip-label">Infos Parents <span class="parent-tip-toggle">▼ Voir</span></div>
+          <p class="parent-tip-text">La synthèse vocale (text-to-speech) permet aujourd'hui de cloner la voix de quelqu'un en quelques secondes d'enregistrement. C'est ce qu'on appelle un <em>deepfake audio</em>&nbsp;: une voix qui ressemble parfaitement à celle d'un proche, mais qui dit n'importe quoi. Bon réflexe à transmettre à votre enfant&nbsp;: si une voix au téléphone semble étrange ou demande quelque chose d'inhabituel, raccrocher et rappeler la personne directement.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3s5 : L'IA peut composer de la musique -->
+    <div class="screen" id="screen-c3s5">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/t5_bg.mp4" id="leon-video-c3s5" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t5_bg.jpg"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Une grande machine pleine de touches dorées s'allume seule et joue une mélodie fantastique. Des notes colorées s'envolent&nbsp;!</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;L'IA peut même <strong>inventer de la musique</strong>&nbsp;! Elle a écouté plein de chansons, et maintenant elle compose elle-même&nbsp;!&nbsp;»</div>
+        </div>
+
+        <!-- Mini-jeu : choisis 3 notes, l'IA invente une mélodie -->
+        <div class="game-overlay c3s5-game-pill" id="c3s5-game-pill" style="display:none">
+          <p class="c3s5-instr">🎵 <strong>Choisis 3 notes — l'IA va inventer une chanson&nbsp;!</strong></p>
+          <p class="c3s5-progress"><span id="c3s5-picked-count">0</span> / 3</p>
+        </div>
+        <div class="c3s5-keyboard" id="c3s5-keyboard" style="display:none">
+          <button class="c3s5-key" data-note="0" data-name="Do" style="--key-color:#FF5572"></button>
+          <button class="c3s5-key" data-note="1" data-name="Ré" style="--key-color:#FF8E00"></button>
+          <button class="c3s5-key" data-note="2" data-name="Mi" style="--key-color:#FFE166"></button>
+          <button class="c3s5-key" data-note="3" data-name="Fa" style="--key-color:#06D6A0"></button>
+          <button class="c3s5-key" data-note="4" data-name="Sol" style="--key-color:#4FC3F7"></button>
+          <button class="c3s5-key" data-note="5" data-name="La" style="--key-color:#9B5DE5"></button>
+          <button class="c3s5-key" data-note="6" data-name="Si" style="--key-color:#F15BB5"></button>
+        </div>
+        <div class="c3s5-floating-notes" id="c3s5-floating-notes"></div>
+      </div>
+      <div class="answers-group scene-4-actions" id="c3s5-actions">
+        <button class="btn-choice" onclick="goToScreen('c3s6')"><span class="choice-icon">🤯</span> Incroyable&nbsp;!</button>
+      </div>
+    </div>
+
+    <!-- c3s6 : L'IA peut se tromper -->
+    <div class="screen" id="screen-c3s6">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/t6_bg.mp4" id="leon-video-c3s6" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t6_bg.jpg"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Léon murmure tout doucement quelque chose au micro. Sur l'écran s'affiche... «&nbsp;bla bla blop&nbsp;»&nbsp;!</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Mais elle peut <strong>se tromper</strong> aussi&nbsp;! Si tu parles trop vite ou s'il y a du bruit, elle comprend de travers&nbsp;!&nbsp;»</div>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions">
+        <button class="btn-choice" onclick="goToScreen('c3s7')"><span class="choice-icon">🎮</span> À mon tour&nbsp;!</button>
+      </div>
+    </div>
+
+    <!-- c3s7 : Mini-jeu — 3 sons mystères (alignés sous les 3 micros du décor) -->
+    <div class="screen" id="screen-c3s7">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <img src="assets/t7_bg.jpg" class="leon-machine-video" alt="Labo 3 micros">
+
+        <!-- Texte narrateur + bulle Léon (en haut sur fond dégradé noir, comme les autres écrans c3) -->
+        <div class="scene-text scene-4-text">
+          <p class="narration">Voici 3 micros mystères. Chacun cache un son... et l'IA va essayer de deviner ce que c'est, comme toi&nbsp;!</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;À toi de jouer&nbsp;! Clique sur un micro, écoute bien, et dis tout haut ce que tu entends. Ensuite, on regarde ensemble ce que l'IA a cru entendre. Parfois, elle se trompe drôlement&nbsp;!&nbsp;»</div>
+        </div>
+
+        <!-- Affichage "IA" dans l'écran bleu du fond -->
+        <div class="ai-display-c3s7">
+          <p class="ai-display-label">L'IA a entendu&nbsp;:</p>
+          <p class="ai-display-text" id="c3s7-transcription">— —</p>
+        </div>
+
+        <!-- 3 micros anonymes : on ne montre PAS l'icone du son a deviner -->
+        <div class="game-overlay c3-sound-game" id="c3s7-game">
+          <div class="sound-buttons" id="c3s7-sounds">
+            <button class="sound-btn" data-id="dog" title="Clique pour écouter">🎤<span class="mic-num">1</span></button>
+            <button class="sound-btn" data-id="piano" title="Clique pour écouter">🎤<span class="mic-num">2</span></button>
+            <button class="sound-btn" data-id="thunder" title="Clique pour écouter">🎤<span class="mic-num">3</span></button>
+          </div>
+          <p class="c3s7-hint">👆 Clique sur chaque micro&nbsp;: dis à voix haute ce que tu entends, puis regarde si l'IA est d'accord&nbsp;!</p>
+          <button class="btn btn-primary btn-large floating-btn" id="btn-to-c3s8" onclick="goToScreen('c3s8')">Au quiz&nbsp;! 🎮</button>
+        </div>
+        <!-- 3 marqueurs rouges de calibration : restent en HTML mais inertes,
+             ils ne s'affichent que si on remet la classe .calib-c3s7-mics sur
+             body (utile pour re-calibrer plus tard sans toucher au HTML). -->
+        <div class="calib-mic-marker" id="calib-mic-1"></div>
+        <div class="calib-mic-marker" id="calib-mic-2"></div>
+        <div class="calib-mic-marker" id="calib-mic-3"></div>
+      </div>
+      <div class="parent-tip" onclick="toggleTip(this)">
+        <div class="parent-tip-icon">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+        </div>
+        <div class="parent-tip-content">
+          <div class="parent-tip-label">Infos Parents <span class="parent-tip-toggle">▼ Voir</span></div>
+          <p class="parent-tip-text">Les modèles de reconnaissance sonore confondent encore régulièrement deux sons proches dans leur «&nbsp;empreinte&nbsp;» acoustique (un piano peut être entendu comme du pop-corn, le tonnerre comme un avion). Profitez de ce moment pour expliquer à votre enfant que l'IA ne comprend pas le sens d'un son&nbsp;: elle compare des motifs. Quand le contexte manque, elle se trompe — exactement comme nous au téléphone dans un endroit bruyant.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3s8 : Quiz Vrai/Faux -->
+    <div class="screen" id="screen-c3s8">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <img src="assets/atelier_sans_leon.jpg" class="leon-machine-video" alt="Atelier">
+
+        <div class="game-overlay quiz-game-overlay" id="c3s8-game">
+          <p class="tap-instruction">🎮 Vrai ou Faux&nbsp;?</p>
+          <div class="mini-game">
+            <div class="vf-item">
+              <p class="vf-statement">«&nbsp;Une IA peut entendre et comprendre ce que tu dis.&nbsp;»</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswerC3(this,0,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswerC3(this,0,false)">👎 Faux</button>
+              </div>
+            </div>
+            <div class="vf-item">
+              <p class="vf-statement">«&nbsp;L'IA a une vraie bouche pour parler.&nbsp;»</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswerC3(this,1,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswerC3(this,1,false)">👎 Faux</button>
+              </div>
+            </div>
+            <div class="vf-item">
+              <p class="vf-statement">«&nbsp;L'IA peut composer une musique toute seule.&nbsp;»</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswerC3(this,2,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswerC3(this,2,false)">👎 Faux</button>
+              </div>
+            </div>
+            <div class="vf-item">
+              <p class="vf-statement">«&nbsp;L'IA comprend toujours parfaitement tout.&nbsp;»</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswerC3(this,3,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswerC3(this,3,false)">👎 Faux</button>
+              </div>
+            </div>
+          </div>
+          <div class="score-display" id="score-display-c3" style="display:none">
+            <div class="score-stars" id="score-stars-c3"></div>
+            <div class="score-text" id="score-text-c3"></div>
+          </div>
+          <button class="btn btn-primary btn-large floating-btn" id="btn-to-c3s9" onclick="goToScreen('c3s9')">Ouvrir le coffre&nbsp;! 🏆</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- c3s9 : Victoire chapitre 3 -->
+    <div class="screen" id="screen-c3s9">
+      <div class="win-scene">
+        <img src="assets/atelier_sans_leon.jpg" class="win-bg-img" alt="Atelier magique">
+        <div class="win-overlay"></div>
+        <div class="confetti-container" id="confetti-container-c3"></div>
+        <img src="" id="hero-win-face-c3" class="hero-win-face avatar-with-accessories" alt="Héros victoire">
+        <div class="win-content">
+          <h2 class="win-title">🎉 Bravo <span id="win-name-c3"></span>&nbsp;!</h2>
+          <p class="win-subtitle">Chapitre 3 terminé — "Le détective des sons"&nbsp;!</p>
+          <div class="win-cards">
+            <div class="win-card">
+              <div class="win-card-icon">⭐</div>
+              <p class="win-card-value" id="stars-earned-c3"></p>
+              <p class="win-card-label">Étoiles gagnées</p>
+            </div>
+            <div class="win-card">
+              <div class="win-card-icon">🎧</div>
+              <p class="win-card-value">Maître<br>des Oreilles</p>
+              <p class="win-card-label">Badge débloqué&nbsp;!</p>
+              <span class="unlock-badge">NOUVEAU</span>
+            </div>
+          </div>
+          <div class="win-actions">
+            <button class="btn btn-primary win-btn-map" onclick="goToScreen('map')">Carte 🗺️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         CHAPITRE 4 — Bot, l'IA qui parle
+         ============================================================ -->
+
+    <!-- c4s1 : Rencontre avec Bot -->
+    <div class="screen" id="screen-c4s1">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/chapitre_4/t1_bg.mp4" id="leon-video-c4s1" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_4/t1_bg.jpg"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Léon t'emmène dans une bibliothèque magique pleine de livres flottants. Près d'une table en bois, un petit robot blanc et turquoise t'attend...</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Voici Bot, mon assistant qui adore lire&nbsp;! Il connaît plein de mots, il peut tenir une conversation comme nous&nbsp;!&nbsp;»</div>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions">
+        <button class="btn-choice" onclick="goToScreen('c4s2')"><span class="choice-icon">🤖</span> Salut Bot&nbsp;!</button>
+      </div>
+    </div>
+
+    <!-- c4s2 : Bot répond à une question simple -->
+    <div class="screen" id="screen-c4s2">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/chapitre_4/t2_bg.mp4" id="leon-video-c4s2" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_4/t2_bg.jpg"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Léon demande à Bot quelle est la couleur du ciel, et aussitôt, sur l'écran-visage de Bot, des lettres apparaissent et forment une réponse&nbsp;!</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Tu vois, Bot a compris ma question et il répond&nbsp;: c'est ça, l'intelligence artificielle qui parle&nbsp;!&nbsp;»</div>
+        </div>
+
+        <!-- Mini-jeu : pose 3 questions à Bot (tap ou voix) -->
+        <div class="game-overlay c4s2-game-pill" id="c4s2-game-pill" style="display:none">
+          <p class="c4s2-instr">🤖 <strong>Pose 3 questions à Bot — tape ou parle&nbsp;!</strong></p>
+          <p class="c4s2-progress"><span id="c4s2-asked-count">0</span> / 3</p>
+        </div>
+        <div class="c4s2-bot-bubble" id="c4s2-bot-bubble" style="display:none">
+          <video class="c4s2-bot-video" id="c4s2-bot-video" muted loop playsinline preload="auto"
+                 poster="assets/c4s2_bot/bot_portrait.jpg"
+                 src="assets/c4s2_bot/bot_talking.mp4?v=2"></video>
+          <span class="c4s2-bot-text" id="c4s2-bot-text"></span>
+        </div>
+        <div class="c4s2-mic-row" id="c4s2-mic-row" style="display:none">
+          <button class="c4s2-mic-btn" id="c4s2-mic-btn" onclick="c4s2ToggleMic()">
+            <span class="c4s2-mic-icon">🎤</span>
+            <span class="c4s2-mic-label" id="c4s2-mic-label">Pose ta question à voix haute</span>
+          </button>
+        </div>
+        <div class="c4s2-questions" id="c4s2-questions" style="display:none">
+          <button class="c4s2-q-card" data-qid="ciel">🌈 De quelle couleur est le ciel&nbsp;?</button>
+          <button class="c4s2-q-card" data-qid="chat">🐱 Comment fait le chat&nbsp;?</button>
+          <button class="c4s2-q-card" data-qid="etoiles">⭐ Combien y a-t-il d'étoiles&nbsp;?</button>
+          <button class="c4s2-q-card" data-qid="chocolat">🍫 C'est quoi du chocolat&nbsp;?</button>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions" id="c4s2-actions">
+        <button class="btn-choice" onclick="goToScreen('c4s3')"><span class="choice-icon">📚</span> Mais comment&nbsp;?</button>
+      </div>
+    </div>
+
+    <!-- c4s3 : Comment Bot a appris -->
+    <div class="screen" id="screen-c4s3">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/chapitre_4/t3_bg.mp4" id="leon-video-c4s3" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_4/t3_bg.jpg"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Mais comment Bot connaît-il toutes ces réponses&nbsp;? Léon t'explique&nbsp;: Bot a 'lu' des millions de livres avant de pouvoir parler avec toi&nbsp;!</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Pour devenir si bavard, Bot a avalé plein de livres, plein de textes, plein d'histoires&nbsp;! C'est en lisant qu'il a appris à parler.&nbsp;»</div>
+        </div>
+
+        <!-- Mini-jeu : Cascade de livres — l'enfant tape pour faire grimper le compteur 1 → 1 000 000.
+             Apparait apres le karaoke (onComplete). 7 taps suffisent (progression x10). -->
+        <div class="game-overlay c4s3-books-game" id="c4s3-game" style="display:none">
+          <p class="tap-instruction" id="c4s3-instruction">📚 Tape sur le livre pour aider Bot à apprendre&nbsp;!</p>
+          <div class="c4s3-counter-wrap">
+            <div class="c4s3-counter" id="c4s3-counter">0</div>
+            <div class="c4s3-counter-label">livres lus</div>
+          </div>
+          <button class="c4s3-tap-btn" id="c4s3-tap-btn">📚</button>
+          <!-- Cascade de livres qui tombent (générée en JS à chaque tap) -->
+          <div class="c4s3-falling-books" id="c4s3-falling-books"></div>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions" id="c4s3-actions">
+        <button class="btn-choice c4s3-skip-btn" onclick="goToScreen('c4s4')"><span class="choice-icon">✨</span> Continuer</button>
+      </div>
+    </div>
+
+    <!-- c4s4 : Bot se trompe -->
+    <div class="screen" id="screen-c4s4">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/chapitre_4/t4_bg.mp4" id="leon-video-c4s4" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_4/t4_bg.jpg"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Léon pose une nouvelle question&nbsp;: «&nbsp;Combien font 1 et 1&nbsp;?&nbsp;». Bot répond avec un grand sourire... mais sa réponse est complètement fausse&nbsp;!</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Aïe, Bot s'est trompé&nbsp;! Il a dit que 1 et 1 font 5&nbsp;! Parfois l'IA <strong>invente</strong> des réponses fausses sans le savoir. C'est pour ça qu'il faut toujours vérifier&nbsp;!&nbsp;»</div>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions">
+        <button class="btn-choice" onclick="goToScreen('c4s5')"><span class="choice-icon">🤔</span> Bizarre&nbsp;!</button>
+      </div>
+      <div class="parent-tip" onclick="toggleTip(this)">
+        <div class="parent-tip-icon">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+        </div>
+        <div class="parent-tip-content">
+          <div class="parent-tip-label">Infos Parents <span class="parent-tip-toggle">▼ Voir</span></div>
+          <p class="parent-tip-text">On parle d'<em>hallucination</em>&nbsp;: les modèles de langage (ChatGPT, Gemini, Claude…) génèrent parfois des affirmations totalement fausses avec une assurance déconcertante. Ce n'est pas un mensonge volontaire&nbsp;: l'IA prédit la suite de mots la plus plausible, pas la plus vraie. Règle d'or à transmettre à votre enfant&nbsp;: pour un fait important (date, calcul, info scolaire), on vérifie toujours dans une autre source — un livre, un adulte, un site fiable.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- c4s5 : Bot n'est pas un ami (vidéo deferred, lèvres animées) -->
+    <div class="screen" id="screen-c4s5">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/chapitre_4/t5_bg.mp4" id="leon-video-c4s5" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_4/t5_bg.jpg"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Léon prend un ton plus sérieux. Il s'approche de toi pour t'expliquer une chose importante au sujet de Bot...</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Attention&nbsp;: même si Bot parle bien, ce n'est <strong>pas un ami</strong>. Il n'a pas de cœur, il ne ressent rien. Il fait juste semblant de comprendre.&nbsp;»</div>
+        </div>
+
+        <!-- Mini-jeu : Test de l'amitié — Memory pairs (4 paires Q/R)
+             Apparait apres le karaoke de Leon (onComplete). -->
+        <div class="game-overlay c4s5-memory-game" id="c4s5-game" style="display:none">
+          <p class="tap-instruction">💗 Trouve les <strong>4 paires</strong> question / réponse de Bot 🤖</p>
+          <p class="c4s5-progress"><span id="c4s5-pairs-found">0</span> / 4 paires trouvées</p>
+          <div class="c4s5-cards" id="c4s5-cards">
+            <!-- 8 cartes generees par JS pour shuffle aleatoire -->
+          </div>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions" id="c4s5-actions">
+        <button class="btn-choice c4s5-skip-btn" onclick="goToScreen('c4s6')"><span class="choice-icon">✨</span> Continuer</button>
+      </div>
+      <div class="parent-tip" onclick="toggleTip(this)">
+        <div class="parent-tip-icon">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+        </div>
+        <div class="parent-tip-content">
+          <div class="parent-tip-label">Infos Parents <span class="parent-tip-toggle">▼ Voir</span></div>
+          <p class="parent-tip-text">L'<em>anthropomorphisme</em> — prêter des sentiments humains à une machine — est l'un des grands pièges de l'IA conversationnelle. Bot semble «&nbsp;gentil&nbsp;», semble «&nbsp;comprendre&nbsp;», mais il n'a ni conscience, ni mémoire affective, ni empathie. Pour un enfant, il est essentiel d'apprendre que les vraies relations (parents, amis, enseignants) ne se remplacent pas par un chatbot, et qu'aucune information sensible ne devrait être partagée avec une IA comme on le ferait avec un ami de confiance.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- c4s6 : Mini-jeu — pose une question à Bot -->
+    <div class="screen" id="screen-c4s6">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <img src="assets/chapitre_4/t6_bg.jpg" class="leon-machine-video" alt="Bot répond">
+        <div class="scene-text scene-4-text">
+          <p class="narration">À toi maintenant&nbsp;! Choisis une question parmi les 4 proposées, et regarde comment Bot répond. Es-tu sûr qu'il a raison&nbsp;?</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Choisis une question et observe la réponse de Bot. Mais attention, il peut se tromper&nbsp;!&nbsp;»</div>
+        </div>
+
+        <div class="game-overlay c3-sound-game c4s6-overlay" id="c4s6-game" style="display:none">
+          <p class="tap-instruction" id="c4s6-instruction">Pose une question à Bot 👇</p>
+          <div class="sound-buttons c4s6-buttons" id="c4s6-questions">
+            <button class="sound-btn c4s6-q-btn" data-id="capital">
+              <span class="q-emoji">🌍</span>
+              <span class="q-body">
+                <span class="q-text">Quelle est la capitale de la France&nbsp;?</span>
+                <span class="q-answer" data-empty="🤔 Clique pour voir la réponse">🤔 Clique pour voir la réponse</span>
+              </span>
+            </button>
+            <button class="sound-btn c4s6-q-btn" data-id="cat">
+              <span class="q-emoji">🐱</span>
+              <span class="q-body">
+                <span class="q-text">Combien de pattes a un chat&nbsp;?</span>
+                <span class="q-answer" data-empty="🤔 Clique pour voir la réponse">🤔 Clique pour voir la réponse</span>
+              </span>
+            </button>
+            <button class="sound-btn c4s6-q-btn" data-id="moon">
+              <span class="q-emoji">🌙</span>
+              <span class="q-body">
+                <span class="q-text">De quoi est faite la Lune&nbsp;?</span>
+                <span class="q-answer" data-empty="🤔 Clique pour voir la réponse">🤔 Clique pour voir la réponse</span>
+              </span>
+            </button>
+            <button class="sound-btn c4s6-q-btn" data-id="math">
+              <span class="q-emoji">➕</span>
+              <span class="q-body">
+                <span class="q-text">Combien font 8 + 8&nbsp;?</span>
+                <span class="q-answer" data-empty="🤔 Clique pour voir la réponse">🤔 Clique pour voir la réponse</span>
+              </span>
+            </button>
+          </div>
+          <div class="sound-result" id="c4s6-result">
+            <p class="sound-result-label" id="c4s6-result-label">Bot répond&nbsp;:</p>
+            <p class="sound-result-text" id="c4s6-answer">— —</p>
+          </div>
+          <button class="btn btn-primary btn-large floating-btn" id="btn-to-c4s7" onclick="goToScreen('c4s7')">Au quiz&nbsp;! 🎮</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- c4s7 : Quiz Vrai/Faux -->
+    <div class="screen" id="screen-c4s7">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <img src="assets/atelier_sans_leon.jpg" class="leon-machine-video" alt="Atelier">
+
+        <div class="game-overlay quiz-game-overlay" id="c4s7-game">
+          <p class="tap-instruction">🎮 Vrai ou Faux&nbsp;?</p>
+          <div class="mini-game">
+            <div class="vf-item">
+              <p class="vf-statement">«&nbsp;Bot peut tenir une conversation comme un humain.&nbsp;»</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswerC4(this,0,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswerC4(this,0,false)">👎 Faux</button>
+              </div>
+            </div>
+            <div class="vf-item">
+              <p class="vf-statement">«&nbsp;Bot dit toujours la vérité, on peut lui faire confiance les yeux fermés.&nbsp;»</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswerC4(this,1,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswerC4(this,1,false)">👎 Faux</button>
+              </div>
+            </div>
+            <div class="vf-item">
+              <p class="vf-statement">«&nbsp;Bot a appris à parler en lisant des millions de textes.&nbsp;»</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswerC4(this,2,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswerC4(this,2,false)">👎 Faux</button>
+              </div>
+            </div>
+            <div class="vf-item">
+              <p class="vf-statement">«&nbsp;Bot est un vrai ami qui a des sentiments comme nous.&nbsp;»</p>
+              <div class="vf-buttons">
+                <button class="vf-btn vrai" onclick="vfAnswerC4(this,3,true)">👍 Vrai</button>
+                <button class="vf-btn faux" onclick="vfAnswerC4(this,3,false)">👎 Faux</button>
+              </div>
+            </div>
+          </div>
+          <div class="score-display" id="score-display-c4" style="display:none;">
+            <p class="score-stars" id="score-stars-c4"></p>
+            <p class="score-text" id="score-text-c4"></p>
+          </div>
+          <button class="btn btn-primary btn-large floating-btn" id="btn-to-c4s8" onclick="goToScreen('c4s8')">Voir mon badge&nbsp;! 🏆</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- c4s8 : Victoire chapitre 4 -->
+    <div class="screen" id="screen-c4s8">
+      <div class="win-scene">
+        <img src="assets/atelier_sans_leon.jpg" class="win-bg-img" alt="Atelier magique">
+        <div class="win-overlay"></div>
+        <div class="confetti-container" id="confetti-container-c4"></div>
+        <img src="" id="hero-win-face-c4" class="hero-win-face avatar-with-accessories" alt="Héros victoire">
+        <div class="win-content">
+          <h2 class="win-title">🎉 Bravo <span id="win-name-c4"></span>&nbsp;!</h2>
+          <p class="win-subtitle">Chapitre 4 terminé — "Bot, l'IA qui parle"&nbsp;!</p>
+          <div class="win-cards">
+            <div class="win-card">
+              <div class="win-card-icon">⭐</div>
+              <p class="win-card-value" id="stars-earned-c4"></p>
+              <p class="win-card-label">Étoiles gagnées</p>
+            </div>
+            <div class="win-card">
+              <div class="win-card-icon">💬</div>
+              <p class="win-card-value">Maître<br>des Mots</p>
+              <p class="win-card-label">Badge débloqué&nbsp;!</p>
+              <span class="unlock-badge">NOUVEAU</span>
+            </div>
+          </div>
+          <div class="win-actions">
+            <button class="btn btn-primary win-btn-map" onclick="goToScreen('map')">Carte 🗺️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         CHAPITRE 5 — Le toit aux étoiles (toit-observatoire de Léon)
+         ============================================================ -->
+
+    <!-- c5s1 : Arrivée sur le toit -->
+    <div class="screen" id="screen-c5s1">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/chapitre_5/t1_bg.mp4" id="leon-video-c5s1" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_5/t1_bg.jpg"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Léon t'emmène par un escalier en colimaçon... vous arrivez sur le toit de l'atelier&nbsp;! Devant toi, un ciel étoilé magique avec des aurores boréales, des télescopes en cuivre, des planisphères qui flottent.</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Viens... j'ai un dernier secret à te montrer. Tu sais, l'IA n'est pas seulement dans mon atelier... elle est <strong>partout</strong> autour de toi.&nbsp;»</div>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions">
+        <button class="btn-choice" onclick="goToScreen('c5s2')"><span class="choice-icon">✨</span> Montre-moi&nbsp;!</button>
+      </div>
+    </div>
+
+    <!-- c5s2 : L'IA dans la vie de tous les jours -->
+    <div class="screen" id="screen-c5s2">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/chapitre_5/t2_bg.mp4" id="leon-video-c5s2" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_5/t2_bg.jpg"></video>
+
+        <div class="scene-text scene-4-text">
+          <p class="narration">Léon claque des doigts. Soudain, autour de toi, quatre hologrammes apparaissent.</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Regarde autour de toi&nbsp;! Une caméra qui reconnaît ton visage, une dictée vocale qui transforme ta voix en mots, un GPS qui trouve ton chemin tout seul, un aspirateur robot qui range la maison… <strong>tout ça, c'est de l'IA&nbsp;!</strong> À toi de deviner quel super-pouvoir chacune utilise&nbsp;!&nbsp;»</div>
+        </div>
+
+        <!-- Mini-jeu : "Relie chaque IA à son super-pouvoir" (drag & drop) -->
+        <div class="game-overlay c5s2-spot-game" id="c5s2-game" style="display:none">
+          <p class="tap-instruction" id="c5s2-instruction">🎯 <strong>Glisse chaque IA sur son super-pouvoir&nbsp;!</strong></p>
+          <p class="c5s2-progress"><span id="c5s2-found-count">0</span> / 4</p>
+        </div>
+        <!-- Zones de drop = 4 super-pouvoirs (en haut) -->
+        <div class="c5s2-zones" id="c5s2-zones" style="display:none">
+          <div class="c5s2-zone" data-power="see"   title="Voir">👁️<span>VOIR</span></div>
+          <div class="c5s2-zone" data-power="hear"  title="Écouter">👂<span>ÉCOUTER</span></div>
+          <div class="c5s2-zone" data-power="think" title="Réfléchir">🧠<span>RÉFLÉCHIR</span></div>
+          <div class="c5s2-zone" data-power="act"   title="Agir">💪<span>AGIR</span></div>
+        </div>
+        <!-- Cartes IA (en bas) à drag-and-drop -->
+        <div class="c5s2-cards" id="c5s2-cards" style="display:none">
+          <div class="c5s2-card" role="button" tabindex="0" data-ia="camera" data-correct="see"   title="Caméra qui reconnaît ton visage" draggable="false">📷<span>CAMÉRA</span></div>
+          <div class="c5s2-card" role="button" tabindex="0" data-ia="dictee" data-correct="hear"  title="Dictée vocale"                    draggable="false">🎤<span>DICTÉE</span></div>
+          <div class="c5s2-card" role="button" tabindex="0" data-ia="gps"    data-correct="think" title="GPS qui calcule un trajet"        draggable="false">🗺️<span>GPS</span></div>
+          <div class="c5s2-card" role="button" tabindex="0" data-ia="aspi"   data-correct="act"   title="Aspirateur robot"                  draggable="false">🤖<span>ASPI</span></div>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions" id="c5s2-actions">
+        <button class="btn-choice c5s2-skip-btn" onclick="goToScreen('c5s3')"><span class="choice-icon">✨</span> Continuer</button>
+      </div>
+      <div class="parent-tip" onclick="toggleTip(this)">
+        <div class="parent-tip-icon">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+        </div>
+        <div class="parent-tip-content">
+          <div class="parent-tip-label">Infos Parents <span class="parent-tip-toggle">▼ Voir</span></div>
+          <p class="parent-tip-text">L'IA est devenue invisible parce qu'elle est partout&nbsp;: traduction automatique, suggestions YouTube/Netflix, filtres anti-spam, autocomplétion du clavier, reconnaissance faciale du téléphone, assistants vocaux (Siri, Alexa), détection des piétons en voiture… C'est une bonne occasion de regarder avec votre enfant les apps qu'il utilise et de repérer ensemble «&nbsp;qui décide quoi&nbsp;». Comprendre que ces choix viennent d'algorithmes (et non du hasard) est le premier pas vers une utilisation autonome et avertie.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- c5s3 : Les pièges de l'IA — esprit critique -->
+    <div class="screen" id="screen-c5s3">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/chapitre_5/t3_bg.mp4" id="leon-video-c5s3" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_5/t3_bg.jpg"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Mais Léon prend un ton sérieux. Trois images apparaissent l'une après l'autre, toutes FAUSSES&nbsp;: un éléphant qui vole avec des petites ailes, un chat avec 3 têtes, et la Lune toute en fromage avec un grand sourire.</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Mais attention&nbsp;! L'IA peut se tromper... ou même inventer des choses fausses avec aplomb. Garde toujours ton <strong>esprit critique</strong>&nbsp;: vérifie ce que te dit l'IA, essaye de comprendre par toi-même. C'est <strong>toi</strong> le chef, pas la machine&nbsp;!&nbsp;»</div>
+        </div>
+
+        <!-- Mini-jeu : Détective Vrai/Fake en 2 étapes
+             1) Question "Réelle ou IA ?" → 2) Loupe détective sur les erreurs IA -->
+
+        <!-- Image principale a analyser (à remplacer par celle générée par Leonardo) -->
+        <img src="assets/erreurs.jpg" id="c5s3-photo" class="c5s3-photo" alt="Image à analyser"
+             onerror="this.style.display='none'">
+
+        <!-- Les 3 erreurs IA sont NATURELLEMENT présentes dans erreurs.jpg :
+             - 6 doigts sur la main levée de la fille de gauche
+             - 3e bras qui apparaît entre les deux fillettes
+             - papillon rouge géant qui flotte à gauche
+             Pas de SVG overlay nécessaire. -->
+
+        <!-- Hotspot unique sur le 3e bras (calibration : toggleC5s3SpotCalib() en console) -->
+        <div class="c5s3-spot-zone" id="c5s3-spot-1" data-spot-id="arm"></div>
+
+        <!-- Tooltip qui apparait quand un hotspot est trouve -->
+        <div class="c5s3-tooltip" id="c5s3-tooltip"></div>
+
+        <!-- ÉTAPE 1 : question "Réelle ou IA ?" -->
+        <div class="game-overlay c5s3-phase1" id="c5s3-phase1" style="display:none">
+          <p class="c5s3-q">🤔 <strong>Photo réelle ou IA&nbsp;?</strong></p>
+          <div class="c5s3-q-buttons">
+            <button class="c5s3-q-btn c5s3-q-real" onclick="answerC5s3Phase1(true)">📸<span>RÉELLE</span></button>
+            <button class="c5s3-q-btn c5s3-q-ai"   onclick="answerC5s3Phase1(false)">🤖<span>IA</span></button>
+          </div>
+          <p class="c5s3-q-hint" id="c5s3-q-hint"></p>
+        </div>
+
+        <!-- ÉTAPE 2 : trouve les indices avec la loupe -->
+        <div class="game-overlay c5s3-phase2" id="c5s3-phase2" style="display:none">
+          <p class="c5s3-instr">🔍 <strong>Promène la loupe sur la photo pour trouver l'erreur</strong></p>
+          <p class="c5s3-progress"><span id="c5s3-found-count">0</span> / 1</p>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions" id="c5s3-actions">
+        <button class="btn-choice c5s3-skip-btn" onclick="goToScreen('c5s4')"><span class="choice-icon">✨</span> Continuer</button>
+      </div>
+      <div class="parent-tip" onclick="toggleTip(this)">
+        <div class="parent-tip-icon">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+        </div>
+        <div class="parent-tip-content">
+          <div class="parent-tip-label">Infos Parents <span class="parent-tip-toggle">▼ Voir</span></div>
+          <p class="parent-tip-text">Les <em>deepfakes</em> et <em>fake news</em> générés par IA sont aujourd'hui indiscernables de vrais contenus&nbsp;: photos truquées, fausses citations de personnalités, vidéos manipulées. Quelques réflexes à transmettre à votre enfant&nbsp;: 1) ne pas croire une image juste parce qu'elle paraît «&nbsp;réelle&nbsp;», 2) chercher la source originale, 3) se méfier des contenus qui suscitent une émotion forte (peur, colère, indignation) — ce sont souvent les plus manipulés. L'esprit critique se construit dans la durée, en discutant ensemble de ce qu'on voit en ligne.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- c5s4 : Et toi, qu'est-ce que tu vas inventer ? -->
+    <div class="screen" id="screen-c5s4">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <video src="assets/chapitre_5/t4_bg.mp4" id="leon-video-c5s4" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_5/t4_bg.jpg"></video>
+        <div class="scene-text scene-4-text">
+          <p class="narration">Léon tend les mains vers toi. Les étoiles dans le ciel se mettent à bouger, à se rassembler... et forment ton portrait à toi, là-haut&nbsp;!</p>
+          <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Tu sais maintenant tout ce que sait faire l'IA&nbsp;: créer, écouter, parler, et même se tromper. Et toi maintenant... qu'est-ce que <strong>TU</strong> vas inventer avec elle&nbsp;? Le futur t'appartient&nbsp;!&nbsp;»</div>
+        </div>
+
+        <!-- Mini-interaction : "Mon vœu" — apparaît après le karaoké de Léon (onComplete).
+             L'enfant tape ce qu'il/elle veut inventer. Sauvegardé en localStorage. +1 ⭐ si rempli. -->
+        <div class="c5s4-wish-zone" id="c5s4-wish" style="display:none">
+          <p class="wish-prompt">✨ Quand je serai grand, je veux inventer...</p>
+          <textarea class="wish-input" id="c5s4-wish-input"
+                    placeholder="Tape ton idée ici..."
+                    maxlength="200"
+                    autocomplete="off"
+                    spellcheck="false"></textarea>
+          <button class="btn btn-primary wish-save-btn" id="c5s4-wish-save" onclick="saveC5s4Wish()">
+            Garder mon vœu&nbsp;✨
+          </button>
+        </div>
+      </div>
+      <div class="answers-group scene-4-actions">
+        <button class="btn-choice c5s4-skip-btn" onclick="goToScreen('c5s5')"><span class="choice-icon">✨</span> Continuer</button>
+      </div>
+    </div>
+
+    <!-- c5s5 : Mini-jeu — Construis ton robot IA -->
+    <div class="screen" id="screen-c5s5">
+      <div class="story-scene full-height-scene scene-4-machine">
+        <img src="assets/chapitre_5/rooftop.jpg" class="leon-machine-video" alt="Toit observatoire">
+
+        <div class="game-overlay c5-build-game" id="c5s5-game">
+          <!-- Phase 1 : sélection (visible avant boot-up) -->
+          <div class="c5-phase-pick" id="c5s5-phase-pick">
+            <p class="tap-instruction" id="c5s5-instruction">Choisis <strong>3 modules</strong> pour ton robot 👇</p>
+            <div class="c5-modules" id="c5s5-modules">
+              <button class="c5-module-btn" data-id="see"   title="L'IA qui voit (images)">👁️<br><span>Voir</span></button>
+              <button class="c5-module-btn" data-id="hear"  title="L'IA qui écoute (sons)">👂<br><span>Écouter</span></button>
+              <button class="c5-module-btn" data-id="speak" title="L'IA qui parle (conversation)">💬<br><span>Parler</span></button>
+              <button class="c5-module-btn" data-id="think" title="L'IA qui réfléchit (logique)">🧠<br><span>Réfléchir</span></button>
+              <button class="c5-module-btn" data-id="act"   title="L'IA qui agit (robotique)">💪<br><span>Agir</span></button>
+            </div>
+          </div>
+
+          <!-- Countdown dramatique 3·2·1 -->
+          <div class="c5-countdown" id="c5s5-countdown" style="display:none">
+            <div class="c5-countdown-num" id="c5s5-countdown-num">3</div>
+            <div class="c5-countdown-label">Préparation du robot…</div>
+          </div>
+
+          <!-- Flash blanc à la révélation -->
+          <div class="c5-flash" id="c5s5-flash"></div>
+
+          <!-- Confettis container -->
+          <div class="c5-confetti" id="c5s5-confetti"></div>
+
+          <!-- Phase 2 : robot révélé (vidéo + nom + démos cliquables) -->
+          <div class="c5-phase-robot" id="c5s5-phase-robot" style="display:none;">
+            <p class="c5-robot-name" id="c5s5-robot-name"></p>
+            <div class="c5-robot-stage">
+              <video class="c5-robot-video" id="c5s5-robot-video" muted playsinline preload="auto"
+                     poster="assets/c5s5_robot/kid_robot.jpg"></video>
+              <div class="c5-robot-bubble" id="c5s5-bubble" style="display:none;"></div>
+            </div>
+            <p class="c5-robot-mission" id="c5s5-robot-mission"></p>
+            <div class="c5-demo-buttons" id="c5s5-demo-buttons"></div>
+            <button class="btn btn-primary btn-large btn-bounce" id="btn-to-c5s6" onclick="goToScreen('c5s6')">Continuer ✨</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- c5s6 : Ecran de victoire FINAL — fin de l'aventure -->
+    <div class="screen" id="screen-c5s6">
+      <div class="win-scene">
+        <img src="assets/chapitre_5/rooftop.jpg" class="win-bg-img" alt="Toit aux étoiles">
+        <div class="win-overlay"></div>
+        <!-- Feu d'artifice (anim CSS, plus magique que les confettis) -->
+        <div class="fireworks-container" id="fireworks-container-c5"></div>
+        <img src="" id="hero-win-face-c5" class="hero-win-face avatar-with-accessories" alt="Héros victoire">
+        <div class="win-content">
+          <h2 class="win-title">🎆 Bravo <span id="win-name-c5"></span>&nbsp;!</h2>
+          <p class="win-subtitle">Tu as terminé toute l'aventure&nbsp;!</p>
+          <p class="win-subtitle win-subtitle-secondary">Tu es maintenant un vrai <strong>Explorateur de l'IA</strong>&nbsp;🏆</p>
+          <div class="win-cards">
+            <div class="win-card">
+              <div class="win-card-icon">⭐</div>
+              <p class="win-card-value" id="stars-earned-c5"></p>
+              <p class="win-card-label">Étoiles gagnées</p>
+            </div>
+            <div class="win-card">
+              <div class="win-card-icon">🏆</div>
+              <p class="win-card-value">Explorateur<br>de l'IA</p>
+              <p class="win-card-label">Badge débloqué&nbsp;!</p>
+              <span class="unlock-badge">NOUVEAU</span>
+            </div>
+          </div>
+          <p class="win-replay-hint">💡 Tu peux <strong>recommencer l'aventure</strong> pour gagner encore plus d'étoiles&nbsp;!</p>
+          <div class="win-actions">
+            <button class="btn btn-primary win-btn-map" onclick="goToScreen('map')">Carte 🗺️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ============== MON ATELIER : modale globale =============== -->
+<div id="atelier-modal" class="atelier-modal" style="display:none;" onclick="if (event.target === this) closeAtelier()">
+  <div class="atelier-card">
+    <button class="atelier-close" onclick="closeAtelier()" aria-label="Fermer">✕</button>
+    <header class="atelier-head">
+      <h2>Mon Atelier</h2>
+      <div class="atelier-stars"><span class="atelier-star-icon">⭐</span><span id="atelier-star-count">0</span></div>
+    </header>
+    <nav class="atelier-tabs">
+      <button class="atelier-tab active" data-tab="badges"  onclick="switchAtelierTab('badges')">🏅 Badges</button>
+      <button class="atelier-tab"        data-tab="shop"    onclick="switchAtelierTab('shop')">🛍️ Boutique</button>
+      <button class="atelier-tab"        data-tab="cards"   onclick="switchAtelierTab('cards')">🎴 Cartes</button>
+      <button class="atelier-tab"        data-tab="vest"    onclick="switchAtelierTab('vest')">👕 Mon vestiaire</button>
+    </nav>
+    <div class="atelier-tab-content" id="atelier-content-badges"></div>
+    <div class="atelier-tab-content" id="atelier-content-shop"  style="display:none"></div>
+    <div class="atelier-tab-content" id="atelier-content-cards" style="display:none"></div>
+    <div class="atelier-tab-content" id="atelier-content-vest"  style="display:none"></div>
+  </div>
+</div>
+
+<script src="calibration.js"></script>
+<script src="game.js?v=176"></script>
+</body>
+</html>

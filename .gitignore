@@ -1,0 +1,47 @@
+# === Secrets & API keys ===
+.env
+.env.local
+.env.*.local
+
+# === Python ===
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.venv/
+venv/
+env/
+
+# === Outputs intermediaires de generation IA (Leonardo Motion staging) ===
+# Les .mp4 finaux utilises par l'app sont copies dans assets/, pas besoin
+# de versionner les bruts intermediaires (~200 Mo).
+animations/
+
+# === Audits et logs internes ===
+_audit/
+credits_ledger.json
+game_state_backup.json
+
+# === Backups et archives ===
+files.zip
+*.bak
+*.backup
+app_first*.js
+app_part*.js
+
+# === Editeur ===
+.vscode/
+.idea/
+*.swp
+*~
+
+# === OS ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === Claude/Cursor caches ===
+.claude/
+.cursor/

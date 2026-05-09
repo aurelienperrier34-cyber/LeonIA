@@ -1,0 +1,67 @@
+[
+  {
+    "tableau": 1,
+    "format": "video",
+    "narrateur": "Léon te tend un casque audio et te fait signe de le suivre dans une nouvelle salle pleine de microphones et de lumières...",
+    "leon": "« Bienvenue dans mon labo des sons ! Mets le casque, et écoute bien... »",
+    "prompt_image": "3D animated cartoon Pixar style, friendly old wizard-inventor with white beard, round orange glasses, blue cap with golden lights, brown apron over orange flower-patterned shirt, smiling and handing a pair of colorful headphones toward the viewer, standing in front of a tall wooden door covered in painted sound waves and musical notes, microphones floating, fairy lights, warm magical lighting, 16:9 aspect ratio",
+    "prompt_animation": "Léon offers the colorful headphones forward toward the viewer with both hands, then beckons to follow him with a friendly wave of his hand and an inviting head tilt, his mouth moves as he speaks warmly, painted sound waves on the wooden door shimmer with light, microphones on either side sway gently, fairy lights twinkle softly, slow gentle camera push-in."
+  },
+  {
+    "tableau": 2,
+    "format": "video",
+    "narrateur": "Léon parle à un micro... Aussitôt, des mots se mettent à danser dans l'air autour de lui !",
+    "leon": "« Cette IA peut ÉCOUTER ta voix et la transformer en mots écrits ! C'est comme ça que les assistants vocaux comprennent ce que tu dis. »",
+    "prompt_image": "3D animated cartoon Pixar style, the same friendly old wizard-inventor character speaking into a glowing floating holographic microphone, behind him a large screen showing sound waves transforming into floating glowing letters and words, magical sound laboratory with shelves of microphones and colorful crystals, warm wooden interior, fairy lights, 16:9 aspect ratio",
+    "prompt_animation": "Léon gestures animatedly with his hand toward the floating holographic microphone as he speaks, the microphone pulses with magical light, the pink and cyan sound waves on the screen ripple while floating letters drift across, sparkles twinkle softly through the air, static camera with subtle breathing motion."
+  },
+  {
+    "tableau": 3,
+    "format": "video",
+    "narrateur": "Léon prononce le mot « bonjour ». Sur l'écran, les ondes dansent puis... le mot s'écrit tout seul !",
+    "leon": "« Vois ! Elle a compris que je disais 'bonjour'. Elle a transformé ma voix en lettres ! »",
+    "prompt_image": "3D animated cartoon Pixar style, close-up of a magical holographic screen showing animated sound waves transforming into the word 'BONJOUR' written in glowing letters, a floating microphone next to it, sparkles and glowing particles, warm magical workshop background, no people visible, 16:9 aspect ratio",
+    "prompt_animation": "The glowing word 'BONJOUR' pulses brightly with golden magical light, the neon pink and blue sound waves around it ripple and dance rhythmically, the floating microphone vibrates gently, scattered glowing letters drift in the background, sparkles burst across the screen, slow cinematic push-in."
+  },
+  {
+    "tableau": 4,
+    "format": "video",
+    "narrateur": "Léon active une boîte parlante en métal doré. Une voix robotique chaleureuse commence à raconter une histoire !",
+    "leon": "« Et l'IA peut aussi PARLER ! Mais attention : elle n'a pas de bouche. Elle imite une voix, c'est tout. »",
+    "prompt_image": "3D animated cartoon Pixar style, the friendly old wizard-inventor character with hand on a glowing golden speaker box that emits cartoon sound waves and floating speech bubbles, looking amused and slightly surprised, magical sound laboratory background, warm lighting, 16:9 aspect ratio",
+    "prompt_animation": "Léon's mouth clearly opens and closes with visible lip movement as he speaks animatedly. He presses his hand firmly on the glowing golden speaker box as if activating it, the box pulses brighter with warm light, the cluster of floating speech bubbles and musical icons puffs outward and bobs in the air, his expression brightens to amused-surprised with a head tilt, fairy lights twinkle, static camera."
+  },
+  {
+    "tableau": 5,
+    "format": "video",
+    "narrateur": "Une grande machine pleine de touches dorées s'allume seule et joue une mélodie fantastique. Des notes colorées s'envolent !",
+    "leon": "« L'IA peut même INVENTER de la musique ! Elle a écouté plein de chansons, et maintenant elle compose elle-même ! »",
+    "prompt_image": "3D animated cartoon Pixar style, the friendly old wizard-inventor character amazed by a magical floating piano-organ machine that plays itself, glowing colorful musical notes flying out into the air, sparkles and music staves swirling around, magical sound laboratory, warm lighting, 16:9 aspect ratio",
+    "prompt_animation": "Colorful musical notes drift and float gently upward through the air, sparkles twinkle softly, Léon gestures animatedly toward the piano with raised hand and speaks with wide-eyed wonder, static camera. Piano remains crisp and stable."
+  },
+  {
+    "tableau": 6,
+    "format": "video",
+    "narrateur": "Léon murmure tout doucement quelque chose au micro. Sur l'écran s'affiche... « bla bla blop » !",
+    "leon": "« Mais elle peut SE TROMPER aussi ! Si tu parles trop vite ou s'il y a du bruit, elle comprend de travers ! »",
+    "prompt_image": "3D animated cartoon Pixar style, the friendly old wizard-inventor character with amused puzzled expression, hand on chin, pointing at a holographic screen displaying funny garbled cartoon text 'BLA BLA BLOOP' with confused emoji, sound waves squiggling chaotically, magical sound laboratory, warm lighting, 16:9 aspect ratio",
+    "prompt_animation": "The cartoon text 'BLA BLA BLOOP' wobbles and glitches with playful jitter, the chaotic sound waves squiggle and dance around it, the confused emoji bounces gently, Léon points at the screen with one hand while keeping the other on his chin, his amused puzzled expression brightens into a small laugh as he speaks, static camera."
+  },
+  {
+    "tableau": 7,
+    "format": "image",
+    "narrateur": "Voici 3 micros mystères. Chacun cache un son... et l'IA va essayer de deviner ce que c'est, comme toi !",
+    "leon": "« À toi de jouer ! Clique sur un micro, écoute bien, et dis tout haut ce que tu entends. Ensuite, on regarde ensemble ce que l'IA a cru entendre. Parfois, elle se trompe drôlement ! »",
+    "prompt_image": "3D animated cartoon Pixar style, four colorful glowing microphones arranged in a row on a wooden workbench, each microphone with its own sound wave halo, large holographic display screen above them ready for transcriptions, magical sound laboratory background, warm lighting, no people visible, 16:9 aspect ratio"
+  },
+  {
+    "tableau": 8,
+    "narrateur": "Quiz du chapitre : 4 affirmations vrai/faux pour vérifier que tu as bien compris ce que peut (et ne peut pas) faire l'IA des sons !",
+    "leon": "« Maintenant, on vérifie tout ce que tu as appris ! Vrai ou faux ? »"
+  },
+  {
+    "tableau": 9,
+    "narrateur": "Bravo ! Tu as terminé le chapitre 3. Tu débloques le badge « Maître des Oreilles » et gagnes des étoiles !",
+    "leon": "« Tu es désormais un vrai DÉTECTIVE DES SONS ! Tu sais comment l'IA écoute, parle et compose. Voici ton badge ! »"
+  }
+]

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Test JS</title></head>
+<body>
+<h1>Test de chargement JS</h1>
+<p id="status">Si le JS s'execute, ce texte changera.</p>
+<button onclick="test()">Cliquer pour tester</button>
+<script>
+console.log('[INLINE] script inline OK');
+document.getElementById('status').textContent = 'INLINE OK';
+function test() { alert('inline JS marche'); }
+</script>
+<script src="app.js?v=2026050306"></script>
+<script>
+console.log('[INLINE 2] apres app.js');
+if (typeof toggleFullscreen === 'function') {
+  document.getElementById('status').textContent += ' | EXTERNAL OK : toggleFullscreen est defini';
+} else {
+  document.getElementById('status').textContent += ' | EXTERNAL FAIL : toggleFullscreen est UNDEFINED';
+}
+</script>
+</body>
+</html>

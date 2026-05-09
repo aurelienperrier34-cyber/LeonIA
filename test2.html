@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body>
+<h1>Test 2 - chargement de fichiers JS externes</h1>
+<p id="r1">test1: ?</p>
+<p id="r2">test2: ?</p>
+<p id="r3">test3: ?</p>
+<script src="testjs1.js"></script>
+<script src="app.js"></script>
+<script>
+document.getElementById('r1').textContent = 'testjs1.js (no query): ' + (typeof MARKER1 === 'string' ? 'OK ' + MARKER1 : 'FAIL undefined');
+document.getElementById('r2').textContent = 'app.js (no query): ' + (typeof toggleFullscreen === 'function' ? 'OK loaded' : 'FAIL undefined');
+document.getElementById('r3').textContent = 'taille app.js connue : verifie le tab Network';
+</script>
+</body>
+</html>

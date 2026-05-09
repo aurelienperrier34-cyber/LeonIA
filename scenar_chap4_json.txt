@@ -1,0 +1,59 @@
+[
+  {
+    "tableau": 1,
+    "format": "video",
+    "narrateur": "Léon t'emmène dans une bibliothèque magique pleine de livres flottants. Près d'une table en bois, un petit robot blanc et turquoise t'attend...",
+    "leon": "« Voici Bot, mon assistant qui adore lire ! Il connaît plein de mots, il peut tenir une conversation comme nous ! »",
+    "prompt_image": "3D animated cartoon Pixar style, friendly old wizard-inventor smiling and gesturing welcomingly toward a small friendly cartoon robot named Bot standing on a wooden table beside him, (((Bot has a rectangular display screen as face showing big round black smiling eyes))), (((glowing teal antenna on top of head))), (((white and turquoise rounded body))), holding a small open glowing book, magical library setting with hundreds of softly floating books drifting through the air, glowing letters and words swirling around, warm wooden shelves filled with old illustrated books, fairy lights overhead, soft golden lamp light, child-friendly, 16:9 aspect ratio",
+    "prompt_animation": "Léon's mouth clearly opens and closes with visible lip movement as he speaks warmly, talking animatedly to the viewer. He turns to gesture welcomingly toward Bot with an open hand and an inviting smile, Bot's screen-face eyes blink and his teal antenna pulses with light, the small open book in his hands glows softly, the floating books drift gently in the air around them, fairy lights twinkle, slow gentle camera push-in."
+  },
+  {
+    "tableau": 2,
+    "format": "video",
+    "narrateur": "Léon demande à Bot quelle est la couleur du ciel, et aussitôt, sur l'écran-visage de Bot, des lettres apparaissent et forment une réponse !",
+    "leon": "« Tu vois, Bot a compris ma question et il répond : c'est ça, l'intelligence artificielle qui parle ! »",
+    "prompt_image": "3D animated cartoon Pixar style, friendly old wizard-inventor leaning toward small cartoon robot Bot with a curious smile, asking a question, (((Bot's rectangular screen face displays the EXACT text \"Le ciel est bleu !\" in clean readable cartoon letters))), the text MUST be spelled EXACTLY 'Le ciel est bleu !' with correct French spelling — verify each letter, no typos, no missing characters, the words 'Le' 'ciel' 'est' 'bleu' must be perfectly written and clearly legible, (((glowing teal antenna))), (((white and turquoise body))), magical library background with floating books, glowing speech bubbles and letters drifting in the air around them, sparkles, warm lighting, 16:9 aspect ratio",
+    "prompt_animation": "Léon's mouth clearly opens and closes in a visible talking motion as he asks his question, leaning in with raised eyebrow and a curious expression. Bot's antenna pulses, the colorful letters 'Le ciel est BLEU !' on his screen-face shimmer and glow brighter, small speech bubbles puff outward and drift up around him, sparkles twinkle, static camera with subtle breathing motion."
+  },
+  {
+    "tableau": 3,
+    "format": "video",
+    "narrateur": "Mais comment Bot connaît-il toutes ces réponses ? Léon t'explique : Bot a 'lu' des millions de livres avant de pouvoir parler avec toi !",
+    "leon": "« Pour devenir si bavard, Bot a avalé plein de livres, plein de textes, plein d'histoires ! C'est en lisant qu'il a appris à parler. »",
+    "prompt_image": "3D animated cartoon Pixar style, friendly old wizard-inventor with arms wide open in an explanatory gesture, standing beside small cartoon robot Bot, (((Bot has a rectangular screen face with happy eyes))), (((glowing teal antenna))), (((white and turquoise body))), surrounded by hundreds of small books streaming and swirling toward Bot in a magical cascade, glowing pages and letters flying out of the books, magical library background, warm lighting, sense of learning and wonder, 16:9 aspect ratio",
+    "prompt_animation": "Léon's mouth clearly opens and closes with strong visible lip movement as he speaks expressively, gesturing animatedly with both hands open. Bot's screen-face eyes blink curiously, small books and pages stream and swirl in a magical cascade flowing toward Bot, glowing letters drift across the air, sparkles trail the books, static camera."
+  },
+  {
+    "tableau": 4,
+    "format": "video",
+    "narrateur": "Léon pose une nouvelle question : « Combien font 1 et 1 ? ». Bot répond avec un grand sourire... mais sa réponse est complètement fausse !",
+    "leon": "« Aïe, Bot s'est trompé ! Il a dit que 1 et 1 font 5 ! Parfois l'IA INVENTE des réponses fausses sans le savoir. C'est pour ça qu'il faut toujours VÉRIFIER ! »",
+    "prompt_image": "3D animated cartoon Pixar style, friendly old wizard-inventor looking surprised and amused with hand on his cheek, pointing at small cartoon robot Bot whose rectangular screen-face displays the obviously wrong text '1 + 1 = 5 !' in glowing red cartoon letters, (((Bot looks proud but unaware he is wrong))), (((glowing teal antenna))), (((white and turquoise body))), magical library background, floating red error sparkles and question marks around Bot, comedic educational moment, warm lighting, 16:9 aspect ratio",
+    "prompt_animation": "Léon's mouth clearly opens and closes with visible lip movement as he laughs gently and explains, his expression brightens to amused-surprised, his hand stays on his cheek. Bot's screen-face eyes shine proudly while the wrong text '1 et 1 = 5 !' on his face wobbles with playful jitter, red question marks and error sparkles bounce around Bot's head, static camera."
+  },
+  {
+    "tableau": 5,
+    "format": "video",
+    "narrateur": "Léon prend un ton plus sérieux. Il s'approche de toi pour t'expliquer une chose importante au sujet de Bot...",
+    "leon": "« Attention : même si Bot parle bien, ce n'est PAS un ami. Il n'a pas de cœur, il ne ressent rien. Il fait juste semblant de comprendre. »",
+    "prompt_image": "3D animated cartoon Pixar style, friendly old wizard-inventor kneeling down to viewer level with a serious gentle expression, hand placed on his own heart, gesturing softly toward small cartoon robot Bot in the background who appears slightly more mechanical with neutral straight-line eyes on his rectangular screen-face, (((glowing teal antenna))), (((white and turquoise body))), a small crossed-out heart icon floating between them as a visual symbol, magical library background with soft warm lighting, sincere educational moment, 16:9 aspect ratio",
+    "prompt_animation": "Léon's mouth clearly opens and closes with visible lip movement as he speaks seriously and warmly to the viewer, his expression becomes gentle and concerned, he leans slightly forward and gestures softly with one hand to emphasize his point, the magical library background gently breathes with subtle ambient motion, fairy lights twinkle, static camera with very subtle push-in."
+  },
+  {
+    "tableau": 6,
+    "format": "image",
+    "narrateur": "À toi maintenant ! Choisis une question parmi les 4 proposées, et regarde comment Bot répond. Es-tu sûr qu'il a raison ?",
+    "leon": "« Choisis une question et observe la réponse de Bot. Mais attention, il peut se tromper ! »",
+    "prompt_image": "3D animated cartoon Pixar style, four colorful glowing speech bubbles arranged in a row floating above a wooden table, each containing a different question icon (a math symbol, a globe, a star, a recipe book), small cartoon robot Bot in the center with rectangular screen-face waiting expectantly, (((glowing teal antenna))), (((white and turquoise body))), magical library background with floating books, no people visible, warm lighting, 16:9 aspect ratio"
+  },
+  {
+    "tableau": 7,
+    "narrateur": "Quiz du chapitre : 4 affirmations Vrai/Faux pour vérifier que tu sais maintenant comment fonctionnent les IA qui parlent !",
+    "leon": "« Allez, vérifions ce que tu as appris ! Vrai ou Faux ? »"
+  },
+  {
+    "tableau": 8,
+    "narrateur": "Bravo ! Tu as terminé le chapitre 4. Tu débloques le badge « Maître des Mots » et gagnes des étoiles !",
+    "leon": "« Tu es désormais un vrai EXPERT DES BAVARDAGES IA ! Tu sais que Bot peut parler, mais aussi qu'il peut se tromper ou inventer. Bravo champion ! »"
+  }
+]
