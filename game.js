@@ -740,6 +740,17 @@ function goToScreen(screenIdentifier, force) {
   state.currentScreen = screenIdentifier;
   saveState();
 
+  // Bouton flottant "retour carte" : visible sur tous les tableaux de chapitre,
+  // masque sur intro (0), choix perso (1) et la carte elle-meme.
+  try {
+    const backMapBtn = document.getElementById('btn-back-map-global');
+    if (backMapBtn) {
+      const hideOn = ['0', 0, 1, '1', 'map'];
+      const shouldHide = hideOn.includes(screenIdentifier);
+      backMapBtn.style.display = shouldHide ? 'none' : 'inline-flex';
+    }
+  } catch(e) {}
+
   // Inject hero image/video dans les scènes
   if (screenIdentifier >= 2 && screenIdentifier <= 5) {
     if (screenIdentifier !== 3) {
@@ -5881,6 +5892,13 @@ function applyStarCornerPosition() {
     el.style.top  = p.top  + 'px';
     el.style.left = p.left + 'px';
   });
+  // Aligne le bouton "retour carte" juste au-dessus de la pastille etoiles
+  const backBtn = document.getElementById('btn-back-map-global');
+  if (backBtn) {
+    // Hauteur du bouton ~38px + marge 8px = remonte de 46px par rapport au top de la pastille
+    backBtn.style.top  = Math.max(0, p.top - 46) + 'px';
+    backBtn.style.left = p.left + 'px';
+  }
 }
 function toggleStarCalib() {
   document.body.classList.toggle('calib-star-mode');
@@ -7640,10 +7658,19 @@ function activateS4Game() {
 }
 function s4TapCard(btn) {
   if (!btn || btn.classList.contains('found')) return;
-  const isFeature = btn.dataset.tree === '1';
+  // Verification ROBUSTE : on relit la verite depuis S4_CARDS via le label
+  // (defensive : evite tout decalage si dataset a ete altere par un tiers)
+  const lbl = btn.dataset.label || '';
+  const ref = S4_CARDS.find(c => c.label === lbl);
+  const isFeature = ref ? !!ref.tree : (btn.dataset.tree === '1');
   if (!isFeature) {
+    // Force le retrait de la classe avant remise (au cas ou un tap precedent
+    // n'aurait pas fini son timeout sur mobile).
+    btn.classList.remove('wrong');
+    // Force un reflow pour relancer l'animation a chaque tap
+    void btn.offsetWidth;
     btn.classList.add('wrong');
-    setTimeout(() => btn.classList.remove('wrong'), 460);
+    setTimeout(() => btn.classList.remove('wrong'), 700);
     return;
   }
   btn.classList.add('found');

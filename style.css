@@ -1,3 +1,31 @@
+/* === Bouton flottant retour carte (global) === */
+.btn-back-map-global {
+  position: fixed;
+  /* top et left sont positionnes en JS (applyStarCornerPosition) pour rester
+     juste au-dessus de la pastille etoiles, qui est calibrable. */
+  top: 0px;
+  left: 18px;
+  z-index: 9999;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,0.6);
+  background: rgba(255, 225, 102, 0.92);
+  color: #2a1d52;
+  font-family: 'Baloo 2', 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.btn-back-map-global:hover {
+  transform: translateY(-1px) scale(1.04);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+.btn-back-map-global:active { transform: scale(0.97); }
+
 /* === Écran 4 : Léon + machine (vidéo plein cadre) === */
 .scene-4-machine {
   position: relative;
@@ -5253,11 +5281,15 @@ body.novel-mode .s4-game-pill {
   left: 50%;
   bottom: 7%;
   transform: translateX(-50%);
-  z-index: 6;
+  /* z-index plus eleve que .s4-reveal (6) pour garantir la cliquabilite
+     sur ecrans courts (mobile paysage) ou silhouette + checks peuvent
+     descendre jusqu'a la zone des cartes. */
+  z-index: 8;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 10px;
   max-width: 96%;
+  pointer-events: auto;
 }
 .s4-card {
   width: 92px;
@@ -5276,6 +5308,10 @@ body.novel-mode .s4-game-pill {
   box-shadow: 0 6px 16px rgba(0,0,0,0.35);
   user-select: none;
   padding: 6px;
+  /* Mobile : evite le delay de 300ms et force l'ecoute du tap */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  pointer-events: auto;
 }
 .s4-card .s4-card-label {
   font-family: 'Baloo 2', cursive;
@@ -5299,8 +5335,14 @@ body.novel-mode .s4-game-pill {
 }
 .s4-card.wrong {
   animation: s4-shake 0.45s ease-out;
-  background: rgba(255,85,114,0.32) !important;
+  background: rgba(255, 85, 114, 0.85) !important;
   border-color: #FF5572 !important;
+  border-width: 4px !important;
+  box-shadow: 0 0 22px rgba(255,85,114,0.7) !important;
+}
+.s4-card.wrong .s4-card-label,
+.s4-card.wrong .s4-card-emoji {
+  color: #fff !important;
 }
 @keyframes s4-found-pop {
   0%   { transform: scale(1); }

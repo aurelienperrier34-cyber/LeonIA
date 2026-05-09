@@ -6,7 +6,7 @@
   <meta name="description" content="IA : Le monde de Léon - Apprenez l'IA en vous amusant !">
   <title>IA : Le monde de Léon</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2026050536">
+  <link rel="stylesheet" href="style.css?v=2026050539">
 </head>
 <body>
 <!-- Overlay "Tourne ton téléphone" (portrait mobile uniquement) -->
@@ -23,6 +23,11 @@
   <button id="av-voice" class="av-btn" onclick="toggleVoices()" title="Voix on/off">🔊</button>
   <button id="av-cc"    class="av-btn" onclick="toggleSubtitles()" title="Sous-titres on/off">CC</button>
 </div>
+
+<!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
+<button id="btn-back-map-global" class="btn-back-map-global" onclick="goToScreen('map')" title="Retour à la carte" style="display:none">
+  🗺️ Carte
+</button>
 
 <button id="btn-fullscreen" class="btn-fs" onclick="toggleFullscreen()" title="Plein écran">
   <svg id="fs-icon-enter" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
@@ -1705,6 +1710,6 @@
 </div>
 
 <script src="calibration.js"></script>
-<script src="game.js?v=182"></script>
+<script src="game.js?v=186"></script>
 </body>
 </html>
