@@ -1188,6 +1188,7 @@ body.calib-hero-mode .hero-destination::before {
 @keyframes float-bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 
 .scene-text { padding: 20px; }
+#screen-3 .scene-text { margin-top: 20px; }
 .narration { font-size: 1.05rem; color: #444; line-height: 1.5; margin-bottom: 15px; font-weight: 600; }
 .dialogue-who { font-size: 0.9rem; color: var(--purple-dark); font-weight: 800; margin-bottom: 5px; }
 .dialogue-bubble {

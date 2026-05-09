@@ -828,7 +828,6 @@ function goToScreen(screenIdentifier, force) {
       if (who) who.style.display = 'none';
 
       const narrAudio = getVoice('voix_narrateur_3', 'assets/voix_narrateur_3.mp3?v=' + Date.now());
-      narrAudio.volume = 0.6;
       const leonAudio = getVoice('voix_leon_3',      'assets/Voix_leon_3.mp3?v=' + Date.now());
 
       // Typewriter Léon synchronisé sur la durée de son audio si connue
