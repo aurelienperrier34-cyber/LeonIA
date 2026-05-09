@@ -1001,6 +1001,11 @@ body.dev-marker #entry-marker { display: block; }
     transform: translate(-100%, -70px) scale(0.4);
     opacity: 0.9;
 }
+/* Mobile : Remi/perso au depart positionne 40px plus bas (la rue mobile a un
+   horizon plus bas, le perso paraissait flotter en l'air avec bottom:-10px). */
+@media (pointer: coarse), (max-height: 500px) {
+  .hero-idle-street { bottom: -50px; }
+}
 
 .hero-scene-3-back { position: absolute; bottom: -10px; left: 10%; height: 160px; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.6)); z-index: 10; }
 

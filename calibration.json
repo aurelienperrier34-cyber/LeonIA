@@ -34,6 +34,10 @@
     "top": 71.25,
     "left": 50.5469
   },
+  "heroDestPos.mobile": {
+    "top": 81.25,
+    "left": 50.5469
+  },
   "mapNodePositions": {
     "1": {
       "left": 20.2344,
