@@ -3370,11 +3370,19 @@ function activateC2s5Game() {
   _c2s5ScheduleHints();
 }
 
-// === Indice progressif : bulle glassmorphisme + voix de Léon (10s sans progrès) ===
+// === Indice progressif : bulle glassmorphisme + voix de Léon ===
+// L'indice "Regarde bien les mains !" apparait UNIQUEMENT quand l'enfant a
+// deja trouve les 2 autres defauts (chat + chien) et qu'il manque encore la
+// fille (6 doigts). Apres 6s sans la trouver, l'indice s'affiche.
 function _c2s5ScheduleHints() {
   _c2s5ClearHints();
-  // Apparition de la bulle d'indice apres 7s
-  window._c2s5HintTimer1 = setTimeout(() => _c2s5ShowHintBubble(), 7000);
+  const found = state.c2s5DefectsFound || [];
+  const remaining = ['cat', 'girl', 'dog'].filter(id => !found.includes(id));
+  // L'indice ne se declenche que si :
+  //   - il reste UNIQUEMENT 'girl' a trouver (les 2 autres sont fait)
+  if (remaining.length === 1 && remaining[0] === 'girl') {
+    window._c2s5HintTimer1 = setTimeout(() => _c2s5ShowHintBubble(), 6000);
+  }
 }
 
 function _c2s5ClearHints() {
@@ -6772,22 +6780,24 @@ function renderAtelierModal() {
 // Appelee au moment ou le mini-jeu s'active (typiquement apres onLeonEnd).
 // Respecte voicesEnabled() (toggle global voix off).
 // ============================================================
+// Consigne narrateur DESACTIVEE : Leon explique deja le mini-jeu, et le hover/
+// tap-to-speak permet aux enfants de lire la pill consigne. Pas besoin de
+// re-narrer. Garde la fonction en place (no-op) pour ne pas casser les 19 appels
+// dans le code. Pour reactiver plus tard, decommenter le corps.
 function playConsigne(consigneId) {
+  return; // <-- a retirer pour reactiver l'audio narrateur des consignes
+  /*
   if (!consigneId) return;
   if (typeof voicesEnabled === 'function' && !voicesEnabled()) return;
-  // Stoppe une consigne precedente (si l'enfant change vite d'ecran)
   if (window._consigneAudio) {
     try { window._consigneAudio.pause(); } catch(e) {}
   }
   try {
     window._consigneAudio = new Audio(`assets/consignes/${consigneId}.mp3`);
     window._consigneAudio.volume = 1;
-    window._consigneAudio.play().catch(err => {
-      console.log('[consigne] play echoue (fichier absent ?)', consigneId, err && err.message);
-    });
-  } catch(e) {
-    console.log('[consigne] erreur', e);
-  }
+    window._consigneAudio.play().catch(() => {});
+  } catch(e) {}
+  */
 }
 
 // ============================================================
