@@ -6,7 +6,7 @@
   <meta name="description" content="IA : Le monde de Léon - Apprenez l'IA en vous amusant !">
   <title>IA : Le monde de Léon</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2026050529">
+  <link rel="stylesheet" href="style.css?v=2026050536">
 </head>
 <body>
 <!-- Overlay "Tourne ton téléphone" (portrait mobile uniquement) -->
@@ -205,7 +205,7 @@
 
         <!-- Chroma-key vert ultra-robuste : Érosion forte ("cadre vert") et calcul asymétrique -->
         <svg width="0" height="0" style="position:absolute">
-          <filter id="greenKey" color-interpolation-filters="sRGB">
+          <filter id="greenKey" color-interpolation-filters="sRGB" x="-10%" y="-10%" width="120%" height="120%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse">
             <!-- Détection du vert : pénalité G x3 pour attraper aussi les verts sombres / halos -->
             <feColorMatrix in="SourceGraphic" type="matrix" values="
               1 0 0 0 0
@@ -224,7 +224,7 @@
             </feComponentTransfer>
           </filter>
 
-          <filter id="greenKeyShadow" color-interpolation-filters="sRGB">
+          <filter id="greenKeyShadow" color-interpolation-filters="sRGB" x="-10%" y="-10%" width="120%" height="120%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse">
             <feColorMatrix in="SourceGraphic" type="matrix" values="
               1 0 0 0 0
               0 1 0 0 0
@@ -931,7 +931,7 @@
         <div class="scene-text scene-4-text">
           <p class="narration">Léon parle à un micro... Aussitôt, des mots se mettent à danser dans l'air autour de lui&nbsp;!</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
-          <div class="dialogue-bubble anim-pop-in">«&nbsp;Cette IA peut <strong>écouter</strong> ta voix et la transformer en mots écrits&nbsp;! C'est comme ça que les assistants vocaux comprennent ce que tu dis.&nbsp;»</div>
+          <div class="dialogue-bubble anim-pop-in">«&nbsp;Cette IA peut <strong>écouter</strong> ta voix et la transformer en mots écrits&nbsp;! C'est comme ça que les assistants vocaux comprennent ce que tu dis. Allez, <strong>attrape les mots qui dansent</strong> autour de moi&nbsp;!&nbsp;»</div>
         </div>
 
         <!-- Mini-jeu : attrape les mots qui dansent -->
@@ -1202,7 +1202,7 @@
       <div class="story-scene full-height-scene scene-4-machine">
         <video src="assets/chapitre_4/t2_bg.mp4" id="leon-video-c4s2" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_4/t2_bg.jpg"></video>
         <div class="scene-text scene-4-text">
-          <p class="narration">Léon demande à Bot quelle est la couleur du ciel, et aussitôt, sur l'écran-visage de Bot, des lettres apparaissent et forment une réponse&nbsp;!</p>
+          <p class="narration">Léon demande à Bot la couleur du ciel. Aussitôt, sur l'écran-visage de Bot, des lettres apparaissent et forment une réponse&nbsp;!</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
           <div class="dialogue-bubble anim-pop-in">«&nbsp;Tu vois, Bot a compris ma question et il répond&nbsp;: c'est ça, l'intelligence artificielle qui parle&nbsp;!&nbsp;»</div>
         </div>
@@ -1705,6 +1705,6 @@
 </div>
 
 <script src="calibration.js"></script>
-<script src="game.js?v=180"></script>
+<script src="game.js?v=182"></script>
 </body>
 </html>

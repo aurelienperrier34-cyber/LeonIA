@@ -10,7 +10,7 @@
   {
     "tableau": 2,
     "format": "video",
-    "narrateur": "Léon demande à Bot quelle est la couleur du ciel, et aussitôt, sur l'écran-visage de Bot, des lettres apparaissent et forment une réponse !",
+    "narrateur": "Léon demande à Bot la couleur du ciel. Aussitôt, sur l'écran-visage de Bot, des lettres apparaissent et forment une réponse !",
     "leon": "« Tu vois, Bot a compris ma question et il répond : c'est ça, l'intelligence artificielle qui parle ! »",
     "prompt_image": "3D animated cartoon Pixar style, friendly old wizard-inventor leaning toward small cartoon robot Bot with a curious smile, asking a question, (((Bot's rectangular screen face displays the EXACT text \"Le ciel est bleu !\" in clean readable cartoon letters))), the text MUST be spelled EXACTLY 'Le ciel est bleu !' with correct French spelling — verify each letter, no typos, no missing characters, the words 'Le' 'ciel' 'est' 'bleu' must be perfectly written and clearly legible, (((glowing teal antenna))), (((white and turquoise body))), magical library background with floating books, glowing speech bubbles and letters drifting in the air around them, sparkles, warm lighting, 16:9 aspect ratio",
     "prompt_animation": "Léon's mouth clearly opens and closes in a visible talking motion as he asks his question, leaning in with raised eyebrow and a curious expression. Bot's antenna pulses, the colorful letters 'Le ciel est BLEU !' on his screen-face shimmer and glow brighter, small speech bubbles puff outward and drift up around him, sparkles twinkle, static camera with subtle breathing motion."

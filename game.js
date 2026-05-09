@@ -6827,8 +6827,11 @@ function _hoverSpeakText(text) {
   if (typeof window.speechSynthesis === 'undefined') return;
   if (typeof voicesEnabled === 'function' && !voicesEnabled()) return;
   // Strip emojis pour ne pas les faire lire
-  const clean = (typeof _stripEmoji === 'function' ? _stripEmoji(text) : text).trim();
+  let clean = (typeof _stripEmoji === 'function' ? _stripEmoji(text) : text).trim();
   if (!clean) return;
+  // Corrections de prononciation FR (mots que la TTS lit mal)
+  // "Bot" → "Bote" pour entendre [bɔt] et non [bo]
+  clean = clean.replace(/\bBot\b/g, 'Bote').replace(/\bbot\b/g, 'bote');
   try { window.speechSynthesis.cancel(); } catch(e) {}
   setTimeout(() => {
     const utt = new SpeechSynthesisUtterance(clean);
@@ -7061,7 +7064,10 @@ function activateC3s2Game() {
     if (arena) arena.style.display = 'block';
     if (panel) panel.style.display = 'inline-flex';
     _c3s2Active = true;
-    _c3s2ScheduleSpawn(400);
+    // Spawn de depart rapide : 3 bulles d'amorce echelonnees
+    _c3s2ScheduleSpawn(200);
+    setTimeout(() => { if (_c3s2Active) _c3s2SpawnBubble(); }, 600);
+    setTimeout(() => { if (_c3s2Active) _c3s2SpawnBubble(); }, 1100);
   }, 600);
 }
 
@@ -7069,7 +7075,8 @@ function _c3s2ScheduleSpawn(delay) {
   if (!_c3s2Active) return;
   _c3s2SpawnTimer = setTimeout(() => {
     _c3s2SpawnBubble();
-    if (_c3s2Active) _c3s2ScheduleSpawn(1300 + Math.random() * 800);
+    // Cadence de spawn plus rapide : 750-1300ms (au lieu de 1300-2100ms)
+    if (_c3s2Active) _c3s2ScheduleSpawn(750 + Math.random() * 550);
   }, delay);
 }
 

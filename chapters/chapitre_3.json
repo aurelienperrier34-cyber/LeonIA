@@ -73,7 +73,7 @@
       "narration": "Léon parle à un micro flottant. Sur l'écran, les ondes sonores se transforment en mots !",
       "leon": {
         "audio": "assets/leon_c3s2.mp3",
-        "text": "« Cette IA peut <strong>écouter</strong> ta voix et la transformer en mots écrits ! C'est comme ça que les assistants vocaux comprennent ce que tu dis. »"
+        "text": "« Cette IA peut <strong>écouter</strong> ta voix et la transformer en mots écrits ! C'est comme ça que les assistants vocaux comprennent ce que tu dis. Allez, <strong>attrape les mots qui dansent</strong> autour de moi ! »"
       },
       "actions": [
         { "label": "Trop fort ! 🤩", "icon": "🤩", "to": "c3s3" }

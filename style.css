@@ -23,7 +23,14 @@
   pointer-events: none;
   filter: drop-shadow(0 8px 6px rgba(0,0,0,0.35));
 }
-.hero-back-video { filter: url(#greenKeyShadow); clip-path: inset(2px); }
+.hero-back-video {
+  filter: url(#greenKeyShadow);
+  -webkit-filter: url(#greenKeyShadow);
+  clip-path: inset(2px);
+  /* Safari iOS : force la prise en compte du SVG filter sur <video> */
+  will-change: filter;
+  isolation: isolate;
+}
 .watermark-cover {
   position: absolute;
   top: 2%; left: 0;
@@ -910,9 +917,13 @@ body.novel-mode .magic-machine { right: 50%; transform: translateX(50%); top: 15
 video.hero-idle-street {
     mix-blend-mode: normal;
     filter: url(#greenKey);
+    -webkit-filter: url(#greenKey);
     background: transparent;
     transform-origin: 50% 100%;
     clip-path: inset(2px);
+    /* Safari iOS : force la prise en compte du SVG filter sur <video> */
+    will-change: filter;
+    isolation: isolate;
 }
 #entry-marker {
     position: absolute; width: 18px; height: 18px; border-radius: 50%;
@@ -2634,13 +2645,29 @@ body.novel-mode #screen-c2s3 .scene-text .dialogue-bubble::before { display: non
 
 /* GÉANT : le sujet est nettement plus gros et pulse avec puissance.
    On utilise des % de la toile + une cap absolue pour ne jamais deborder. */
+/* GÉANT : on agrandit légèrement le conteneur au-delà de la zone par defaut,
+   mais en gardant une marge pour ne pas dépasser le cadre du chevalet. */
+.canvas-result.style-geant {
+  top:    calc(var(--canvas-top) + 14%);
+  left:   calc(var(--canvas-left) + 5%);
+  width:  calc(var(--canvas-width) - 10%);
+  height: calc(var(--canvas-height) - 20%);
+}
 .canvas-result.style-geant .result-subject {
-  width:  95%;
-  height: 95%;
-  max-width: 95%;
-  max-height: 95%;
+  width:  100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
   animation: subjectGiantPulse 1.8s ease-in-out infinite;
   filter: var(--subject-glow, drop-shadow(0 4px 8px rgba(0,0,0,0.3))) drop-shadow(0 0 20px rgba(255,225,102,0.6));
+}
+.canvas-result.style-geant .result-subject svg,
+.canvas-result.style-geant .result-subject .result-subject-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: rotate(-4deg);
 }
 
 /* RIGOLO : le sujet tremblote/wobble + confettis tournent autour */
@@ -2656,8 +2683,8 @@ body.novel-mode #screen-c2s3 .scene-text .dialogue-bubble::before { display: non
 @keyframes subjectFly   { 0%,100% { transform: translateY(0)   rotate(-8deg); } 50% { transform: translateY(-30px) rotate(8deg); } }
 @keyframes subjectWobble{ 0%,100% { transform: rotate(-14deg) scale(1); } 50% { transform: rotate(14deg) scale(1.06); } }
 @keyframes subjectGiantPulse {
-  0%, 100% { transform: scale(1);    filter: var(--subject-glow) drop-shadow(0 0 20px rgba(255,225,102,0.6)); }
-  50%      { transform: scale(1.08); filter: var(--subject-glow) drop-shadow(0 0 36px rgba(255,225,102,1));   }
+  0%, 100% { transform: scale(0.96); filter: var(--subject-glow) drop-shadow(0 0 20px rgba(255,225,102,0.6)); }
+  50%      { transform: scale(1.0);  filter: var(--subject-glow) drop-shadow(0 0 36px rgba(255,225,102,1));   }
 }
 @keyframes accessoryWiggle    { 0%,100% { transform: rotate(-15deg) scale(1); } 50% { transform: rotate(15deg) scale(1.1); } }
 @keyframes accessoryFlyAround { 0%,100% { transform: translate(0,0) rotate(-20deg); } 50% { transform: translate(-20px, -25px) rotate(20deg); } }

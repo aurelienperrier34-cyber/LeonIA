@@ -11,7 +11,7 @@
     "tableau": 2,
     "format": "video",
     "narrateur": "Léon parle à un micro... Aussitôt, des mots se mettent à danser dans l'air autour de lui !",
-    "leon": "« Cette IA peut ÉCOUTER ta voix et la transformer en mots écrits ! C'est comme ça que les assistants vocaux comprennent ce que tu dis. »",
+    "leon": "« Cette IA peut ÉCOUTER ta voix et la transformer en mots écrits ! C'est comme ça que les assistants vocaux comprennent ce que tu dis. Allez, attrape les mots qui dansent autour de moi ! »",
     "prompt_image": "3D animated cartoon Pixar style, the same friendly old wizard-inventor character speaking into a glowing floating holographic microphone, behind him a large screen showing sound waves transforming into floating glowing letters and words, magical sound laboratory with shelves of microphones and colorful crystals, warm wooden interior, fairy lights, 16:9 aspect ratio",
     "prompt_animation": "Léon gestures animatedly with his hand toward the floating holographic microphone as he speaks, the microphone pulses with magical light, the pink and cyan sound waves on the screen ripple while floating letters drift across, sparkles twinkle softly through the air, static camera with subtle breathing motion."
   },
