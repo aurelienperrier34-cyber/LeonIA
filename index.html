@@ -2,12 +2,17 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="description" content="IA : Le monde de Léon - Apprenez l'IA en vous amusant !">
   <!-- Empeche la mise en cache de index.html (les assets restent caches via ?v=) -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Léon">
+  <meta name="theme-color" content="#000000">
   <title>IA : Le monde de Léon</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=2026050545">
@@ -82,7 +87,7 @@
           <img src="assets/avatar_robot_1776108872947.png?v=2"  class="intro-avatar anim-float2" alt="Robot">
         </div>
         <p class="intro-subtitle">Apprendre à utiliser l'Intelligence Artificielle en s'amusant !</p>
-        <button class="btn btn-primary btn-large btn-bounce mt-md" onclick="toggleFullscreen(); goToScreen(1)">Démarrer l'Aventure 🚀</button>
+        <button class="btn btn-primary btn-large btn-bounce mt-md" onclick="enterFullscreen(); goToScreen(1)">Démarrer l'Aventure 🚀</button>
       </div>
     </div>
 
@@ -1717,6 +1722,6 @@
 </div>
 
 <script src="calibration.js"></script>
-<script src="game.js?v=192"></script>
+<script src="game.js?v=193"></script>
 </body>
 </html>

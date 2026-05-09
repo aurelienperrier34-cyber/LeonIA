@@ -22,7 +22,17 @@ function setupOrientationLock() {
   updateRotateOverlay();
   window.addEventListener('resize',            updateRotateOverlay);
   window.addEventListener('orientationchange', updateRotateOverlay);
-  document.addEventListener('fullscreenchange', () => { if (document.fullscreenElement) tryLockLandscape(); });
+  const _onFsChange = () => {
+    const fsEl = document.fullscreenElement
+              || document.webkitFullscreenElement
+              || document.mozFullScreenElement
+              || document.msFullscreenElement;
+    if (fsEl) tryLockLandscape();
+  };
+  document.addEventListener('fullscreenchange',       _onFsChange);
+  document.addEventListener('webkitfullscreenchange', _onFsChange);
+  document.addEventListener('mozfullscreenchange',    _onFsChange);
+  document.addEventListener('MSFullscreenChange',     _onFsChange);
 }
 
 // === Système de voix-off (narrateur + personnages) ===
@@ -404,12 +414,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Plein écran automatique au premier geste utilisateur, ET maintenu sur tous les écrans
   const autoFs = () => {
-    if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
-      const p = document.documentElement.requestFullscreen();
-      if (p && p.catch) p.catch(() => {});
-    }
+    if (!_fsElement()) enterFullscreen();
   };
   window.addEventListener('pointerdown', autoFs, true);
+  window.addEventListener('touchend',    autoFs, true);
   window.addEventListener('keydown',     autoFs, true);
 });
 
@@ -468,9 +476,7 @@ function startChapter(n) {
   }
 
   // Pareil pour le fullscreen : depuis ce click, on peut le demander
-  if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
-    document.documentElement.requestFullscreen().catch(() => {});
-  }
+  enterFullscreen();
 
   goToScreen(target);
 }
@@ -508,10 +514,7 @@ function goToScreen(screenIdentifier, force) {
 
   // Cinématographie globale : Rue ou Novel
   if ((typeof screenIdentifier === 'number' && screenIdentifier >= 2) || isStoryStr) {
-    if (!document.fullscreenElement) {
-      const p = document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
-      if (p && p.catch) p.catch(() => {});
-    }
+    enterFullscreen();
   }
 
   if (screenIdentifier === 2) {
@@ -1411,10 +1414,7 @@ function goToScreen(screenIdentifier, force) {
     if (typeof applySignZonePos        === 'function') applySignZonePos();
     if (typeof applyPointerPos         === 'function') applyPointerPos();
     if (typeof applyHeroDestPos        === 'function') applyHeroDestPos();
-    if (!document.fullscreenElement) {
-      const p = document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
-      if (p && p.catch) p.catch(() => {});
-    }
+    enterFullscreen();
   } else {
     document.body.classList.remove('street-mode');
   }
@@ -1533,21 +1533,63 @@ function walkToShopAndEnter() {
 }
 
 // Fullscreen
+function _fsElement() {
+  return document.fullscreenElement
+      || document.webkitFullscreenElement
+      || document.mozFullScreenElement
+      || document.msFullscreenElement;
+}
+function _fsRequest(el) {
+  const fn = el.requestFullscreen
+          || el.webkitRequestFullscreen
+          || el.webkitEnterFullscreen
+          || el.mozRequestFullScreen
+          || el.msRequestFullscreen;
+  if (!fn) return Promise.reject(new Error('fullscreen API unavailable'));
+  try {
+    const p = fn.call(el, { navigationUI: 'hide' });
+    return (p && p.then) ? p : Promise.resolve();
+  } catch (e) {
+    try {
+      const p2 = fn.call(el);
+      return (p2 && p2.then) ? p2 : Promise.resolve();
+    } catch (e2) { return Promise.reject(e2); }
+  }
+}
+function _fsExit() {
+  const fn = document.exitFullscreen
+          || document.webkitExitFullscreen
+          || document.mozCancelFullScreen
+          || document.msExitFullscreen;
+  if (fn) try { return fn.call(document); } catch (e) {}
+}
+function enterFullscreen() {
+  if (_fsElement()) return Promise.resolve();
+  return _fsRequest(document.documentElement).then(() => {
+    try { if (typeof tryLockLandscape === 'function') tryLockLandscape(); } catch (e) {}
+  }).catch((err) => {
+    console.log('[fs] enterFullscreen refuse :', err && err.message);
+  });
+}
 function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(() => {});
+  if (!_fsElement()) {
+    enterFullscreen();
   } else {
-    document.exitFullscreen();
+    _fsExit();
   }
 }
 
-document.addEventListener('fullscreenchange', () => {
-  const isFs = !!document.fullscreenElement;
+function _syncFsIcon() {
+  const isFs = !!_fsElement();
   const enter = document.getElementById('fs-icon-enter');
   const exit  = document.getElementById('fs-icon-exit');
   if (enter) enter.style.display = isFs ? 'none' : 'block';
   if (exit)  exit.style.display  = isFs ? 'block' : 'none';
-});
+}
+document.addEventListener('fullscreenchange',       _syncFsIcon);
+document.addEventListener('webkitfullscreenchange', _syncFsIcon);
+document.addEventListener('mozfullscreenchange',    _syncFsIcon);
+document.addEventListener('MSFullscreenChange',     _syncFsIcon);
 
 // Star Counter
 function addStars(amount) {
