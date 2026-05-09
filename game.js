@@ -4,6 +4,25 @@ function isMobileDevice() {
   return /Android|iPhone|iPod|IEMobile|BlackBerry|Opera Mini/i.test(navigator.userAgent)
       || (navigator.maxTouchPoints > 1 && window.matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 900);
 }
+
+// === Calibrations device-aware ===
+// Sur mobile, les calibrations sont sauvees sous '<key>.mobile' pour ne pas
+// ecraser celles du desktop. La lecture privilegie d'abord la cle mobile,
+// puis retombe sur la cle desktop si pas d'override mobile (utile pour qu'un
+// premier lancement mobile parte de positions raisonnables avant calibration).
+function _calibKey(baseKey) {
+  return isMobileDevice() ? baseKey + '.mobile' : baseKey;
+}
+function _calibGet(baseKey) {
+  if (isMobileDevice()) {
+    const mobileVal = localStorage.getItem(baseKey + '.mobile');
+    if (mobileVal !== null) return mobileVal;
+  }
+  return localStorage.getItem(baseKey);
+}
+function _calibSet(baseKey, value) {
+  try { localStorage.setItem(_calibKey(baseKey), value); } catch(e) {}
+}
 function isPortrait() {
   return window.matchMedia('(orientation: portrait)').matches;
 }
@@ -139,13 +158,13 @@ const C3S7_DEFAULT_POS = [
 ];
 function loadC3s7MicPositions() {
   try {
-    const raw = localStorage.getItem('c3s7MicPos');
+    const raw = _calibGet('c3s7MicPos');
     if (raw) return JSON.parse(raw);
   } catch(e) {}
   return JSON.parse(JSON.stringify(C3S7_DEFAULT_POS));
 }
 function saveC3s7MicPositions(pos) {
-  try { localStorage.setItem('c3s7MicPos', JSON.stringify(pos)); } catch(e) {}
+  _calibSet('c3s7MicPos', JSON.stringify(pos));
   // Persiste aussi sur disque dans calibration.json (anti-perte au vidage cache)
   if (typeof persistCalibration === 'function') persistCalibration({ c3s7MicPos: pos });
 }
@@ -3382,13 +3401,13 @@ const C2S5_DEFAULT_POS = [
 ];
 function loadC2s5DefectPos() {
   try {
-    const raw = localStorage.getItem('c2s5DefectPos');
+    const raw = _calibGet('c2s5DefectPos');
     if (raw) return JSON.parse(raw);
   } catch(e) {}
   return JSON.parse(JSON.stringify(C2S5_DEFAULT_POS));
 }
 function saveC2s5DefectPos(pos) {
-  try { localStorage.setItem('c2s5DefectPos', JSON.stringify(pos)); } catch(e) {}
+  _calibSet('c2s5DefectPos', JSON.stringify(pos));
   if (typeof persistCalibration === 'function') persistCalibration({ c2s5DefectPos: pos });
 }
 function applyC2s5DefectPos() {
@@ -3775,13 +3794,13 @@ const C5S2_DEFAULT_POS = [
 
 function loadC5s2SpotPos() {
   try {
-    const raw = localStorage.getItem('c5s2SpotPos');
+    const raw = _calibGet('c5s2SpotPos');
     if (raw) return JSON.parse(raw);
   } catch(e) {}
   return JSON.parse(JSON.stringify(C5S2_DEFAULT_POS));
 }
 function saveC5s2SpotPos(pos) {
-  try { localStorage.setItem('c5s2SpotPos', JSON.stringify(pos)); } catch(e) {}
+  _calibSet('c5s2SpotPos', JSON.stringify(pos));
   if (typeof persistCalibration === 'function') persistCalibration({ c5s2SpotPos: pos });
 }
 function applyC5s2SpotPos() {
@@ -4067,13 +4086,13 @@ const C2S2_TOOLTIPS = {
 
 function loadC2s2SpotPos() {
   try {
-    const raw = localStorage.getItem('c2s2SpotPos');
+    const raw = _calibGet('c2s2SpotPos');
     if (raw) return JSON.parse(raw);
   } catch(e) {}
   return JSON.parse(JSON.stringify(C2S2_DEFAULT_POS));
 }
 function saveC2s2SpotPos(pos) {
-  try { localStorage.setItem('c2s2SpotPos', JSON.stringify(pos)); } catch(e) {}
+  _calibSet('c2s2SpotPos', JSON.stringify(pos));
   if (typeof persistCalibration === 'function') persistCalibration({ c2s2SpotPos: pos });
 }
 function applyC2s2SpotPos() {
@@ -4630,13 +4649,13 @@ const C5S3_DEFAULT_POS = [
 ];
 function loadC5s3SpotPos() {
   try {
-    const raw = localStorage.getItem('c5s3SpotPos');
+    const raw = _calibGet('c5s3SpotPos');
     if (raw) return JSON.parse(raw);
   } catch(e) {}
   return JSON.parse(JSON.stringify(C5S3_DEFAULT_POS));
 }
 function saveC5s3SpotPos(pos) {
-  try { localStorage.setItem('c5s3SpotPos', JSON.stringify(pos)); } catch(e) {}
+  _calibSet('c5s3SpotPos', JSON.stringify(pos));
   if (typeof persistCalibration === 'function') persistCalibration({ c5s3SpotPos: pos });
 }
 function applyC5s3SpotPos() {
@@ -5796,7 +5815,7 @@ function refreshAtelierUI() {
 // ============================================================
 function loadMapNodePositions() {
   try {
-    const raw = localStorage.getItem('mapNodePositions');
+    const raw = _calibGet('mapNodePositions');
     if (raw) return JSON.parse(raw);
   } catch(e) {}
   // Defaults : positions actuelles dans le HTML (matchent map_world.jpg v2)
@@ -5809,7 +5828,7 @@ function loadMapNodePositions() {
   };
 }
 function saveMapNodePositions(pos) {
-  try { localStorage.setItem('mapNodePositions', JSON.stringify(pos)); } catch(e) {}
+  _calibSet('mapNodePositions', JSON.stringify(pos));
   persistCalibration({ mapNodePositions: pos });
 }
 function applyMapNodePositions() {
@@ -5930,13 +5949,13 @@ if (typeof window !== 'undefined' && window.location && window.location.search.i
 // ============================================================
 function loadStarCornerPosition() {
   try {
-    const raw = localStorage.getItem('starCornerPos');
+    const raw = _calibGet('starCornerPos');
     if (raw) return JSON.parse(raw);
   } catch(e) {}
   return { top: 16, left: 18 };  // px par defaut
 }
 function saveStarCornerPosition(pos) {
-  try { localStorage.setItem('starCornerPos', JSON.stringify(pos)); } catch(e) {}
+  _calibSet('starCornerPos', JSON.stringify(pos));
   persistCalibration({ starCornerPos: pos });
 }
 // Viewport de reference pour les calibrations en px (Desktop typique).
@@ -6064,13 +6083,13 @@ function openAtelierShortcut() {
 // ============================================================
 function loadSignZonePos() {
   try {
-    const raw = localStorage.getItem('signZonePos');
+    const raw = _calibGet('signZonePos');
     if (raw) return JSON.parse(raw);
   } catch(e) {}
   return { top: 50, left: 50, width: 18, height: 12 };
 }
 function saveSignZonePos(p) {
-  try { localStorage.setItem('signZonePos', JSON.stringify(p)); } catch(e) {}
+  _calibSet('signZonePos', JSON.stringify(p));
   persistCalibration({ signZonePos: p });
 }
 function applySignZonePos() {
@@ -6178,9 +6197,9 @@ function toggleTip(el) {
 // ============================================================
 // Calibration : pointeur 👆 et destination du heros (rue)
 // ============================================================
-function loadPointerPos()  { try { const r = localStorage.getItem('pointerPos');  if (r) return JSON.parse(r); } catch(e) {} return { top: 45, left: 50 }; }
+function loadPointerPos()  { try { const r = _calibGet('pointerPos');  if (r) return JSON.parse(r); } catch(e) {} return { top: 45, left: 50 }; }
 function savePointerPos(p) {
-  try { localStorage.setItem('pointerPos',  JSON.stringify(p)); } catch(e) {}
+  _calibSet('pointerPos', JSON.stringify(p));
   persistCalibration({ pointerPos: p });
 }
 function applyPointerPos() {
@@ -6191,9 +6210,9 @@ function applyPointerPos() {
   el.style.left = p.left + '%';
 }
 
-function loadHeroDestPos()  { try { const r = localStorage.getItem('heroDestPos');  if (r) return JSON.parse(r); } catch(e) {} return { top: 70, left: 50 }; }
+function loadHeroDestPos()  { try { const r = _calibGet('heroDestPos');  if (r) return JSON.parse(r); } catch(e) {} return { top: 70, left: 50 }; }
 function saveHeroDestPos(p) {
-  try { localStorage.setItem('heroDestPos',  JSON.stringify(p)); } catch(e) {}
+  _calibSet('heroDestPos', JSON.stringify(p));
   persistCalibration({ heroDestPos: p });
 }
 function applyHeroDestPos() {
@@ -6224,7 +6243,7 @@ const HERO4_DEFAULT_POS = {
 };
 function loadHero4Pos() {
   try {
-    const raw = localStorage.getItem('hero4Pos');
+    const raw = _calibGet('hero4Pos');
     if (raw) {
       const saved = JSON.parse(raw);
       // merge avec defaults pour gerer ajout de personnages
@@ -6234,7 +6253,7 @@ function loadHero4Pos() {
   return JSON.parse(JSON.stringify(HERO4_DEFAULT_POS));
 }
 function saveHero4Pos(positions) {
-  try { localStorage.setItem('hero4Pos', JSON.stringify(positions)); } catch(e) {}
+  _calibSet('hero4Pos', JSON.stringify(positions));
   // Persiste aussi cote serveur dans calibration.json (si lancer_jeu.py est utilise).
   // Comme ca pas besoin de reporter les valeurs au dev : elles sont ecrites
   // sur disque et chargees au prochain demarrage pour tout le monde.
@@ -6245,6 +6264,14 @@ function saveHero4Pos(positions) {
 // calibration.json. Best-effort : si le serveur ne supporte pas
 // l'endpoint (ex: simple http.server), on echoue silencieusement.
 function persistCalibration(partial) {
+  // Sur mobile, on suffixe les cles avec '.mobile' pour ne pas ecraser le
+  // baseline desktop dans calibration.json. Le serveur ecrit alors sous
+  // 'starCornerPos.mobile' etc. et la lecture privilegie ces cles sur mobile.
+  if (isMobileDevice()) {
+    const renamed = {};
+    Object.entries(partial).forEach(([k, v]) => { renamed[k + '.mobile'] = v; });
+    partial = renamed;
+  }
   try {
     fetch('/api/save-calibration', {
       method: 'POST',
@@ -6321,7 +6348,9 @@ async function _autoImportGameStateBackup() {
 _autoImportGameStateBackup();
 
 function downloadCalibration() {
-  const KEYS = ['starCornerPos','signZonePos','pointerPos','heroDestPos','mapNodePositions','hero4Pos','c2s2SpotPos','c2s5DefectPos','c5s3SpotPos','c3s7MicPos','sceneTextPositions'];
+  const BASE_KEYS = ['starCornerPos','signZonePos','pointerPos','heroDestPos','mapNodePositions','hero4Pos','c2s2SpotPos','c2s5DefectPos','c5s3SpotPos','c5s2SpotPos','c3s7MicPos','sceneTextPositions'];
+  // Inclut les variantes mobile (ex: starCornerPos.mobile) pour les figer aussi sur disque.
+  const KEYS = BASE_KEYS.flatMap(k => [k, k + '.mobile']);
   const data = {};
   KEYS.forEach(k => {
     const raw = localStorage.getItem(k);
@@ -6377,14 +6406,19 @@ async function loadCalibrationFromServer() {
     // une cle EXISTE sur disque, c'est qu'elle a ete sauvegardee a un moment
     // (server-mode); on prefere la version disque qui est la "verite officielle".
     // Si une cle est ABSENTE du disque, localStorage est preserve par defaut.
-    const fileKeys = ['starCornerPos', 'mapNodePositions', 'signZonePos', 'pointerPos', 'heroDestPos', 'c3s7MicPos', 'sceneTextPositions', 'c2s5DefectPos', 'c2s2SpotPos', 'c5s3SpotPos', 'c5s2SpotPos'];
+    const fileKeys = ['starCornerPos', 'mapNodePositions', 'signZonePos', 'pointerPos', 'heroDestPos', 'c3s7MicPos', 'sceneTextPositions', 'c2s5DefectPos', 'c2s2SpotPos', 'c5s3SpotPos', 'c5s2SpotPos', 'hero4Pos'];
     fileKeys.forEach(key => {
-      if (data[key]) {
-        try {
-          localStorage.setItem(key, JSON.stringify(data[key]));
-          console.log('[calibration]', key, 'sync depuis disque');
-        } catch(e) {}
-      }
+      // Ecrit la cle desktop ET la cle mobile suffixee si presentes dans le JSON.
+      // Les fonctions de lecture (_calibGet) privilegient la cle mobile sur mobile,
+      // sinon retombent sur la cle desktop comme avant.
+      [key, key + '.mobile'].forEach(k => {
+        if (data[k] !== undefined && data[k] !== null) {
+          try {
+            localStorage.setItem(k, JSON.stringify(data[k]));
+            console.log('[calibration]', k, 'sync depuis disque');
+          } catch(e) {}
+        }
+      });
     });
     // Re-applique les positions visuelles maintenant qu'elles sont en cache
     if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
@@ -6531,13 +6565,13 @@ function hero4Wheel(e) {
 // ============================================================
 function loadSceneTextPositions() {
   try {
-    const raw = localStorage.getItem('sceneTextPositions');
+    const raw = _calibGet('sceneTextPositions');
     if (raw) return JSON.parse(raw);
   } catch(e) {}
   return {};
 }
 function saveSceneTextPositions(positions) {
-  try { localStorage.setItem('sceneTextPositions', JSON.stringify(positions)); } catch(e) {}
+  _calibSet('sceneTextPositions', JSON.stringify(positions));
   persistCalibration({ sceneTextPositions: positions });
 }
 function applySceneTextPos(screenId) {
