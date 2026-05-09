@@ -1,31 +1,8 @@
 window.__CALIBRATION_DATA__ = {
-  "hero4Pos": {
-    "fille": {
-      "right": 0.875,
-      "bottom": 2.472,
-      "height": 47.5
-    },
-    "garcon": {
-      "right": 2.7474,
-      "bottom": 4.82639,
-      "height": 44
-    },
-    "renard": {
-      "right": 0.875,
-      "bottom": 2.472,
-      "height": 47.5
-    },
-    "robot": {
-      "right": 4.15626,
-      "bottom": 4.55324,
-      "height": 35.5
-    }
-  },
   "starCornerPos": {
     "top": 41,
     "left": 53
   },
-  "signZonePos": null,
   "pointerPos": {
     "top": 49.8611,
     "left": 51.3281
@@ -56,6 +33,20 @@ window.__CALIBRATION_DATA__ = {
       "top": 23.75
     }
   },
+  "c2s2SpotPos": [
+    {
+      "left": 48.2927,
+      "top": 33.6698
+    },
+    {
+      "left": 33.9024,
+      "top": 51.4846
+    },
+    {
+      "left": 31.2195,
+      "top": 10.867
+    }
+  ],
   "c2s5DefectPos": [
     {
       "left": 23.6719,
@@ -80,20 +71,6 @@ window.__CALIBRATION_DATA__ = {
     {
       "left": 52.7344,
       "top": 44.7222
-    }
-  ],
-  "c2s2SpotPos": [
-    {
-      "left": 48.2927,
-      "top": 33.6698
-    },
-    {
-      "left": 33.9024,
-      "top": 51.4846
-    },
-    {
-      "left": 31.2195,
-      "top": 10.867
     }
   ],
   "c5s3SpotPos": [
