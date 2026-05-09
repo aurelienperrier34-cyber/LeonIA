@@ -659,7 +659,22 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener('keydown',     autoFs, true);
 });
 
-// Character Selection
+// Character Selection — fallback iOS Safari : bind explicite via addEventListener.
+// Sur iOS, onclick sur <div> peut etre ignore selon le contexte de focus / fullscreen.
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.character-card[data-char]').forEach(card => {
+    const type = card.getAttribute('data-char');
+    if (!type) return;
+    const handler = (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      try { selectChar(type); } catch(e) { console.error('selectChar fail', e); }
+    };
+    card.addEventListener('click', handler, false);
+    card.addEventListener('touchend', handler, { passive: false });
+  });
+});
+
 function selectChar(type) {
   state.characterType = type;
   state.characterImage = charData[type].img;
@@ -5887,8 +5902,22 @@ function saveStarCornerPosition(pos) {
   try { localStorage.setItem('starCornerPos', JSON.stringify(pos)); } catch(e) {}
   persistCalibration({ starCornerPos: pos });
 }
+// Viewport de reference pour les calibrations en px (Desktop typique).
+// On scale proportionnellement sur les ecrans plus petits (mobile).
+const STAR_CALIB_REF_W = 1366;
+const STAR_CALIB_REF_H = 768;
+function _scaleCalibPx(p) {
+  const vw = window.innerWidth || document.documentElement.clientWidth || STAR_CALIB_REF_W;
+  const vh = window.innerHeight || document.documentElement.clientHeight || STAR_CALIB_REF_H;
+  // Scale conservatif : on ne reduit que sur les ecrans plus petits que la ref.
+  // On evite d'agrandir au-dela des valeurs PC (>1.0 garde la cohérence visuelle).
+  const sx = Math.min(1, vw / STAR_CALIB_REF_W);
+  const sy = Math.min(1, vh / STAR_CALIB_REF_H);
+  return { top: Math.round(p.top * sy), left: Math.round(p.left * sx) };
+}
 function applyStarCornerPosition() {
-  const p = loadStarCornerPosition();
+  const raw = loadStarCornerPosition();
+  const p = _scaleCalibPx(raw);
   // Applique la meme calibration aux deux pastilles : celle de la rue (chap 1
   // ecran 2) et la pastille globale visible sur toutes les autres scenes.
   ['street-star-corner', 'global-star-corner'].forEach(id => {
@@ -5905,6 +5934,10 @@ function applyStarCornerPosition() {
     backBtn.style.left = p.left + 'px';
   }
 }
+// Reapplique a chaque resize/rotation (mobile : passage paysage <-> portrait)
+window.addEventListener('resize', () => {
+  if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
+});
 function toggleStarCalib() {
   document.body.classList.toggle('calib-star-mode');
   const el = document.getElementById('street-star-corner');
@@ -6902,9 +6935,10 @@ function _setupHoverSpeak() {
     // Exceptions : pas de blocage 2-taps, le clic doit passer directement.
     // - .prompt-word (c2s7) : selection rapide a 3 mots
     // - .s4-card (c1s4) : cartes melangees, plus fiable d'avoir 1-tap = action
-    //   (la voix se declenche en parallele pour les enfants qui ne lisent pas)
+    // - .vf-btn (Vrai/Faux quiz) : reponse binaire, 1-tap = action
+    //   La voix se declenche en parallele pour les enfants qui ne lisent pas.
     if (target.classList.contains('prompt-word')) return;
-    if (target.classList.contains('s4-card')) {
+    if (target.classList.contains('s4-card') || target.classList.contains('vf-btn')) {
       // Lit le label en parallele, ne bloque pas la selection
       const textParallel = target.dataset.speak || target.textContent;
       _hoverSpeakText(textParallel);
