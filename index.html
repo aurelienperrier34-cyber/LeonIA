@@ -6,7 +6,7 @@
   <meta name="description" content="IA : Le monde de Léon - Apprenez l'IA en vous amusant !">
   <title>IA : Le monde de Léon</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2026050540">
+  <link rel="stylesheet" href="style.css?v=2026050541">
 </head>
 <body>
 <!-- Overlay "Tourne ton téléphone" (portrait mobile uniquement) -->
@@ -147,34 +147,34 @@
       <p class="screen-subtitle">Choisis d'abord ton personnage pour explorer ce monde !</p>
       
       <div class="character-grid">
-        <label class="character-card" onclick="selectChar('fille')">
-          <input type="radio" name="char" value="fille" onchange="selectChar(this.value)">
+        <div class="character-card" data-char="fille" onclick="selectChar('fille')" role="button" tabindex="0">
+          <input type="radio" name="char" value="fille">
           <div class="char-content">
             <img src="assets/avatar_fille_1776108656117.png?v=2" alt="Fille" class="char-img avatar-with-accessories">
             <div class="char-info"><span class="char-name">Une fille</span></div>
           </div>
-        </label>
-        <label class="character-card" onclick="selectChar('garcon')">
-          <input type="radio" name="char" value="garcon" onchange="selectChar(this.value)">
+        </div>
+        <div class="character-card" data-char="garcon" onclick="selectChar('garcon')" role="button" tabindex="0">
+          <input type="radio" name="char" value="garcon">
           <div class="char-content">
             <img src="assets/avatar_garcon_1776108702967.png?v=2" alt="Garçon" class="char-img avatar-with-accessories">
             <div class="char-info"><span class="char-name">Un garçon</span></div>
           </div>
-        </label>
-        <label class="character-card" onclick="selectChar('renard')">
-          <input type="radio" name="char" value="renard" onchange="selectChar(this.value)">
+        </div>
+        <div class="character-card" data-char="renard" onclick="selectChar('renard')" role="button" tabindex="0">
+          <input type="radio" name="char" value="renard">
           <div class="char-content">
             <img src="assets/avatar_renard_1776108778358.png?v=2" alt="Renard" class="char-img avatar-with-accessories">
             <div class="char-info"><span class="char-name">Un renard</span></div>
           </div>
-        </label>
-        <label class="character-card" onclick="selectChar('robot')">
-          <input type="radio" name="char" value="robot" onchange="selectChar(this.value)">
+        </div>
+        <div class="character-card" data-char="robot" onclick="selectChar('robot')" role="button" tabindex="0">
+          <input type="radio" name="char" value="robot">
           <div class="char-content">
             <img src="assets/avatar_robot_1776108872947.png?v=2" alt="Robot" class="char-img avatar-with-accessories">
             <div class="char-info"><span class="char-name">Un robot</span></div>
           </div>
-        </label>
+        </div>
       </div>
 
       <div class="name-input-wrap" id="name-input-wrap">
@@ -1710,6 +1710,6 @@
 </div>
 
 <script src="calibration.js"></script>
-<script src="game.js?v=187"></script>
+<script src="game.js?v=188"></script>
 </body>
 </html>

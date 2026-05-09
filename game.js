@@ -664,6 +664,11 @@ function selectChar(type) {
   state.characterType = type;
   state.characterImage = charData[type].img;
   document.body.classList.add('has-character'); // pour afficher la pastille globale
+  // Coche le radio correspondant pour le feedback visuel (border/checked CSS)
+  try {
+    const radios = document.querySelectorAll('input[name="char"]');
+    radios.forEach(r => { r.checked = (r.value === type); });
+  } catch(e) {}
 
   const InputWrap = document.getElementById('name-input-wrap');
   const StartBtn = document.getElementById('btn-start');
