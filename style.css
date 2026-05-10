@@ -1382,30 +1382,49 @@ body.calib-hero-mode .hero-destination::before {
   body.novel-mode #screen-c3s7 .dialogue-who {
     top: 145px !important;
     margin: 0 !important;
-    font-size: 0.62rem !important;
+    font-size: 0.65rem !important;
   }
   body.novel-mode #screen-c3s7 .dialogue-bubble {
     top: 165px !important;
-    padding: 5px 8px !important;
-    font-size: 0.7rem !important;
-    line-height: 1.2 !important;
+    padding: 8px 10px !important;
+    font-size: 0.88rem !important;
+    line-height: 1.35 !important;
   }
-  /* Consigne descendue plus bas (dans la zone non-cliquable sous les boutons sons). */
-  body.novel-mode #screen-c3s7 .game-overlay {
-    bottom: -8px !important;
-  }
+  /* La consigne `.c3s7-hint` est sortie du flux .game-overlay et positionnee
+     en fixed en bas. Le .game-overlay (qui contient les micros cliquables)
+     garde sa position d'origine — ne PAS descendre, sinon les micros sortent
+     du viewport. */
   body.novel-mode #screen-c3s7 .c3s7-hint {
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 4px !important;
+    margin: 0 !important;
+    padding: 4px 12px !important;
     font-size: 0.78rem !important;
     line-height: 1.2 !important;
-    margin: 0 !important;
-    padding: 4px 8px !important;
+    background: rgba(20, 10, 40, 0.78) !important;
+    color: #fff !important;
+    border-radius: 10px !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    z-index: 50;
+    max-width: 92vw !important;
+    text-align: center !important;
+    white-space: nowrap !important;
   }
-  /* ANTI-FLICKER mobile : desactive backdrop-filter sur le bubble pendant
-     que le typewriter ecrit (la recalculation du blur a chaque char ajoute
-     etait la cause des "lettres doublees/triplees" visibles sur mobile). */
+  /* ANTI-FLICKER mobile : pendant le typewriter, on neutralise les sources
+     de re-render coûteux qui causaient les "lettres doublees/triplees" sur
+     Android :
+     - backdrop-filter (re-blur du fond a chaque char ajoute)
+     - le pseudo-element ::before (la petite fleche/queue de la bulle) qui
+       herite du backdrop-filter et doit etre re-rendu en parallele. */
   body.novel-mode .dialogue-bubble.typewriting {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+  }
+  body.novel-mode .dialogue-bubble.typewriting::before {
+    display: none !important;
   }
   /* C2S5 / C2S6 mobile : compacte la bulle Leon (deja en bottom-left) et
      descend/reduit la pastille consigne, pour liberer le centre ou

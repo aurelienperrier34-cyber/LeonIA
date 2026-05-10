@@ -2550,14 +2550,25 @@ function playStoryScene(screenId, opts = {}) {
     bubble.style.display = '';
     if (who) who.style.display = '';
 
-    // ANTI-FLICKER : pre-calcule la taille finale du bubble pour eviter les
-    // re-flows et "lettres doublees" lors du typewriter sur mobile (le bubble
-    // a `width: fit-content` + backdrop-filter, chaque char ajoute provoque
-    // un re-layout + re-blur couteux qui produit des ghost frames).
-    // On render brievement le HTML complet en visibility:hidden pour mesurer,
-    // puis on fixe min-width + min-height et on vide pour le typewriter.
-    // ET on ajoute la classe '.typewriting' qui desactive backdrop-filter
-    // (CSS) pendant l'ecriture (cause majeure des artefacts sur mobile).
+    // Hook : démarre la vidéo de fond pile au moment où Léon commence à parler.
+    if (typeof opts.onLeonStart === 'function' && !opts._onLeonStartFiredEarly) {
+      try { opts.onLeonStart(); } catch(e) { console.warn('[karaoke] onLeonStart error', e); }
+    }
+    opts._onLeonStartFiredEarly = false;
+
+    if (voicesEnabled() && leonAudio) {
+      leonAudio.currentTime = 0;
+      playSafely(leonAudio, 'leon_' + screenId);
+      leonAudio.addEventListener('ended', fireLeonEnd, { once: true });
+    }
+
+    // Le typewriter classique fonctionne sur tous les ecrans (le bug des
+    // "lettres doublees" sur C3S7 est fixe via CSS : la classe .typewriting
+    // desactive backdrop-filter ET cache le pseudo-element ::before — la
+    // petite fleche/queue de la bulle qui herite du backdrop-filter et causait
+    // le re-render couteux a chaque char).
+
+    // DESKTOP : pre-mesure pour anti-flicker
     try {
       bubble.style.visibility = 'hidden';
       bubble.innerHTML = fullHTML;
