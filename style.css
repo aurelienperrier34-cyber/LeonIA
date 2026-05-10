@@ -1318,6 +1318,29 @@ body.calib-hero-mode .hero-destination::before {
     font-size: 0.85rem !important;
     line-height: 1.3 !important;
   }
+  /* C3S1 mobile : bulle Leon "Bienvenue dans mon labo..." reduite et
+     decalee en bas-gauche pour liberer le centre ou Leon est visible. */
+  body.novel-mode #screen-c3s1 .dialogue-who,
+  body.novel-mode #screen-c3s1 .dialogue-bubble {
+    position: fixed !important;
+    left: 12px !important;
+    top: auto !important;
+    right: auto !important;
+    width: auto !important;
+    max-width: 55% !important;
+    z-index: 50;
+  }
+  body.novel-mode #screen-c3s1 .dialogue-who {
+    bottom: 105px !important;
+    margin: 0 !important;
+    font-size: 0.7rem !important;
+  }
+  body.novel-mode #screen-c3s1 .dialogue-bubble {
+    bottom: 75px !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+    line-height: 1.3 !important;
+  }
   /* C2S5 / C2S6 mobile : compacte la bulle Leon (deja en bottom-left) et
      descend/reduit la pastille consigne, pour liberer le centre ou
      s'affichent les 6 images. Le user voit que sinon le texte/consigne
