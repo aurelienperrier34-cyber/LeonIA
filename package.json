@@ -1,0 +1,16 @@
+{
+  "name": "leonia-tests",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Suite de tests Playwright pour Leon IA. Aucun impact sur l'app : code de tests uniquement, dans tests/.",
+  "scripts": {
+    "test": "playwright test --config=tests/playwright.config.js",
+    "test:android": "playwright test --config=tests/playwright.config.js --project=android",
+    "test:iphone": "playwright test --config=tests/playwright.config.js --project=iphone",
+    "test:ui": "playwright test --config=tests/playwright.config.js --ui",
+    "test:report": "playwright show-report tests/playwright-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}
