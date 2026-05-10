@@ -3017,6 +3017,11 @@ body.novel-mode #screen-c5s5 .game-overlay {
   #screen-map.active {
     position: relative;
     overflow: hidden;
+    /* Force la meme hauteur que .full-map-pixar (100dvh) pour eviter
+       que le ::before floute deborde sous la map. */
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
   }
   #screen-map.active::before {
     content: '';
