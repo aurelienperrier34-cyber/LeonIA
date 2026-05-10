@@ -3451,7 +3451,8 @@ function resetC2s5Game() {
 
 // Appele par playStoryScene via opts.onComplete (cf. optsMap c2s5)
 function activateC2s5Game() {
-  if (typeof playConsigne === 'function') playConsigne('c2s5');
+  // Pas de playConsigne('c2s5') : Leon donne deja la consigne dans son
+  // dialogue (karaoke), on evite le doublon narrateur.
   // Active les 3 hotspots avec halo pulsant
   document.querySelectorAll('#screen-c2s5 .c2s5-defect-zone').forEach(z => {
     z.classList.add('active');
