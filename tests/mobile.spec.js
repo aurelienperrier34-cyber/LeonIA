@@ -114,7 +114,12 @@ test.describe('Bulles & dialogues', () => {
 
   test('atelier (screen 3) : bulle Léon visible et dans le viewport', async ({ page }) => {
     await gotoScreen(page, 3);
-    await page.waitForTimeout(1500); // laisse l'audio narrateur + bulle apparaître
+    // La bulle de Léon est masquée (display:none) tant que la voix narrateur
+    // n'a pas fini. On attend qu'elle redevienne visible (typewriter en cours).
+    await page.waitForFunction(() => {
+      const bubble = document.querySelector('#screen-3 .dialogue-bubble');
+      return bubble && bubble.offsetParent !== null && bubble.textContent.length > 0;
+    }, { timeout: 20000 });
 
     const r = await expectInViewport(page, '#screen-3 .dialogue-bubble', 'bulle Léon');
     expect(r.ok, r.reason).toBe(true);
@@ -134,8 +139,12 @@ test.describe('Boutons & navigation', () => {
   test('intro → char-select via "Démarrer l\'Aventure"', async ({ page }) => {
     await page.goto('/index.html');
     await page.waitForFunction(() => typeof window.goToScreen === 'function');
-    await page.locator('text=Démarrer l\'Aventure').first().click();
-    await page.waitForFunction(() => window.state && window.state.currentScreen === 1, { timeout: 3000 });
+    // En mobile landscape le bouton peut etre hors viewport (page intro plus
+    // longue que l'ecran), on scroll explicitement avant de cliquer.
+    const btn = page.locator('text=Démarrer l\'Aventure').first();
+    await btn.scrollIntoViewIfNeeded();
+    await btn.click({ force: true }); // force : evite blocage si overlay ou animation
+    await page.waitForFunction(() => window.state && window.state.currentScreen === 1, { timeout: 5000 });
     expect(await page.evaluate(() => window.state.currentScreen)).toBe(1);
   });
 
@@ -144,7 +153,9 @@ test.describe('Boutons & navigation', () => {
     await page.waitForFunction(() => typeof window.goToScreen === 'function');
     await selectCharacterIfNeeded(page);
     await gotoScreen(page, 3);
-    await page.waitForSelector('#s3-answers.show', { timeout: 8000 });
+    // Les reponses #s3-answers n'apparaissent qu'apres la fin du typewriter
+    // de la bulle Leon (donc apres voix narrateur + voix Leon, ~10-15s).
+    await page.waitForSelector('#s3-answers.show', { timeout: 25000 });
     await page.locator('#s3-answers .btn-choice').first().click();
     await page.waitForFunction(() => window.state.currentScreen === 4, { timeout: 5000 });
     expect(await page.evaluate(() => window.state.currentScreen)).toBe(4);
