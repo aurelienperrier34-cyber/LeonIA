@@ -4178,7 +4178,7 @@ function _doActivateC2s2Game() {
   }
   // Met a jour le texte de consigne pour la loupe
   const instr = document.querySelector('#c2s2-game .tap-instruction');
-  if (instr) instr.innerHTML = '🔍 <strong>Promène la loupe</strong> pour découvrir 3 secrets';
+  if (instr) instr.innerHTML = '🔍 <strong>Promène la loupe</strong> pour trouver les 3 modules&nbsp;!';
 
   document.querySelectorAll('#screen-c2s2 .c2s2-spot-zone').forEach(el => {
     el.classList.add('active');
