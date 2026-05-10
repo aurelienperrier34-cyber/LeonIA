@@ -39,9 +39,10 @@ module.exports = defineConfig({
     },
   ],
   webServer: {
-    command: `python3 -m http.server ${PORT} --bind 127.0.0.1`,
+    // http-server : serveur statique Node, multiplateforme (pas de dep Python).
+    // -a 127.0.0.1 : bind localhost / -p PORT / -s : silent / -c-1 : disable cache
+    command: `npx http-server "${__dirname}/.." -p ${PORT} -a 127.0.0.1 -s -c-1`,
     url: BASE_URL,
-    cwd: __dirname + '/..',
     reuseExistingServer: !process.env.CI,
     timeout: 30 * 1000,
     stdout: 'ignore',
