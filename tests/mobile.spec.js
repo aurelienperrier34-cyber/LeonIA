@@ -68,6 +68,15 @@ async function selectCharacterIfNeeded(page) {
   });
 }
 
+// Désactive les voix narrateur AVANT le chargement (en émulation l'audio ne
+// joue pas vraiment, donc l'event 'ended' ne se firera jamais et bloque les
+// flows comme le typewriter de la bulle Léon → reveal #s3-answers).
+async function disableVoicesBeforeGoto(page) {
+  await page.addInitScript(() => {
+    try { localStorage.setItem('ia_voices_off', '1'); } catch (e) {}
+  });
+}
+
 // =====================================================================
 // 1) Smoke test : chaque écran charge sans erreur JS, screenshot capturé
 // =====================================================================
@@ -107,6 +116,7 @@ test.describe('Smoke test mobile', () => {
 // =====================================================================
 test.describe('Bulles & dialogues', () => {
   test.beforeEach(async ({ page }) => {
+    await disableVoicesBeforeGoto(page);
     await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => typeof window.goToScreen === 'function', { timeout: 10000 });
     await selectCharacterIfNeeded(page);
@@ -114,12 +124,12 @@ test.describe('Bulles & dialogues', () => {
 
   test('atelier (screen 3) : bulle Léon visible et dans le viewport', async ({ page }) => {
     await gotoScreen(page, 3);
-    // La bulle de Léon est masquée (display:none) tant que la voix narrateur
-    // n'a pas fini. On attend qu'elle redevienne visible (typewriter en cours).
+    // Sans audio, le typewriter de Léon démarre après ~2.5s (timer fallback).
+    // On attend que la bulle ait du contenu et soit visible.
     await page.waitForFunction(() => {
       const bubble = document.querySelector('#screen-3 .dialogue-bubble');
       return bubble && bubble.offsetParent !== null && bubble.textContent.length > 0;
-    }, { timeout: 20000 });
+    }, { timeout: 15000 });
 
     const r = await expectInViewport(page, '#screen-3 .dialogue-bubble', 'bulle Léon');
     expect(r.ok, r.reason).toBe(true);
@@ -137,25 +147,33 @@ test.describe('Bulles & dialogues', () => {
 // =====================================================================
 test.describe('Boutons & navigation', () => {
   test('intro → char-select via "Démarrer l\'Aventure"', async ({ page }) => {
+    await disableVoicesBeforeGoto(page);
     await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => typeof window.goToScreen === 'function');
-    // En mobile landscape le bouton peut etre hors viewport (page intro plus
-    // longue que l'ecran), on scroll explicitement avant de cliquer.
+    // L'overlay 'rotate-overlay' (Tourne ton telephone) couvre tout le viewport
+    // en mode portrait emule. En landscape Pixel 5 il est cache (display:none),
+    // mais la detection est asynchrone : on attend que le body NE contienne PAS
+    // 'needs-rotate' avant de cliquer.
+    await page.waitForFunction(
+      () => !document.body.classList.contains('needs-rotate'),
+      { timeout: 5000 }
+    ).catch(() => {});
     const btn = page.locator('text=Démarrer l\'Aventure').first();
     await btn.scrollIntoViewIfNeeded();
-    await btn.click({ force: true }); // force : evite blocage si overlay ou animation
+    await btn.click({ force: true });
     await page.waitForFunction(() => window.state && window.state.currentScreen === 1, { timeout: 5000 });
     expect(await page.evaluate(() => window.state.currentScreen)).toBe(1);
   });
 
   test('atelier (screen 3) : bouton "Oui, s\'il te plaît !" navigue vers screen 4', async ({ page }) => {
+    await disableVoicesBeforeGoto(page);
     await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => typeof window.goToScreen === 'function');
     await selectCharacterIfNeeded(page);
     await gotoScreen(page, 3);
-    // Les reponses #s3-answers n'apparaissent qu'apres la fin du typewriter
-    // de la bulle Leon (donc apres voix narrateur + voix Leon, ~10-15s).
-    await page.waitForSelector('#s3-answers.show', { timeout: 25000 });
+    // Sans audio, le timer fallback de 2.5s (narrateur) + ~2.5s (typewriter)
+    // expose les reponses. ~10s de marge.
+    await page.waitForSelector('#s3-answers.show', { timeout: 15000 });
     await page.locator('#s3-answers .btn-choice').first().click();
     await page.waitForFunction(() => window.state.currentScreen === 4, { timeout: 5000 });
     expect(await page.evaluate(() => window.state.currentScreen)).toBe(4);
