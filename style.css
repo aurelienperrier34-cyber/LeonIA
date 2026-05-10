@@ -1390,15 +1390,28 @@ body.calib-hero-mode .hero-destination::before {
     font-size: 0.7rem !important;
     line-height: 1.2 !important;
   }
-  /* Consigne descendue plus bas (dans la zone non-cliquable sous les boutons sons). */
-  body.novel-mode #screen-c3s7 .game-overlay {
-    bottom: -8px !important;
-  }
+  /* La consigne `.c3s7-hint` est sortie du flux .game-overlay et positionnee
+     en fixed en bas. Le .game-overlay (qui contient les micros cliquables)
+     garde sa position d'origine — ne PAS descendre, sinon les micros sortent
+     du viewport. */
   body.novel-mode #screen-c3s7 .c3s7-hint {
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 4px !important;
+    margin: 0 !important;
+    padding: 4px 12px !important;
     font-size: 0.78rem !important;
     line-height: 1.2 !important;
-    margin: 0 !important;
-    padding: 4px 8px !important;
+    background: rgba(20, 10, 40, 0.78) !important;
+    color: #fff !important;
+    border-radius: 10px !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    z-index: 50;
+    max-width: 92vw !important;
+    text-align: center !important;
+    white-space: nowrap !important;
   }
   /* ANTI-FLICKER mobile : desactive backdrop-filter sur le bubble pendant
      que le typewriter ecrit (la recalculation du blur a chaque char ajoute
