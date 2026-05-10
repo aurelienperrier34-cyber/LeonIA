@@ -4163,7 +4163,8 @@ function activateC2s2Game() {
 }
 
 function _doActivateC2s2Game() {
-  if (typeof playConsigne === 'function') playConsigne('c2s2');
+  // Pas de playConsigne('c2s2') : Leon donne la consigne dans son dialogue
+  // ("clique sur les 3 cercles dorés pour découvrir ses secrets !").
   // 1. Masque les dialogues
   const sceneText = document.querySelector('#screen-c2s2 .scene-text');
   if (sceneText) sceneText.style.display = 'none';
