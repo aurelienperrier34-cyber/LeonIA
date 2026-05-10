@@ -94,6 +94,17 @@ function _unlockAudio() {
          .catch(() => {});
       }
     });
+    // Priming SpeechSynthesis : sur Chrome Android, l'API doit etre activee
+    // via une utterance dans un user gesture, sinon les speak() suivants sont
+    // silencieusement ignores. On envoie une utterance quasi-muette de 1ms.
+    if (typeof window.speechSynthesis !== 'undefined') {
+      try {
+        const primer = new SpeechSynthesisUtterance(' ');
+        primer.volume = 0;
+        primer.rate = 10;
+        window.speechSynthesis.speak(primer);
+      } catch(e) {}
+    }
   } catch(e) { console.warn('[audio] unlock failed:', e.message); }
   // Detache les listeners apres le 1er trigger
   document.removeEventListener('pointerdown', _unlockAudio, true);
@@ -6968,21 +6979,27 @@ function _hoverSpeakText(text) {
   // Corrections de prononciation FR (mots que la TTS lit mal)
   // "Bot" → "Bote" pour entendre [bɔt] et non [bo]
   clean = clean.replace(/\bBot\b/g, 'Bote').replace(/\bbot\b/g, 'bote');
+  // IMPORTANT : sur Chrome Android, speak() ne marche que si appele
+  // SYNCHRONIQUEMENT dans un handler d'interaction utilisateur. Un setTimeout
+  // (meme 0ms) casse la chaine de "user gesture" et le speak est avale
+  // silencieusement. On ne fait pas de cancel() prealable pour preserver le
+  // contexte ; si une utterance precedente joue encore, on l'arrete juste
+  // apres le speak (Chromium gere bien la concurrence dans ce sens).
+  const utt = new SpeechSynthesisUtterance(clean);
+  utt.lang = 'fr-FR';
+  utt.rate = 1.0;
+  utt.pitch = 1.0;
+  utt.volume = 1;
+  try {
+    const voices = window.speechSynthesis.getVoices();
+    const fr = voices.find(v => v.lang && v.lang.startsWith('fr'));
+    if (fr) utt.voice = fr;
+  } catch(e) {}
+  window._hoverUtt = utt;
+  // Cancel toute utterance en cours AVANT le speak — sur la meme tick c'est OK
+  // sur Chrome Android (pas de setTimeout entre les deux).
   try { window.speechSynthesis.cancel(); } catch(e) {}
-  setTimeout(() => {
-    const utt = new SpeechSynthesisUtterance(clean);
-    utt.lang = 'fr-FR';
-    utt.rate = 1.0;
-    utt.pitch = 1.0;
-    utt.volume = 1;
-    try {
-      const voices = window.speechSynthesis.getVoices();
-      const fr = voices.find(v => v.lang && v.lang.startsWith('fr'));
-      if (fr) utt.voice = fr;
-    } catch(e) {}
-    window._hoverUtt = utt;
-    window.speechSynthesis.speak(utt);
-  }, 30);
+  try { window.speechSynthesis.speak(utt); } catch(e) {}
 }
 
 function _setupHoverSpeak() {
