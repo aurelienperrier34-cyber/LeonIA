@@ -11,10 +11,13 @@ Suite Playwright qui pilote un Chromium en émulation **Pixel 5** (Android) et
 
 ```bash
 npm install
-npx playwright install chromium
+npx playwright install chromium webkit
 ```
 
-(Premier lancement uniquement. `npx playwright install` télécharge le navigateur.)
+(Premier lancement uniquement. `chromium` est utilisé pour le profil Android,
+`webkit` pour le profil iPhone — les deux sont nécessaires si tu veux
+tester sur les deux devices. Tu peux aussi lancer `npx playwright install`
+sans argument pour tout télécharger.)
 
 ## Lancer
 
