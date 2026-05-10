@@ -412,7 +412,13 @@ body.map-mode .bg-scene { display: none; }
 .name-input-wrap input:focus { border-color: var(--purple); box-shadow: 0 0 15px rgba(155,93,229,0.2); }
 
 /* Buttons */
-.btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 20px; border-radius: 50px; font-family: 'Baloo 2'; font-weight: 800; font-size: 1.2rem; border: none; cursor: pointer; width: 100%; transition: all 0.2s; }
+.btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 20px; border-radius: 50px; font-family: 'Baloo 2'; font-weight: 800; font-size: 1.2rem; border: none; cursor: pointer; width: 100%; transition: all 0.2s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+/* Tous les elements cliquables : evite le double-tap delay 300ms d'Android
+   et le tap-highlight bleu. */
+button, .btn-choice, [onclick], .clickable {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
 .btn-primary { background: var(--purple); color: white; box-shadow: 0 6px 20px rgba(155,93,229,0.3); }
 .btn-primary:not(:disabled):hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(155,93,229,0.5); }
 .btn-primary:disabled { background: #CCC; box-shadow: none; cursor: not-allowed; }
@@ -1415,7 +1421,7 @@ body.novel-mode .game-overlay {
 .tap-game { margin-bottom: 20px; }
 .tap-instruction { text-align: center; font-weight: 800; color: #FFF; margin-bottom: 18px; font-size: 1.15rem; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
 .tap-options { display: flex; flex-direction: column; gap: 12px; }
-.tap-option { background: rgba(255, 255, 255, 0.85); border: 2px solid var(--purple-light); border-radius: 18px; padding: 12px 20px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); font-family: 'Nunito'; }
+.tap-option { background: rgba(255, 255, 255, 0.85); border: 2px solid var(--purple-light); border-radius: 18px; padding: 12px 20px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); font-family: 'Nunito'; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 .tap-option:not(.answered):hover { border-color: var(--purple); transform: translateX(5px); }
 .tap-option.correct { background: #D4F7E7; border-color: var(--mint); }
 .tap-option.wrong { background: #FFE5E5; border-color: var(--coral); animation: shake 0.4s; }
