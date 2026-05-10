@@ -1001,9 +1001,11 @@ body.dev-marker #entry-marker { display: block; }
     transform: translate(-100%, -70px) scale(0.4);
     opacity: 0.9;
 }
-/* Mobile : Remi/perso au depart positionne 40px plus bas (la rue mobile a un
-   horizon plus bas, le perso paraissait flotter en l'air avec bottom:-10px). */
-@media (pointer: coarse), (max-height: 500px) {
+/* MOBILE/TOUCH UNIQUEMENT : Remi/perso au depart positionne 40px plus bas
+   (la rue mobile a un horizon plus bas, le perso paraissait flotter en
+   l'air avec bottom:-10px). On utilise SEULEMENT (pointer: coarse) pour
+   garantir que les desktops avec petite fenetre ne sont pas affectes. */
+@media (pointer: coarse) {
   .hero-idle-street { bottom: -50px; }
 }
 
@@ -2991,17 +2993,20 @@ body.novel-mode #screen-c5s5 .game-overlay {
   position: relative;
 }
 
-/* Mobile landscape (et tout viewport plus large que le ratio de l'image) :
-   strategie "extended blurred background" facon Netflix/YouTube.
+/* MOBILE/TOUCH UNIQUEMENT : sur mobile landscape (viewport plus large que
+   le ratio de l'image), strategie "extended blurred background" facon
+   Netflix/YouTube. Le `(pointer: coarse)` garantit que ce CSS ne s'applique
+   PAS aux ecrans desktop, meme en 16:9 ou ultra-wide.
    - #screen-map en plein viewport, avec un fond floute via ::before
      (copie zoomee + blur de map_world.jpg).
    - .full-map-pixar a l'interieur, contraint au ratio de l'image
      (1672x941), centre. L'image et les noeuds y vivent ; les % des
      noeuds matchent toujours les spots de l'image puisque le ratio
      est preserve.
-   Resultat : aucun crop, et les bords lateraux deviennent une
-   extension visuelle floue de l'image plutot qu'un vide sombre. */
-@media (min-aspect-ratio: 16/9) {
+   Resultat : aucun crop sur mobile, et les bords lateraux deviennent
+   une extension visuelle floue de l'image plutot qu'un vide sombre.
+   Desktop : aucun changement (regle ignoree car pointer: fine). */
+@media (pointer: coarse) and (min-aspect-ratio: 16/9) {
   #screen-map.active {
     position: relative;
     overflow: hidden;
