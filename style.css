@@ -1706,8 +1706,10 @@ body.novel-mode .game-overlay {
    (sinon la bulle Léon empiète sur l'écran bleu où s'affiche la transcription IA). */
 body.novel-mode #screen-c3s7 .scene-text {
   /* padding-left 160px : laisse la pastille etoile (left:53, width:90) intacte
-     sans abaisser le bandeau (qui doit rester compact pour libererla zone des micros). */
-  padding: 18px 5vw 24px 160px !important;
+     sans abaisser le bandeau (qui doit rester compact pour libererla zone des micros).
+     padding-right 95px : evite que le mot final ne soit coupe par les boutons
+     son/CC en haut-droite (~95px de large). */
+  padding: 18px 95px 24px 160px !important;
   background: linear-gradient(to bottom, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.55) 80%, transparent 100%) !important;
 }
 body.novel-mode #screen-c3s7 .narration {
