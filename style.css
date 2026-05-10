@@ -3103,49 +3103,22 @@ body.novel-mode #screen-c5s5 .game-overlay {
   position: relative;
 }
 
-/* MOBILE/TOUCH UNIQUEMENT : strategie "extended blurred background" facon
-   Netflix/YouTube. Le `(pointer: coarse)` garantit que ce CSS ne s'applique
-   PAS aux ecrans desktop, meme en 16:9 ou ultra-wide.
-   - #screen-map en plein viewport, avec un fond floute via ::before
-     (copie zoomee + blur de map_world.jpg).
-   - .full-map-pixar a l'interieur, contraint au ratio de l'image
-     (1672x941), centre. L'image et les noeuds y vivent ; les % des
-     noeuds matchent toujours les spots de l'image puisque le ratio
-     est preserve.
-   Resultat : aucun crop sur mobile, et les bords lateraux/haut-bas
-   deviennent une extension visuelle floue de l'image plutot qu'un vide
-   sombre. Desktop : aucun changement (regle ignoree car pointer: fine).
-   Le flou s'applique en LANDSCAPE ET PORTRAIT, sinon le user voit des
-   bandes noires en alternance selon l'orientation du phone. */
+/* MOBILE/TOUCH UNIQUEMENT : la map garde son ratio (pas de crop), centree
+   dans le viewport. Les bandes hors-image restent en couleur sombre unie
+   (#1a0d2e du .full-map-pixar). Pas de flou. Desktop : aucun changement
+   (regle ignoree car pointer: fine). */
 @media (pointer: coarse) {
   #screen-map.active {
     position: relative;
     overflow: hidden;
-    /* Force la meme hauteur que .full-map-pixar (100dvh) pour eviter
-       que le ::before floute deborde sous la map. */
     height: 100dvh !important;
     min-height: 100dvh !important;
     max-height: 100dvh !important;
-  }
-  #screen-map.active::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background-image: url('assets/map_world.jpg');
-    background-size: cover;
-    background-position: center;
-    filter: blur(30px) brightness(0.55) saturate(1.1);
-    transform: scale(1.15); /* cache les bords flous */
-    pointer-events: none;
+    background: #1a0d2e;
   }
   .full-map-pixar {
     aspect-ratio: 1672 / 941 !important;
-    background: transparent !important; /* laisse passer le fond floute */
-    position: relative;
-    z-index: 1;
     margin: 0 auto !important;
-    /* Centre verticalement dans #screen-map (utile en portrait) */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
