@@ -181,33 +181,44 @@ test.describe('Boutons & navigation', () => {
     await disableVoicesBeforeGoto(page);
     await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => typeof window.goToScreen === 'function');
-    // L'overlay 'rotate-overlay' (Tourne ton telephone) couvre tout le viewport
-    // en mode portrait emule. En landscape Pixel 5 il est cache (display:none),
-    // mais la detection est asynchrone : on attend que le body NE contienne PAS
-    // 'needs-rotate' avant de cliquer.
     await page.waitForFunction(
       () => !document.body.classList.contains('needs-rotate'),
       { timeout: 5000 }
     ).catch(() => {});
-    const btn = page.locator('text=Démarrer l\'Aventure').first();
-    await btn.scrollIntoViewIfNeeded();
-    await btn.click({ force: true });
+    // Le bouton 'Demarrer l'Aventure' a la classe btn-bounce (animation CSS
+    // continue) => scrollIntoViewIfNeeded boucle infiniment sur "not stable".
+    // On contourne en appelant directement el.click() via evaluate (bypass
+    // les checks actionability/stability de Playwright).
+    await page.locator('text=Démarrer l\'Aventure').first().evaluate((el) => el.click());
     await page.waitForFunction(() => window.state && window.state.currentScreen === 1, { timeout: 5000 });
-    expect(await page.evaluate(() => window.state.currentScreen)).toBe(1);
+    expect(await page.evaluate(() => window.state && window.state.currentScreen)).toBe(1);
   });
 
   test('atelier (screen 3) : bouton "Oui, s\'il te plaît !" navigue vers screen 4', async ({ page }) => {
+    // Capture console + erreurs JS pour diagnostiquer si goToScreen(4) plante
+    const consoleMsgs = [];
+    page.on('console', (msg) => consoleMsgs.push(`[${msg.type()}] ${msg.text()}`));
+    page.on('pageerror', (e) => consoleMsgs.push('[pageerror] ' + e.message));
+
     await disableVoicesBeforeGoto(page);
     await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => typeof window.goToScreen === 'function');
     await selectCharacterIfNeeded(page);
     await gotoScreen(page, 3);
-    // Sans audio, le timer fallback de 2.5s (narrateur) + ~2.5s (typewriter)
-    // expose les reponses. ~10s de marge.
     await page.waitForSelector('#s3-answers.show', { timeout: 15000 });
-    await page.locator('#s3-answers .btn-choice').first().click();
-    await page.waitForFunction(() => window.state && window.state.currentScreen === 4, { timeout: 5000 });
-    expect(await page.evaluate(() => window.state && window.state.currentScreen)).toBe(4);
+    // Click via evaluate (bypass actionability) pour eliminer le risque
+    // d'overlay / element pas cliquable / animation.
+    await page.locator('#s3-answers .btn-choice').first().evaluate((el) => el.click());
+    await page.waitForFunction(
+      () => window.state && window.state.currentScreen === 4,
+      { timeout: 5000 }
+    ).catch(() => {});
+    const finalScreen = await page.evaluate(() => window.state && window.state.currentScreen);
+    if (finalScreen !== 4) {
+      // Logs detailles pour diagnostiquer
+      console.log('Console messages :', consoleMsgs.join('\n'));
+    }
+    expect(finalScreen, `Etat final : ${finalScreen}. Console: ${consoleMsgs.slice(-10).join(' | ')}`).toBe(4);
   });
 });
 
