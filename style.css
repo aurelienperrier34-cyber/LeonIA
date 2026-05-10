@@ -2984,7 +2984,7 @@ body.novel-mode #screen-c5s5 .game-overlay {
 .full-map-pixar {
   width: 100vw !important;
   max-width: none !important;
-  height: 100vh !important;
+  height: 100dvh !important;
   margin: 0 !important;
   background: #1a0d2e !important;
   overflow: hidden;
