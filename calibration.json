@@ -21,6 +21,28 @@
       "height": 35.5
     }
   },
+  "hero4Pos.mobile": {
+    "fille": {
+      "right": 0.875,
+      "bottom": -5,
+      "height": 47.5
+    },
+    "garcon": {
+      "right": 2.7474,
+      "bottom": -2.5,
+      "height": 44
+    },
+    "renard": {
+      "right": 0.875,
+      "bottom": -5,
+      "height": 47.5
+    },
+    "robot": {
+      "right": 4.15626,
+      "bottom": -3,
+      "height": 35.5
+    }
+  },
   "starCornerPos": {
     "top": 41,
     "left": 53
