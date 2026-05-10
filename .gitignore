@@ -45,3 +45,11 @@ desktop.ini
 # === Claude/Cursor caches ===
 .claude/
 .cursor/
+
+# === Tests Playwright ===
+node_modules/
+tests/screenshots/
+tests/playwright-report/
+tests/test-results/
+playwright-report/
+test-results/
