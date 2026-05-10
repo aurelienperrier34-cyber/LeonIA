@@ -11,7 +11,7 @@
     "tableau": 2,
     "format": "video",
     "narrateur": "Léon demande à Bot la couleur du ciel. Aussitôt, sur l'écran-visage de Bot, des lettres apparaissent et forment une réponse !",
-    "leon": "« Tu vois, Bot a compris ma question et il répond : c'est ça, l'intelligence artificielle qui parle ! »",
+    "leon": "« Tu vois, Bot a compris ma question et il répond : c'est ça, l'intelligence artificielle qui parle ! À toi maintenant — pose 3 questions à Bot, tape ou parle ! »",
     "prompt_image": "3D animated cartoon Pixar style, friendly old wizard-inventor leaning toward small cartoon robot Bot with a curious smile, asking a question, (((Bot's rectangular screen face displays the EXACT text \"Le ciel est bleu !\" in clean readable cartoon letters))), the text MUST be spelled EXACTLY 'Le ciel est bleu !' with correct French spelling — verify each letter, no typos, no missing characters, the words 'Le' 'ciel' 'est' 'bleu' must be perfectly written and clearly legible, (((glowing teal antenna))), (((white and turquoise body))), magical library background with floating books, glowing speech bubbles and letters drifting in the air around them, sparkles, warm lighting, 16:9 aspect ratio",
     "prompt_animation": "Léon's mouth clearly opens and closes in a visible talking motion as he asks his question, leaning in with raised eyebrow and a curious expression. Bot's antenna pulses, the colorful letters 'Le ciel est BLEU !' on his screen-face shimmer and glow brighter, small speech bubbles puff outward and drift up around him, sparkles twinkle, static camera with subtle breathing motion."
   },
@@ -19,7 +19,7 @@
     "tableau": 3,
     "format": "video",
     "narrateur": "Mais comment Bot connaît-il toutes ces réponses ? Léon t'explique : Bot a 'lu' des millions de livres avant de pouvoir parler avec toi !",
-    "leon": "« Pour devenir si bavard, Bot a avalé plein de livres, plein de textes, plein d'histoires ! C'est en lisant qu'il a appris à parler. »",
+    "leon": "« Pour devenir si bavard, Bot a avalé plein de livres, plein de textes, plein d'histoires ! C'est en lisant qu'il a appris à parler. Tape sur le livre pour aider Bot à apprendre ! »",
     "prompt_image": "3D animated cartoon Pixar style, friendly old wizard-inventor with arms wide open in an explanatory gesture, standing beside small cartoon robot Bot, (((Bot has a rectangular screen face with happy eyes))), (((glowing teal antenna))), (((white and turquoise body))), surrounded by hundreds of small books streaming and swirling toward Bot in a magical cascade, glowing pages and letters flying out of the books, magical library background, warm lighting, sense of learning and wonder, 16:9 aspect ratio",
     "prompt_animation": "Léon's mouth clearly opens and closes with strong visible lip movement as he speaks expressively, gesturing animatedly with both hands open. Bot's screen-face eyes blink curiously, small books and pages stream and swirl in a magical cascade flowing toward Bot, glowing letters drift across the air, sparkles trail the books, static camera."
   },
@@ -35,7 +35,7 @@
     "tableau": 5,
     "format": "video",
     "narrateur": "Léon prend un ton plus sérieux. Il s'approche de toi pour t'expliquer une chose importante au sujet de Bot...",
-    "leon": "« Attention : même si Bot parle bien, ce n'est PAS un ami. Il n'a pas de cœur, il ne ressent rien. Il fait juste semblant de comprendre. »",
+    "leon": "« Attention : même si Bot parle bien, ce n'est PAS un ami. Il n'a pas de cœur, il ne ressent rien. Il fait juste semblant de comprendre. Aide-moi à retrouver les 4 paires question/réponse de Bot ! »",
     "prompt_image": "3D animated cartoon Pixar style, friendly old wizard-inventor kneeling down to viewer level with a serious gentle expression, hand placed on his own heart, gesturing softly toward small cartoon robot Bot in the background who appears slightly more mechanical with neutral straight-line eyes on his rectangular screen-face, (((glowing teal antenna))), (((white and turquoise body))), a small crossed-out heart icon floating between them as a visual symbol, magical library background with soft warm lighting, sincere educational moment, 16:9 aspect ratio",
     "prompt_animation": "Léon's mouth clearly opens and closes with visible lip movement as he speaks seriously and warmly to the viewer, his expression becomes gentle and concerned, he leans slightly forward and gestures softly with one hand to emphasize his point, the magical library background gently breathes with subtle ambient motion, fairy lights twinkle, static camera with very subtle push-in."
   },

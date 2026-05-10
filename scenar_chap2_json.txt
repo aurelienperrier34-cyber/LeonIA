@@ -9,7 +9,7 @@
     "tableau": 2,
     "format": "video",
     "narrateur": "Au centre de la pièce, une machine étrange flotte au-dessus d'un établi.",
-    "leon": "« Cette machine peut dessiner avec des mots ! On lui parle, et elle crée une image ! »"
+    "leon": "« Cette machine peut dessiner avec des mots ! On lui parle, et elle crée une image. Mais d'abord, promène la loupe sur la machine pour découvrir ses 3 modules cachés ! »"
   },
   {
     "tableau": 3,
