@@ -1229,6 +1229,47 @@ body.calib-hero-mode .hero-destination::before {
     font-size: 0.9rem;
     line-height: 1.35;
   }
+  /* Screen 4 (machine mysterieuse) : meme compactage de la bulle Leon
+     (scene-4-text est deja a gauche en absolute, mais la bulle deborde
+     encore vers le centre ou Leon apparait). */
+  #screen-4 .scene-4-text .narration {
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+    line-height: 1.25;
+  }
+  #screen-4 .scene-4-text .dialogue-who {
+    font-size: 0.7rem;
+    margin-bottom: 2px;
+  }
+  #screen-4 .scene-4-text .dialogue-bubble {
+    max-width: min(55%, 360px);
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+  /* Reduit les pastilles globales (carte + etoiles) qui couvrent
+     contenu sur petit ecran. */
+  .btn-back-map-global {
+    padding: 4px 10px !important;
+    font-size: 11px !important;
+    border-width: 1.5px !important;
+  }
+  .street-star-corner,
+  .global-star-corner {
+    padding: 4px 10px 4px 8px !important;
+    min-width: 60px !important;
+    min-height: 28px !important;
+    border-radius: 18px !important;
+    gap: 4px !important;
+  }
+  .street-star-corner .ssc-icon,
+  .global-star-corner .ssc-icon {
+    font-size: 1rem !important;
+  }
+  .street-star-corner .ssc-count,
+  .global-star-corner .ssc-count {
+    font-size: 0.85rem !important;
+  }
 }
 .narration { font-size: 1.05rem; color: #444; line-height: 1.5; margin-bottom: 15px; font-weight: 600; }
 .dialogue-who { font-size: 0.9rem; color: var(--purple-dark); font-weight: 800; margin-bottom: 5px; }
