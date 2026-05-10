@@ -6932,8 +6932,6 @@ function renderAtelierModal() {
 // re-narrer. Garde la fonction en place (no-op) pour ne pas casser les 19 appels
 // dans le code. Pour reactiver plus tard, decommenter le corps.
 function playConsigne(consigneId) {
-  return; // <-- a retirer pour reactiver l'audio narrateur des consignes
-  /*
   if (!consigneId) return;
   if (typeof voicesEnabled === 'function' && !voicesEnabled()) return;
   if (window._consigneAudio) {
@@ -6944,7 +6942,6 @@ function playConsigne(consigneId) {
     window._consigneAudio.volume = 1;
     window._consigneAudio.play().catch(() => {});
   } catch(e) {}
-  */
 }
 
 // ============================================================
