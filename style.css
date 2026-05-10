@@ -1292,6 +1292,32 @@ body.calib-hero-mode .hero-destination::before {
     font-size: 0.85rem !important;
     line-height: 1.3 !important;
   }
+  /* C2S2 mobile : bulle Leon "Regarde bien la toile..." passee tout en bas
+     (juste au-dessus du bouton Continuer en bottom:20+~45=65px) pour
+     liberer le HAUT et laisser apparaitre la consigne du mini-jeu
+     (#c2s2-game centree top:18px). La narration reste en haut (regle
+     globale v226 inchangee). */
+  body.novel-mode #screen-c2s2 .dialogue-who,
+  body.novel-mode #screen-c2s2 .dialogue-bubble {
+    position: fixed !important;
+    left: 12px !important;
+    top: auto !important;
+    right: auto !important;
+    width: auto !important;
+    max-width: 70% !important;
+    z-index: 50;
+  }
+  body.novel-mode #screen-c2s2 .dialogue-who {
+    bottom: 110px !important;
+    margin: 0 !important;
+    font-size: 0.7rem !important;
+  }
+  body.novel-mode #screen-c2s2 .dialogue-bubble {
+    bottom: 75px !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+    line-height: 1.3 !important;
+  }
   /* Pastille consigne du mini-jeu C1S4 ("qu'a appris la machine ?") : en
      nowrap, elle s'etend sur toute la largeur en mobile et chevauche
      pastilles a gauche + boutons a droite. On autorise le wrap, on
