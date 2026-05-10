@@ -3137,6 +3137,23 @@ body.calib-map-mode .full-map-pixar::before {
   line-height: 1 !important;
 }
 
+/* MOBILE/TOUCH UNIQUEMENT : reduit les icones rondes de chapitre.
+   Position des noeuds inchangee (translate -50%/-50% sur leur center%).
+   PC reste a 64px. */
+@media (pointer: coarse) {
+  .full-map-pixar .node-island {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 1.4rem !important;
+    border-width: 3px !important;
+  }
+  .full-map-pixar .node-island::after {
+    width: 38px !important;
+    height: 8px !important;
+    bottom: -9px !important;
+  }
+}
+
 /* === Map Pixar : avatar transparent + halo doré pour le faire ressortir === */
 .full-map-pixar .map-candy-avatar {
   background: transparent !important;
