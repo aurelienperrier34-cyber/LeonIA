@@ -1413,12 +1413,18 @@ body.calib-hero-mode .hero-destination::before {
     text-align: center !important;
     white-space: nowrap !important;
   }
-  /* ANTI-FLICKER mobile : desactive backdrop-filter sur le bubble pendant
-     que le typewriter ecrit (la recalculation du blur a chaque char ajoute
-     etait la cause des "lettres doublees/triplees" visibles sur mobile). */
+  /* ANTI-FLICKER mobile : pendant le typewriter, on neutralise les sources
+     de re-render coûteux qui causaient les "lettres doublees/triplees" sur
+     Android :
+     - backdrop-filter (re-blur du fond a chaque char ajoute)
+     - le pseudo-element ::before (la petite fleche/queue de la bulle) qui
+       herite du backdrop-filter et doit etre re-rendu en parallele. */
   body.novel-mode .dialogue-bubble.typewriting {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+  }
+  body.novel-mode .dialogue-bubble.typewriting::before {
+    display: none !important;
   }
   /* C2S5 / C2S6 mobile : compacte la bulle Leon (deja en bottom-left) et
      descend/reduit la pastille consigne, pour liberer le centre ou

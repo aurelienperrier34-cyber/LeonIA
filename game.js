@@ -2562,23 +2562,11 @@ function playStoryScene(screenId, opts = {}) {
       leonAudio.addEventListener('ended', fireLeonEnd, { once: true });
     }
 
-    // SUR MOBILE TACTILE + SCREEN C3S7 UNIQUEMENT : on skip le typewriter visuel.
-    // C3S7 a des sound-buttons animes (pulse infini) en parallele, qui combines
-    // au re-blur backdrop-filter du bubble + re-layout width:fit-content a
-    // chaque char produisent les "lettres doublees/triplees".
-    // Sur les autres ecrans mobile, le typewriter classique fonctionne bien.
-    const isTouchOnly = (typeof window !== 'undefined' && window.matchMedia
-      && window.matchMedia('(pointer: coarse) and (hover: none)').matches);
-    if (isTouchOnly && screenId === 'c3s7') {
-      bubble.innerHTML = fullHTML;
-      bubble.style.opacity = '0';
-      bubble.style.transition = 'opacity 0.35s ease';
-      requestAnimationFrame(() => { bubble.style.opacity = '1'; });
-      if (actions) setTimeout(() => actions.classList.add('show'), 600);
-      if (opts.onComplete) opts.onComplete();
-      // fireLeonEnd sera declenche par leonAudio 'ended' (ou fallback ailleurs)
-      return;
-    }
+    // Le typewriter classique fonctionne sur tous les ecrans (le bug des
+    // "lettres doublees" sur C3S7 est fixe via CSS : la classe .typewriting
+    // desactive backdrop-filter ET cache le pseudo-element ::before — la
+    // petite fleche/queue de la bulle qui herite du backdrop-filter et causait
+    // le re-render couteux a chaque char).
 
     // DESKTOP : pre-mesure pour anti-flicker
     try {
