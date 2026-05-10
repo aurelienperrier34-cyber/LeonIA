@@ -7035,8 +7035,13 @@ function _setupHoverSpeak() {
     //   La voix se declenche en parallele pour les enfants qui ne lisent pas.
     if (target.classList.contains('prompt-word')) return;
     if (target.classList.contains('s4-card') || target.classList.contains('vf-btn')) {
-      // Lit le label en parallele, ne bloque pas la selection
-      const textParallel = target.dataset.speak || target.textContent;
+      // Lit le label en parallele, ne bloque pas la selection.
+      // Pour .s4-card on prefere dataset.label (juste le mot, sans l'emoji)
+      // car certains emojis (ex: '〰️' wavy dash) ralentissent la TTS Android
+      // et faisaient perdre le 1er tap → l'utilisateur devait re-tapper.
+      const textParallel = target.dataset.speak
+        || target.dataset.label
+        || target.textContent;
       _hoverSpeakText(textParallel);
       return;
     }
@@ -7736,7 +7741,7 @@ function completeC3s5Game() {
 // "tree" est gardé comme nom interne mais représente "feature valide du chat" (refactor minimal)
 const S4_CARDS = [
   { emoji: '🐾', tree: true,  label: 'pattes' },
-  { emoji: '➰', tree: true,  label: 'moustaches' },
+  { emoji: '〰️', tree: true,  label: 'moustaches' },
   { emoji: '👂', tree: true,  label: 'oreilles pointues' },
   { emoji: '➿', tree: true,  label: 'queue' },
   { emoji: '🪶', tree: false, label: 'plumes' },
