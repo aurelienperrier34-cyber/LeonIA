@@ -3103,12 +3103,15 @@ body.novel-mode #screen-c5s5 .game-overlay {
   position: relative;
 }
 
-/* MOBILE LANDSCAPE WIDE (viewport plus large que la map 1672/941) :
-   flou Netflix-style uniquement sur les COTES (gauche/droite). La map
-   prend toute la hauteur (height:100dvh), donc PAS de bande en haut/bas
-   donc pas de flou en haut/bas. Le ::before couvre tout #screen-map et
-   le flou n'est visible que sur les bandes laterales. */
-@media (pointer: coarse) and (min-aspect-ratio: 1672/941) {
+/* MOBILE/TOUCH UNIQUEMENT : la map fait TOUJOURS toute la hauteur du
+   viewport (height:100dvh, width auto via aspect-ratio).
+   - Si viewport plus large que la map → bandes sur les COTES, comblees
+     par le flou Netflix (::before).
+   - Si viewport plus etroit (portrait) → la map deborde lateralement,
+     overflow:hidden masque l'excedent, mais aucune bande en haut/bas.
+   Aucun flou n'est visible "sous" la map car la map fill toujours la
+   hauteur totale. Desktop : aucun changement (pointer:fine). */
+@media (pointer: coarse) {
   #screen-map.active {
     position: relative;
     overflow: hidden;
@@ -3132,34 +3135,12 @@ body.novel-mode #screen-c5s5 .game-overlay {
     aspect-ratio: 1672 / 941 !important;
     height: 100dvh !important;
     width: auto !important;
-    max-width: 100vw !important;
     margin: 0 auto !important;
     background: transparent !important;
     position: relative;
     z-index: 1;
-  }
-}
-
-/* MOBILE PORTRAIT ou LANDSCAPE ETROIT (viewport plus haut que la map) :
-   PAS de flou (le user n'en veut pas sous la map). La map est centree au
-   ratio, les bandes haut/bas sont en sombre uni #1a0d2e. */
-@media (pointer: coarse) and (max-aspect-ratio: 1672/941) {
-  #screen-map.active {
-    position: relative;
-    overflow: hidden;
-    height: 100dvh !important;
-    background: #1a0d2e;
-  }
-  .full-map-pixar {
-    aspect-ratio: 1672 / 941 !important;
-    width: 100vw !important;
-    height: auto !important;
-    max-height: 100dvh !important;
-    margin: 0 auto !important;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute !important;
+    /* Pas de max-width:100vw : on veut autoriser le debordement lateral
+       en portrait plutot que d'introduire des bandes en haut/bas. */
   }
 }
 .full-map-pixar .map-bg-img {
