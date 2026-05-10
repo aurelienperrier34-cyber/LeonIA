@@ -1382,13 +1382,13 @@ body.calib-hero-mode .hero-destination::before {
   body.novel-mode #screen-c3s7 .dialogue-who {
     top: 145px !important;
     margin: 0 !important;
-    font-size: 0.62rem !important;
+    font-size: 0.65rem !important;
   }
   body.novel-mode #screen-c3s7 .dialogue-bubble {
     top: 165px !important;
-    padding: 5px 8px !important;
-    font-size: 0.7rem !important;
-    line-height: 1.2 !important;
+    padding: 8px 10px !important;
+    font-size: 0.88rem !important;
+    line-height: 1.35 !important;
   }
   /* La consigne `.c3s7-hint` est sortie du flux .game-overlay et positionnee
      en fixed en bas. Le .game-overlay (qui contient les micros cliquables)
