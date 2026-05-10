@@ -1318,6 +1318,47 @@ body.calib-hero-mode .hero-destination::before {
     font-size: 0.85rem !important;
     line-height: 1.3 !important;
   }
+  /* C2S5 / C2S6 mobile : compacte la bulle Leon (deja en bottom-left) et
+     descend/reduit la pastille consigne, pour liberer le centre ou
+     s'affichent les 6 images. Le user voit que sinon le texte/consigne
+     cachent les images du bas. */
+  body.novel-mode #screen-c2s5 .scene-text,
+  body.novel-mode #screen-c2s6 .scene-text {
+    width: 30% !important;
+    max-width: 270px !important;
+    min-width: 180px !important;
+    bottom: 6px !important;
+    left: 8px !important;
+    padding: 6px 10px !important;
+  }
+  body.novel-mode #screen-c2s5 .scene-text .narration,
+  body.novel-mode #screen-c2s6 .scene-text .narration {
+    font-size: 0.72rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 3px !important;
+  }
+  body.novel-mode #screen-c2s5 .scene-text .dialogue-who,
+  body.novel-mode #screen-c2s6 .scene-text .dialogue-who {
+    font-size: 0.65rem !important;
+    margin-bottom: 1px !important;
+  }
+  body.novel-mode #screen-c2s5 .scene-text .dialogue-bubble,
+  body.novel-mode #screen-c2s6 .scene-text .dialogue-bubble {
+    font-size: 0.75rem !important;
+    line-height: 1.25 !important;
+  }
+  /* Pastille consigne C2S5 ('Trouve les 3 defauts') : descendre et reduire */
+  #screen-c2s5 .c2s5-defect-game {
+    bottom: 6px !important;
+    right: 8px !important;
+    padding: 6px 12px !important;
+    gap: 8px !important;
+    font-size: 0.8rem !important;
+  }
+  #screen-c2s5 .c2s5-defect-game .tap-instruction,
+  #screen-c2s5 .c2s5-defect-game .c2s5-progress {
+    font-size: 0.78rem !important;
+  }
   /* Pastille consigne du mini-jeu C1S4 ("qu'a appris la machine ?") : en
      nowrap, elle s'etend sur toute la largeur en mobile et chevauche
      pastilles a gauche + boutons a droite. On autorise le wrap, on
