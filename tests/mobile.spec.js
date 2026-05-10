@@ -80,7 +80,7 @@ test.describe('Smoke test mobile', () => {
     });
     page._jsErrors = errors;
 
-    await page.goto('/index.html');
+    await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => typeof window.goToScreen === 'function', { timeout: 10000 });
     await selectCharacterIfNeeded(page);
   });
@@ -107,7 +107,7 @@ test.describe('Smoke test mobile', () => {
 // =====================================================================
 test.describe('Bulles & dialogues', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/index.html');
+    await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => typeof window.goToScreen === 'function', { timeout: 10000 });
     await selectCharacterIfNeeded(page);
   });
@@ -137,7 +137,7 @@ test.describe('Bulles & dialogues', () => {
 // =====================================================================
 test.describe('Boutons & navigation', () => {
   test('intro → char-select via "Démarrer l\'Aventure"', async ({ page }) => {
-    await page.goto('/index.html');
+    await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => typeof window.goToScreen === 'function');
     // En mobile landscape le bouton peut etre hors viewport (page intro plus
     // longue que l'ecran), on scroll explicitement avant de cliquer.
@@ -149,7 +149,7 @@ test.describe('Boutons & navigation', () => {
   });
 
   test('atelier (screen 3) : bouton "Oui, s\'il te plaît !" navigue vers screen 4', async ({ page }) => {
-    await page.goto('/index.html');
+    await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => typeof window.goToScreen === 'function');
     await selectCharacterIfNeeded(page);
     await gotoScreen(page, 3);
@@ -167,7 +167,7 @@ test.describe('Boutons & navigation', () => {
 // =====================================================================
 test.describe('Audio', () => {
   test('atelier (screen 3) : voix narrateur déclenchée', async ({ page }) => {
-    await page.goto('/index.html');
+    await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => typeof window.goToScreen === 'function');
     await selectCharacterIfNeeded(page);
 
@@ -199,7 +199,7 @@ test.describe('Audio', () => {
 // =====================================================================
 test.describe('Calibrations mobile vs desktop', () => {
   test('saveStarCornerPosition sur mobile écrit dans starCornerPos.mobile', async ({ page }) => {
-    await page.goto('/index.html');
+    await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => typeof window.saveStarCornerPosition === 'function', { timeout: 10000 });
 
     await page.evaluate(() => {
