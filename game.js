@@ -5437,7 +5437,7 @@ const C5_MODULE_DATA = {
   speak: { emoji: '💬', name: 'Parler',   video: 'assets/c5s5_robot/robot_speak.mp4',
            demo: 'Je peux te parler, te raconter des histoires, et répondre à tes questions !' },
   think: { emoji: '🧠', name: 'Réfléchir', video: 'assets/c5s5_robot/robot_think.mp4',
-           demo: 'Hmm… 3 plus 4 égale 7. 8 fois 8 égale 64 ! Je suis très fort en calcul.' },
+           demo: 'Hmm… 3 plus 4 font 7. 8 fois 8 font 64 ! Je suis très fort en calcul.' },
   act:   { emoji: '💪', name: 'Agir',      video: 'assets/c5s5_robot/robot_act.mp4',
            demo: 'Je peux ranger ta chambre, attraper des objets, et même cuisiner !' }
 };
