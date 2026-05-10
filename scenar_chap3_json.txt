@@ -19,7 +19,7 @@
     "tableau": 3,
     "format": "video",
     "narrateur": "Léon prononce le mot « bonjour ». Sur l'écran, les ondes dansent puis... le mot s'écrit tout seul !",
-    "leon": "« Vois ! Elle a compris que je disais 'bonjour'. Elle a transformé ma voix en lettres ! »",
+    "leon": "« Vois ! Elle a compris que je disais 'bonjour'. Elle a transformé ma voix en lettres ! À toi maintenant — aide la machine à écrire le mot ! »",
     "prompt_image": "3D animated cartoon Pixar style, close-up of a magical holographic screen showing animated sound waves transforming into the word 'BONJOUR' written in glowing letters, a floating microphone next to it, sparkles and glowing particles, warm magical workshop background, no people visible, 16:9 aspect ratio",
     "prompt_animation": "The glowing word 'BONJOUR' pulses brightly with golden magical light, the neon pink and blue sound waves around it ripple and dance rhythmically, the floating microphone vibrates gently, scattered glowing letters drift in the background, sparkles burst across the screen, slow cinematic push-in."
   },
@@ -35,7 +35,7 @@
     "tableau": 5,
     "format": "video",
     "narrateur": "Une grande machine pleine de touches dorées s'allume seule et joue une mélodie fantastique. Des notes colorées s'envolent !",
-    "leon": "« L'IA peut même INVENTER de la musique ! Elle a écouté plein de chansons, et maintenant elle compose elle-même ! »",
+    "leon": "« L'IA peut même INVENTER de la musique ! Elle a écouté plein de chansons, et maintenant elle compose elle-même ! Choisis 3 notes — l'IA va inventer une chanson rien que pour toi ! »",
     "prompt_image": "3D animated cartoon Pixar style, the friendly old wizard-inventor character amazed by a magical floating piano-organ machine that plays itself, glowing colorful musical notes flying out into the air, sparkles and music staves swirling around, magical sound laboratory, warm lighting, 16:9 aspect ratio",
     "prompt_animation": "Colorful musical notes drift and float gently upward through the air, sparkles twinkle softly, Léon gestures animatedly toward the piano with raised hand and speaks with wide-eyed wonder, static camera. Piano remains crisp and stable."
   },
