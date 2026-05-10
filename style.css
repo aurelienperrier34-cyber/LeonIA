@@ -1366,8 +1366,9 @@ body.calib-hero-mode .hero-destination::before {
      Consigne 'clique sur chaque micro' descendue. */
   body.novel-mode #screen-c3s7 .scene-text {
     /* Compacte le bandeau (regle d'origine en 18px haut/24px bas) pour
-       laisser de la place aux micros. La narration reste seule dans ce bandeau. */
-    padding: 8px 5vw 8px 160px !important;
+       laisser de la place aux micros. La narration reste seule dans ce bandeau.
+       padding-right:95px pour ne pas etre coupe par les boutons son/CC. */
+    padding: 8px 95px 8px 160px !important;
   }
   body.novel-mode #screen-c3s7 .dialogue-who,
   body.novel-mode #screen-c3s7 .dialogue-bubble {
