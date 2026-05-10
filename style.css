@@ -3133,14 +3133,21 @@ body.novel-mode #screen-c5s5 .game-overlay {
   }
   .full-map-pixar {
     aspect-ratio: 1672 / 941 !important;
-    height: 100dvh !important;
+    /* Position absolue avec top:0 + bottom:0 force l'element a fill exactement
+       la hauteur du parent #screen-map (pas de calcul dvh fragile, pas de
+       sub-pixel rounding). La largeur est calculee via aspect-ratio. */
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%);
+    height: auto !important;
     width: auto !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
     background: transparent !important;
-    position: relative;
     z-index: 1;
-    /* Pas de max-width:100vw : on veut autoriser le debordement lateral
-       en portrait plutot que d'introduire des bandes en haut/bas. */
+    /* Pas de max-width:100vw : autorise le debordement lateral en portrait
+       plutot que d'introduire des bandes verticales. */
   }
 }
 .full-map-pixar .map-bg-img {
