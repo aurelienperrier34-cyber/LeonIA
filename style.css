@@ -1366,8 +1366,9 @@ body.calib-hero-mode .hero-destination::before {
      Consigne 'clique sur chaque micro' descendue. */
   body.novel-mode #screen-c3s7 .scene-text {
     /* Compacte le bandeau (regle d'origine en 18px haut/24px bas) pour
-       laisser de la place aux micros. La narration reste seule dans ce bandeau. */
-    padding: 8px 5vw 8px 160px !important;
+       laisser de la place aux micros. La narration reste seule dans ce bandeau.
+       padding-right:95px pour ne pas etre coupe par les boutons son/CC. */
+    padding: 8px 95px 8px 160px !important;
   }
   body.novel-mode #screen-c3s7 .dialogue-who,
   body.novel-mode #screen-c3s7 .dialogue-bubble {
@@ -1390,28 +1391,17 @@ body.calib-hero-mode .hero-destination::before {
     font-size: 0.88rem !important;
     line-height: 1.35 !important;
   }
-  /* La consigne `.c3s7-hint` est sortie du flux .game-overlay et positionnee
-     en fixed en bas. Le .game-overlay (qui contient les micros cliquables)
-     garde sa position d'origine — ne PAS descendre, sinon les micros sortent
-     du viewport. */
+  /* Consigne C3S7 reste dans le flux du game-overlay (sous les sound-buttons,
+     au-dessus du bouton 'Au quiz'). Compactee pour ne pas prendre trop de
+     place et ne pas recouvrir les micros cliquables.
+     Note : on ne touche PAS a la position du .game-overlay (qui contient
+     les sound-buttons). */
   body.novel-mode #screen-c3s7 .c3s7-hint {
-    position: fixed !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    bottom: 4px !important;
-    margin: 0 !important;
-    padding: 4px 12px !important;
+    margin: 2px 0 6px !important;
+    padding: 4px 10px !important;
     font-size: 0.78rem !important;
     line-height: 1.2 !important;
-    background: rgba(20, 10, 40, 0.78) !important;
-    color: #fff !important;
-    border-radius: 10px !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-    z-index: 50;
-    max-width: 92vw !important;
     text-align: center !important;
-    white-space: nowrap !important;
   }
   /* ANTI-FLICKER mobile : pendant le typewriter, on neutralise les sources
      de re-render coûteux qui causaient les "lettres doublees/triplees" sur

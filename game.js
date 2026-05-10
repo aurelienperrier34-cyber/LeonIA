@@ -2551,37 +2551,6 @@ function playStoryScene(screenId, opts = {}) {
     if (who) who.style.display = '';
 
     // Hook : démarre la vidéo de fond pile au moment où Léon commence à parler.
-    if (typeof opts.onLeonStart === 'function' && !opts._onLeonStartFiredEarly) {
-      try { opts.onLeonStart(); } catch(e) { console.warn('[karaoke] onLeonStart error', e); }
-    }
-    opts._onLeonStartFiredEarly = false;
-
-    if (voicesEnabled() && leonAudio) {
-      leonAudio.currentTime = 0;
-      playSafely(leonAudio, 'leon_' + screenId);
-      leonAudio.addEventListener('ended', fireLeonEnd, { once: true });
-    }
-
-    // Le typewriter classique fonctionne sur tous les ecrans (le bug des
-    // "lettres doublees" sur C3S7 est fixe via CSS : la classe .typewriting
-    // desactive backdrop-filter ET cache le pseudo-element ::before — la
-    // petite fleche/queue de la bulle qui herite du backdrop-filter et causait
-    // le re-render couteux a chaque char).
-
-    // DESKTOP : pre-mesure pour anti-flicker
-    try {
-      bubble.style.visibility = 'hidden';
-      bubble.innerHTML = fullHTML;
-      const w = bubble.offsetWidth;
-      const h = bubble.offsetHeight;
-      bubble.style.minWidth  = w + 'px';
-      bubble.style.minHeight = h + 'px';
-      bubble.textContent = '';
-      bubble.style.visibility = '';
-      bubble.classList.add('typewriting');
-    } catch(e) {}
-
-    // Hook : démarre la vidéo de fond pile au moment où Léon commence à parler.
     // Si on l'a déjà tiré juste après la fin du narrateur (chemin "narrateur
     // d'abord"), on ne le rejoue pas pour éviter un double currentTime=0.
     if (typeof opts.onLeonStart === 'function' && !opts._onLeonStartFiredEarly) {
@@ -2594,6 +2563,23 @@ function playStoryScene(screenId, opts = {}) {
       playSafely(leonAudio, 'leon_' + screenId);
       leonAudio.addEventListener('ended', fireLeonEnd, { once: true });
     }
+
+    // ANTI-FLICKER mobile : pre-calcule la taille finale du bubble + active la
+    // classe .typewriting qui (en CSS) desactive backdrop-filter et cache le
+    // pseudo-element ::before. C'est la cause des "lettres doublees" sur
+    // mobile : a chaque char ajoute par le typewriter, le browser doit
+    // re-blur le fond du bubble ET de sa fleche ::before en parallele.
+    try {
+      bubble.style.visibility = 'hidden';
+      bubble.innerHTML = fullHTML;
+      const w = bubble.offsetWidth;
+      const h = bubble.offsetHeight;
+      bubble.style.minWidth  = w + 'px';
+      bubble.style.minHeight = h + 'px';
+      bubble.textContent = '';
+      bubble.style.visibility = '';
+      bubble.classList.add('typewriting');
+    } catch(e) {}
 
     let i = 0;
     const duration = (leonAudio && isFinite(leonAudio.duration) && leonAudio.duration > 0)
