@@ -1025,7 +1025,14 @@ body.dev-marker #entry-marker { display: block; }
     transform: translate(-50%, -50%);
     background: transparent; border: none; cursor: pointer; z-index: 10;
     display: flex; flex-direction: column; align-items: center; gap: 8px;
+    /* Mobile : evite le cadre bleu de tap highlight Chrome Android */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+    outline: none;
 }
+.neon-shop-target:focus,
+.neon-shop-target:active { outline: none; }
 /* Variante invisible : zone cliquable sans contenu visuel
    (le texte de l'enseigne est deja dans rue.mp4) */
 .neon-shop-invisible {
