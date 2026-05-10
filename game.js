@@ -1156,7 +1156,7 @@ function goToScreen(screenIdentifier, force) {
       if (_s5Revealed) return; _s5Revealed = true;
       revealS5Quiz();
       // Lit la consigne narrateur quand le quizz s'affiche (apres Leon)
-      if (typeof playConsigne === 'function') playConsigne('s5');
+      // Pas de playConsigne('s5') : Leon dit deja la consigne dans son dialogue.
     };
     const _s5Net = setTimeout(() => safeRevealS5(), 6000);
 
@@ -1472,7 +1472,7 @@ function goToScreen(screenIdentifier, force) {
         // le narrateur introduit puis Leon donne la consigne en karaoke.
         c2s7: {
           narratorAudio: 'assets/chapitre_2/t7_narrateur.mp3', leonAudio: 'assets/chapitre_2/t7_leon.mp3',
-          onLeonEnd: () => { if (typeof playConsigne === 'function') playConsigne('c2s7'); }
+          onLeonEnd: () => { /* Pas de playConsigne('c2s7') : Leon dit deja la consigne. */ }
         },
         // Chapitre 3 : audios produits par l'agent (t{n}_narrateur.mp3 / t{n}_leon.mp3)
         // onLeonStart démarre la vidéo SEULEMENT quand Léon commence à parler
@@ -1523,7 +1523,7 @@ function goToScreen(screenIdentifier, force) {
         // c3s7 : mini-jeu, mais on garde le karaoké narrateur+Léon (image fixe)
         c3s7: {
           narratorAudio: 'assets/chapitre_3/t7_narrateur.mp3', leonAudio: 'assets/chapitre_3/t7_leon.mp3',
-          onLeonEnd: () => { if (typeof playConsigne === 'function') playConsigne('c3s7'); }
+          onLeonEnd: () => { /* Pas de playConsigne('c3s7') : Leon dit deja la consigne. */ }
         },
         // Chapitre 4 : Bot, l'IA qui parle
         c4s1: {
@@ -1569,7 +1569,7 @@ function goToScreen(screenIdentifier, force) {
           // Active le panneau de questions a la fin de l'audio Leon (+ 600ms)
           onLeonEnd: () => {
             setTimeout(() => {
-              if (typeof playConsigne === 'function') playConsigne('c4s6');
+              // Pas de playConsigne('c4s6') : Leon dit deja la consigne.
               const sceneText = document.querySelector('#screen-c4s6 .scene-text');
               if (sceneText) sceneText.style.display = 'none';
               const game = document.getElementById('c4s6-game');
@@ -1610,7 +1610,7 @@ function goToScreen(screenIdentifier, force) {
         // c5s5 : mini-jeu "construis ton robot IA" (image fixe, pas de video)
         c5s5: {
           narratorAudio: 'assets/chapitre_5/t5_narrateur.mp3', leonAudio: 'assets/chapitre_5/t5_leon.mp3',
-          onLeonEnd: () => { if (typeof playConsigne === 'function') playConsigne('c5s5'); }
+          onLeonEnd: () => { /* Pas de playConsigne('c5s5') : Leon dit deja la consigne. */ }
         }
       };
       playStoryScene(screenIdentifier, optsMap[screenIdentifier] || {});
@@ -3654,7 +3654,7 @@ function showBonusToast(msg) {
 // localStorage. +1 ⭐ si non vide. Bouton "Passer" toujours dispo.
 // ============================================================
 function activateC5s4Wish() {
-  if (typeof playConsigne === 'function') playConsigne('c5s4');
+  // Pas de playConsigne('c5s4') : Leon dit deja la consigne dans son dialogue.
   const zone = document.getElementById('c5s4-wish');
   const input = document.getElementById('c5s4-wish-input');
   if (!zone || !input) return;
@@ -3860,7 +3860,7 @@ function resetC5s2Game() {
 }
 
 function activateC5s2Game() {
-  if (typeof playConsigne === 'function') playConsigne('c5s2');
+  // Pas de playConsigne('c5s2') : Leon dit deja la consigne dans son dialogue.
   // Cache la bulle de dialogue de Léon
   const sceneText = document.querySelector('#screen-c5s2 .scene-text');
   if (sceneText) sceneText.style.display = 'none';
@@ -4464,7 +4464,7 @@ function resetC5s3Game() {
 
 // === PHASE 1 : "Réelle ou IA ?" ===
 function activateC5s3Game() {
-  if (typeof playConsigne === 'function') playConsigne('c5s3_phase1');
+  // Pas de playConsigne('c5s3_phase1') : Leon dit la consigne dans son dialogue (modifie).
   // Cache les dialogues
   const sceneText = document.querySelector('#screen-c5s3 .scene-text');
   if (sceneText) sceneText.style.display = 'none';
@@ -4505,7 +4505,7 @@ function answerC5s3Phase1(saysReal) {
 
 // === PHASE 2 : trouve les 3 indices avec la loupe ===
 function _showC5s3Phase2() {
-  if (typeof playConsigne === 'function') playConsigne('c5s3_phase2');
+  // Pas de playConsigne('c5s3_phase2') : Leon dit la consigne dans son dialogue (modifie).
   // Affiche les overlays SVG (via classe sur l'écran)
   const screen = document.getElementById('screen-c5s3');
   if (screen) screen.classList.add('c5s3-phase2-active');
@@ -4841,7 +4841,7 @@ function _buildC4s5Cards() {
 }
 
 function activateC4s5Game() {
-  if (typeof playConsigne === 'function') playConsigne('c4s5');
+  // Pas de playConsigne('c4s5') : Leon dit la consigne dans son dialogue (modifie).
   _buildC4s5Cards();
   // Masque les dialogues (narration + bulle Leon) pour laisser place au jeu
   const sceneText = document.querySelector('#screen-c4s5 .scene-text');
@@ -5048,7 +5048,7 @@ function resetC4s3Game() {
 }
 
 function activateC4s3Game() {
-  if (typeof playConsigne === 'function') playConsigne('c4s3');
+  // Pas de playConsigne('c4s3') : Leon dit la consigne dans son dialogue (modifie).
   // Masque les dialogues, affiche le panneau du jeu
   const sceneText = document.querySelector('#screen-c4s3 .scene-text');
   if (sceneText) sceneText.style.display = 'none';
@@ -7118,7 +7118,7 @@ function resetC3s3Game() {
   if (actions) actions.style.display = 'none';
 }
 function activateC3s3Game() {
-  if (typeof playConsigne === 'function') playConsigne('c3s3');
+  // Pas de playConsigne('c3s3') : Leon dit la consigne dans son dialogue (modifie).
   // Cache les dialogues
   const sceneText = document.querySelector('#screen-c3s3 .scene-text');
   if (sceneText) sceneText.style.display = 'none';
@@ -7217,7 +7217,7 @@ function activateC3s2Game() {
   if (actions) actions.style.display = 'none';
   // Petit délai après la fin de Léon pour laisser respirer la scène
   setTimeout(() => {
-    if (typeof playConsigne === 'function') playConsigne('c3s2');
+    // Pas de playConsigne('c3s2') : Leon dit deja la consigne dans son dialogue.
     const sceneText = document.querySelector('#screen-c3s2 .scene-text');
     if (sceneText) sceneText.style.display = 'none';
     const arena = document.getElementById('c3s2-arena');
@@ -7322,7 +7322,7 @@ function resetC4s2Game() {
 }
 
 function activateC4s2Game() {
-  if (typeof playConsigne === 'function') playConsigne('c4s2');
+  // Pas de playConsigne('c4s2') : Leon dit la consigne dans son dialogue (modifie).
   const sceneText = document.querySelector('#screen-c4s2 .scene-text');
   if (sceneText) sceneText.style.display = 'none';
   document.getElementById('c4s2-game-pill').style.display = 'inline-flex';
@@ -7628,7 +7628,7 @@ function resetC3s5Game() {
   if (sceneText) sceneText.style.display = '';
 }
 function activateC3s5Game() {
-  if (typeof playConsigne === 'function') playConsigne('c3s5');
+  // Pas de playConsigne('c3s5') : Leon dit la consigne dans son dialogue (modifie).
   const sceneText = document.querySelector('#screen-c3s5 .scene-text');
   if (sceneText) sceneText.style.display = 'none';
   const pill = document.getElementById('c3s5-game-pill');
