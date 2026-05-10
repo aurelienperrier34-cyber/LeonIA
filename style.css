@@ -3078,8 +3078,7 @@ body.novel-mode #screen-c5s5 .game-overlay {
   position: relative;
 }
 
-/* MOBILE/TOUCH UNIQUEMENT : sur mobile landscape (viewport plus large que
-   le ratio de l'image), strategie "extended blurred background" facon
+/* MOBILE/TOUCH UNIQUEMENT : strategie "extended blurred background" facon
    Netflix/YouTube. Le `(pointer: coarse)` garantit que ce CSS ne s'applique
    PAS aux ecrans desktop, meme en 16:9 ou ultra-wide.
    - #screen-map en plein viewport, avec un fond floute via ::before
@@ -3088,10 +3087,12 @@ body.novel-mode #screen-c5s5 .game-overlay {
      (1672x941), centre. L'image et les noeuds y vivent ; les % des
      noeuds matchent toujours les spots de l'image puisque le ratio
      est preserve.
-   Resultat : aucun crop sur mobile, et les bords lateraux deviennent
-   une extension visuelle floue de l'image plutot qu'un vide sombre.
-   Desktop : aucun changement (regle ignoree car pointer: fine). */
-@media (pointer: coarse) and (min-aspect-ratio: 16/9) {
+   Resultat : aucun crop sur mobile, et les bords lateraux/haut-bas
+   deviennent une extension visuelle floue de l'image plutot qu'un vide
+   sombre. Desktop : aucun changement (regle ignoree car pointer: fine).
+   Le flou s'applique en LANDSCAPE ET PORTRAIT, sinon le user voit des
+   bandes noires en alternance selon l'orientation du phone. */
+@media (pointer: coarse) {
   #screen-map.active {
     position: relative;
     overflow: hidden;
@@ -3115,13 +3116,33 @@ body.novel-mode #screen-c5s5 .game-overlay {
   }
   .full-map-pixar {
     aspect-ratio: 1672 / 941 !important;
-    height: 100dvh !important;
-    width: auto !important;
-    max-width: 100vw !important;
-    margin: 0 auto !important;
     background: transparent !important; /* laisse passer le fond floute */
     position: relative;
     z-index: 1;
+    margin: 0 auto !important;
+    /* Centre verticalement dans #screen-map (utile en portrait) */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute !important;
+  }
+}
+/* LANDSCAPE (viewport plus large que la map) : on contraint en hauteur,
+   bandes floues a gauche/droite. */
+@media (pointer: coarse) and (min-aspect-ratio: 1672/941) {
+  .full-map-pixar {
+    height: 100dvh !important;
+    width: auto !important;
+    max-width: 100vw !important;
+  }
+}
+/* PORTRAIT (viewport plus haut que la map) : on contraint en largeur,
+   bandes floues en haut/bas. */
+@media (pointer: coarse) and (max-aspect-ratio: 1672/941) {
+  .full-map-pixar {
+    width: 100vw !important;
+    height: auto !important;
+    max-height: 100dvh !important;
   }
 }
 .full-map-pixar .map-bg-img {
