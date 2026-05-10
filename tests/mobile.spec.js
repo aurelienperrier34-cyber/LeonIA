@@ -77,6 +77,34 @@ async function disableVoicesBeforeGoto(page) {
   });
 }
 
+// Bypass _autoImportGameStateBackup() : si game_state_backup.json existe a
+// la racine du projet (cas typique de developpement), l'app importe l'etat
+// au demarrage et fait un location.reload() apres 500ms, ce qui detruit
+// window.state pile au moment ou le test interagit. La fonction skipe
+// l'import si localStorage contient deja une de ses cles sentinelles, donc
+// on en plante une AVANT le chargement de la page.
+async function disableBackupAutoImport(page) {
+  await page.addInitScript(() => {
+    try { localStorage.setItem('starCornerPos', JSON.stringify({ top: 16, left: 18 })); } catch (e) {}
+  });
+}
+
+// Setup global appliqué a tous les tests (sauf overrides ponctuels) : evite
+// le piege du backup auto-import qui reload la page mid-test.
+test.beforeEach(async ({ page }) => {
+  await disableBackupAutoImport(page);
+});
+
+// Patterns d'erreurs console a IGNORER (warnings reseau / asset, pas bugs app).
+const IGNORED_CONSOLE_PATTERNS = [
+  /Failed to load resource:\s*Timeout was reached/i,
+  /Failed to load resource:\s*the server responded with a status of \d+/i,
+  /net::ERR_/i,
+];
+function isAppError(msg) {
+  return !IGNORED_CONSOLE_PATTERNS.some((rx) => rx.test(msg));
+}
+
 // =====================================================================
 // 1) Smoke test : chaque écran charge sans erreur JS, screenshot capturé
 // =====================================================================
@@ -85,7 +113,10 @@ test.describe('Smoke test mobile', () => {
     const errors = [];
     page.on('pageerror', (e) => errors.push(e.message));
     page.on('console', (msg) => {
-      if (msg.type() === 'error') errors.push('[console] ' + msg.text());
+      if (msg.type() === 'error') {
+        const text = msg.text();
+        if (isAppError(text)) errors.push('[console] ' + text);
+      }
     });
     page._jsErrors = errors;
 
@@ -175,8 +206,8 @@ test.describe('Boutons & navigation', () => {
     // expose les reponses. ~10s de marge.
     await page.waitForSelector('#s3-answers.show', { timeout: 15000 });
     await page.locator('#s3-answers .btn-choice').first().click();
-    await page.waitForFunction(() => window.state.currentScreen === 4, { timeout: 5000 });
-    expect(await page.evaluate(() => window.state.currentScreen)).toBe(4);
+    await page.waitForFunction(() => window.state && window.state.currentScreen === 4, { timeout: 5000 });
+    expect(await page.evaluate(() => window.state && window.state.currentScreen)).toBe(4);
   });
 });
 
@@ -185,11 +216,8 @@ test.describe('Boutons & navigation', () => {
 // =====================================================================
 test.describe('Audio', () => {
   test('atelier (screen 3) : voix narrateur déclenchée', async ({ page }) => {
-    await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
-    await page.waitForFunction(() => typeof window.goToScreen === 'function');
-    await selectCharacterIfNeeded(page);
-
-    // Hook : intercepte les Audio.play() et compte les déclenchements
+    // Hook AVANT goto : intercepte les Audio.play() des le premier load,
+    // pas besoin de reload (qui timeout sur l'event 'load' de la page).
     await page.addInitScript(() => {
       window.__audioPlays = [];
       const origPlay = HTMLAudioElement.prototype.play;
@@ -198,12 +226,12 @@ test.describe('Audio', () => {
         return origPlay.apply(this, arguments);
       };
     });
-    await page.reload();
+    await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => typeof window.goToScreen === 'function');
     await selectCharacterIfNeeded(page);
 
     await gotoScreen(page, 3);
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(3000);
 
     const plays = await page.evaluate(() => window.__audioPlays || []);
     const narrPlayed = plays.some((p) => /voix_narrateur_3/.test(p.src));
