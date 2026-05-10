@@ -1372,27 +1372,28 @@ body.calib-hero-mode .hero-destination::before {
   body.novel-mode #screen-c3s7 .dialogue-who,
   body.novel-mode #screen-c3s7 .dialogue-bubble {
     position: fixed !important;
-    left: 12px !important;
+    left: 8px !important;
     bottom: auto !important;
     right: auto !important;
     width: auto !important;
-    max-width: 50% !important;
+    max-width: 38% !important;
     z-index: 50;
   }
   body.novel-mode #screen-c3s7 .dialogue-who {
     top: 130px !important;
     margin: 0 !important;
-    font-size: 0.7rem !important;
+    font-size: 0.65rem !important;
   }
   body.novel-mode #screen-c3s7 .dialogue-bubble {
-    top: 155px !important;
-    padding: 8px 12px !important;
-    font-size: 0.8rem !important;
-    line-height: 1.3 !important;
+    top: 152px !important;
+    padding: 6px 10px !important;
+    font-size: 0.75rem !important;
+    line-height: 1.25 !important;
   }
-  /* Consigne du jeu (tap-instruction dans .game-overlay) descendue plus bas. */
+  /* Consigne du jeu (tap-instruction dans .game-overlay) descendue tout en bas
+     (sous les micros visuels de l'image de fond). */
   body.novel-mode #screen-c3s7 .game-overlay {
-    bottom: 2% !important;
+    bottom: 0 !important;
   }
   /* C2S5 / C2S6 mobile : compacte la bulle Leon (deja en bottom-left) et
      descend/reduit la pastille consigne, pour liberer le centre ou
