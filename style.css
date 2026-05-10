@@ -2990,6 +2990,21 @@ body.novel-mode #screen-c5s5 .game-overlay {
   overflow: hidden;
   position: relative;
 }
+
+/* Mobile landscape (et tout viewport plus large que le ratio de l'image) :
+   contraint la map au ratio de map_world.jpg (1672x941 ≈ 16:9) pour eviter
+   le crop top/bottom de cover. L'image entiere reste visible, avec bandes
+   sombres a gauche/droite si le viewport est plus large. Les positions des
+   noeuds en % matchent alors exactement les spots de l'image. */
+@media (min-aspect-ratio: 16/9) {
+  .full-map-pixar {
+    aspect-ratio: 1672 / 941 !important;
+    height: 100dvh !important;
+    width: auto !important;
+    max-width: 100vw !important;
+    margin: 0 auto !important;
+  }
+}
 .full-map-pixar .map-bg-img {
   width: 100% !important;
   height: 100% !important;
