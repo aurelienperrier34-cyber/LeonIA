@@ -3104,13 +3104,15 @@ body.novel-mode #screen-c5s5 .game-overlay {
 }
 
 /* MOBILE/TOUCH UNIQUEMENT : la map fait TOUJOURS toute la hauteur du
-   viewport (height:100dvh, width auto via aspect-ratio).
-   - Si viewport plus large que la map → bandes sur les COTES, comblees
-     par le flou Netflix (::before).
-   - Si viewport plus etroit (portrait) → la map deborde lateralement,
-     overflow:hidden masque l'excedent, mais aucune bande en haut/bas.
-   Aucun flou n'est visible "sous" la map car la map fill toujours la
-   hauteur totale. Desktop : aucun changement (pointer:fine). */
+   viewport. Le flou Netflix est applique UNIQUEMENT sur les bandes
+   laterales (gauche/droite) via deux pseudo-elements ::before / ::after
+   dont la largeur est calculee explicitement. Ainsi le flou est
+   physiquement absent de la zone sous/au-dessus de la map.
+
+   Largeur d'une bande laterale = (100vw - mapWidth) / 2,
+   ou mapWidth = 100dvh * 1672/941 (ratio de la map). Si le viewport est
+   plus etroit que la map, la formule donne un nombre negatif → la bande
+   est de largeur 0 (pas affichee), comportement attendu en portrait. */
 @media (pointer: coarse) {
   #screen-map.active {
     position: relative;
@@ -3118,24 +3120,44 @@ body.novel-mode #screen-c5s5 .game-overlay {
     height: 100dvh !important;
     min-height: 100dvh !important;
     max-height: 100dvh !important;
+    background: #1a0d2e;
   }
+  /* Bande laterale GAUCHE : flou Netflix */
   #screen-map.active::before {
     content: '';
     position: absolute;
-    inset: 0;
-    z-index: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: max(0px, calc((100vw - 100dvh * 1672 / 941) / 2));
     background-image: url('assets/map_world.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: left center;
     filter: blur(30px) brightness(0.55) saturate(1.1);
     transform: scale(1.15);
+    transform-origin: left center;
     pointer-events: none;
+    z-index: 0;
+  }
+  /* Bande laterale DROITE : flou Netflix */
+  #screen-map.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: max(0px, calc((100vw - 100dvh * 1672 / 941) / 2));
+    background-image: url('assets/map_world.jpg');
+    background-size: cover;
+    background-position: right center;
+    filter: blur(30px) brightness(0.55) saturate(1.1);
+    transform: scale(1.15);
+    transform-origin: right center;
+    pointer-events: none;
+    z-index: 0;
   }
   .full-map-pixar {
     aspect-ratio: 1672 / 941 !important;
-    /* Position absolue avec top:0 + bottom:0 force l'element a fill exactement
-       la hauteur du parent #screen-map (pas de calcul dvh fragile, pas de
-       sub-pixel rounding). La largeur est calculee via aspect-ratio. */
     position: absolute !important;
     top: 0 !important;
     bottom: 0 !important;
@@ -3146,8 +3168,6 @@ body.novel-mode #screen-c5s5 .game-overlay {
     margin: 0 !important;
     background: transparent !important;
     z-index: 1;
-    /* Pas de max-width:100vw : autorise le debordement lateral en portrait
-       plutot que d'introduire des bandes verticales. */
   }
 }
 .full-map-pixar .map-bg-img {
