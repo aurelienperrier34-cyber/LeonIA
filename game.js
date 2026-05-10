@@ -5961,6 +5961,94 @@ if (typeof window !== 'undefined' && window.location && window.location.search.i
 }
 
 // ============================================================
+// MODE DEV : ?dev=1 dans l'URL
+// - Debloque tous les chapitres
+// - Ajoute un bouton flottant 🛠️ qui ouvre un menu de selection de tableau
+//   (pour tester n'importe quel ecran sans tout refaire)
+// ============================================================
+function _devEnsureUnlocked() {
+  state.chaptersCompleted = state.chaptersCompleted || [];
+  let changed = false;
+  [1, 2, 3, 4].forEach(c => {
+    if (!state.chaptersCompleted.includes(c)) {
+      state.chaptersCompleted.push(c);
+      changed = true;
+    }
+  });
+  if (!state.characterType) {
+    // Choix par defaut pour pouvoir aller sur les ecrans qui en ont besoin
+    state.characterType = 'fille';
+    state.characterName = 'Test';
+    changed = true;
+  }
+  if (changed && typeof saveState === 'function') saveState();
+  if (typeof updateMapState === 'function') updateMapState();
+}
+
+function _devBuildMenu() {
+  if (document.getElementById('dev-screen-menu')) return;
+
+  const SCREEN_GROUPS = [
+    { label: 'Chap 1', ids: ['1', '2', '3', '4', '5', '6', '7', '8'] },
+    { label: 'Chap 2', ids: ['c2s1', 'c2s2', 'c2s3', 'c2s4', 'c2s5', 'c2s6', 'c2s7', 'c2s8', 'c2s9'] },
+    { label: 'Chap 3', ids: ['c3s1', 'c3s2', 'c3s3', 'c3s4', 'c3s5', 'c3s6', 'c3s7', 'c3s8', 'c3s9'] },
+    { label: 'Chap 4', ids: ['c4s1', 'c4s2', 'c4s3', 'c4s4', 'c4s5', 'c4s6', 'c4s7', 'c4s8'] },
+    { label: 'Chap 5', ids: ['c5s1', 'c5s2', 'c5s3', 'c5s4', 'c5s5', 'c5s6'] },
+    { label: 'Autres', ids: ['0', 'map'] },
+  ];
+
+  const btn = document.createElement('button');
+  btn.id = 'dev-toggle-btn';
+  btn.textContent = '🛠️';
+  btn.title = 'Mode dev : aller a un tableau';
+  btn.style.cssText = 'position:fixed;top:8px;right:180px;z-index:99999;width:38px;height:38px;border-radius:50%;border:2px solid #fff;background:rgba(255,90,90,0.9);color:#fff;font-size:18px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3);';
+
+  const menu = document.createElement('div');
+  menu.id = 'dev-screen-menu';
+  menu.style.cssText = 'position:fixed;top:50px;right:8px;z-index:99998;background:rgba(20,10,40,0.96);color:#fff;padding:12px 14px;border-radius:14px;border:2px solid #FFE166;box-shadow:0 10px 30px rgba(0,0,0,0.5);max-width:340px;max-height:80vh;overflow-y:auto;display:none;font-family:Nunito,sans-serif;font-size:13px;';
+
+  let html = '<div style="font-weight:800;margin-bottom:8px;color:#FFE166">🛠️ Aller a un tableau</div>';
+  SCREEN_GROUPS.forEach(grp => {
+    html += `<div style="margin-top:6px;font-weight:700;color:#aaa;font-size:11px">${grp.label}</div><div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:3px">`;
+    grp.ids.forEach(id => {
+      html += `<button data-screen="${id}" style="padding:4px 8px;border-radius:8px;border:1px solid #555;background:#2a1a4a;color:#fff;font-size:11px;cursor:pointer">${id}</button>`;
+    });
+    html += '</div>';
+  });
+  menu.innerHTML = html;
+
+  btn.addEventListener('click', () => {
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  });
+
+  menu.addEventListener('click', (ev) => {
+    const target = ev.target;
+    if (target.tagName !== 'BUTTON' || !target.dataset.screen) return;
+    const sid = target.dataset.screen;
+    menu.style.display = 'none';
+    _devEnsureUnlocked();
+    try {
+      if (sid === 'map') {
+        if (typeof goToScreen === 'function') goToScreen('map');
+      } else {
+        const numId = /^\d+$/.test(sid) ? parseInt(sid, 10) : sid;
+        if (typeof goToScreen === 'function') goToScreen(numId);
+      }
+    } catch(e) { console.warn('[dev] goToScreen error', e); }
+  });
+
+  document.body.appendChild(btn);
+  document.body.appendChild(menu);
+}
+
+if (typeof window !== 'undefined' && window.location && window.location.search.indexOf('dev=1') >= 0) {
+  document.addEventListener('DOMContentLoaded', () => {
+    _devEnsureUnlocked();
+    _devBuildMenu();
+  });
+}
+
+// ============================================================
 // Calibration de la pastille etoile sur la rue
 // ============================================================
 function loadStarCornerPosition() {
