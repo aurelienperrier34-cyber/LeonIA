@@ -13,8 +13,8 @@ module.exports = defineConfig({
   forbidOnly: !!process.env.CI,
   retries: 0,
   workers: 1,
-  reporter: [['html', { outputFolder: 'tests/playwright-report', open: 'never' }], ['list']],
-  outputDir: 'tests/test-results',
+  reporter: [['html', { outputFolder: __dirname + '/playwright-report', open: 'never' }], ['list']],
+  outputDir: __dirname + '/test-results',
   use: {
     baseURL: BASE_URL,
     trace: 'on-first-retry',
