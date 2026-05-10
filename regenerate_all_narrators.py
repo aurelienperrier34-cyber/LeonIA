@@ -67,13 +67,29 @@ CHAP1_NARRATORS = [
     },
 ]
 
+# Voix Léon du chap 1 (S3 = rencontre, S4 = machine mystérieuse).
+# Pas de scenar_chap1_json.txt → on stocke les textes ici.
+CHAP1_LEON = [
+    {
+        "fichier": "Voix_leon_3.mp3",
+        "dossier": "assets",
+        "texte": "Ah, un explorateur ! Veux-tu savoir ce que c'est, l'IA ?"
+    },
+    {
+        "fichier": "Voix_leon_4.mp3",
+        "dossier": "assets",
+        "texte": "L'IA, c'est une machine qui apprend. On lui montre plein d'exemples... et après, elle t'aide à créer ! Pour reconnaître un chat, qu'a appris la machine ? Tape les bonnes caractéristiques !"
+    },
+]
 
-def regen_chap1(dry_run=False):
+
+def regen_chap1(dry_run=False, include_leon=True):
     print("\n=== CHAPITRE 1 ===")
     n = 0
+    # Narrateurs
     for item in CHAP1_NARRATORS:
         chemin = os.path.join(item["dossier"], item["fichier"])
-        print(f"  -> {chemin}")
+        print(f"  -> {chemin}  (narrateur)")
         print(f"     texte: {item['texte'][:70]}...")
         if dry_run:
             continue
@@ -82,6 +98,19 @@ def regen_chap1(dry_run=False):
         generer_voix(item["texte"], VOICE_ID_NARRATEUR, item["fichier"], item["dossier"])
         trim_trailing_silence(chemin)
         n += 1
+    # Voix Léon (S3, S4)
+    if include_leon and VOICE_ID_LEON:
+        for item in CHAP1_LEON:
+            chemin = os.path.join(item["dossier"], item["fichier"])
+            print(f"  -> {chemin}  (Léon)")
+            print(f"     texte: {item['texte'][:70]}...")
+            if dry_run:
+                continue
+            if os.path.exists(chemin):
+                os.remove(chemin)
+            generer_voix(item["texte"], VOICE_ID_LEON, item["fichier"], item["dossier"])
+            trim_trailing_silence(chemin)
+            n += 1
     return n
 
 

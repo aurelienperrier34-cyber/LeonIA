@@ -1081,7 +1081,10 @@ function goToScreen(screenIdentifier, force) {
       if (cd.profileImg) {
         heroImg5.src = cd.profileImg;
         heroImg5.style.display = 'block';
-        heroImg5.style.filter = 'url(#aiGreenKey)';
+        // Pas de chroma key (url(#aiGreenKey)) sur les images -removebg deja
+        // detourees : elle effacait des pixels verts du perso (ex: Pixel le
+        // robot apparaissait moitie transparent). Drop-shadow comme screen 4.
+        heroImg5.style.filter = 'drop-shadow(0 8px 6px rgba(0,0,0,0.35))';
       } else {
         heroImg5.src = cd.img || '';
         heroImg5.style.display = 'block';
