@@ -3103,44 +3103,63 @@ body.novel-mode #screen-c5s5 .game-overlay {
   position: relative;
 }
 
-/* MOBILE/TOUCH UNIQUEMENT : la map garde son ratio (pas de crop), centree
-   dans le viewport. Les bandes hors-image restent en couleur sombre unie
-   (#1a0d2e du .full-map-pixar). Pas de flou. Desktop : aucun changement
-   (regle ignoree car pointer: fine). */
-@media (pointer: coarse) {
+/* MOBILE LANDSCAPE WIDE (viewport plus large que la map 1672/941) :
+   flou Netflix-style uniquement sur les COTES (gauche/droite). La map
+   prend toute la hauteur (height:100dvh), donc PAS de bande en haut/bas
+   donc pas de flou en haut/bas. Le ::before couvre tout #screen-map et
+   le flou n'est visible que sur les bandes laterales. */
+@media (pointer: coarse) and (min-aspect-ratio: 1672/941) {
   #screen-map.active {
     position: relative;
     overflow: hidden;
     height: 100dvh !important;
     min-height: 100dvh !important;
     max-height: 100dvh !important;
+  }
+  #screen-map.active::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: url('assets/map_world.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(30px) brightness(0.55) saturate(1.1);
+    transform: scale(1.15);
+    pointer-events: none;
+  }
+  .full-map-pixar {
+    aspect-ratio: 1672 / 941 !important;
+    height: 100dvh !important;
+    width: auto !important;
+    max-width: 100vw !important;
+    margin: 0 auto !important;
+    background: transparent !important;
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* MOBILE PORTRAIT ou LANDSCAPE ETROIT (viewport plus haut que la map) :
+   PAS de flou (le user n'en veut pas sous la map). La map est centree au
+   ratio, les bandes haut/bas sont en sombre uni #1a0d2e. */
+@media (pointer: coarse) and (max-aspect-ratio: 1672/941) {
+  #screen-map.active {
+    position: relative;
+    overflow: hidden;
+    height: 100dvh !important;
     background: #1a0d2e;
   }
   .full-map-pixar {
     aspect-ratio: 1672 / 941 !important;
+    width: 100vw !important;
+    height: auto !important;
+    max-height: 100dvh !important;
     margin: 0 auto !important;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     position: absolute !important;
-  }
-}
-/* LANDSCAPE (viewport plus large que la map) : on contraint en hauteur,
-   bandes floues a gauche/droite. */
-@media (pointer: coarse) and (min-aspect-ratio: 1672/941) {
-  .full-map-pixar {
-    height: 100dvh !important;
-    width: auto !important;
-    max-width: 100vw !important;
-  }
-}
-/* PORTRAIT (viewport plus haut que la map) : on contraint en largeur,
-   bandes floues en haut/bas. */
-@media (pointer: coarse) and (max-aspect-ratio: 1672/941) {
-  .full-map-pixar {
-    width: 100vw !important;
-    height: auto !important;
-    max-height: 100dvh !important;
   }
 }
 .full-map-pixar .map-bg-img {
