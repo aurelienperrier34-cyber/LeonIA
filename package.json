@@ -11,6 +11,7 @@
     "test:report": "playwright show-report tests/playwright-report"
   },
   "devDependencies": {
-    "@playwright/test": "^1.49.0"
+    "@playwright/test": "^1.49.0",
+    "http-server": "^14.1.1"
   }
 }
