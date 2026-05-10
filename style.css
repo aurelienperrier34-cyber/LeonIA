@@ -1372,28 +1372,40 @@ body.calib-hero-mode .hero-destination::before {
   body.novel-mode #screen-c3s7 .dialogue-who,
   body.novel-mode #screen-c3s7 .dialogue-bubble {
     position: fixed !important;
-    left: 8px !important;
+    left: 6px !important;
     bottom: auto !important;
     right: auto !important;
     width: auto !important;
-    max-width: 38% !important;
+    max-width: 30% !important;
     z-index: 50;
   }
   body.novel-mode #screen-c3s7 .dialogue-who {
-    top: 130px !important;
+    top: 145px !important;
     margin: 0 !important;
-    font-size: 0.65rem !important;
+    font-size: 0.62rem !important;
   }
   body.novel-mode #screen-c3s7 .dialogue-bubble {
-    top: 152px !important;
-    padding: 6px 10px !important;
-    font-size: 0.75rem !important;
-    line-height: 1.25 !important;
+    top: 165px !important;
+    padding: 5px 8px !important;
+    font-size: 0.7rem !important;
+    line-height: 1.2 !important;
   }
-  /* Consigne du jeu (tap-instruction dans .game-overlay) descendue tout en bas
-     (sous les micros visuels de l'image de fond). */
+  /* Consigne descendue plus bas (dans la zone non-cliquable sous les boutons sons). */
   body.novel-mode #screen-c3s7 .game-overlay {
-    bottom: 0 !important;
+    bottom: -8px !important;
+  }
+  body.novel-mode #screen-c3s7 .c3s7-hint {
+    font-size: 0.78rem !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 4px 8px !important;
+  }
+  /* ANTI-FLICKER mobile : desactive backdrop-filter sur le bubble pendant
+     que le typewriter ecrit (la recalculation du blur a chaque char ajoute
+     etait la cause des "lettres doublees/triplees" visibles sur mobile). */
+  body.novel-mode .dialogue-bubble.typewriting {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
   /* C2S5 / C2S6 mobile : compacte la bulle Leon (deja en bottom-left) et
      descend/reduit la pastille consigne, pour liberer le centre ou

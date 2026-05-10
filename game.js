@@ -2556,6 +2556,8 @@ function playStoryScene(screenId, opts = {}) {
     // un re-layout + re-blur couteux qui produit des ghost frames).
     // On render brievement le HTML complet en visibility:hidden pour mesurer,
     // puis on fixe min-width + min-height et on vide pour le typewriter.
+    // ET on ajoute la classe '.typewriting' qui desactive backdrop-filter
+    // (CSS) pendant l'ecriture (cause majeure des artefacts sur mobile).
     try {
       bubble.style.visibility = 'hidden';
       bubble.innerHTML = fullHTML;
@@ -2565,6 +2567,7 @@ function playStoryScene(screenId, opts = {}) {
       bubble.style.minHeight = h + 'px';
       bubble.textContent = '';
       bubble.style.visibility = '';
+      bubble.classList.add('typewriting');
     } catch(e) {}
 
     // Hook : démarre la vidéo de fond pile au moment où Léon commence à parler.
@@ -2602,6 +2605,8 @@ function playStoryScene(screenId, opts = {}) {
         // Libere les min-width/height fixes pose au demarrage (anti-flicker)
         bubble.style.minWidth = '';
         bubble.style.minHeight = '';
+        // Restaure le backdrop-filter (la classe '.typewriting' le neutralisait)
+        bubble.classList.remove('typewriting');
         // Fallback : si l'audio Léon n'a pas tiré 'ended' (mode silencieux ou bug),
         // on déclenche tout de même onLeonEnd quand le typewriter se termine.
         fireLeonEnd();
