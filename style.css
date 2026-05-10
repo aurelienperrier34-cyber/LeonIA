@@ -1270,6 +1270,28 @@ body.calib-hero-mode .hero-destination::before {
   body.novel-mode .scene-text {
     padding-top: 12px !important;
   }
+  /* C2S1 mobile : narration reste en haut, mais la bulle Leon "Suis-moi !
+     Je vais te montrer..." est repositionnee en absolute juste sous la
+     pastille map (qui finit a y~116), decalee a gauche, glassmorphism reduit. */
+  body.novel-mode #screen-c2s1 .dialogue-who,
+  body.novel-mode #screen-c2s1 .dialogue-bubble {
+    position: absolute !important;
+    left: 12px !important;
+    width: auto !important;
+    max-width: 38% !important;
+    z-index: 3;
+  }
+  body.novel-mode #screen-c2s1 .dialogue-who {
+    top: 125px !important;
+    margin: 0 !important;
+    font-size: 0.7rem !important;
+  }
+  body.novel-mode #screen-c2s1 .dialogue-bubble {
+    top: 150px !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+    line-height: 1.3 !important;
+  }
   /* Pastille consigne du mini-jeu C1S4 ("qu'a appris la machine ?") : en
      nowrap, elle s'etend sur toute la largeur en mobile et chevauche
      pastilles a gauche + boutons a droite. On autorise le wrap, on
