@@ -2550,6 +2550,23 @@ function playStoryScene(screenId, opts = {}) {
     bubble.style.display = '';
     if (who) who.style.display = '';
 
+    // ANTI-FLICKER : pre-calcule la taille finale du bubble pour eviter les
+    // re-flows et "lettres doublees" lors du typewriter sur mobile (le bubble
+    // a `width: fit-content` + backdrop-filter, chaque char ajoute provoque
+    // un re-layout + re-blur couteux qui produit des ghost frames).
+    // On render brievement le HTML complet en visibility:hidden pour mesurer,
+    // puis on fixe min-width + min-height et on vide pour le typewriter.
+    try {
+      bubble.style.visibility = 'hidden';
+      bubble.innerHTML = fullHTML;
+      const w = bubble.offsetWidth;
+      const h = bubble.offsetHeight;
+      bubble.style.minWidth  = w + 'px';
+      bubble.style.minHeight = h + 'px';
+      bubble.textContent = '';
+      bubble.style.visibility = '';
+    } catch(e) {}
+
     // Hook : démarre la vidéo de fond pile au moment où Léon commence à parler.
     // Si on l'a déjà tiré juste après la fin du narrateur (chemin "narrateur
     // d'abord"), on ne le rejoue pas pour éviter un double currentTime=0.
@@ -2582,6 +2599,9 @@ function playStoryScene(screenId, opts = {}) {
       } else {
         // Restaure le HTML (gras, etc.) à la fin
         bubble.innerHTML = fullHTML;
+        // Libere les min-width/height fixes pose au demarrage (anti-flicker)
+        bubble.style.minWidth = '';
+        bubble.style.minHeight = '';
         // Fallback : si l'audio Léon n'a pas tiré 'ended' (mode silencieux ou bug),
         // on déclenche tout de même onLeonEnd quand le typewriter se termine.
         fireLeonEnd();
