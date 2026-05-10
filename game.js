@@ -7736,7 +7736,7 @@ function completeC3s5Game() {
 // "tree" est gardé comme nom interne mais représente "feature valide du chat" (refactor minimal)
 const S4_CARDS = [
   { emoji: '🐾', tree: true,  label: 'pattes' },
-  { emoji: '〰️', tree: true,  label: 'moustaches' },
+  { emoji: '➰', tree: true,  label: 'moustaches' },
   { emoji: '👂', tree: true,  label: 'oreilles pointues' },
   { emoji: '➿', tree: true,  label: 'queue' },
   { emoji: '🪶', tree: false, label: 'plumes' },
@@ -7773,7 +7773,8 @@ function resetS4Game() {
   if (instr) instr.innerHTML = '🔍 <strong>Pour reconnaître un chat, qu\'a appris la machine&nbsp;? Tape les bonnes caractéristiques&nbsp;!</strong>';
 }
 function activateS4Game() {
-  if (typeof playConsigne === 'function') playConsigne('s4');
+  // Pas de playConsigne('s4') : Leon dit la consigne dans son dialogue
+  // ('Tape les bonnes caracteristiques !').
   const pill   = document.getElementById('s4-game-pill');
   const cards  = document.getElementById('s4-cards');
   const reveal = document.getElementById('s4-reveal');
