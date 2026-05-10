@@ -7035,8 +7035,13 @@ function _setupHoverSpeak() {
     //   La voix se declenche en parallele pour les enfants qui ne lisent pas.
     if (target.classList.contains('prompt-word')) return;
     if (target.classList.contains('s4-card') || target.classList.contains('vf-btn')) {
-      // Lit le label en parallele, ne bloque pas la selection
-      const textParallel = target.dataset.speak || target.textContent;
+      // Lit le label en parallele, ne bloque pas la selection.
+      // Pour .s4-card on prefere dataset.label (juste le mot, sans l'emoji)
+      // car certains emojis (ex: '〰️' wavy dash) ralentissent la TTS Android
+      // et faisaient perdre le 1er tap → l'utilisateur devait re-tapper.
+      const textParallel = target.dataset.speak
+        || target.dataset.label
+        || target.textContent;
       _hoverSpeakText(textParallel);
       return;
     }
@@ -7773,7 +7778,8 @@ function resetS4Game() {
   if (instr) instr.innerHTML = '🔍 <strong>Pour reconnaître un chat, qu\'a appris la machine&nbsp;? Tape les bonnes caractéristiques&nbsp;!</strong>';
 }
 function activateS4Game() {
-  if (typeof playConsigne === 'function') playConsigne('s4');
+  // Pas de playConsigne('s4') : Leon dit la consigne dans son dialogue
+  // ('Tape les bonnes caracteristiques !').
   const pill   = document.getElementById('s4-game-pill');
   const cards  = document.getElementById('s4-cards');
   const reveal = document.getElementById('s4-reveal');
