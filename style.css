@@ -2037,6 +2037,37 @@ body.calib-c3s7-mics::before {
   box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 
+/* ============================================================
+   C3S7 mobile — overrides APRES les regles globales c3s7 ci-dessus,
+   pour gagner la guerre de specificite / ordre source.
+   - Remonte le .game-overlay (qui contient les sound-buttons) car
+     en mobile l'image de fond a ses micros visuels plus hauts.
+   - Sort la consigne (.c3s7-hint) du flux et la met en fixed tout
+     en bas (separee du game-overlay donc ne recouvre plus les
+     sound-buttons).
+   ============================================================ */
+@media (pointer: coarse) and (hover: none) {
+  body.novel-mode #screen-c3s7 .game-overlay {
+    bottom: 28% !important;
+  }
+  body.novel-mode #screen-c3s7 .c3s7-hint {
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 6px !important;
+    margin: 0 !important;
+    padding: 4px 12px !important;
+    font-size: 0.7rem !important;
+    line-height: 1.2 !important;
+    background: rgba(20, 10, 40, 0.85) !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+    z-index: 50;
+    max-width: 80vw !important;
+    text-align: center !important;
+  }
+}
+
 /* === Anciens styles partagés .sound-buttons (pour autres écrans) === */
 .sound-buttons {
   display: flex;
