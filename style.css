@@ -1215,7 +1215,10 @@ body.calib-hero-mode .hero-destination::before {
    empiete sur Leon au centre de la scene. Compactage : padding reduit,
    max-width plus petit (45%) pour libérer la zone centrale, narration
    et bulle plus serrees. */
-@media (pointer: coarse) {
+/* Touch-only (mobile/tablet sans souris). Le `(hover: none)` exclut les
+   ordi a ecran tactile qui ont aussi une souris : sur ces appareils
+   `(pointer: coarse)` matchait et appliquait par erreur les regles mobile. */
+@media (pointer: coarse) and (hover: none) {
   #screen-3 .scene-text {
     margin-top: 8px;
     padding: 8px 14px;
@@ -3116,8 +3119,9 @@ body.novel-mode #screen-c5s5 .game-overlay {
    Largeur d'une bande laterale = (100vw - mapWidth) / 2,
    ou mapWidth = 100dvh * 1672/941 (ratio de la map). Si le viewport est
    plus etroit que la map, la formule donne un nombre negatif → la bande
-   est de largeur 0 (pas affichee), comportement attendu en portrait. */
-@media (pointer: coarse) {
+   est de largeur 0 (pas affichee), comportement attendu en portrait.
+   Note : `(hover: none)` pour exclure ordi tactile (qui a souris en plus). */
+@media (pointer: coarse) and (hover: none) {
   #screen-map.active {
     position: relative;
     overflow: hidden;
