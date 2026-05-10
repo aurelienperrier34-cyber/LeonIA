@@ -95,6 +95,25 @@ test.beforeEach(async ({ page }) => {
   await disableBackupAutoImport(page);
 });
 
+// Helper : retourne l'id de l'ecran actuellement actif (lit le DOM, pas
+// state — state est en `let` et n'est pas expose sur window).
+async function getCurrentScreenId(page) {
+  return page.evaluate(() => {
+    const active = document.querySelector('.screen.active');
+    return active ? active.id : null;
+  });
+}
+async function waitForScreen(page, screenId, timeout = 5000) {
+  return page.waitForFunction(
+    (id) => {
+      const active = document.querySelector('.screen.active');
+      return active && active.id === id;
+    },
+    `screen-${screenId}`,
+    { timeout }
+  );
+}
+
 // Patterns d'erreurs console a IGNORER (warnings reseau / asset, pas bugs app).
 const IGNORED_CONSOLE_PATTERNS = [
   /Failed to load resource:\s*Timeout was reached/i,
@@ -190,8 +209,9 @@ test.describe('Boutons & navigation', () => {
     // On contourne en appelant directement el.click() via evaluate (bypass
     // les checks actionability/stability de Playwright).
     await page.locator('text=Démarrer l\'Aventure').first().evaluate((el) => el.click());
-    await page.waitForFunction(() => window.state && window.state.currentScreen === 1, { timeout: 5000 });
-    expect(await page.evaluate(() => window.state && window.state.currentScreen)).toBe(1);
+    // state est declare en `let` => pas expose sur window. On lit le DOM a la place.
+    await waitForScreen(page, 1, 5000);
+    expect(await getCurrentScreenId(page)).toBe('screen-1');
   });
 
   test('atelier (screen 3) : bouton "Oui, s\'il te plaît !" navigue vers screen 4', async ({ page }) => {
@@ -206,19 +226,10 @@ test.describe('Boutons & navigation', () => {
     await selectCharacterIfNeeded(page);
     await gotoScreen(page, 3);
     await page.waitForSelector('#s3-answers.show', { timeout: 15000 });
-    // Click via evaluate (bypass actionability) pour eliminer le risque
-    // d'overlay / element pas cliquable / animation.
     await page.locator('#s3-answers .btn-choice').first().evaluate((el) => el.click());
-    await page.waitForFunction(
-      () => window.state && window.state.currentScreen === 4,
-      { timeout: 5000 }
-    ).catch(() => {});
-    const finalScreen = await page.evaluate(() => window.state && window.state.currentScreen);
-    if (finalScreen !== 4) {
-      // Logs detailles pour diagnostiquer
-      console.log('Console messages :', consoleMsgs.join('\n'));
-    }
-    expect(finalScreen, `Etat final : ${finalScreen}. Console: ${consoleMsgs.slice(-10).join(' | ')}`).toBe(4);
+    await waitForScreen(page, 4, 5000).catch(() => {});
+    const finalScreenId = await getCurrentScreenId(page);
+    expect(finalScreenId, `Ecran final : ${finalScreenId}. Console: ${consoleMsgs.slice(-10).join(' | ')}`).toBe('screen-4');
   });
 });
 
