@@ -5193,31 +5193,36 @@ function askBotC4(btn) {
   const data = C4_QUESTIONS[id];
   if (!data) return;
   if (btn.classList.contains('has-answer')) return;
-  btn.classList.add('played', 'thinking');
-  if (!state.c4QuestionsAsked.includes(id)) state.c4QuestionsAsked.push(id);
-  saveState();
-  // Reponse dans la carte (reste visible) + petit feedback central
   const slot = btn.querySelector('.q-answer');
   const ans  = document.getElementById('c4s6-answer');
   const label = document.getElementById('c4s6-result-label');
-  if (label) label.textContent = 'Bot répond :';
-  if (slot) slot.textContent = '🤖 Bot réfléchit...';
-  if (ans) {
-    ans.classList.add('listening');
-    ans.innerHTML = '<em>🤖 Bot réfléchit à la question...</em>';
-  }
-  setTimeout(() => {
-    btn.classList.remove('thinking');
-    btn.classList.add('has-answer');
-    if (slot) slot.innerHTML = data.answer;
+
+  // Phase 1 (1er tap) : enfant reflechit a haute voix avant la reponse de Bot.
+  if (!btn.classList.contains('thinking')) {
+    btn.classList.add('played', 'thinking');
+    if (slot) slot.textContent = '💭 À toi de répondre ! Touche encore pour voir Bot';
+    if (label) label.textContent = 'À ton tour :';
     if (ans) {
       ans.classList.remove('listening');
-      ans.innerHTML = '✨ Regarde la réponse de Bot dans la carte&nbsp;!';
+      ans.innerHTML = '🗣️ <strong>Réponds à voix haute</strong>, puis touche encore la carte pour voir la réponse de Bot.';
     }
-    if (state.c4QuestionsAsked.length === 4) {
-      setTimeout(() => activateHuntModeC4(), 1100);
-    }
-  }, 1100);
+    return;
+  }
+
+  // Phase 2 (2eme tap) : Bot revele sa reponse.
+  btn.classList.remove('thinking');
+  btn.classList.add('has-answer');
+  if (!state.c4QuestionsAsked.includes(id)) state.c4QuestionsAsked.push(id);
+  saveState();
+  if (label) label.textContent = 'Bot répond :';
+  if (slot) slot.innerHTML = data.answer;
+  if (ans) {
+    ans.classList.remove('listening');
+    ans.innerHTML = '✨ Regarde la réponse de Bot dans la carte&nbsp;!';
+  }
+  if (state.c4QuestionsAsked.length === 4) {
+    setTimeout(() => activateHuntModeC4(), 1100);
+  }
 }
 
 // Phase 2 : on demande a l'enfant de retrouver la reponse fausse
