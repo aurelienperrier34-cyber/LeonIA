@@ -19,7 +19,7 @@
     "tableau": 3,
     "format": "video",
     "narrateur": "Mais comment Bot connaît-il toutes ces réponses ? Léon t'explique : Bot a 'lu' des millions de livres avant de pouvoir parler avec toi !",
-    "leon": "« Pour devenir si bavard, Bot a avalé plein de livres, plein de textes, plein d'histoires ! C'est en lisant qu'il a appris à parler. Tape sur le livre pour aider Bot à apprendre ! »",
+    "leon": "« Pour devenir si bavard, Bot a avalé plein de livres, plein de textes, plein d'histoires ! C'est en lisant qu'il a appris à parler. Tape plein de fois sur le livre pour aider Bot à apprendre ! »",
     "prompt_image": "3D animated cartoon Pixar style, friendly old wizard-inventor with arms wide open in an explanatory gesture, standing beside small cartoon robot Bot, (((Bot has a rectangular screen face with happy eyes))), (((glowing teal antenna))), (((white and turquoise body))), surrounded by hundreds of small books streaming and swirling toward Bot in a magical cascade, glowing pages and letters flying out of the books, magical library background, warm lighting, sense of learning and wonder, 16:9 aspect ratio",
     "prompt_animation": "Léon's mouth clearly opens and closes with strong visible lip movement as he speaks expressively, gesturing animatedly with both hands open. Bot's screen-face eyes blink curiously, small books and pages stream and swirl in a magical cascade flowing toward Bot, glowing letters drift across the air, sparkles trail the books, static camera."
   },
