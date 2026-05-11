@@ -269,36 +269,69 @@ body.map-mode .bg-scene { display: none; }
   width: 100vw; height: 100vh;
   pointer-events: none;
   z-index: 2;
-  /* 16 etincelles : points plus visibles (4-6px), couleurs vives,
-     dispersees sur tout l'ecran. */
+  /* 16 etincelles : points avec halo large + glow flou pour effet magique. */
   background-image:
-    radial-gradient(circle at 8%  18%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.3) 3px, transparent 6px),
-    radial-gradient(circle at 16% 48%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.4) 2px, transparent 5px),
-    radial-gradient(circle at 24% 78%, rgba(180,210,255,1)   0px, rgba(180,210,255,0.4) 3px, transparent 6px),
-    radial-gradient(circle at 32% 22%, rgba(255,180,220,1)   0px, rgba(255,180,220,0.3) 2px, transparent 5px),
-    radial-gradient(circle at 40% 60%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.4) 3px, transparent 6px),
-    radial-gradient(circle at 48% 12%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.4) 2px, transparent 5px),
-    radial-gradient(circle at 56% 86%, rgba(200,160,255,1)   0px, rgba(200,160,255,0.4) 3px, transparent 6px),
-    radial-gradient(circle at 64% 36%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.3) 2px, transparent 5px),
-    radial-gradient(circle at 72% 66%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.4) 3px, transparent 6px),
-    radial-gradient(circle at 80% 22%, rgba(180,210,255,1)   0px, rgba(180,210,255,0.4) 2px, transparent 5px),
-    radial-gradient(circle at 84% 78%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.4) 3px, transparent 6px),
-    radial-gradient(circle at 90% 42%, rgba(200,160,255,1)   0px, rgba(200,160,255,0.4) 2px, transparent 5px),
-    radial-gradient(circle at 94% 14%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.5) 3px, transparent 6px),
-    radial-gradient(circle at 96% 88%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.3) 2px, transparent 5px),
-    radial-gradient(circle at 36% 92%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.4) 3px, transparent 6px),
-    radial-gradient(circle at 68% 4%,  rgba(180,210,255,1)   0px, rgba(180,210,255,0.4) 2px, transparent 5px);
+    radial-gradient(circle at 8%  18%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.5)  4px, transparent 10px),
+    radial-gradient(circle at 16% 48%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.6)  3px, transparent 8px),
+    radial-gradient(circle at 24% 78%, rgba(180,210,255,1)   0px, rgba(180,210,255,0.5)  4px, transparent 10px),
+    radial-gradient(circle at 32% 22%, rgba(255,180,220,1)   0px, rgba(255,180,220,0.5)  3px, transparent 8px),
+    radial-gradient(circle at 40% 60%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.6)  4px, transparent 10px),
+    radial-gradient(circle at 48% 12%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.6)  3px, transparent 8px),
+    radial-gradient(circle at 56% 86%, rgba(200,160,255,1)   0px, rgba(200,160,255,0.6)  4px, transparent 10px),
+    radial-gradient(circle at 64% 36%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.5)  3px, transparent 8px),
+    radial-gradient(circle at 72% 66%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.6)  4px, transparent 10px),
+    radial-gradient(circle at 80% 22%, rgba(180,210,255,1)   0px, rgba(180,210,255,0.6)  3px, transparent 8px),
+    radial-gradient(circle at 84% 78%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.6)  4px, transparent 10px),
+    radial-gradient(circle at 90% 42%, rgba(200,160,255,1)   0px, rgba(200,160,255,0.6)  3px, transparent 8px),
+    radial-gradient(circle at 94% 14%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.7)  4px, transparent 10px),
+    radial-gradient(circle at 96% 88%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.5)  3px, transparent 8px),
+    radial-gradient(circle at 36% 92%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.6)  4px, transparent 10px),
+    radial-gradient(circle at 68% 4%,  rgba(180,210,255,1)   0px, rgba(180,210,255,0.6)  3px, transparent 8px);
   background-repeat: no-repeat;
   animation: introSparkleFloat 5s ease-in-out infinite alternate,
              introSparkleTwinkle 1.6s ease-in-out infinite;
+  filter: blur(0.5px) drop-shadow(0 0 6px rgba(255,255,255,0.4));
+}
+/* 2eme couche de particules : 16 etincelles a d'AUTRES positions,
+   plus grosses, animation differente → 32 etincelles au total avec
+   mouvements desynchronises pour un effet plus riche. */
+.intro-bg-particles-2 {
+  background-image:
+    radial-gradient(circle at 4%  60%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.5)  5px, transparent 12px),
+    radial-gradient(circle at 12% 32%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.6)  4px, transparent 10px),
+    radial-gradient(circle at 20% 8%,  rgba(180,210,255,1)   0px, rgba(180,210,255,0.5)  5px, transparent 12px),
+    radial-gradient(circle at 28% 56%, rgba(255,180,220,1)   0px, rgba(255,180,220,0.5)  4px, transparent 10px),
+    radial-gradient(circle at 38% 80%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.6)  5px, transparent 12px),
+    radial-gradient(circle at 44% 44%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.6)  4px, transparent 10px),
+    radial-gradient(circle at 52% 24%, rgba(200,160,255,1)   0px, rgba(200,160,255,0.6)  5px, transparent 12px),
+    radial-gradient(circle at 60% 72%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.5)  4px, transparent 10px),
+    radial-gradient(circle at 68% 48%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.6)  5px, transparent 12px),
+    radial-gradient(circle at 76% 6%,  rgba(180,210,255,1)   0px, rgba(180,210,255,0.6)  4px, transparent 10px),
+    radial-gradient(circle at 80% 56%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.6)  5px, transparent 12px),
+    radial-gradient(circle at 88% 28%, rgba(200,160,255,1)   0px, rgba(200,160,255,0.6)  4px, transparent 10px),
+    radial-gradient(circle at 92% 72%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.7)  5px, transparent 12px),
+    radial-gradient(circle at 98% 4%,  rgba(255,225,102,1)   0px, rgba(255,225,102,0.5)  4px, transparent 10px),
+    radial-gradient(circle at 50% 96%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.6)  5px, transparent 12px),
+    radial-gradient(circle at 30% 38%, rgba(180,210,255,1)   0px, rgba(180,210,255,0.6)  4px, transparent 10px);
+  animation: introSparkleFloat2 7s ease-in-out infinite alternate,
+             introSparkleTwinkle2 2.2s ease-in-out infinite;
+  filter: blur(0.5px) drop-shadow(0 0 8px rgba(255,225,102,0.5));
 }
 @keyframes introSparkleFloat {
   0%   { transform: translate(0,   0)     scale(1); }
   100% { transform: translate(6px, -16px) scale(1.05); }
 }
+@keyframes introSparkleFloat2 {
+  0%   { transform: translate(0,   0)     scale(1); }
+  100% { transform: translate(-8px, 14px) scale(1.08); }
+}
 @keyframes introSparkleTwinkle {
-  0%, 100% { opacity: 0.5; }
+  0%, 100% { opacity: 0.6; }
   50%      { opacity: 1; }
+}
+@keyframes introSparkleTwinkle2 {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
 }
 /* Voile sombre subtil pour assurer la lisibilite des textes par-dessus
    l'image (Leon a gauche, paysage a droite). Plus marque vers le centre
