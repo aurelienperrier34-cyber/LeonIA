@@ -1164,8 +1164,10 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
 @media (pointer: coarse) and (hover: none) {
   /* C4S4 : remonter un peu (130 → 110) */
   body.novel-mode #screen-c4s4 .parent-tip { top: 110px !important; right: 12px !important; left: auto !important; }
-  /* C4S5 : decale tout a gauche */
-  body.novel-mode #screen-c4s5 .parent-tip { top: 130px !important; left: 12px !important; right: auto !important; }
+  /* C4S5 mobile : parent-tip sous les icones son/CC, bulle Leon sous parent-tip. */
+  body.novel-mode #screen-c4s5 .parent-tip { top: 55px !important; right: 12px !important; left: auto !important; }
+  body.novel-mode #screen-c4s5 .dialogue-who { top: 105px !important; }
+  body.novel-mode #screen-c4s5 .dialogue-bubble { top: 130px !important; }
 }
 body.novel-mode .parent-tip-label, body.novel-mode .parent-tip-text { color: white; text-shadow: 0 1px 3px black; }
 
