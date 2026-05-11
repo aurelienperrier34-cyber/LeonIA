@@ -1431,12 +1431,13 @@ body.calib-hero-mode .hero-destination::before {
   body.novel-mode #screen-c2s2 .dialogue-who,
   body.novel-mode #screen-c2s2 .dialogue-bubble {
     position: fixed !important;
-    left: 12px !important;
+    right: 12px !important;
+    left: auto !important;
     top: auto !important;
-    right: auto !important;
     width: auto !important;
-    max-width: 70% !important;
+    max-width: 50% !important;
     z-index: 50;
+    text-align: left !important;
   }
   body.novel-mode #screen-c2s2 .dialogue-who {
     bottom: 110px !important;
@@ -1488,6 +1489,28 @@ body.calib-hero-mode .hero-destination::before {
   body.novel-mode #screen-c3s5 .dialogue-bubble,
   body.novel-mode #screen-c3s6 .dialogue-bubble {
     bottom: 75px !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+    line-height: 1.3 !important;
+  }
+  /* C4S1 mobile : bulle Leon sous la pastille carte (top-gauche), reduite. */
+  body.novel-mode #screen-c4s1 .dialogue-who,
+  body.novel-mode #screen-c4s1 .dialogue-bubble {
+    position: fixed !important;
+    left: 12px !important;
+    bottom: auto !important;
+    right: auto !important;
+    width: auto !important;
+    max-width: 45% !important;
+    z-index: 50;
+  }
+  body.novel-mode #screen-c4s1 .dialogue-who {
+    top: 130px !important;
+    margin: 0 !important;
+    font-size: 0.7rem !important;
+  }
+  body.novel-mode #screen-c4s1 .dialogue-bubble {
+    top: 155px !important;
     padding: 8px 12px !important;
     font-size: 0.85rem !important;
     line-height: 1.3 !important;
