@@ -1515,6 +1515,29 @@ body.calib-hero-mode .hero-destination::before {
     font-size: 0.85rem !important;
     line-height: 1.3 !important;
   }
+  /* C4S4 mobile : bulle Leon decalee a droite, reduite. */
+  body.novel-mode #screen-c4s4 .dialogue-who,
+  body.novel-mode #screen-c4s4 .dialogue-bubble {
+    position: fixed !important;
+    right: 12px !important;
+    left: auto !important;
+    bottom: auto !important;
+    width: auto !important;
+    max-width: 45% !important;
+    z-index: 50;
+    text-align: left !important;
+  }
+  body.novel-mode #screen-c4s4 .dialogue-who {
+    top: 130px !important;
+    margin: 0 !important;
+    font-size: 0.7rem !important;
+  }
+  body.novel-mode #screen-c4s4 .dialogue-bubble {
+    top: 155px !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+    line-height: 1.3 !important;
+  }
   /* C3S7 mobile : bulle Leon en HAUT-gauche sous la pastille carte
      (qui finit a y~116), pas en bas (les 3 micros occupent le centre/bas).
      Consigne 'clique sur chaque micro' descendue. */
