@@ -7621,13 +7621,19 @@ function _c4s2SpeakAsBot(text) {
   setTimeout(() => {
     const utt = new SpeechSynthesisUtterance(cleanText);
     utt.lang = 'fr-FR';
-    utt.pitch = 1.5;   // aigu = robot enfantin
-    utt.rate  = 0.95;
+    utt.pitch = 2.0;   // max = effet robotique aigu
+    utt.rate  = 0.7;   // lent = effet metallique
     utt.volume = 1;
     try {
       const voices = window.speechSynthesis.getVoices();
-      const fr = voices.find(v => v.lang && v.lang.startsWith('fr'));
-      if (fr) utt.voice = fr;
+      // Prefere une voix "Compact" (moins naturelle, plus robotique) si dispo,
+      // sinon une voix dont le nom contient "Google" (mieux que la voix
+      // system par defaut sur Android), sinon n'importe quelle voix fr.
+      const compactFr = voices.find(v => v.lang && v.lang.startsWith('fr') && /compact|enhanced/i.test(v.name));
+      const googleFr  = voices.find(v => v.lang && v.lang.startsWith('fr') && /google/i.test(v.name));
+      const anyFr     = voices.find(v => v.lang && v.lang.startsWith('fr'));
+      const chosen = compactFr || googleFr || anyFr;
+      if (chosen) utt.voice = chosen;
     } catch(e) {}
     utt.onerror = (ev) => console.warn('[c4s2] tts error:', ev.error);
     // Garde une reference pour eviter le garbage collection precoce
