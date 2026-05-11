@@ -7151,14 +7151,15 @@ function _setupHoverSpeak() {
     //   La voix se declenche en parallele pour les enfants qui ne lisent pas.
     if (target.classList.contains('prompt-word')) return;
     if (target.classList.contains('s4-card') || target.classList.contains('vf-btn')) {
-      // Lit le label en parallele, ne bloque pas la selection.
-      // Pour .s4-card on prefere dataset.label (juste le mot, sans l'emoji)
-      // car certains emojis (ex: '〰️' wavy dash) ralentissent la TTS Android
-      // et faisaient perdre le 1er tap → l'utilisateur devait re-tapper.
+      // Lit le label en parallele, sans bloquer le click event (sinon le 1er
+      // tap pouvait etre 'mange' par la TTS, surtout sur moustaches dont
+      // l'emoji '〰️' wavy dash est multi-codepoint + lent a traiter).
+      // setTimeout(0) decouple la TTS du pipeline d'event ; le onclick
+      // du button se declenche normalement APRES.
       const textParallel = target.dataset.speak
         || target.dataset.label
         || target.textContent;
-      _hoverSpeakText(textParallel);
+      setTimeout(() => _hoverSpeakText(textParallel), 0);
       return;
     }
     // Mode souris : pas d'interception, le hover s'occupe de la lecture
