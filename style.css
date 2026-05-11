@@ -4522,11 +4522,17 @@ body.novel-mode .c4s5-memory-game {
 }
 .c4s5-cards {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
+  /* Reduit un peu la taille des cartes pour qu'elles tiennent dans la
+     bulle glassmorphism (le user voyait les cartes deborder). */
+  max-width: 88%;
+  margin: 0 auto;
 }
+.c4s5-card { max-width: 110px; max-height: 110px; margin: 0 auto; width: 100%; }
 @media (max-width: 720px) {
-  .c4s5-cards { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .c4s5-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; max-width: 92%; }
+  .c4s5-card { max-width: 80px; max-height: 80px; }
 }
 
 /* Carte memory — flip 3D, ratio carré pour que la grille tienne en hauteur */
