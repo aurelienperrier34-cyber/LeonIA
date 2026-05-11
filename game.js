@@ -7077,7 +7077,10 @@ const HOVER_SPEAK_SELECTORS = [
   '.c5s2-card',          // c5s2 IA cartes
   '.c5s2-zone',          // c5s2 super-pouvoirs zones
   '.c5-module-btn',      // c5s5 modules
-  '.s4-card',            // c1s4 chat features
+  // .s4-card RETIRE : les cartes ont des emojis visuels (chat: pattes,
+  // moustaches, etc.), pas besoin de TTS. L'interception du click pour
+  // declencher la TTS causait des bugs de double-tap intermittents
+  // (notamment sur 'moustaches' et 'queue' du chat).
   '.prompt-word'         // c2s7 mots du prompt
 ];
 
@@ -7150,12 +7153,8 @@ function _setupHoverSpeak() {
     // - .vf-btn (Vrai/Faux quiz) : reponse binaire, 1-tap = action
     //   La voix se declenche en parallele pour les enfants qui ne lisent pas.
     if (target.classList.contains('prompt-word')) return;
-    if (target.classList.contains('s4-card') || target.classList.contains('vf-btn')) {
-      // Lit le label en parallele, sans bloquer le click event (sinon le 1er
-      // tap pouvait etre 'mange' par la TTS, surtout sur moustaches dont
-      // l'emoji '〰️' wavy dash est multi-codepoint + lent a traiter).
-      // setTimeout(0) decouple la TTS du pipeline d'event ; le onclick
-      // du button se declenche normalement APRES.
+    if (target.classList.contains('vf-btn')) {
+      // Lit le label en parallele, sans bloquer le click event.
       const textParallel = target.dataset.speak
         || target.dataset.label
         || target.textContent;
