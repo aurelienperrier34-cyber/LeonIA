@@ -5936,6 +5936,13 @@ body.novel-mode .s4-game-pill {
   line-height: 1;
   text-align: center;
 }
+/* Force tous les taps a arriver sur le button parent (pas sur les enfants).
+   Sur Android, taper certains emojis (ex: 〰️ moustaches multi-codepoint)
+   visait le text node au lieu du button → 1er tap perdu. */
+.s4-card .s4-card-emoji,
+.s4-card .s4-card-label {
+  pointer-events: none;
+}
 .s4-card:hover {
   transform: translateY(-4px) scale(1.06);
   box-shadow: 0 10px 22px rgba(0,0,0,0.45);
