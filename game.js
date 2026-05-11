@@ -7914,6 +7914,20 @@ function activateS4Game() {
       btn.setAttribute('aria-label', c.label);
       btn.innerHTML = `<div class="s4-card-emoji">${c.emoji}</div><div class="s4-card-label">${c.label}</div>`;
       btn.onclick = () => s4TapCard(btn);
+      // Sur mobile, certains emojis multi-codepoint (ex: '〰️' moustaches)
+      // bloquent le 1er click event. On double avec un touchend handler qui
+      // declenche s4TapCard directement, garantissant la reactivite au 1er
+      // tap meme si le click est avale. Le flag _s4HandledTouch evite le
+      // double-trigger (touchend + click).
+      btn.addEventListener('touchend', (ev) => {
+        if (btn.classList.contains('found')) return;
+        ev.preventDefault();
+        btn._s4HandledTouch = true;
+        s4TapCard(btn);
+        setTimeout(() => { btn._s4HandledTouch = false; }, 400);
+      }, { passive: false });
+      // Override onclick pour ignorer si touchend a deja gere
+      btn.onclick = () => { if (!btn._s4HandledTouch) s4TapCard(btn); };
       cards.appendChild(btn);
     });
     cards.style.display = 'grid';
