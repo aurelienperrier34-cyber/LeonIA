@@ -1840,7 +1840,7 @@ function goToScreen(screenIdentifier, force) {
       b.onclick = () => askBotC4(b);
       // remettre l'invite par defaut dans chaque carte
       const slot = b.querySelector('.q-answer');
-      if (slot) slot.textContent = slot.dataset.empty || '🤔 Clique pour voir la réponse';
+      if (slot) slot.textContent = slot.dataset.empty || '🤔 Touche-moi pour poser la question';
     });
     const ans = document.getElementById('c4s6-answer');
     const label = document.getElementById('c4s6-result-label');
