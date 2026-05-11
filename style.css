@@ -1162,8 +1162,10 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
    - C4S4 mobile : au-dessus de la bulle Leon descendue.
    - C4S5 mobile : sous la narration. */
 @media (pointer: coarse) and (hover: none) {
-  body.novel-mode #screen-c4s4 .parent-tip { top: 130px !important; right: 12px !important; left: auto !important; }
-  body.novel-mode #screen-c4s5 .parent-tip { top: 130px !important; right: 12px !important; left: auto !important; }
+  /* C4S4 : remonter un peu (130 → 110) */
+  body.novel-mode #screen-c4s4 .parent-tip { top: 110px !important; right: 12px !important; left: auto !important; }
+  /* C4S5 : decale tout a gauche */
+  body.novel-mode #screen-c4s5 .parent-tip { top: 130px !important; left: 12px !important; right: auto !important; }
 }
 body.novel-mode .parent-tip-label, body.novel-mode .parent-tip-text { color: white; text-shadow: 0 1px 3px black; }
 
@@ -4544,10 +4546,12 @@ body.novel-mode .c4s5-memory-game {
 @media (max-width: 720px) {
   .c4s5-cards { grid-template-columns: repeat(4, 1fr); gap: 8px; }
 }
-/* Cartes memory reduites SUR MOBILE UNIQUEMENT (ordi inchange). */
+/* Cartes memory : SUR MOBILE UNIQUEMENT, juste un peu plus petites que
+   le defaut (qui sortait de la bulle). Le user veut 'a peine un peu plus
+   petites qu'avant ma 1ere modif'. */
 @media (pointer: coarse) and (hover: none) {
-  .c4s5-cards { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; max-width: 95% !important; margin: 0 auto !important; }
-  .c4s5-card { max-width: 100px !important; max-height: 100px !important; margin: 0 auto !important; width: 100% !important; }
+  .c4s5-cards { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; max-width: 96% !important; margin: 0 auto !important; }
+  .c4s5-card { max-width: 130px !important; max-height: 130px !important; margin: 0 auto !important; width: 100% !important; }
 }
 
 /* Carte memory — flip 3D, ratio carré pour que la grille tienne en hauteur */
