@@ -1148,7 +1148,11 @@ body.novel-mode .btn-choice:hover, body.novel-mode .tap-option:not(.answered):ho
   background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.5); transform: translateY(-3px);
 }
 body.novel-mode .vf-statement { color: white; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
-body.novel-mode .parent-tip { position: absolute; top: 8px; right: auto; left: 160px; z-index: 20; margin: 0; max-width: 280px; width: fit-content; background: rgba(0,25,50,0.6); border-color: rgba(255,255,255,0.2); backdrop-filter: blur(10px); }
+body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-index: 20; margin: 0; max-width: 320px; width: fit-content; background: rgba(0,25,50,0.6); border-color: rgba(255,255,255,0.2); backdrop-filter: blur(10px); }
+/* C4S4 : parent-tip AU-DESSUS de la bulle Leon (qui est a top:200-230). */
+body.novel-mode #screen-c4s4 .parent-tip { top: 130px !important; right: 12px !important; left: auto !important; }
+/* C4S5 : parent-tip SOUS la narration (qui est en haut du scene-text). */
+body.novel-mode #screen-c4s5 .parent-tip { top: 130px !important; right: 12px !important; left: auto !important; }
 body.novel-mode .parent-tip-label, body.novel-mode .parent-tip-text { color: white; text-shadow: 0 1px 3px black; }
 
 body.novel-mode .btn-primary, body.novel-mode .btn-secondary { z-index: 3; margin-top: 10px; margin-left: auto; margin-right: auto; width: auto; min-width: 200px; }
@@ -4529,10 +4533,10 @@ body.novel-mode .c4s5-memory-game {
   max-width: 88%;
   margin: 0 auto;
 }
-.c4s5-card { max-width: 110px; max-height: 110px; margin: 0 auto; width: 100%; }
+.c4s5-card { max-width: 140px; max-height: 140px; margin: 0 auto; width: 100%; }
 @media (max-width: 720px) {
-  .c4s5-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; max-width: 92%; }
-  .c4s5-card { max-width: 80px; max-height: 80px; }
+  .c4s5-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; max-width: 95%; }
+  .c4s5-card { max-width: 100px; max-height: 100px; }
 }
 
 /* Carte memory — flip 3D, ratio carré pour que la grille tienne en hauteur */
