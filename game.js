@@ -7925,22 +7925,27 @@ function activateS4Game() {
   if (reveal) reveal.style.display = 'flex';
   if (pill) pill.style.display = 'inline-flex';
 }
-// Capture global pour s4-card : on ecoute le pointerdown au niveau du
-// document.body en CAPTURE PHASE. L'event est intercepte AVANT d'atteindre
-// les enfants (.s4-card-emoji, .s4-card-label), donc meme si un emoji
-// multi-codepoint 'mange' le bubble, on a deja recu et traite le tap ici.
+// Capture global pour s4-card : on ecoute pointerdown + touchstart +
+// mousedown + click au niveau du document en CAPTURE PHASE. Au moins
+// UN de ces events doit attraper le tap meme si les autres sont avales
+// par l'emoji multi-codepoint. Le flag _s4Handled (350ms) evite que
+// les events redondants tirent plusieurs fois.
 if (typeof window !== 'undefined' && !window._s4GlobalCaptureSetup) {
   window._s4GlobalCaptureSetup = true;
-  document.addEventListener('pointerdown', (ev) => {
+  const _s4Handle = (ev) => {
     if (!ev.target || !ev.target.closest) return;
     const card = ev.target.closest('.s4-card');
     if (!card) return;
     if (card.classList.contains('found')) return;
     if (card._s4Handled) return;
     card._s4Handled = true;
-    setTimeout(() => { card._s4Handled = false; }, 350);
+    setTimeout(() => { card._s4Handled = false; }, 400);
     s4TapCard(card);
-  }, true);
+  };
+  document.addEventListener('pointerdown', _s4Handle, true);
+  document.addEventListener('touchstart',  _s4Handle, true);
+  document.addEventListener('mousedown',   _s4Handle, true);
+  document.addEventListener('click',       _s4Handle, true);
 }
 
 function s4TapCard(btn) {
