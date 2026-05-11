@@ -15,7 +15,7 @@
   <meta name="theme-color" content="#000000">
   <title>IA : Le monde de Léon</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2026050600">
+  <link rel="stylesheet" href="style.css?v=2026050601">
 </head>
 <body>
 <!-- Overlay "Tourne ton téléphone" (portrait mobile uniquement) -->
@@ -34,7 +34,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v283</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v284</div>
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
 <button id="btn-back-map-global" class="btn-back-map-global" onclick="goToScreen('map')" title="Retour à la carte" style="display:none">
@@ -1282,7 +1282,7 @@
             <div class="c4s3-counter" id="c4s3-counter">0</div>
             <div class="c4s3-counter-label">livres lus</div>
           </div>
-          <button class="c4s3-tap-btn" id="c4s3-tap-btn">📚</button>
+          <button class="c4s3-tap-btn" id="c4s3-tap-btn"><span class="c4s3-tap-emoji">📚</span><span class="c4s3-tap-text">Tape&nbsp;!</span></button>
           <!-- Cascade de livres qui tombent (générée en JS à chaque tap) -->
           <div class="c4s3-falling-books" id="c4s3-falling-books"></div>
         </div>
@@ -1733,6 +1733,6 @@
 </div>
 
 <script src="calibration.js"></script>
-<script src="game.js?v=223"></script>
+<script src="game.js?v=224"></script>
 </body>
 </html>
