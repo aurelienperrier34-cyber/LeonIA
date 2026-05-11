@@ -7514,7 +7514,9 @@ function c4s2ToggleMic() {
     _c4s2Recognition.start();
   } catch(e) {
     console.warn('[c4s2] mic init failed:', e);
-    _c4s2HideMic();
+    // On NE cache PAS le mic : l'utilisateur peut retenter (typique sur
+    // Android quand on relance un SR juste apres un stop precedent).
+    _c4s2StopMic();
   }
 }
 
