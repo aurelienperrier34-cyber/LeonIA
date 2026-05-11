@@ -789,6 +789,38 @@ body.novel-mode #screen-c4s2 .dialogue-who {
 body.novel-mode #screen-c4s2 .dialogue-bubble {
   top: 88px !important;
 }
+/* C4S3, C4S5, C4S6, C5S4 (global) : meme pattern bulle Leon a droite,
+   max-width 45%, top 60-88px. */
+body.novel-mode #screen-c4s3 .dialogue-who,
+body.novel-mode #screen-c4s3 .dialogue-bubble,
+body.novel-mode #screen-c4s5 .dialogue-who,
+body.novel-mode #screen-c4s5 .dialogue-bubble,
+body.novel-mode #screen-c4s6 .dialogue-who,
+body.novel-mode #screen-c4s6 .dialogue-bubble,
+body.novel-mode #screen-c5s4 .dialogue-who,
+body.novel-mode #screen-c5s4 .dialogue-bubble {
+  position: fixed !important;
+  right: 12px !important;
+  left: auto !important;
+  bottom: auto !important;
+  width: auto !important;
+  max-width: 45% !important;
+  z-index: 50;
+  text-align: left !important;
+}
+body.novel-mode #screen-c4s3 .dialogue-who,
+body.novel-mode #screen-c4s5 .dialogue-who,
+body.novel-mode #screen-c4s6 .dialogue-who,
+body.novel-mode #screen-c5s4 .dialogue-who {
+  top: 60px !important;
+  margin: 0 !important;
+}
+body.novel-mode #screen-c4s3 .dialogue-bubble,
+body.novel-mode #screen-c4s5 .dialogue-bubble,
+body.novel-mode #screen-c4s6 .dialogue-bubble,
+body.novel-mode #screen-c5s4 .dialogue-bubble {
+  top: 88px !important;
+}
 /* Adaptation des textes au fond noir */
 body.novel-mode .narration { color: #EEE; text-shadow: 0 1px 4px rgba(0,0,0,0.8); margin-bottom: 8px; }
 body.novel-mode .dialogue-who { color: #FFE166; font-size: 1.1rem; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }

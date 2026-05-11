@@ -7493,6 +7493,10 @@ function c4s2ToggleMic() {
       if (label) label.textContent = '👂 Je t\'écoute…';
     };
     _c4s2Recognition.onresult = (ev) => {
+      // Stop SR explicitement apres reception du resultat. Sans ca, SR
+      // continue d'ecouter et le bouton mic reste 'actif' — le user pense
+      // qu'il doit re-cliquer pour activer alors qu'il desactive.
+      try { _c4s2Recognition.stop(); } catch(e) {}
       const transcript = (ev.results[0][0].transcript || '').toLowerCase();
       console.log('[c4s2] heard:', transcript);
       const matched = _c4s2MatchQuestion(transcript);
