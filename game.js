@@ -5060,7 +5060,7 @@ function resetC4s3Game() {
   const tapBtn = document.getElementById('c4s3-tap-btn');
   if (tapBtn) {
     tapBtn.classList.remove('complete');
-    tapBtn.textContent = '📚';
+    tapBtn.innerHTML = '<span class="c4s3-tap-emoji">📚</span><span class="c4s3-tap-text">Tape&nbsp;!</span>';
     tapBtn.onclick = null;
   }
   const skip = document.querySelector('#screen-c4s3 .c4s3-skip-btn');
