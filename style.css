@@ -4563,8 +4563,54 @@ body.novel-mode .c4s5-memory-game {
     border-radius: 0 !important;
     padding: 50px 18px 18px !important;
   }
-  .c4s5-cards { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; max-width: 96% !important; margin: 0 auto !important; gap: 12px !important; }
-  .c4s5-card { max-width: 170px !important; max-height: 170px !important; margin: 0 auto !important; width: 100% !important; }
+  .c4s5-cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    gap: 10px !important;
+    /* Remplit le reste de la bulle plein ecran (flex:1 prend tout
+       l'espace dispo apres tap-instruction + progress). */
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+  }
+  .c4s5-card {
+    /* Carte = carre dimensionne par la hauteur de la row (qui est
+       limitee par le viewport via grid-template-rows: 1fr 1fr).
+       Largeur calculee par aspect-ratio. Centree horizontalement
+       dans sa cell. */
+    aspect-ratio: 1 / 1 !important;
+    height: 100% !important;
+    width: auto !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  /* C4S6 : meme pattern, panel plein ecran pour que les 4 questions s'affichent. */
+  body.novel-mode #screen-c4s6 .game-overlay {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100dvh !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    transform: none !important;
+    border-radius: 0 !important;
+    padding: 50px 14px 14px !important;
+    overflow-y: auto !important;
+  }
+  #screen-c4s6 .c4s6-buttons {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+  #screen-c4s6 .c4s6-q-btn {
+    flex: 1 1 calc(50% - 10px) !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
 }
 
 /* Carte memory — flip 3D, ratio carré pour que la grille tienne en hauteur */
