@@ -770,6 +770,25 @@ body.novel-mode #screen-c4s4 .dialogue-who {
 body.novel-mode #screen-c4s4 .dialogue-bubble {
   top: 88px !important;
 }
+/* C4S2 (global) : meme pattern que C4S4 mais largeur jusqu'au centre (50%). */
+body.novel-mode #screen-c4s2 .dialogue-who,
+body.novel-mode #screen-c4s2 .dialogue-bubble {
+  position: fixed !important;
+  right: 12px !important;
+  left: auto !important;
+  bottom: auto !important;
+  width: auto !important;
+  max-width: 50% !important;
+  z-index: 50;
+  text-align: left !important;
+}
+body.novel-mode #screen-c4s2 .dialogue-who {
+  top: 60px !important;
+  margin: 0 !important;
+}
+body.novel-mode #screen-c4s2 .dialogue-bubble {
+  top: 88px !important;
+}
 /* Adaptation des textes au fond noir */
 body.novel-mode .narration { color: #EEE; text-shadow: 0 1px 4px rgba(0,0,0,0.8); margin-bottom: 8px; }
 body.novel-mode .dialogue-who { color: #FFE166; font-size: 1.1rem; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
