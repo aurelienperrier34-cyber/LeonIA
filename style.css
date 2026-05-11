@@ -1168,6 +1168,67 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
   body.novel-mode #screen-c4s5 .parent-tip { top: 55px !important; right: 12px !important; left: auto !important; }
   body.novel-mode #screen-c4s5 .dialogue-who { top: 105px !important; }
   body.novel-mode #screen-c4s5 .dialogue-bubble { top: 130px !important; }
+  /* C5S1 mobile : narration a GAUCHE (sous pastille map) + bulle Leon a
+     DROITE (sous boutons son/CC). 2 zones distinctes. */
+  body.novel-mode #screen-c5s1 .scene-text {
+    padding: 0 !important;
+    background: transparent !important;
+  }
+  body.novel-mode #screen-c5s1 .narration {
+    position: fixed !important;
+    top: 130px !important;
+    left: 12px !important;
+    max-width: 45% !important;
+    margin: 0 !important;
+    z-index: 50;
+    background: rgba(20,10,40,0.7);
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+  body.novel-mode #screen-c5s1 .dialogue-who,
+  body.novel-mode #screen-c5s1 .dialogue-bubble {
+    position: fixed !important;
+    right: 12px !important;
+    left: auto !important;
+    width: auto !important;
+    max-width: 50% !important;
+    z-index: 50;
+  }
+  body.novel-mode #screen-c5s1 .dialogue-who {
+    top: 55px !important;
+    margin: 0 !important;
+    font-size: 0.7rem !important;
+  }
+  body.novel-mode #screen-c5s1 .dialogue-bubble {
+    top: 80px !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+    line-height: 1.3 !important;
+  }
+  /* C5S2 mobile : bulle Leon en BAS-GAUCHE de l'ecran. */
+  body.novel-mode #screen-c5s2 .dialogue-who,
+  body.novel-mode #screen-c5s2 .dialogue-bubble {
+    position: fixed !important;
+    left: 12px !important;
+    right: auto !important;
+    top: auto !important;
+    width: auto !important;
+    max-width: 50% !important;
+    z-index: 50;
+  }
+  body.novel-mode #screen-c5s2 .dialogue-who {
+    bottom: 110px !important;
+    margin: 0 !important;
+    font-size: 0.7rem !important;
+  }
+  body.novel-mode #screen-c5s2 .dialogue-bubble {
+    bottom: 75px !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+    line-height: 1.3 !important;
+  }
 }
 body.novel-mode .parent-tip-label, body.novel-mode .parent-tip-text { color: white; text-shadow: 0 1px 3px black; }
 
