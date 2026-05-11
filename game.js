@@ -1840,7 +1840,7 @@ function goToScreen(screenIdentifier, force) {
       b.onclick = () => askBotC4(b);
       // remettre l'invite par defaut dans chaque carte
       const slot = b.querySelector('.q-answer');
-      if (slot) slot.textContent = slot.dataset.empty || '🤔 Clique pour voir la réponse';
+      if (slot) slot.textContent = slot.dataset.empty || '🤔 Touche-moi pour poser la question';
     });
     const ans = document.getElementById('c4s6-answer');
     const label = document.getElementById('c4s6-result-label');
@@ -5193,31 +5193,36 @@ function askBotC4(btn) {
   const data = C4_QUESTIONS[id];
   if (!data) return;
   if (btn.classList.contains('has-answer')) return;
-  btn.classList.add('played', 'thinking');
-  if (!state.c4QuestionsAsked.includes(id)) state.c4QuestionsAsked.push(id);
-  saveState();
-  // Reponse dans la carte (reste visible) + petit feedback central
   const slot = btn.querySelector('.q-answer');
   const ans  = document.getElementById('c4s6-answer');
   const label = document.getElementById('c4s6-result-label');
-  if (label) label.textContent = 'Bot répond :';
-  if (slot) slot.textContent = '🤖 Bot réfléchit...';
-  if (ans) {
-    ans.classList.add('listening');
-    ans.innerHTML = '<em>🤖 Bot réfléchit à la question...</em>';
-  }
-  setTimeout(() => {
-    btn.classList.remove('thinking');
-    btn.classList.add('has-answer');
-    if (slot) slot.innerHTML = data.answer;
+
+  // Phase 1 (1er tap) : enfant reflechit a haute voix avant la reponse de Bot.
+  if (!btn.classList.contains('thinking')) {
+    btn.classList.add('played', 'thinking');
+    if (slot) slot.textContent = '💭 À toi de répondre ! Touche encore pour voir Bot';
+    if (label) label.textContent = 'À ton tour :';
     if (ans) {
       ans.classList.remove('listening');
-      ans.innerHTML = '✨ Regarde la réponse de Bot dans la carte&nbsp;!';
+      ans.innerHTML = '🗣️ <strong>Réponds à voix haute</strong>, puis touche encore la carte pour voir la réponse de Bot.';
     }
-    if (state.c4QuestionsAsked.length === 4) {
-      setTimeout(() => activateHuntModeC4(), 1100);
-    }
-  }, 1100);
+    return;
+  }
+
+  // Phase 2 (2eme tap) : Bot revele sa reponse.
+  btn.classList.remove('thinking');
+  btn.classList.add('has-answer');
+  if (!state.c4QuestionsAsked.includes(id)) state.c4QuestionsAsked.push(id);
+  saveState();
+  if (label) label.textContent = 'Bot répond :';
+  if (slot) slot.innerHTML = data.answer;
+  if (ans) {
+    ans.classList.remove('listening');
+    ans.innerHTML = '✨ Regarde la réponse de Bot dans la carte&nbsp;!';
+  }
+  if (state.c4QuestionsAsked.length === 4) {
+    setTimeout(() => activateHuntModeC4(), 1100);
+  }
 }
 
 // Phase 2 : on demande a l'enfant de retrouver la reponse fausse
@@ -7621,13 +7626,19 @@ function _c4s2SpeakAsBot(text) {
   setTimeout(() => {
     const utt = new SpeechSynthesisUtterance(cleanText);
     utt.lang = 'fr-FR';
-    utt.pitch = 1.5;   // aigu = robot enfantin
-    utt.rate  = 0.95;
+    utt.pitch = 2.0;   // max = effet robotique aigu
+    utt.rate  = 0.7;   // lent = effet metallique
     utt.volume = 1;
     try {
       const voices = window.speechSynthesis.getVoices();
-      const fr = voices.find(v => v.lang && v.lang.startsWith('fr'));
-      if (fr) utt.voice = fr;
+      // Prefere une voix "Compact" (moins naturelle, plus robotique) si dispo,
+      // sinon une voix dont le nom contient "Google" (mieux que la voix
+      // system par defaut sur Android), sinon n'importe quelle voix fr.
+      const compactFr = voices.find(v => v.lang && v.lang.startsWith('fr') && /compact|enhanced/i.test(v.name));
+      const googleFr  = voices.find(v => v.lang && v.lang.startsWith('fr') && /google/i.test(v.name));
+      const anyFr     = voices.find(v => v.lang && v.lang.startsWith('fr'));
+      const chosen = compactFr || googleFr || anyFr;
+      if (chosen) utt.voice = chosen;
     } catch(e) {}
     utt.onerror = (ev) => console.warn('[c4s2] tts error:', ev.error);
     // Garde une reference pour eviter le garbage collection precoce
