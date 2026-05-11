@@ -247,9 +247,10 @@ body.map-mode .bg-scene { display: none; }
   overflow: hidden;
 }
 .intro-bg-video {
-  position: absolute;
+  /* position:fixed pour echapper au padding+background blanc de .app */
+  position: fixed;
   top: 0; left: 0;
-  width: 100%; height: 100%;
+  width: 100vw; height: 100vh;
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
@@ -259,11 +260,16 @@ body.map-mode .bg-scene { display: none; }
    ou se trouve le titre. */
 #screen-0::before {
   content: '';
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 1;
   background: radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 60%, transparent 100%);
   pointer-events: none;
+}
+/* Masque le fond blanc + padding de .app sur l'ecran d'accueil */
+body:has(#screen-0.active) .app {
+  background-color: transparent !important;
+  padding: 0 !important;
 }
 .intro-container {
   position: relative;
