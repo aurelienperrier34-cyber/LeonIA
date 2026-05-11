@@ -6308,7 +6308,7 @@ body.novel-mode .c4s2-game-pill {
 .c4s2-mic-row {
   position: absolute;
   left: 50%;
-  top: 130px;
+  top: 155px;
   transform: translateX(-50%);
   z-index: 6;
 }
