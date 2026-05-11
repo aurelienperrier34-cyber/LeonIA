@@ -2567,6 +2567,22 @@ function playStoryScene(screenId, opts = {}) {
       leonAudio.addEventListener('ended', fireLeonEnd, { once: true });
     }
 
+    // SUR MOBILE TACTILE UNIQUEMENT : on skip le typewriter visuel (cause
+    // les 'lettres doublees/triplees' pendant que Leon parle, bug observe
+    // sur plusieurs ecrans). L'audio Leon continue normalement ; le texte
+    // apparait d'un coup en fade-in.
+    const isTouchOnly = (typeof window !== 'undefined' && window.matchMedia
+      && window.matchMedia('(pointer: coarse) and (hover: none)').matches);
+    if (isTouchOnly) {
+      bubble.innerHTML = fullHTML;
+      bubble.style.opacity = '0';
+      bubble.style.transition = 'opacity 0.35s ease';
+      requestAnimationFrame(() => { bubble.style.opacity = '1'; });
+      if (actions) setTimeout(() => actions.classList.add('show'), 600);
+      if (opts.onComplete) opts.onComplete();
+      return;
+    }
+
     // ANTI-FLICKER mobile : pre-calcule la taille finale du bubble + active la
     // classe .typewriting qui (en CSS) desactive backdrop-filter et cache le
     // pseudo-element ::before. C'est la cause des "lettres doublees" sur
