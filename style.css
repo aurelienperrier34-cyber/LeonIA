@@ -5525,6 +5525,19 @@ body.novel-mode .c2s2-inspect-game {
   text-align: center;
   overflow: hidden; /* contient la cascade */
 }
+/* Override de la regle 'body.novel-mode .game-overlay' qui mettait
+   le panel en bottom-right au lieu de centre. */
+body.novel-mode .c4s3-books-game {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: translate(-50%, -50%) !important;
+  width: 78% !important;
+  max-width: 720px !important;
+  z-index: 50;
+}
 .c4s3-books-game .tap-instruction {
   margin: 0 0 14px;
   font-size: 1rem;
