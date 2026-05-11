@@ -7913,19 +7913,11 @@ function activateS4Game() {
       btn.dataset.label = c.label;
       btn.setAttribute('aria-label', c.label);
       btn.innerHTML = `<div class="s4-card-emoji">${c.emoji}</div><div class="s4-card-label">${c.label}</div>`;
-      // Sur mobile, certains emojis multi-codepoint bloquent le 1er click
-      // event. On utilise pointerdown (universel : touch + souris + stylet,
-      // declenche des le 1er contact) en plus du onclick fallback.
-      // Le flag _s4HandledPointer evite le double-trigger.
-      btn.addEventListener('pointerdown', (ev) => {
-        if (btn.classList.contains('found')) return;
-        if (btn._s4HandledPointer) return;
-        btn._s4HandledPointer = true;
-        s4TapCard(btn);
-        setTimeout(() => { btn._s4HandledPointer = false; }, 350);
-      });
-      // Fallback click au cas ou pointerdown rate (browsers exotiques)
-      btn.onclick = () => { if (!btn._s4HandledPointer) s4TapCard(btn); };
+      // Handlers : pointerdown ET click sur le button (defensifs). Mais le
+      // VRAI mecanisme est la delegation au niveau document.body en capture
+      // phase (cf. _s4SetupGlobalCapture ci-dessous) qui intercepte l'event
+      // AVANT qu'il n'arrive sur l'emoji enfant (qui pourrait le 'manger').
+      btn.onclick = () => { if (!btn._s4Handled) s4TapCard(btn); };
       cards.appendChild(btn);
     });
     cards.style.display = 'grid';
@@ -7933,6 +7925,24 @@ function activateS4Game() {
   if (reveal) reveal.style.display = 'flex';
   if (pill) pill.style.display = 'inline-flex';
 }
+// Capture global pour s4-card : on ecoute le pointerdown au niveau du
+// document.body en CAPTURE PHASE. L'event est intercepte AVANT d'atteindre
+// les enfants (.s4-card-emoji, .s4-card-label), donc meme si un emoji
+// multi-codepoint 'mange' le bubble, on a deja recu et traite le tap ici.
+if (typeof window !== 'undefined' && !window._s4GlobalCaptureSetup) {
+  window._s4GlobalCaptureSetup = true;
+  document.addEventListener('pointerdown', (ev) => {
+    if (!ev.target || !ev.target.closest) return;
+    const card = ev.target.closest('.s4-card');
+    if (!card) return;
+    if (card.classList.contains('found')) return;
+    if (card._s4Handled) return;
+    card._s4Handled = true;
+    setTimeout(() => { card._s4Handled = false; }, 350);
+    s4TapCard(card);
+  }, true);
+}
+
 function s4TapCard(btn) {
   if (!btn || btn.classList.contains('found')) return;
   // Verification ROBUSTE : on relit la verite depuis S4_CARDS via le label
