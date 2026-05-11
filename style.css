@@ -247,20 +247,19 @@ body.map-mode .bg-scene { display: none; }
   overflow: hidden;
 }
 .intro-bg-image {
-  /* Image de fond plein ecran. Ken Burns subtil pour effet vivant. */
+  /* Image de fond plein ecran. Ken Burns pour effet vivant. */
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
-  animation: introKenBurns 20s ease-in-out infinite alternate;
+  animation: introKenBurns 14s ease-in-out infinite alternate;
   will-change: transform;
 }
 @keyframes introKenBurns {
-  0%   { transform: scale(1.04) translate(0,   0); }
-  50%  { transform: scale(1.08) translate(-1%, -1%); }
-  100% { transform: scale(1.04) translate(1%,  1%); }
+  0%   { transform: scale(1.06) translate(-2%, -1%); }
+  100% { transform: scale(1.14) translate(2%,  2%); }
 }
 /* Particules / sparkles flottants en CSS pur, par-dessus l'image,
    sous le voile sombre + textes. */
@@ -270,28 +269,36 @@ body.map-mode .bg-scene { display: none; }
   width: 100vw; height: 100vh;
   pointer-events: none;
   z-index: 2;
-  /* Plusieurs petits points blancs/jaunes simulent des etincelles */
+  /* 16 etincelles : points plus visibles (4-6px), couleurs vives,
+     dispersees sur tout l'ecran. */
   background-image:
-    radial-gradient(circle at 12% 20%, rgba(255,225,102,0.85) 0px, transparent 2px),
-    radial-gradient(circle at 28% 75%, rgba(255,255,255,0.75) 0px, transparent 1.5px),
-    radial-gradient(circle at 45% 30%, rgba(180,210,255,0.75) 0px, transparent 2px),
-    radial-gradient(circle at 65% 65%, rgba(255,225,102,0.75) 0px, transparent 1.5px),
-    radial-gradient(circle at 78% 15%, rgba(255,255,255,0.85) 0px, transparent 2px),
-    radial-gradient(circle at 88% 50%, rgba(200,160,255,0.85) 0px, transparent 2px),
-    radial-gradient(circle at 92% 85%, rgba(255,225,102,0.7) 0px, transparent 1.5px),
-    radial-gradient(circle at 18% 55%, rgba(255,255,255,0.7) 0px, transparent 1.5px);
+    radial-gradient(circle at 8%  18%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.3) 3px, transparent 6px),
+    radial-gradient(circle at 16% 48%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.4) 2px, transparent 5px),
+    radial-gradient(circle at 24% 78%, rgba(180,210,255,1)   0px, rgba(180,210,255,0.4) 3px, transparent 6px),
+    radial-gradient(circle at 32% 22%, rgba(255,180,220,1)   0px, rgba(255,180,220,0.3) 2px, transparent 5px),
+    radial-gradient(circle at 40% 60%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.4) 3px, transparent 6px),
+    radial-gradient(circle at 48% 12%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.4) 2px, transparent 5px),
+    radial-gradient(circle at 56% 86%, rgba(200,160,255,1)   0px, rgba(200,160,255,0.4) 3px, transparent 6px),
+    radial-gradient(circle at 64% 36%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.3) 2px, transparent 5px),
+    radial-gradient(circle at 72% 66%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.4) 3px, transparent 6px),
+    radial-gradient(circle at 80% 22%, rgba(180,210,255,1)   0px, rgba(180,210,255,0.4) 2px, transparent 5px),
+    radial-gradient(circle at 84% 78%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.4) 3px, transparent 6px),
+    radial-gradient(circle at 90% 42%, rgba(200,160,255,1)   0px, rgba(200,160,255,0.4) 2px, transparent 5px),
+    radial-gradient(circle at 94% 14%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.5) 3px, transparent 6px),
+    radial-gradient(circle at 96% 88%, rgba(255,225,102,1)   0px, rgba(255,225,102,0.3) 2px, transparent 5px),
+    radial-gradient(circle at 36% 92%, rgba(255,255,255,1)   0px, rgba(255,255,255,0.4) 3px, transparent 6px),
+    radial-gradient(circle at 68% 4%,  rgba(180,210,255,1)   0px, rgba(180,210,255,0.4) 2px, transparent 5px);
   background-repeat: no-repeat;
-  animation: introSparkleFloat 6s ease-in-out infinite alternate,
-             introSparkleTwinkle 2.4s ease-in-out infinite;
-  opacity: 0.85;
+  animation: introSparkleFloat 5s ease-in-out infinite alternate,
+             introSparkleTwinkle 1.6s ease-in-out infinite;
 }
 @keyframes introSparkleFloat {
-  0%   { transform: translateY(0)     translateX(0); }
-  100% { transform: translateY(-12px) translateX(6px); }
+  0%   { transform: translate(0,   0)     scale(1); }
+  100% { transform: translate(6px, -16px) scale(1.05); }
 }
 @keyframes introSparkleTwinkle {
-  0%, 100% { opacity: 0.55; }
-  50%      { opacity: 0.95; }
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
 }
 /* Voile sombre subtil pour assurer la lisibilite des textes par-dessus
    l'image (Leon a gauche, paysage a droite). Plus marque vers le centre
