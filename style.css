@@ -4565,21 +4565,27 @@ body.novel-mode .c4s5-memory-game {
   }
   .c4s5-cards {
     grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
-    gap: 12px !important;
-    /* Remplit le reste de la bulle. Aspect-ratio:1/1 sur .c4s5-card
-       garde les cartes carrees, qui prennent toute la largeur dispo. */
-    flex: 1 !important;
-    align-items: center !important;
+    gap: 10px !important;
+    /* Remplit le reste de la bulle plein ecran (flex:1 prend tout
+       l'espace dispo apres tap-instruction + progress). */
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
   }
   .c4s5-card {
-    max-width: none !important;
-    max-height: none !important;
-    width: 100% !important;
-    height: auto !important;
-    margin: 0 !important;
+    /* Carte = carre dimensionne par la hauteur de la row (qui est
+       limitee par le viewport via grid-template-rows: 1fr 1fr).
+       Largeur calculee par aspect-ratio. Centree horizontalement
+       dans sa cell. */
+    aspect-ratio: 1 / 1 !important;
+    height: 100% !important;
+    width: auto !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    margin: 0 auto !important;
   }
 
   /* C4S6 : meme pattern, panel plein ecran pour que les 4 questions s'affichent. */
