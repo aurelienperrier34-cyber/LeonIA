@@ -241,8 +241,9 @@ body.map-mode .bg-scene { display: none; }
 #screen-map.active { animation: mapFadeIn 0.3s ease-out !important; }
 @keyframes mapFadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* === Ecran d'accueil (screen-0) avec fond video Leonardo === */
-#screen-0 {
+/* === Ecran d'accueil (screen-0) + choix des persos (screen-1) avec fond magique === */
+#screen-0,
+#screen-1 {
   position: relative;
   overflow: hidden;
 }
@@ -336,7 +337,8 @@ body.map-mode .bg-scene { display: none; }
 /* Voile sombre subtil pour assurer la lisibilite des textes par-dessus
    l'image (Leon a gauche, paysage a droite). Plus marque vers le centre
    ou se trouve le titre. */
-#screen-0::before {
+#screen-0::before,
+#screen-1::before {
   content: '';
   position: fixed;
   inset: 0;
@@ -344,8 +346,9 @@ body.map-mode .bg-scene { display: none; }
   background: radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 60%, transparent 100%);
   pointer-events: none;
 }
-/* Masque le fond blanc + padding de .app sur l'ecran d'accueil */
-body:has(#screen-0.active) .app {
+/* Masque le fond blanc + padding de .app sur l'accueil + choix persos */
+body:has(#screen-0.active) .app,
+body:has(#screen-1.active) .app {
   background-color: transparent !important;
   padding: 0 !important;
 }
@@ -356,6 +359,22 @@ body:has(#screen-0.active) .app {
 }
 .intro-title { font-family: 'Baloo 2', cursive; font-size: 3.5rem; color: #FFE166; line-height: 1.1; margin-bottom: 20px; animation: pulse-bounce 3s infinite; text-shadow: 0 4px 16px rgba(0,0,0,0.6), 0 2px 6px rgba(0,0,0,0.8); }
 .intro-title span { color: #FF8E72; text-shadow: 0 4px 16px rgba(0,0,0,0.6), 0 2px 6px rgba(0,0,0,0.8); }
+
+/* Sur screen-1, les enfants doivent passer au-dessus du voile (z:1) et de
+   l'image (z:0). On les eleve au z:3. Aussi on rend le texte lisible sur
+   fond sombre/contraste (titre passe au jaune, sous-titre au blanc). */
+#screen-1 > *:not(.intro-bg-image):not(.intro-bg-particles) {
+  position: relative;
+  z-index: 3;
+}
+#screen-1 .screen-title {
+  color: #FFE166 !important;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.6), 0 2px 6px rgba(0,0,0,0.8);
+}
+#screen-1 .screen-subtitle {
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
 .intro-visual { display: flex; justify-content: center; align-items: center; gap: -20px; margin-bottom: 20px; height: 150px; }
 .intro-avatar { width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 .anim-float1 { animation: float-bounce 3s infinite ease-in-out; }
