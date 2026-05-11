@@ -34,7 +34,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v267</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v268</div>
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
 <button id="btn-back-map-global" class="btn-back-map-global" onclick="goToScreen('map')" title="Retour à la carte" style="display:none">
@@ -410,8 +410,10 @@
     <div class="screen" id="screen-3">
       <div class="story-scene full-height-scene">
         <div class="scene-visual">
-           <!-- Léon video (background) -->
-           <video src="assets/Léon%20qui%20parle.mp4" poster="assets/atelier_sans_leon.jpg" class="leon-video-bg" muted playsinline preload="auto"></video>
+           <!-- Léon video (background). Poster = 1er frame de la video (Leon
+                visible) extrait via : ffmpeg -i "Leon qui parle.mp4" -ss 0
+                -frames:v 1 -update 1 atelier_avec_leon.jpg -->
+           <video src="assets/Léon%20qui%20parle.mp4" poster="assets/atelier_avec_leon.jpg" class="leon-video-bg" muted playsinline preload="auto"></video>
            <div class="watermark-cover"></div>
         </div>
         <div class="scene-text">
