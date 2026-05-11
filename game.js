@@ -901,6 +901,11 @@ function goToScreen(screenIdentifier, force) {
 
       if (voicesEnabled() && narrAudio) {
         narrAudio.currentTime = 0;
+        // Demarre la video Leon des le screen ouvert (en parallele du
+        // narrateur). La video est muted, donc pas de conflit avec l'audio
+        // narrateur. Leon apparait a l'image immediatement au lieu de voir
+        // l'atelier vide pendant ~10s.
+        try { leonVid.play().catch(()=>{}); } catch(e) {}
         const onNarrEnd = () => {
           narrAudio.removeEventListener('ended', onNarrEnd);
           setTimeout(playLeonPart, 400);
