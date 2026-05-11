@@ -764,11 +764,11 @@ body.novel-mode #screen-c4s4 .dialogue-bubble {
   text-align: left !important;
 }
 body.novel-mode #screen-c4s4 .dialogue-who {
-  top: 60px !important;
+  top: 200px !important;
   margin: 0 !important;
 }
 body.novel-mode #screen-c4s4 .dialogue-bubble {
-  top: 88px !important;
+  top: 230px !important;
 }
 /* C4S2 (global) : meme pattern que C4S4 mais largeur jusqu'au centre (50%). */
 body.novel-mode #screen-c4s2 .dialogue-who,
@@ -1148,7 +1148,7 @@ body.novel-mode .btn-choice:hover, body.novel-mode .tap-option:not(.answered):ho
   background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.5); transform: translateY(-3px);
 }
 body.novel-mode .vf-statement { color: white; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
-body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-index: 20; margin: 0; max-width: 320px; width: fit-content; background: rgba(0,25,50,0.6); border-color: rgba(255,255,255,0.2); backdrop-filter: blur(10px); }
+body.novel-mode .parent-tip { position: absolute; top: 8px; right: auto; left: 160px; z-index: 20; margin: 0; max-width: 280px; width: fit-content; background: rgba(0,25,50,0.6); border-color: rgba(255,255,255,0.2); backdrop-filter: blur(10px); }
 body.novel-mode .parent-tip-label, body.novel-mode .parent-tip-text { color: white; text-shadow: 0 1px 3px black; }
 
 body.novel-mode .btn-primary, body.novel-mode .btn-secondary { z-index: 3; margin-top: 10px; margin-left: auto; margin-right: auto; width: auto; min-width: 200px; }
