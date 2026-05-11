@@ -246,14 +246,52 @@ body.map-mode .bg-scene { display: none; }
   position: relative;
   overflow: hidden;
 }
-.intro-bg-video {
-  /* position:fixed pour echapper au padding+background blanc de .app */
+.intro-bg-image {
+  /* Image de fond plein ecran. Ken Burns subtil pour effet vivant. */
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
+  animation: introKenBurns 20s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes introKenBurns {
+  0%   { transform: scale(1.04) translate(0,   0); }
+  50%  { transform: scale(1.08) translate(-1%, -1%); }
+  100% { transform: scale(1.04) translate(1%,  1%); }
+}
+/* Particules / sparkles flottants en CSS pur, par-dessus l'image,
+   sous le voile sombre + textes. */
+.intro-bg-particles {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 2;
+  /* Plusieurs petits points blancs/jaunes simulent des etincelles */
+  background-image:
+    radial-gradient(circle at 12% 20%, rgba(255,225,102,0.85) 0px, transparent 2px),
+    radial-gradient(circle at 28% 75%, rgba(255,255,255,0.75) 0px, transparent 1.5px),
+    radial-gradient(circle at 45% 30%, rgba(180,210,255,0.75) 0px, transparent 2px),
+    radial-gradient(circle at 65% 65%, rgba(255,225,102,0.75) 0px, transparent 1.5px),
+    radial-gradient(circle at 78% 15%, rgba(255,255,255,0.85) 0px, transparent 2px),
+    radial-gradient(circle at 88% 50%, rgba(200,160,255,0.85) 0px, transparent 2px),
+    radial-gradient(circle at 92% 85%, rgba(255,225,102,0.7) 0px, transparent 1.5px),
+    radial-gradient(circle at 18% 55%, rgba(255,255,255,0.7) 0px, transparent 1.5px);
+  background-repeat: no-repeat;
+  animation: introSparkleFloat 6s ease-in-out infinite alternate,
+             introSparkleTwinkle 2.4s ease-in-out infinite;
+  opacity: 0.85;
+}
+@keyframes introSparkleFloat {
+  0%   { transform: translateY(0)     translateX(0); }
+  100% { transform: translateY(-12px) translateX(6px); }
+}
+@keyframes introSparkleTwinkle {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 0.95; }
 }
 /* Voile sombre subtil pour assurer la lisibilite des textes par-dessus
    l'image (Leon a gauche, paysage a droite). Plus marque vers le centre
@@ -273,7 +311,7 @@ body:has(#screen-0.active) .app {
 }
 .intro-container {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center;
 }
 .intro-title { font-family: 'Baloo 2', cursive; font-size: 3.5rem; color: #FFE166; line-height: 1.1; margin-bottom: 20px; animation: pulse-bounce 3s infinite; text-shadow: 0 4px 16px rgba(0,0,0,0.6), 0 2px 6px rgba(0,0,0,0.8); }

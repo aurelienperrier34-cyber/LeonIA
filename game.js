@@ -115,21 +115,8 @@ document.addEventListener('pointerdown', _unlockAudio, true);
 document.addEventListener('keydown',     _unlockAudio, true);
 document.addEventListener('touchstart',  _unlockAudio, true);
 
-// Force le play de la video de fond ecran d'accueil. Certains browsers
-// (Chrome Android notamment) bloquent l'autoplay meme avec muted. On
-// retente au load et au premier user gesture.
-function _playIntroBg() {
-  const v = document.getElementById('intro-bg-video');
-  if (!v) return;
-  try {
-    v.muted = true;
-    const p = v.play();
-    if (p && p.catch) p.catch(() => {});
-  } catch(e) {}
-}
-document.addEventListener('DOMContentLoaded', _playIntroBg);
-document.addEventListener('pointerdown', _playIntroBg, { once: false });
-document.addEventListener('touchstart',  _playIntroBg, { once: false });
+// (Plus de video de fond sur l'ecran d'accueil — remplace par image fixe
+// leon_bienvenue.png + animation CSS Ken Burns + particules.)
 function stopAllVoices() {
   Object.values(_voiceCache).forEach(a => { try { a.pause(); a.currentTime = 0; } catch(e){} });
 }
