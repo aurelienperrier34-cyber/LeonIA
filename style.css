@@ -6180,7 +6180,7 @@ body.novel-mode .c4s2-game-pill {
   position: absolute !important;
   left: 50% !important;
   right: auto !important;
-  top: 12px !important;
+  top: 8px !important;
   bottom: auto !important;
   transform: translateX(-50%);
   z-index: 6;
@@ -6221,7 +6221,7 @@ body.novel-mode .c4s2-game-pill {
 .c4s2-bot-bubble {
   position: absolute;
   left: 50%;
-  top: 80px;
+  top: 50px;
   transform: translateX(-50%);
   z-index: 6;
   background: rgba(76,195,247,0.92);
