@@ -7167,9 +7167,10 @@ function _setupHoverSpeak() {
     // - .prompt-word (c2s7) : selection rapide a 3 mots
     // - .s4-card (c1s4) : cartes melangees, plus fiable d'avoir 1-tap = action
     // - .vf-btn (Vrai/Faux quiz) : reponse binaire, 1-tap = action
+    // - .c4s6-q-btn (questions a Bot) : 1-tap pour selectionner la question
     //   La voix se declenche en parallele pour les enfants qui ne lisent pas.
     if (target.classList.contains('prompt-word')) return;
-    if (target.classList.contains('vf-btn')) {
+    if (target.classList.contains('vf-btn') || target.classList.contains('c4s6-q-btn')) {
       // Lit le label en parallele, sans bloquer le click event.
       const textParallel = target.dataset.speak
         || target.dataset.label
