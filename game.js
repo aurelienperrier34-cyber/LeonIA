@@ -1906,7 +1906,24 @@ function goToScreen(screenIdentifier, force) {
     document.querySelectorAll('#c5s5-modules .c5-module-btn').forEach(b => {
       b.classList.remove('selected');
       b.disabled = false;
-      b.onclick = () => selectC5Module(b);
+      // Sur Android, click peut demander 2 taps (synthese click apres hover).
+      // On declenche selectC5Module directement sur pointerdown : 1 tap = 1
+      // selection. On bloque ensuite le click synthetique pour eviter
+      // double declenchement.
+      b._c5HandlePointer = (ev) => {
+        if (b.disabled) return;
+        if (b._c5Handled) return;
+        b._c5Handled = true;
+        setTimeout(() => { b._c5Handled = false; }, 350);
+        ev.preventDefault();
+        selectC5Module(b);
+      };
+      b.onpointerdown = b._c5HandlePointer;
+      b.onclick = (ev) => {
+        // Click synthetique apres pointerdown : si deja traite, on ignore.
+        if (b._c5Handled) { ev.preventDefault(); return; }
+        selectC5Module(b);
+      };
     });
     document.getElementById('btn-to-c5s6')?.classList.remove('show-btn');
     const instr = document.getElementById('c5s5-instruction');
