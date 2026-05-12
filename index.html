@@ -34,7 +34,41 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v318</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v319</div>
+<!-- Debug overlay temporaire : tape sur le badge ci-dessous pour voir ce que
+     le navigateur match en media-queries (a retirer une fois le diagnostic
+     termine). -->
+<div id="debug-mq" style="position:fixed;bottom:42px;right:8px;z-index:9999;background:rgba(0,0,0,0.85);color:#0f0;font-family:monospace;font-size:11px;padding:6px 8px;border-radius:6px;max-width:60vw;line-height:1.4;display:none;white-space:pre-wrap"></div>
+<script>
+(function(){
+  // Au clic sur le badge version, on toggle l'overlay de debug.
+  document.addEventListener('DOMContentLoaded', function(){
+    var badge = document.getElementById('build-badge');
+    var box = document.getElementById('debug-mq');
+    if (!badge || !box) return;
+    badge.style.cursor = 'pointer';
+    badge.addEventListener('click', function(){
+      if (box.style.display === 'none' || !box.style.display) {
+        var w = window.innerWidth, h = window.innerHeight;
+        var dpr = window.devicePixelRatio || 1;
+        function mm(q){ return window.matchMedia(q).matches ? 'OUI' : 'non'; }
+        box.textContent =
+          'viewport: ' + w + 'x' + h + ' @' + dpr + 'x\n' +
+          '(hover:hover): ' + mm('(hover:hover)') + '\n' +
+          '(hover:none): ' + mm('(hover:none)') + '\n' +
+          '(pointer:coarse): ' + mm('(pointer:coarse)') + '\n' +
+          '(pointer:fine): ' + mm('(pointer:fine)') + '\n' +
+          '(max-width:900px): ' + mm('(max-width:900px)') + '\n' +
+          'mobile rule: ' + mm('(pointer:coarse) and (hover:none)') + '\n' +
+          'UA: ' + navigator.userAgent.slice(0,80);
+        box.style.display = 'block';
+      } else {
+        box.style.display = 'none';
+      }
+    });
+  });
+})();
+</script>
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
 <button id="btn-back-map-global" class="btn-back-map-global" onclick="goToScreen('map')" title="Retour à la carte" style="display:none">
