@@ -1251,6 +1251,17 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
   body.novel-mode #screen-c5s2 .c5s2-card.dragging {
     transition: none !important;
   }
+  /* C5S3 mobile : bulle Leon decalee a gauche, max-width centre de l'ecran
+     (pour ne pas couvrir la photo des erreurs IA a droite). */
+  body.novel-mode #screen-c5s3 .scene-text .dialogue-who,
+  body.novel-mode #screen-c5s3 .scene-text .dialogue-bubble {
+    left: 2vw !important;
+    right: auto !important;
+  }
+  body.novel-mode #screen-c5s3 .scene-text .dialogue-bubble {
+    max-width: 48vw !important;
+    margin-right: 0 !important;
+  }
 }
 body.novel-mode .parent-tip-label, body.novel-mode .parent-tip-text { color: white; text-shadow: 0 1px 3px black; }
 
