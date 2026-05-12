@@ -1261,6 +1261,20 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
   body.novel-mode #screen-c5s3 .scene-text .dialogue-bubble {
     max-width: 48vw !important;
     margin-right: 0 !important;
+    bottom: 45px !important;
+    font-size: 0.78rem !important;
+    line-height: 1.25 !important;
+    padding: 8px 12px !important;
+  }
+  body.novel-mode #screen-c5s3 .scene-text .dialogue-who {
+    bottom: 110px !important;
+    font-size: 0.7rem !important;
+  }
+  /* C5S3 mobile : narration en plus petit pour laisser voir l'image
+     (l'elephant etait masque par le panneau glassmorphism). */
+  body.novel-mode #screen-c5s3 .scene-text .narration {
+    font-size: 0.78rem !important;
+    line-height: 1.25 !important;
   }
 }
 body.novel-mode .parent-tip-label, body.novel-mode .parent-tip-text { color: white; text-shadow: 0 1px 3px black; }
