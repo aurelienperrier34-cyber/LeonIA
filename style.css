@@ -1271,10 +1271,17 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
     font-size: 0.7rem !important;
   }
   /* C5S3 mobile : narration en plus petit pour laisser voir l'image
-     (l'elephant etait masque par le panneau glassmorphism). */
+     (l'elephant etait masque par le panneau glassmorphism), et largeur
+     reduite vers la gauche — bord droit max au centre de l'ecran. */
+  body.novel-mode #screen-c5s3 .scene-text {
+    padding-left: 90px !important;
+    padding-right: 12px !important;
+  }
   body.novel-mode #screen-c5s3 .scene-text .narration {
     font-size: 0.78rem !important;
     line-height: 1.25 !important;
+    max-width: calc(50vw - 90px) !important;
+    margin-right: auto !important;
   }
   /* C5S3 mobile : bulle "Photo reelle ou IA ?" remontee, eclaircie, et
      decalee a gauche (etait centree avec left:50% translateX(-50%)). */
