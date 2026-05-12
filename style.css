@@ -1276,6 +1276,22 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
     font-size: 0.78rem !important;
     line-height: 1.25 !important;
   }
+  /* C5S3 mobile : bulle "Photo reelle ou IA ?" remontee un peu. */
+  body.novel-mode #screen-c5s3 .c5s3-phase1 {
+    top: 4px !important;
+    padding: 6px 14px !important;
+  }
+  body.novel-mode #screen-c5s3 .c5s3-phase1 .c5s3-q {
+    font-size: 0.85rem !important;
+    margin: 2px 0 6px !important;
+  }
+  /* C5S4 mobile : bulle Leon passee a GAUCHE de l'ecran (etait a droite,
+     groupee avec c4s3/c4s5/c4s6). */
+  body.novel-mode #screen-c5s4 .dialogue-who,
+  body.novel-mode #screen-c5s4 .dialogue-bubble {
+    left: 12px !important;
+    right: auto !important;
+  }
 }
 body.novel-mode .parent-tip-label, body.novel-mode .parent-tip-text { color: white; text-shadow: 0 1px 3px black; }
 
