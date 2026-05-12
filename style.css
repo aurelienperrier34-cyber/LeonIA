@@ -1312,13 +1312,38 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
     left: 12px !important;
     right: auto !important;
   }
-  /* C5S5 mobile : bulle des demos affichee SOUS le robot (au lieu de top-right
-     du stage qui masquait le haut du robot cree). */
+  /* C5S5 mobile : la bulle d'explication etait position:static (sous le
+     robot) — quand elle apparaissait, elle agrandissait la pile et poussait
+     le robot hors de l'ecran par le haut. On la passe en position:absolute
+     superposee a la moitie basse du robot : la pile garde la meme hauteur,
+     le robot reste visible. */
+  body.novel-mode #screen-c5s5 .c5-robot-stage {
+    position: relative !important;
+  }
   body.novel-mode #screen-c5s5 .c5-robot-bubble {
-    position: static !important;
+    position: absolute !important;
     top: auto !important;
+    bottom: -8px !important;
+    left: 50% !important;
     right: auto !important;
-    margin-top: 14px !important;
+    transform: translateX(-50%) !important;
+    margin-top: 0 !important;
+    max-width: 90% !important;
+    z-index: 6;
+  }
+  /* C5S5 mobile : nom du robot plus compact pour laisser plus d'espace au
+     robot et a la bulle. */
+  body.novel-mode #screen-c5s5 .c5-robot-name {
+    font-size: 1.2rem !important;
+    margin: 2px 0 2px !important;
+  }
+  body.novel-mode #screen-c5s5 .c5-robot-mission {
+    font-size: 0.82rem !important;
+    margin: 4px 0 !important;
+  }
+  body.novel-mode #screen-c5s5 .c5-demo-buttons {
+    margin: 6px 0 !important;
+    gap: 6px !important;
   }
 }
 body.novel-mode .parent-tip-label, body.novel-mode .parent-tip-text { color: white; text-shadow: 0 1px 3px black; }
