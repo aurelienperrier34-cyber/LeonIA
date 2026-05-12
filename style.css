@@ -771,7 +771,7 @@ body.novel-mode #screen-c4s4 .dialogue-bubble {
   top: 88px !important;
 }
 /* Sur MOBILE UNIQUEMENT, on descend la bulle Leon de C4S4 (ordi inchange). */
-@media (pointer: coarse) and (hover: none) {
+@media (max-width: 900px), (pointer: coarse) and (hover: none) {
   body.novel-mode #screen-c4s4 .dialogue-who {
     top: 260px !important;
   }
@@ -1161,7 +1161,7 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
 /* C4S4/C4S5 parent-tip : repositionnee SUR MOBILE UNIQUEMENT (ordi inchange).
    - C4S4 mobile : au-dessus de la bulle Leon descendue.
    - C4S5 mobile : sous la narration. */
-@media (pointer: coarse) and (hover: none) {
+@media (max-width: 900px), (pointer: coarse) and (hover: none) {
   /* C4S4 : remonter un peu (130 → 110) */
   body.novel-mode #screen-c4s4 .parent-tip { top: 110px !important; right: 12px !important; left: auto !important; }
   /* C4S5 mobile : parent-tip sous les icones son/CC, bulle Leon sous parent-tip. */
@@ -1656,7 +1656,7 @@ body.calib-hero-mode .hero-destination::before {
 /* Touch-only (mobile/tablet sans souris). Le `(hover: none)` exclut les
    ordi a ecran tactile qui ont aussi une souris : sur ces appareils
    `(pointer: coarse)` matchait et appliquait par erreur les regles mobile. */
-@media (pointer: coarse) and (hover: none) {
+@media (max-width: 900px), (pointer: coarse) and (hover: none) {
   #screen-3 .scene-text {
     margin-top: 8px;
     padding: 8px 14px;
@@ -2513,7 +2513,7 @@ body.calib-c3s7-mics::before {
      en bas (separee du game-overlay donc ne recouvre plus les
      sound-buttons).
    ============================================================ */
-@media (pointer: coarse) and (hover: none) {
+@media (max-width: 900px), (pointer: coarse) and (hover: none) {
   body.novel-mode #screen-c3s7 .game-overlay {
     bottom: 28% !important;
   }
@@ -3809,7 +3809,7 @@ body.novel-mode #screen-c5s5 .game-overlay {
    plus etroit que la map, la formule donne un nombre negatif → la bande
    est de largeur 0 (pas affichee), comportement attendu en portrait.
    Note : `(hover: none)` pour exclure ordi tactile (qui a souris en plus). */
-@media (pointer: coarse) and (hover: none) {
+@media (max-width: 900px), (pointer: coarse) and (hover: none) {
   #screen-map.active {
     position: relative;
     overflow: hidden;
@@ -4762,7 +4762,7 @@ body.novel-mode .c4s5-memory-game {
 }
 /* Cartes memory : SUR MOBILE UNIQUEMENT, le panel passe en plein ecran
    pour donner toute la place aux cartes. */
-@media (pointer: coarse) and (hover: none) {
+@media (max-width: 900px), (pointer: coarse) and (hover: none) {
   body.novel-mode .c4s5-memory-game {
     width: 100vw !important;
     max-width: 100vw !important;
