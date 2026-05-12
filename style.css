@@ -1276,14 +1276,27 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
     font-size: 0.78rem !important;
     line-height: 1.25 !important;
   }
-  /* C5S3 mobile : bulle "Photo reelle ou IA ?" remontee un peu. */
+  /* C5S3 mobile : bulle "Photo reelle ou IA ?" remontee, eclaircie, et
+     decalee a gauche (etait centree avec left:50% translateX(-50%)). */
   body.novel-mode #screen-c5s3 .c5s3-phase1 {
     top: 4px !important;
+    left: 8px !important;
+    transform: none !important;
     padding: 6px 14px !important;
+    background: rgba(40, 25, 75, 0.45) !important;
+    max-width: 60% !important;
   }
   body.novel-mode #screen-c5s3 .c5s3-phase1 .c5s3-q {
     font-size: 0.85rem !important;
     margin: 2px 0 6px !important;
+  }
+  /* C5S3 mobile : bulle Leon et narration eclaircies pour laisser passer
+     l'image (elephant qui vole) derriere. */
+  body.novel-mode #screen-c5s3 .scene-text {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 60%, transparent 100%) !important;
+  }
+  body.novel-mode #screen-c5s3 .scene-text .dialogue-bubble {
+    background: rgba(20,10,40,0.28) !important;
   }
   /* C5S4 mobile : bulle Leon passee a GAUCHE de l'ecran (etait a droite,
      groupee avec c4s3/c4s5/c4s6). */
