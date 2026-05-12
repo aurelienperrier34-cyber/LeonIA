@@ -1211,11 +1211,11 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
   body.novel-mode #screen-c5s2 .dialogue-who,
   body.novel-mode #screen-c5s2 .dialogue-bubble {
     position: fixed !important;
-    left: 90px !important;
+    left: 150px !important;
     right: auto !important;
     top: auto !important;
     width: auto !important;
-    max-width: 45% !important;
+    max-width: 40% !important;
     z-index: 50;
   }
   body.novel-mode #screen-c5s2 .dialogue-who {
@@ -1231,10 +1231,24 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
   }
   /* C5S2 mobile : parent-tip plus etroite. */
   body.novel-mode #screen-c5s2 .parent-tip {
-    max-width: 220px !important;
+    max-width: 160px !important;
   }
-  /* C5S2 mobile : cache le bouton 'Continuer' (le user passe via le mini-jeu). */
+  /* C5S2 mobile : cache le bouton 'Passer' tant que le mini-jeu n'est pas fini,
+     mais on le re-affiche en 'Continuer' (classe .complete ajoutee par completeC5s2Game). */
   body.novel-mode #screen-c5s2 .c5s2-skip-btn { display: none !important; }
+  body.novel-mode #screen-c5s2 .c5s2-skip-btn.complete {
+    display: inline-flex !important;
+    position: fixed !important;
+    bottom: 16px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 60 !important;
+  }
+  /* C5S2 mobile : annule la transition CSS pendant le drag (sinon left/top
+     animent en 0.2s cubic-bezier et le doigt ressent un lag tres net). */
+  body.novel-mode #screen-c5s2 .c5s2-card.dragging {
+    transition: none !important;
+  }
 }
 body.novel-mode .parent-tip-label, body.novel-mode .parent-tip-text { color: white; text-shadow: 0 1px 3px black; }
 
