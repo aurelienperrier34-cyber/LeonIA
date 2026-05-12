@@ -773,10 +773,10 @@ body.novel-mode #screen-c4s4 .dialogue-bubble {
 /* Sur MOBILE UNIQUEMENT, on descend la bulle Leon de C4S4 (ordi inchange). */
 @media (pointer: coarse) and (hover: none) {
   body.novel-mode #screen-c4s4 .dialogue-who {
-    top: 200px !important;
+    top: 260px !important;
   }
   body.novel-mode #screen-c4s4 .dialogue-bubble {
-    top: 230px !important;
+    top: 290px !important;
   }
 }
 /* C4S2 (global) : meme pattern que C4S4 mais largeur jusqu'au centre (50%). */
