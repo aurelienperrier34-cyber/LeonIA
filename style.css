@@ -1331,9 +1331,23 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
     max-width: 90% !important;
     z-index: 6;
   }
-  /* C5S5 mobile : compactage general pour que le robot ET son nom restent
-     visibles meme quand la bulle d'explication est affichee. Video reduite
-     a 140px et nom du robot en chip jaune compact au-dessus. */
+  /* C5S5 mobile : panneau glassmorphism passe en plein ecran pour qu'aucun
+     contenu ne soit clippe au-dessus (avant, .game-overlay etait ancre
+     bottom:4% et le stack grandissait vers le haut au-dela du viewport). */
+  body.novel-mode #screen-c5s5 .game-overlay {
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    transform: none !important;
+    padding: 16px 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    overflow-y: auto !important;
+  }
   body.novel-mode #screen-c5s5 .c5-robot-video {
     width: 140px !important;
     height: 140px !important;
