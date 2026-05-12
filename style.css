@@ -1211,23 +1211,27 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
   body.novel-mode #screen-c5s2 .dialogue-who,
   body.novel-mode #screen-c5s2 .dialogue-bubble {
     position: fixed !important;
-    left: 40px !important;
+    left: 90px !important;
     right: auto !important;
     top: auto !important;
     width: auto !important;
-    max-width: 50% !important;
+    max-width: 45% !important;
     z-index: 50;
   }
   body.novel-mode #screen-c5s2 .dialogue-who {
-    bottom: 110px !important;
+    bottom: 80px !important;
     margin: 0 !important;
     font-size: 0.7rem !important;
   }
   body.novel-mode #screen-c5s2 .dialogue-bubble {
-    bottom: 75px !important;
+    bottom: 45px !important;
     padding: 8px 12px !important;
     font-size: 0.85rem !important;
     line-height: 1.3 !important;
+  }
+  /* C5S2 mobile : parent-tip plus etroite. */
+  body.novel-mode #screen-c5s2 .parent-tip {
+    max-width: 220px !important;
   }
   /* C5S2 mobile : cache le bouton 'Continuer' (le user passe via le mini-jeu). */
   body.novel-mode #screen-c5s2 .c5s2-skip-btn { display: none !important; }
