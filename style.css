@@ -1305,6 +1305,14 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
     left: 12px !important;
     right: auto !important;
   }
+  /* C5S5 mobile : bulle des demos affichee SOUS le robot (au lieu de top-right
+     du stage qui masquait le haut du robot cree). */
+  body.novel-mode #screen-c5s5 .c5-robot-bubble {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    margin-top: 14px !important;
+  }
 }
 body.novel-mode .parent-tip-label, body.novel-mode .parent-tip-text { color: white; text-shadow: 0 1px 3px black; }
 
@@ -3585,6 +3593,7 @@ body.novel-mode #screen-c5s5 .game-overlay {
   text-align: center;
   line-height: 1.1;
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  touch-action: manipulation; /* mobile : evite le double-tap to click */
 }
 .c5-module-btn span {
   display: block;
@@ -3594,10 +3603,12 @@ body.novel-mode #screen-c5s5 .game-overlay {
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-.c5-module-btn:hover:not(:disabled) {
-  background: rgba(255,255,255,0.26);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(255,255,255,0.25);
+@media (hover: hover) {
+  .c5-module-btn:hover:not(:disabled) {
+    background: rgba(255,255,255,0.26);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(255,255,255,0.25);
+  }
 }
 .c5-module-btn.selected {
   background: rgba(255,225,102,0.4);
@@ -6771,6 +6782,7 @@ body.novel-mode .c4s2-game-pill {
   line-height: 1.1;
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   animation: c5-demo-pulse 1.6s ease-in-out infinite;
+  touch-action: manipulation;
 }
 .c5-demo-btn span {
   display: block;
@@ -6781,10 +6793,12 @@ body.novel-mode .c4s2-game-pill {
   letter-spacing: 0.04em;
   font-weight: 800;
 }
-.c5-demo-btn:hover {
-  background: rgba(155,93,229,0.55);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(155,93,229,0.5);
+@media (hover: hover) {
+  .c5-demo-btn:hover {
+    background: rgba(155,93,229,0.55);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(155,93,229,0.5);
+  }
 }
 .c5-demo-btn.tested {
   background: rgba(6,214,160,0.35);

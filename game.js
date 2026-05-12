@@ -5585,8 +5585,13 @@ function _c5SpawnConfetti() {
   }
 }
 
-function _c5SpeakAsRobot(text) {
-  if (typeof window.speechSynthesis === 'undefined') return;
+function _c5SpeakAsRobot(text, onEnd) {
+  // Si pas de speechSynthesis dispo : on appelle quand meme onEnd pour ne pas
+  // bloquer le flow (sinon le bouton Continuer ne s'afficherait jamais).
+  if (typeof window.speechSynthesis === 'undefined') {
+    if (typeof onEnd === 'function') setTimeout(onEnd, 600);
+    return;
+  }
   try { window.speechSynthesis.cancel(); } catch(e) {}
   const utt = new SpeechSynthesisUtterance(text);
   utt.lang = 'fr-FR';
@@ -5599,6 +5604,10 @@ function _c5SpeakAsRobot(text) {
     const fr = voices.find(v => v.lang && v.lang.startsWith('fr'));
     if (fr) utt.voice = fr;
   } catch(e) {}
+  if (typeof onEnd === 'function') {
+    utt.onend   = onEnd;
+    utt.onerror = onEnd;
+  }
   window.speechSynthesis.speak(utt);
 }
 
@@ -5762,20 +5771,29 @@ function playC5ModuleDemo(mod) {
     bubble.classList.add('anim-pop-in');
   }
 
-  // Voix robot (synthétique)
-  _c5SpeakAsRobot(data.demo);
-
   // Marque le bouton testé
   if (btn) btn.classList.add('tested');
   _c5DemosTested.add(mod);
 
-  // Si les 3 démos ont été cliquées → révèle "Continuer"
+  // Si les 3 démos ont été cliquées → révèle "Continuer" UNE FOIS la voix
+  // du robot terminée (sinon le bouton apparaissait avant la fin de la
+  // description du 3e module, c'etait perturbant pour l'enfant).
   const totalMods = (state.c5RobotModules || []).length;
-  if (_c5DemosTested.size >= totalMods) {
-    setTimeout(() => {
+  const isLastDemo = _c5DemosTested.size >= totalMods;
+  if (isLastDemo) {
+    let shown = false;
+    const showContinueBtn = () => {
+      if (shown) return;
+      shown = true;
       const continueBtn = document.getElementById('btn-to-c5s6');
       if (continueBtn) continueBtn.classList.add('show-btn');
-    }, 600);
+    };
+    _c5SpeakAsRobot(data.demo, showContinueBtn);
+    // Fallback de securite : si onend ne fire pas (Android tue parfois la
+    // speechSynthesis en background), on affiche le bouton apres 10s max.
+    setTimeout(showContinueBtn, 10000);
+  } else {
+    _c5SpeakAsRobot(data.demo);
   }
 }
 
