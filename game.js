@@ -3936,21 +3936,45 @@ function _c5s2WireCardDrag(card) {
   let dragging = false;
   let offsetX = 0, offsetY = 0;
   let originParent = null;
+  // Drag via transform: translate3d() + requestAnimationFrame — bien plus
+  // fluide que left/top (qui force un reflow a chaque frame). Sur Android
+  // c'est la difference entre "saccade" et "colle au doigt".
+  let lastX = 0, lastY = 0;
+  let rafId = 0;
+  const zonesCache = [];
+
+  const flushMove = () => {
+    rafId = 0;
+    if (!dragging) return;
+    card.style.transform = 'translate3d(' + (lastX - offsetX) + 'px,' + (lastY - offsetY) + 'px,0)';
+    // Detection hover via cache (evite querySelectorAll a chaque frame)
+    let hover = null;
+    for (let i = 0; i < zonesCache.length; i++) {
+      const z = zonesCache[i];
+      const r = z.getBoundingClientRect();
+      if (lastX >= r.left && lastX <= r.right && lastY >= r.top && lastY <= r.bottom) {
+        hover = z;
+        break;
+      }
+    }
+    for (let i = 0; i < zonesCache.length; i++) {
+      const z = zonesCache[i];
+      if (z === hover) z.classList.add('drag-hover');
+      else             z.classList.remove('drag-hover');
+    }
+  };
 
   const onMove = (ev) => {
     if (!dragging) return;
     ev.preventDefault();
-    card.style.left = (ev.clientX - offsetX) + 'px';
-    card.style.top  = (ev.clientY - offsetY) + 'px';
-    const hover = _c5s2ZoneAtPoint(ev.clientX, ev.clientY);
-    document.querySelectorAll('#c5s2-zones .c5s2-zone').forEach(z => {
-      if (z === hover) z.classList.add('drag-hover');
-      else             z.classList.remove('drag-hover');
-    });
+    lastX = ev.clientX;
+    lastY = ev.clientY;
+    if (!rafId) rafId = requestAnimationFrame(flushMove);
   };
   const onUp = (ev) => {
     if (!dragging) return;
     dragging = false;
+    if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
     card.classList.remove('dragging');
     document.removeEventListener('pointermove', onMove);
     document.removeEventListener('pointerup',   onUp);
@@ -3973,18 +3997,24 @@ function _c5s2WireCardDrag(card) {
     ev.preventDefault();
     dragging = true;
     card.classList.add('dragging');
+    // Cache des zones de drop pour eviter querySelectorAll a chaque frame
+    zonesCache.length = 0;
+    document.querySelectorAll('#c5s2-zones .c5s2-zone').forEach(z => zonesCache.push(z));
     const rect = card.getBoundingClientRect();
     offsetX = ev.clientX - rect.left;
     offsetY = ev.clientY - rect.top;
     originParent = card.parentElement;
     document.body.appendChild(card);
     card.style.position = 'fixed';
-    card.style.left = (ev.clientX - offsetX) + 'px';
-    card.style.top  = (ev.clientY - offsetY) + 'px';
-    card.style.transform = 'none';
+    card.style.left = '0';
+    card.style.top  = '0';
     card.style.margin = '0';
+    card.style.willChange = 'transform';
+    card.style.transform = 'translate3d(' + (ev.clientX - offsetX) + 'px,' + (ev.clientY - offsetY) + 'px,0)';
+    lastX = ev.clientX;
+    lastY = ev.clientY;
     // Listeners au niveau document (souris ou doigt qui sort de la carte = pas de souci)
-    document.addEventListener('pointermove', onMove);
+    document.addEventListener('pointermove', onMove, { passive: false });
     document.addEventListener('pointerup',   onUp);
     document.addEventListener('pointercancel', onUp);
   };
@@ -4008,6 +4038,7 @@ function _c5s2ResetCardPosition(card, originParent) {
   card.style.top  = '';
   card.style.transform = '';
   card.style.margin = '';
+  card.style.willChange = '';
 }
 
 function _c5s2SnapToZone(card, zone) {
@@ -4022,6 +4053,7 @@ function _c5s2SnapToZone(card, zone) {
   card.style.height = '100%';
   card.style.transform = '';
   card.style.margin = '0';
+  card.style.willChange = '';
   card.classList.add('matched');
   zone.classList.add('matched');
   // Compteur
