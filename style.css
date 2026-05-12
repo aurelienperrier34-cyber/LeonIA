@@ -1331,11 +1331,29 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
     max-width: 90% !important;
     z-index: 6;
   }
-  /* C5S5 mobile : nom du robot plus compact pour laisser plus d'espace au
-     robot et a la bulle. */
+  /* C5S5 mobile : compactage general pour que le robot ET son nom restent
+     visibles meme quand la bulle d'explication est affichee. Video reduite
+     a 140px et nom du robot en chip jaune compact au-dessus. */
+  body.novel-mode #screen-c5s5 .c5-robot-video {
+    width: 140px !important;
+    height: 140px !important;
+  }
   body.novel-mode #screen-c5s5 .c5-robot-name {
-    font-size: 1.2rem !important;
-    margin: 2px 0 2px !important;
+    font-size: 1.05rem !important;
+    margin: 0 0 2px !important;
+    background: rgba(255,225,102,0.85) !important;
+    color: #1a0d2e !important;
+    padding: 2px 14px !important;
+    border-radius: 12px !important;
+    text-shadow: none !important;
+    display: inline-block;
+    align-self: center;
+  }
+  body.novel-mode #screen-c5s5 .c5-phase-robot {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 4px !important;
   }
   body.novel-mode #screen-c5s5 .c5-robot-mission {
     font-size: 0.82rem !important;
