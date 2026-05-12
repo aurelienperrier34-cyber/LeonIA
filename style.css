@@ -3585,6 +3585,7 @@ body.novel-mode #screen-c5s5 .game-overlay {
   text-align: center;
   line-height: 1.1;
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  touch-action: manipulation; /* mobile : evite le double-tap to click */
 }
 .c5-module-btn span {
   display: block;
@@ -3594,10 +3595,12 @@ body.novel-mode #screen-c5s5 .game-overlay {
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-.c5-module-btn:hover:not(:disabled) {
-  background: rgba(255,255,255,0.26);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(255,255,255,0.25);
+@media (hover: hover) {
+  .c5-module-btn:hover:not(:disabled) {
+    background: rgba(255,255,255,0.26);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(255,255,255,0.25);
+  }
 }
 .c5-module-btn.selected {
   background: rgba(255,225,102,0.4);
