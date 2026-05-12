@@ -1207,15 +1207,16 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
     font-size: 0.85rem !important;
     line-height: 1.3 !important;
   }
-  /* C5S2 mobile : bulle Leon en BAS-GAUCHE (un peu decalee a droite). */
+  /* C5S2 mobile : bulle Leon en BAS-GAUCHE (decalee bien a droite pour
+     etre visible sous le coude de Leon). */
   body.novel-mode #screen-c5s2 .dialogue-who,
   body.novel-mode #screen-c5s2 .dialogue-bubble {
     position: fixed !important;
-    left: 150px !important;
+    left: 200px !important;
     right: auto !important;
     top: auto !important;
     width: auto !important;
-    max-width: 40% !important;
+    max-width: 38% !important;
     z-index: 50;
   }
   body.novel-mode #screen-c5s2 .dialogue-who {
@@ -1229,9 +1230,10 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
     font-size: 0.85rem !important;
     line-height: 1.3 !important;
   }
-  /* C5S2 mobile : parent-tip plus etroite. */
+  /* C5S2 mobile : parent-tip plus etroite et legerement decalee a droite. */
   body.novel-mode #screen-c5s2 .parent-tip {
     max-width: 160px !important;
+    right: 5px !important;
   }
   /* C5S2 mobile : cache le bouton 'Passer' tant que le mini-jeu n'est pas fini,
      mais on le re-affiche en 'Continuer' (classe .complete ajoutee par completeC5s2Game). */
