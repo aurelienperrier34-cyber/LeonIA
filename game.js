@@ -6082,7 +6082,15 @@ function toggleMapCalib() {
     console.log('🎯 Calib map ON — glisse les noeuds, re-clique pour terminer.');
   } else {
     disableMapNodeDrag();
-    console.log('🎯 Calib map OFF — positions sauvegardees :', loadMapNodePositions);
+    const pos = loadMapNodePositions();
+    console.log('🎯 Calib map OFF — positions sauvegardees :', pos);
+    // Sur mobile (pas de console facile), affiche les positions dans une alert
+    // pour que l'utilisateur puisse les lire et les screenshot a transferer.
+    try {
+      const txt = '✅ Positions sauvegardees (copie-moi ca) :\n\n' +
+        JSON.stringify(pos, null, 2);
+      alert(txt);
+    } catch(e) {}
   }
 }
 
