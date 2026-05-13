@@ -82,7 +82,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v335</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v336</div>
 
 <!-- DEBUG overlay temporaire : affiche les dimensions reelles du viewport + pointer/hover.
      MOBILE/TOUCH UNIQUEMENT (cache sur PC via detection JS large : touch OU width OU coarse). -->
@@ -135,7 +135,7 @@
         var opR = op ? op.getBoundingClientRect() : null;
         var opName = op ? (op.id || op.tagName.toLowerCase() + (op.className ? '.' + String(op.className).split(' ')[0] : '')) : 'null';
         var opStr = opR ? '['+Math.round(opR.width)+'x'+Math.round(opR.height)+'@'+Math.round(opR.left)+','+Math.round(opR.top)+']' : '';
-        cs = ' p='+s.position+' ot='+mp.offsetTop+' op='+opName+opStr+' scroll='+window.scrollY;
+        cs = ' p='+s.position+' ot='+mp.offsetTop+' smST='+(sm?sm.scrollTop:'?')+' winSc='+window.scrollY;
       }
       el.textContent = 'iw'+iw+'/ih'+ih+' sm['+smStr+'] mp['+mpStr+']'+cs;
     }, 500);
@@ -1839,6 +1839,6 @@
 </div>
 
 <script src="calibration.js"></script>
-<script src="game.js?v=237"></script>
+<script src="game.js?v=238"></script>
 </body>
 </html>

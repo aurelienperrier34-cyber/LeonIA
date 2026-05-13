@@ -2148,7 +2148,17 @@ function goToScreen(screenIdentifier, force) {
     const screenMap = document.getElementById('screen-map');
 
     function scrollMapToBottom() {
-      if (screenMap) {
+      if (!screenMap) return;
+      // Sur mobile/tactile, la map est position:absolute full-screen, il n'y
+      // a rien a scroller. Mais si on scrolle quand meme (overflow:auto de
+      // base), les enfants absolute sont visuellement decales (bug -31).
+      const isMobile = window.matchMedia && (
+        window.matchMedia('(max-width: 900px)').matches ||
+        window.matchMedia('(pointer: coarse)').matches
+      );
+      if (isMobile) {
+        screenMap.scrollTop = 0;
+      } else {
         screenMap.scrollTop = screenMap.scrollHeight;
       }
     }
@@ -2171,6 +2181,14 @@ function goToScreen(screenIdentifier, force) {
       screenMap.style.setProperty('min-height', h + 'px', 'important');
       screenMap.style.setProperty('max-height', h + 'px', 'important');
       screenMap.style.setProperty('width', w + 'px', 'important');
+      // Force overflow: hidden + scrollTop: 0. Le #screen-map de base a
+      // `overflow-y: auto` et scrollMapToBottom() scrolle a la fin du
+      // contenu. Sur mobile, cela cree un decalage visuel de -31px sur les
+      // enfants absolute (mp.bRect.top = -31 alors que offsetTop = 0).
+      screenMap.style.setProperty('overflow', 'hidden', 'important');
+      screenMap.style.setProperty('overflow-x', 'hidden', 'important');
+      screenMap.style.setProperty('overflow-y', 'hidden', 'important');
+      screenMap.scrollTop = 0;
       // Force TOUTES les proprietes de positionnement de .full-map-pixar pour
       // ne laisser aucune ambiguite avec le CSS (aspect-ratio, top, bottom,
       // transform peuvent fight le sizing). On utilise des valeurs absolues.
