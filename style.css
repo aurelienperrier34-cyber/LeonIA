@@ -1721,10 +1721,26 @@ body.calib-hero-mode .hero-destination::before {
     margin-bottom: 2px;
   }
   #screen-4 .scene-4-text .dialogue-bubble {
-    max-width: min(55%, 360px);
+    max-width: min(65%, 420px);
     padding: 8px 12px;
     font-size: 0.85rem;
     line-height: 1.3;
+  }
+  /* v349 : meme pattern que C1S3 — la bulle Leon et le label "Leon dit:"
+     sortent du flow et se positionnent en absolute sous la pastille Carte,
+     mais un peu plus bas que C1S3 (top 145/170 au lieu de 130/155). */
+  body.novel-mode #screen-4 .dialogue-who,
+  body.novel-mode #screen-4 .dialogue-bubble {
+    position: absolute !important;
+    left: 53px !important;
+    z-index: 3;
+  }
+  body.novel-mode #screen-4 .dialogue-who {
+    top: 145px !important;
+    margin: 0 !important;
+  }
+  body.novel-mode #screen-4 .dialogue-bubble {
+    top: 170px !important;
   }
   /* Override mobile : remonte encore plus le texte (12px vs 30px desktop). */
   body.novel-mode .scene-text {

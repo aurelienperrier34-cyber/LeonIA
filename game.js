@@ -8180,8 +8180,15 @@ function activateS4Game() {
 if (typeof window !== 'undefined' && !window._s4GlobalCaptureSetup) {
   window._s4GlobalCaptureSetup = true;
   const _s4Handle = (ev) => {
-    if (!ev.target || !ev.target.closest) return;
-    const card = ev.target.closest('.s4-card');
+    // FIX v349 : sur certains Android Chrome, les emojis multi-codepoint
+    // (ex: 〰️ = U+3030 + U+FE0F) sont rendus dans des text nodes que le
+    // browser remet comme ev.target. Text nodes n'ont pas .closest, donc
+    // l'ancien guard 'if (!ev.target.closest) return' filtrait ces taps.
+    // On remonte au parent element avant de chercher .s4-card.
+    let target = ev.target;
+    if (target && target.nodeType === 3 /* TEXT_NODE */) target = target.parentElement;
+    if (!target || typeof target.closest !== 'function') return;
+    const card = target.closest('.s4-card');
     if (!card) return;
     if (card.classList.contains('found')) return;
     if (card._s4Handled) return;
