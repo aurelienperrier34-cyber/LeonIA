@@ -8,16 +8,18 @@
     // reference sur lequel les positions ont ete calibrees) sur tous les
     // ecrans plus etroits que 1024px (= tous les telephones en landscape).
     // Tablettes (iPad 1024+) et PC restent en device-width.
-    // Effet : rendu pixel-pour-pixel identique sur tous les telephones
-    // landscape ; les ecrans plus petits que 915 (S23 FE 780, iPhone 800,
-    // etc.) voient le contenu uniformement scale (ex. 0.85 sur S23 FE),
-    // donc les bulles restent au meme endroit RELATIF a la video de fond.
+    // iOS Safari/WKWebView est EXCLU : son moteur de viewport diverge et
+    // peut creer des barres blanches ou un zoom involontaire si on force
+    // une largeur fixe. Sur iOS on garde device-width et on accepte les
+    // petites differences de positionnement.
     (function(){
+      var isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
       function applyViewport(){
         var meta = document.getElementById('viewport-meta');
         if (!meta) return;
         var w = Math.max(window.innerWidth, window.innerHeight); // largeur landscape
-        if (w < 1024) {
+        if (w < 1024 && !isIOS) {
           meta.setAttribute('content', 'width=915, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
         } else {
           meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
@@ -38,6 +40,12 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Léon">
   <meta name="theme-color" content="#000000">
+  <!-- Icone pour "Ajouter a l'ecran d'accueil" iOS (Safari ignore favicon
+       classique pour la home screen, il faut apple-touch-icon). Idealement
+       un PNG 180x180 dedie ; pour l'instant on reutilise une image existante,
+       iOS la redimensionne automatiquement. -->
+  <link rel="apple-touch-icon" href="assets/Leon_peinture.jpg">
+  <link rel="icon" type="image/jpeg" href="assets/Leon_peinture.jpg">
   <title>IA : Le monde de Léon</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=2026051216">
@@ -59,7 +67,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v323</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v324</div>
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
 <button id="btn-back-map-global" class="btn-back-map-global" onclick="goToScreen('map')" title="Retour à la carte" style="display:none">
