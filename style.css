@@ -1662,8 +1662,10 @@ body.calib-hero-mode .hero-destination::before {
     padding: 8px 14px;
     /* Decale le texte a droite pour ne pas etre couvert par les pastilles
        etoile + carte qui sont en haut-gauche (top:16, left:18, ~80px de
-       large apres reduction mobile). */
+       large apres reduction mobile). Et a gauche du bord droit, on laisse
+       de la place pour les boutons son/CC (top-right, ~80px). */
     padding-left: 95px;
+    padding-right: 90px;
   }
   #screen-3 .narration {
     font-size: 0.85rem;
