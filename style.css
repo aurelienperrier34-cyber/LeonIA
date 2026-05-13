@@ -1742,18 +1742,17 @@ body.calib-hero-mode .hero-destination::before {
   body.novel-mode #screen-4 .dialogue-bubble {
     top: 170px !important;
   }
-  /* v352 : agrandit les cartes du mini-jeu s4 pour qu'elles remplissent les
-     cellules du grid (au lieu de leur 92px fixe qui laissait du whitespace
-     mort dans chaque cellule). Reduit aussi le gap. Sur S23 FE viewport 780,
-     chaque cellule fait ~125px ; cartes a 92px laissait ~32px de whitespace
-     ou les taps tombaient dans le vide. Maintenant width: 100% avec max-width
-     pour ne pas etre demesurees. */
+  /* v353 : cartes s4 mobile - retire max-width, justify-self stretch pour
+     vraiment remplir chaque cellule du grid. Outline rouge temporaire pour
+     voir visuellement les vraies dimensions de chaque carte. */
   .s4-card {
     width: 100% !important;
-    max-width: 110px;
+    max-width: none !important;
+    justify-self: stretch !important;
+    outline: 2px solid red !important;  /* DEBUG v353 */
   }
   .s4-cards {
-    gap: 6px !important;
+    gap: 4px !important;
   }
   /* Override mobile : remonte encore plus le texte (12px vs 30px desktop). */
   body.novel-mode .scene-text {
