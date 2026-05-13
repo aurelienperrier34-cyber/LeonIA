@@ -2166,9 +2166,21 @@ function goToScreen(screenIdentifier, force) {
     function fixMapVH() {
       if (!screenMap) return;
       const h = window.innerHeight;
+      const w = window.innerWidth;
       screenMap.style.setProperty('height', h + 'px', 'important');
       screenMap.style.setProperty('min-height', h + 'px', 'important');
       screenMap.style.setProperty('max-height', h + 'px', 'important');
+      // Force aussi .full-map-pixar a remplir la hauteur. Sans ca, le combo
+      // aspect-ratio + top:0+bottom:0 laisse parfois un gap (le browser
+      // utilise aspect-ratio comme contrainte forte et n'etire pas la hauteur).
+      const mapPixar = screenMap.querySelector('.full-map-pixar');
+      if (mapPixar) {
+        // height = pleine hauteur ecran ; width = h * 1672/941 (ratio map),
+        // borne par 100vw au cas ou ecran tres large.
+        const mapW = Math.min(w, h * 1672 / 941);
+        mapPixar.style.setProperty('height', h + 'px', 'important');
+        mapPixar.style.setProperty('width', mapW + 'px', 'important');
+      }
     }
     fixMapVH();
     requestAnimationFrame(fixMapVH);
@@ -2200,6 +2212,11 @@ function goToScreen(screenIdentifier, force) {
       sm.style.removeProperty('height');
       sm.style.removeProperty('min-height');
       sm.style.removeProperty('max-height');
+      const mapPixar = sm.querySelector('.full-map-pixar');
+      if (mapPixar) {
+        mapPixar.style.removeProperty('height');
+        mapPixar.style.removeProperty('width');
+      }
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -6254,9 +6271,16 @@ function _reapplyMapHeight() {
   const sm = document.getElementById('screen-map');
   if (!sm) return;
   const h = window.innerHeight;
+  const w = window.innerWidth;
   sm.style.setProperty('height', h + 'px', 'important');
   sm.style.setProperty('min-height', h + 'px', 'important');
   sm.style.setProperty('max-height', h + 'px', 'important');
+  const mapPixar = sm.querySelector('.full-map-pixar');
+  if (mapPixar) {
+    const mapW = Math.min(w, h * 1672 / 941);
+    mapPixar.style.setProperty('height', h + 'px', 'important');
+    mapPixar.style.setProperty('width', mapW + 'px', 'important');
+  }
 }
 window.addEventListener('resize', () => {
   if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
