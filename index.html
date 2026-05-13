@@ -2,7 +2,32 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" id="viewport-meta" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <script>
+    // Lock du viewport a 915px (largeur landscape du Pixel 9, ecran de
+    // reference sur lequel les positions ont ete calibrees) sur tous les
+    // ecrans plus etroits que 1024px (= tous les telephones en landscape).
+    // Tablettes (iPad 1024+) et PC restent en device-width.
+    // Effet : rendu pixel-pour-pixel identique sur tous les telephones
+    // landscape ; les ecrans plus petits que 915 (S23 FE 780, iPhone 800,
+    // etc.) voient le contenu uniformement scale (ex. 0.85 sur S23 FE),
+    // donc les bulles restent au meme endroit RELATIF a la video de fond.
+    (function(){
+      function applyViewport(){
+        var meta = document.getElementById('viewport-meta');
+        if (!meta) return;
+        var w = Math.max(window.innerWidth, window.innerHeight); // largeur landscape
+        if (w < 1024) {
+          meta.setAttribute('content', 'width=915, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+        } else {
+          meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+        }
+      }
+      applyViewport();
+      window.addEventListener('orientationchange', applyViewport);
+      window.addEventListener('resize', applyViewport);
+    })();
+  </script>
   <meta name="description" content="IA : Le monde de Léon - Apprenez l'IA en vous amusant !">
   <!-- Empeche la mise en cache de index.html (les assets restent caches via ?v=) -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -34,7 +59,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v322</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v323</div>
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
 <button id="btn-back-map-global" class="btn-back-map-global" onclick="goToScreen('map')" title="Retour à la carte" style="display:none">
