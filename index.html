@@ -16,9 +16,29 @@
       function applyViewport(){
         var meta = document.getElementById('viewport-meta');
         if (!meta) return;
-        var w = Math.max(window.innerWidth, window.innerHeight); // largeur landscape
+        // Largeur landscape native = plus grande dimension entre innerWidth/innerHeight et screen.width/height.
+        // On combine les deux car certains browsers reportent l'un ou l'autre selon l'orientation.
+        var w = Math.max(
+          window.innerWidth || 0,
+          window.innerHeight || 0,
+          (window.screen && window.screen.width) || 0,
+          (window.screen && window.screen.height) || 0
+        );
         if (w < 1024) {
-          meta.setAttribute('content', 'width=915, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+          // FORCE le viewport a 915 CSS px sur tous les telephones landscape.
+          // Sur Samsung Chrome, `width=915 + initial-scale=1.0` est IGNORE (le
+          // browser garde la device-width native, ex 780 sur S23 FE).
+          // Solution : calculer la scale exacte (device_w / 915) et la passer
+          // en min/initial/maximum-scale. Ainsi le browser ne peut plus
+          // utiliser initial-scale=1.0 pour fixer le viewport a device-width
+          // et est oblige d'utiliser width=915.
+          var scale = w / 915;
+          meta.setAttribute('content',
+            'width=915' +
+            ', initial-scale=' + scale +
+            ', minimum-scale=' + scale +
+            ', maximum-scale=' + scale +
+            ', user-scalable=no, viewport-fit=cover');
         } else {
           meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
         }
@@ -42,7 +62,7 @@
   <meta name="theme-color" content="#000000">
   <title>IA : Le monde de Léon</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2026051324">
+  <link rel="stylesheet" href="style.css?v=2026051326">
 </head>
 <body>
 <!-- Overlay "Tourne ton téléphone" (portrait mobile uniquement) -->
@@ -61,7 +81,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v325</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v326</div>
 
 <!-- DEBUG overlay temporaire : affiche les dimensions reelles du viewport + pointer/hover.
      MOBILE/TOUCH UNIQUEMENT (cache sur PC via detection JS large : touch OU width OU coarse). -->
