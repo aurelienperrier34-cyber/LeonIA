@@ -2161,12 +2161,14 @@ function goToScreen(screenIdentifier, force) {
     // bug disparait.
     // Solution : forcer une hauteur explicite en JS basee sur window.innerHeight
     // qui est toujours a jour, contrairement a 100dvh dont la maj depend du browser.
+    // IMPORTANT : le CSS a `height: 100dvh !important` qui bat un style inline
+    // normal. Il faut donc utiliser setProperty(..., 'important') pour gagner.
     function fixMapVH() {
       if (!screenMap) return;
       const h = window.innerHeight;
-      screenMap.style.height = h + 'px';
-      screenMap.style.minHeight = h + 'px';
-      screenMap.style.maxHeight = h + 'px';
+      screenMap.style.setProperty('height', h + 'px', 'important');
+      screenMap.style.setProperty('min-height', h + 'px', 'important');
+      screenMap.style.setProperty('max-height', h + 'px', 'important');
     }
     fixMapVH();
     requestAnimationFrame(fixMapVH);
@@ -2191,12 +2193,13 @@ function goToScreen(screenIdentifier, force) {
   } else {
     document.body.classList.remove('map-mode');
     // Cleanup : retire la hauteur forcee posee par fixMapVH() pour ne pas
-    // figer une mauvaise valeur lors de prochains entry/exit.
+    // figer une mauvaise valeur lors de prochains entry/exit. removeProperty
+    // est necessaire car les styles ont ete poses avec 'important'.
     const sm = document.getElementById('screen-map');
     if (sm) {
-      sm.style.height = '';
-      sm.style.minHeight = '';
-      sm.style.maxHeight = '';
+      sm.style.removeProperty('height');
+      sm.style.removeProperty('min-height');
+      sm.style.removeProperty('max-height');
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -6246,32 +6249,21 @@ function applyStarCornerPosition() {
   }
 }
 // Reapplique a chaque resize/rotation (mobile : passage paysage <-> portrait)
+function _reapplyMapHeight() {
+  if (state.currentScreen !== 'map') return;
+  const sm = document.getElementById('screen-map');
+  if (!sm) return;
+  const h = window.innerHeight;
+  sm.style.setProperty('height', h + 'px', 'important');
+  sm.style.setProperty('min-height', h + 'px', 'important');
+  sm.style.setProperty('max-height', h + 'px', 'important');
+}
 window.addEventListener('resize', () => {
   if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
-  // Si on est sur la map, re-applique la hauteur forcee pour suivre les
-  // changements de viewport (barre URL Chrome, rotation, etc.)
-  if (state.currentScreen === 'map') {
-    const sm = document.getElementById('screen-map');
-    if (sm) {
-      const h = window.innerHeight;
-      sm.style.height = h + 'px';
-      sm.style.minHeight = h + 'px';
-      sm.style.maxHeight = h + 'px';
-    }
-  }
+  _reapplyMapHeight();
 });
 window.addEventListener('orientationchange', () => {
-  if (state.currentScreen === 'map') {
-    setTimeout(() => {
-      const sm = document.getElementById('screen-map');
-      if (sm) {
-        const h = window.innerHeight;
-        sm.style.height = h + 'px';
-        sm.style.minHeight = h + 'px';
-        sm.style.maxHeight = h + 'px';
-      }
-    }, 200);
-  }
+  setTimeout(_reapplyMapHeight, 200);
 });
 function toggleStarCalib() {
   document.body.classList.toggle('calib-star-mode');
