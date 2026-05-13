@@ -1742,17 +1742,24 @@ body.calib-hero-mode .hero-destination::before {
   body.novel-mode #screen-4 .dialogue-bubble {
     top: 170px !important;
   }
-  /* v353 : cartes s4 mobile - retire max-width, justify-self stretch pour
-     vraiment remplir chaque cellule du grid. Outline rouge temporaire pour
-     voir visuellement les vraies dimensions de chaque carte. */
+  /* v354 : cartes s4 mobile - retire max-width, justify-self stretch.
+     Retire l'outline rouge debug. */
   .s4-card {
     width: 100% !important;
     max-width: none !important;
     justify-self: stretch !important;
-    outline: 2px solid red !important;  /* DEBUG v353 */
   }
   .s4-cards {
     gap: 4px !important;
+  }
+  /* v354 : .scene-4-actions (le bouton "J'ai compris" cache) est `position:
+     absolute; left: 50%; bottom: 20`, donc centre horizontalement et SUR la
+     ligne du milieu des cartes du mini-jeu. Meme si z-index 4 < cards z-index 8,
+     un quirk Android Chrome semble lui faire intercepter les taps sur les
+     cartes centrales (3e et 4e). Solution : `pointer-events: none` tant que la
+     classe `.show` n'est pas presente (= jeu pas encore termine, bouton invisible). */
+  #screen-4 .answers-group.scene-4-actions:not(.show) {
+    pointer-events: none !important;
   }
   /* Override mobile : remonte encore plus le texte (12px vs 30px desktop). */
   body.novel-mode .scene-text {
