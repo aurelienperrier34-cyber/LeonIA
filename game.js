@@ -6086,10 +6086,17 @@ function toggleMapCalib() {
     console.log('🎯 Calib map OFF — positions sauvegardees :', pos);
     // Sur mobile (pas de console facile), affiche les positions dans une alert
     // pour que l'utilisateur puisse les lire et les screenshot a transferer.
+    // Format compact 1 ligne par chapitre pour que les 5 tiennent sans scroll.
     try {
-      const txt = '✅ Positions sauvegardees (copie-moi ca) :\n\n' +
-        JSON.stringify(pos, null, 2);
-      alert(txt);
+      const lines = [];
+      for (let i = 1; i <= 5; i++) {
+        if (pos[i]) {
+          const l = (pos[i].left ?? 0).toFixed(2);
+          const t = (pos[i].top  ?? 0).toFixed(2);
+          lines.push('C' + i + ': L=' + l + ' T=' + t);
+        }
+      }
+      alert('✅ Positions :\n\n' + lines.join('\n'));
     } catch(e) {}
   }
 }
