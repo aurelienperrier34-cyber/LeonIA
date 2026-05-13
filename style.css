@@ -1721,7 +1721,7 @@ body.calib-hero-mode .hero-destination::before {
     margin-bottom: 2px;
   }
   #screen-4 .scene-4-text .dialogue-bubble {
-    max-width: min(65%, 420px);
+    max-width: min(55%, 360px);
     padding: 8px 12px;
     font-size: 0.85rem;
     line-height: 1.3;
