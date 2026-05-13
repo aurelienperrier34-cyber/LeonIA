@@ -6387,10 +6387,16 @@ body.novel-mode .s4-game-pill {
 .s4-card .s4-card-label {
   pointer-events: none;
 }
-.s4-card:hover {
-  transform: translateY(-4px) scale(1.06);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.45);
-  border-color: #FFE166;
+/* v346 : :hover scope a (hover: hover) — sur mobile/tactile, le sticky hover
+   apres tap decalait la carte (transform translateY) et le click suivant
+   tombait dans le vide -> "le 1er tap ne marche pas". Sur tactile, plus
+   d'effet hover, le tap registre immediatement. */
+@media (hover: hover) {
+  .s4-card:hover {
+    transform: translateY(-4px) scale(1.06);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.45);
+    border-color: #FFE166;
+  }
 }
 .s4-card.found {
   pointer-events: none;
