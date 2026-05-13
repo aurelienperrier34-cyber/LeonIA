@@ -16,8 +16,8 @@
       function applyViewport(){
         var meta = document.getElementById('viewport-meta');
         if (!meta) return;
-        // Largeur landscape native = plus grande dimension entre innerWidth/innerHeight et screen.width/height.
-        // On combine les deux car certains browsers reportent l'un ou l'autre selon l'orientation.
+        // Largeur landscape native. On combine innerWidth/innerHeight et screen
+        // car certains browsers reportent l'un ou l'autre selon l'orientation.
         var w = Math.max(
           window.innerWidth || 0,
           window.innerHeight || 0,
@@ -26,16 +26,17 @@
         );
         if (w < 1024) {
           // FORCE le viewport a 915 CSS px sur tous les telephones landscape.
-          // Sur Samsung Chrome, `width=915 + initial-scale=1.0` est IGNORE (le
-          // browser garde la device-width native, ex 780 sur S23 FE).
-          // Solution : calculer la scale exacte (device_w / 915) et la passer
-          // en min/initial/maximum-scale. Ainsi le browser ne peut plus
-          // utiliser initial-scale=1.0 pour fixer le viewport a device-width
-          // et est oblige d'utiliser width=915.
-          var scale = w / 915;
+          // Tentatives precedentes (v323/v326 avec `width=915`) etaient IGNOREES
+          // par Samsung Chrome (S23 FE garde iw=780). Strategy v327 :
+          //   N'utiliser QUE initial-scale, sans 'width=N'.
+          //   Le layout viewport est alors calcule par : device_width / initial-scale.
+          //   Avec initial-scale = device_w / 915, on obtient :
+          //     layout_viewport = device_w / (device_w/915) = 915
+          //   Samsung Chrome ne peut plus "ignorer width" : il n'y a plus de
+          //   width attribute, le scale gouverne directement.
+          var scale = Math.round((w / 915) * 10000) / 10000; // 4 decimales pour eviter precision flottante
           meta.setAttribute('content',
-            'width=915' +
-            ', initial-scale=' + scale +
+            'initial-scale=' + scale +
             ', minimum-scale=' + scale +
             ', maximum-scale=' + scale +
             ', user-scalable=no, viewport-fit=cover');
@@ -81,7 +82,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v326</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v327</div>
 
 <!-- DEBUG overlay temporaire : affiche les dimensions reelles du viewport + pointer/hover.
      MOBILE/TOUCH UNIQUEMENT (cache sur PC via detection JS large : touch OU width OU coarse). -->
