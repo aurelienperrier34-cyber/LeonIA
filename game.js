@@ -2153,6 +2153,27 @@ function goToScreen(screenIdentifier, force) {
       }
     }
 
+    // Fix bug "cadre Netflix tout autour" : 100dvh est parfois fige a une
+    // mauvaise valeur quand on arrive sur la map (barre URL Chrome qui change
+    // de visibilite, ou viewport encore en transition). Resultat : la map
+    // est plus courte que l'ecran, et le purple foncé du #screen-map background
+    // apparait sous la map. Au rotate/exit, le browser recalcule 100dvh et le
+    // bug disparait.
+    // Solution : forcer une hauteur explicite en JS basee sur window.innerHeight
+    // qui est toujours a jour, contrairement a 100dvh dont la maj depend du browser.
+    function fixMapVH() {
+      if (!screenMap) return;
+      const h = window.innerHeight;
+      screenMap.style.height = h + 'px';
+      screenMap.style.minHeight = h + 'px';
+      screenMap.style.maxHeight = h + 'px';
+    }
+    fixMapVH();
+    requestAnimationFrame(fixMapVH);
+    setTimeout(fixMapVH, 100);
+    setTimeout(fixMapVH, 400);
+    setTimeout(fixMapVH, 1000);
+
     requestAnimationFrame(scrollMapToBottom);
     setTimeout(scrollMapToBottom, 50);
     setTimeout(scrollMapToBottom, 300);
@@ -2169,6 +2190,14 @@ function goToScreen(screenIdentifier, force) {
     }
   } else {
     document.body.classList.remove('map-mode');
+    // Cleanup : retire la hauteur forcee posee par fixMapVH() pour ne pas
+    // figer une mauvaise valeur lors de prochains entry/exit.
+    const sm = document.getElementById('screen-map');
+    if (sm) {
+      sm.style.height = '';
+      sm.style.minHeight = '';
+      sm.style.maxHeight = '';
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -6219,6 +6248,30 @@ function applyStarCornerPosition() {
 // Reapplique a chaque resize/rotation (mobile : passage paysage <-> portrait)
 window.addEventListener('resize', () => {
   if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
+  // Si on est sur la map, re-applique la hauteur forcee pour suivre les
+  // changements de viewport (barre URL Chrome, rotation, etc.)
+  if (state.currentScreen === 'map') {
+    const sm = document.getElementById('screen-map');
+    if (sm) {
+      const h = window.innerHeight;
+      sm.style.height = h + 'px';
+      sm.style.minHeight = h + 'px';
+      sm.style.maxHeight = h + 'px';
+    }
+  }
+});
+window.addEventListener('orientationchange', () => {
+  if (state.currentScreen === 'map') {
+    setTimeout(() => {
+      const sm = document.getElementById('screen-map');
+      if (sm) {
+        const h = window.innerHeight;
+        sm.style.height = h + 'px';
+        sm.style.minHeight = h + 'px';
+        sm.style.maxHeight = h + 'px';
+      }
+    }, 200);
+  }
 });
 function toggleStarCalib() {
   document.body.classList.toggle('calib-star-mode');
