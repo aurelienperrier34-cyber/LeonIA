@@ -82,7 +82,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v330</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v331</div>
 
 <!-- DEBUG overlay temporaire : affiche les dimensions reelles du viewport + pointer/hover.
      MOBILE/TOUCH UNIQUEMENT (cache sur PC via detection JS large : touch OU width OU coarse). -->
@@ -116,6 +116,19 @@
     fmt();
     window.addEventListener('resize', fmt);
     window.addEventListener('orientationchange', function(){ setTimeout(fmt, 200); });
+    // Refresh toutes les 500ms pour suivre les changements (utile pour voir
+    // la hauteur reelle de la map apres goToScreen('map')).
+    setInterval(function(){
+      var sm = document.getElementById('screen-map');
+      var mp = sm && sm.querySelector('.full-map-pixar');
+      var smH = sm ? Math.round(sm.getBoundingClientRect().height) : '?';
+      var mpH = mp ? Math.round(mp.getBoundingClientRect().height) : '?';
+      var mpW = mp ? Math.round(mp.getBoundingClientRect().width) : '?';
+      var extra = ' smH='+smH+' mpH='+mpH+' mpW='+mpW;
+      var iw = window.innerWidth, ih = window.innerHeight;
+      var dpr = window.devicePixelRatio || 1;
+      el.textContent = iw+'x'+ih+' dpr'+dpr+extra;
+    }, 500);
   })();
 </script>
 
