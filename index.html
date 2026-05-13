@@ -82,7 +82,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v333</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v334</div>
 
 <!-- DEBUG overlay temporaire : affiche les dimensions reelles du viewport + pointer/hover.
      MOBILE/TOUCH UNIQUEMENT (cache sur PC via detection JS large : touch OU width OU coarse). -->
@@ -124,12 +124,16 @@
       var img = mp && mp.querySelector('.map-bg-img');
       var smR = sm ? sm.getBoundingClientRect() : null;
       var mpR = mp ? mp.getBoundingClientRect() : null;
-      var imgR = img ? img.getBoundingClientRect() : null;
       var iw = window.innerWidth, ih = window.innerHeight;
       var smStr = smR ? Math.round(smR.width)+'x'+Math.round(smR.height)+'@'+Math.round(smR.left)+','+Math.round(smR.top) : '?';
       var mpStr = mpR ? Math.round(mpR.width)+'x'+Math.round(mpR.height)+'@'+Math.round(mpR.left)+','+Math.round(mpR.top) : '?';
-      var imgStr = imgR ? Math.round(imgR.width)+'x'+Math.round(imgR.height)+'@'+Math.round(imgR.left)+','+Math.round(imgR.top) : '?';
-      el.textContent = 'iw'+iw+'/ih'+ih+' sm['+smStr+'] mp['+mpStr+'] img['+imgStr+']';
+      // computed style de mp pour identifier source du decalage
+      var cs = '';
+      if (mp) {
+        var s = window.getComputedStyle(mp);
+        cs = ' cs:t='+s.top+' tr='+s.transform+' an='+s.animationName;
+      }
+      el.textContent = 'iw'+iw+'/ih'+ih+' sm['+smStr+'] mp['+mpStr+']'+cs;
     }, 500);
   })();
 </script>
@@ -1831,6 +1835,6 @@
 </div>
 
 <script src="calibration.js"></script>
-<script src="game.js?v=236"></script>
+<script src="game.js?v=237"></script>
 </body>
 </html>

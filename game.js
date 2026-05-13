@@ -2174,6 +2174,10 @@ function goToScreen(screenIdentifier, force) {
       // Force TOUTES les proprietes de positionnement de .full-map-pixar pour
       // ne laisser aucune ambiguite avec le CSS (aspect-ratio, top, bottom,
       // transform peuvent fight le sizing). On utilise des valeurs absolues.
+      // Force aussi animation: none sur screen-map au cas ou slideUpFade
+      // tournerait quand meme (laisserait une translateY residuelle).
+      screenMap.style.setProperty('animation', 'none', 'important');
+      screenMap.style.setProperty('transform', 'none', 'important');
       const mapPixar = screenMap.querySelector('.full-map-pixar');
       if (mapPixar) {
         const mapW = Math.min(w, h * 1672 / 941);
@@ -2184,6 +2188,7 @@ function goToScreen(screenIdentifier, force) {
         mapPixar.style.setProperty('bottom', 'auto', 'important');
         mapPixar.style.setProperty('right', 'auto', 'important');
         mapPixar.style.setProperty('transform', 'none', 'important');
+        mapPixar.style.setProperty('animation', 'none', 'important');
         mapPixar.style.setProperty('aspect-ratio', 'auto', 'important');
         mapPixar.style.setProperty('width', mapW + 'px', 'important');
         mapPixar.style.setProperty('height', h + 'px', 'important');
