@@ -63,7 +63,7 @@
   <meta name="theme-color" content="#000000">
   <title>IA : Le monde de Léon</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2026051347">
+  <link rel="stylesheet" href="style.css?v=2026051348">
 </head>
 <body>
 <!-- Overlay "Tourne ton téléphone" (portrait mobile uniquement) -->
@@ -82,65 +82,8 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v347</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v348</div>
 
-<!-- DEBUG overlay temporaire : affiche les dimensions reelles du viewport + pointer/hover.
-     MOBILE/TOUCH UNIQUEMENT (cache sur PC via detection JS large : touch OU width OU coarse). -->
-<div id="debug-vp" style="display:none;position:fixed;top:6px;left:50%;transform:translateX(-50%);z-index:999999;background:rgba(255,0,128,0.92);color:#fff;font:700 10px/1.25 ui-monospace,monospace;padding:5px 10px;border-radius:8px;pointer-events:none;text-align:center;max-width:96vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">DEBUG</div>
-<script>
-  (function(){
-    var el = document.getElementById('debug-vp');
-    if (!el) return;
-    // Detection mobile LARGE : touch OR coarse pointer OR small-ish width.
-    // Cache sur PC desktop (pas de touch + pas de coarse + large window).
-    var hasTouch = 'ontouchstart' in window || (navigator.maxTouchPoints > 0);
-    var coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-    var smallish = Math.max(window.innerWidth, window.innerHeight) < 1280;
-    var isMobile = hasTouch || coarse || smallish;
-    if (!isMobile) return;
-    el.style.display = 'block';
-    function mm(q){ return window.matchMedia && window.matchMedia(q).matches ? '1' : '0'; }
-    function fmt(){
-      var iw = window.innerWidth, ih = window.innerHeight;
-      var dpr = window.devicePixelRatio || 1;
-      var sw = window.screen && window.screen.width;
-      var sh = window.screen && window.screen.height;
-      var vp = window.__viewportApplied || '?';
-      var vpShort = vp.indexOf('width=915') !== -1 ? 'lock915' : (vp.indexOf('device-width') !== -1 ? 'dev' : 'x');
-      // media features : pc=pointer:coarse, pf=pointer:fine, hn=hover:none, hh=hover:hover, mw900=max-width:900
-      var feats = 'pc'+mm('(pointer:coarse)')+'pf'+mm('(pointer:fine)')
-                + 'hn'+mm('(hover:none)')+'hh'+mm('(hover:hover)')
-                + 'mw900'+mm('(max-width:900px)');
-      el.textContent = iw+'x'+ih+' dpr'+dpr+' scr'+sw+'x'+sh+' '+vpShort+' '+feats;
-    }
-    fmt();
-    window.addEventListener('resize', fmt);
-    window.addEventListener('orientationchange', function(){ setTimeout(fmt, 200); });
-    // Refresh toutes les 500ms pour suivre les changements (utile pour voir
-    // la hauteur reelle de la map apres goToScreen('map')).
-    setInterval(function(){
-      var sm = document.getElementById('screen-map');
-      var mp = sm && sm.querySelector('.full-map-pixar');
-      var img = mp && mp.querySelector('.map-bg-img');
-      var smR = sm ? sm.getBoundingClientRect() : null;
-      var mpR = mp ? mp.getBoundingClientRect() : null;
-      var iw = window.innerWidth, ih = window.innerHeight;
-      var smStr = smR ? Math.round(smR.width)+'x'+Math.round(smR.height)+'@'+Math.round(smR.left)+','+Math.round(smR.top) : '?';
-      var mpStr = mpR ? Math.round(mpR.width)+'x'+Math.round(mpR.height)+'@'+Math.round(mpR.left)+','+Math.round(mpR.top) : '?';
-      // computed style + offsetParent pour identifier la source du decalage
-      var cs = '';
-      if (mp) {
-        var s = window.getComputedStyle(mp);
-        var op = mp.offsetParent;
-        var opR = op ? op.getBoundingClientRect() : null;
-        var opName = op ? (op.id || op.tagName.toLowerCase() + (op.className ? '.' + String(op.className).split(' ')[0] : '')) : 'null';
-        var opStr = opR ? '['+Math.round(opR.width)+'x'+Math.round(opR.height)+'@'+Math.round(opR.left)+','+Math.round(opR.top)+']' : '';
-        cs = ' p='+s.position+' ot='+mp.offsetTop+' smST='+(sm?sm.scrollTop:'?')+' winSc='+window.scrollY;
-      }
-      el.textContent = 'iw'+iw+'/ih'+ih+' sm['+smStr+'] mp['+mpStr+']'+cs;
-    }, 500);
-  })();
-</script>
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
 <button id="btn-back-map-global" class="btn-back-map-global" onclick="goToScreen('map')" title="Retour à la carte" style="display:none">

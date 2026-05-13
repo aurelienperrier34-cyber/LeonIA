@@ -6388,11 +6388,12 @@ body.novel-mode .s4-game-pill {
 .s4-card .s4-card-label {
   pointer-events: none;
 }
-/* v346 : :hover scope a (hover: hover) — sur mobile/tactile, le sticky hover
-   apres tap decalait la carte (transform translateY) et le click suivant
-   tombait dans le vide -> "le 1er tap ne marche pas". Sur tactile, plus
-   d'effet hover, le tap registre immediatement. */
-@media (hover: hover) {
+/* v346/v348 : :hover scope a (hover: hover) AND (pointer: fine). Samsung
+   Chrome (S23 FE) rapporte hover:hover=true (contrairement aux autres tels),
+   donc (hover: hover) seul matche encore et le sticky hover persiste.
+   Ajout de `and (pointer: fine)` : Samsung est pointer:coarse, donc la combo
+   ne matche que sur de vrais setups souris (PC desktop). */
+@media (hover: hover) and (pointer: fine) {
   .s4-card:hover {
     transform: translateY(-4px) scale(1.06);
     box-shadow: 0 10px 22px rgba(0,0,0,0.45);
