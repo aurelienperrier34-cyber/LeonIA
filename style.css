@@ -388,9 +388,13 @@ body:has(#screen-1.active) .app {
 }
 .map-toolbar {
     position: fixed; top: 60px; left: 15px; right: 15px; z-index: 100;
-    display: flex; justify-content: space-between; align-items: center; pointer-events: none;
+    /* v342 : title centre via justify-content:center, Personnages et Calibrer
+       positionnes en absolute aux extremites. La pastille etoiles sort du
+       toolbar (positionnee sous Personnages, hors du flex). */
+    display: flex; justify-content: center; align-items: center; pointer-events: none;
 }
 .btn-back-map {
+  position: absolute; left: 0;
   background: white; border: 3px solid var(--purple); padding: 10px 20px; border-radius: 30px;
   font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 1.1rem; color: var(--purple);
   cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.15); transition: transform 0.2s;
@@ -402,6 +406,9 @@ body:has(#screen-1.active) .app {
     background: linear-gradient(135deg, #FF6B6B, #9B5DE5); color: white;
     padding: 10px 25px; border-radius: 30px; font-family: 'Baloo 2'; font-weight: 800; font-size: 1.2rem;
     box-shadow: 0 5px 15px rgba(155,93,229,0.3); border: 2px solid white; pointer-events: auto;
+}
+#btn-calib-map {
+  position: absolute; right: 0;
 }
 
 .full-map-canvas { position: relative; width: 100%; height: auto; max-width: 1000px; margin: 0 auto; background: #FFF; }
@@ -4168,8 +4175,15 @@ body.calib-map-mode .full-map-pixar::before {
   line-height: 1.4;
 }
 
-/* Bouton Mon Atelier sur la map (toolbar) */
+/* Bouton Mon Atelier (pastille etoiles) sur la map.
+   v342 : sort du .map-toolbar et se positionne en fixed juste sous le bouton
+   Personnages (haut-gauche). Plus pratique visuellement et libere le centre
+   pour le titre. */
 .btn-atelier-map {
+  position: fixed;
+  top: 120px;  /* sous .map-toolbar (top:60 + ~50px de hauteur button) */
+  left: 15px;  /* meme alignement que Personnages */
+  z-index: 100;
   background: linear-gradient(135deg, #ffeb95, #ffd966);
   color: #6b4500;
   border: 2px solid #b45309;
