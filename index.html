@@ -82,7 +82,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v332</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v333</div>
 
 <!-- DEBUG overlay temporaire : affiche les dimensions reelles du viewport + pointer/hover.
      MOBILE/TOUCH UNIQUEMENT (cache sur PC via detection JS large : touch OU width OU coarse). -->
@@ -121,13 +121,15 @@
     setInterval(function(){
       var sm = document.getElementById('screen-map');
       var mp = sm && sm.querySelector('.full-map-pixar');
-      var smH = sm ? Math.round(sm.getBoundingClientRect().height) : '?';
-      var mpH = mp ? Math.round(mp.getBoundingClientRect().height) : '?';
-      var mpW = mp ? Math.round(mp.getBoundingClientRect().width) : '?';
-      var extra = ' smH='+smH+' mpH='+mpH+' mpW='+mpW;
+      var img = mp && mp.querySelector('.map-bg-img');
+      var smR = sm ? sm.getBoundingClientRect() : null;
+      var mpR = mp ? mp.getBoundingClientRect() : null;
+      var imgR = img ? img.getBoundingClientRect() : null;
       var iw = window.innerWidth, ih = window.innerHeight;
-      var dpr = window.devicePixelRatio || 1;
-      el.textContent = iw+'x'+ih+' dpr'+dpr+extra;
+      var smStr = smR ? Math.round(smR.width)+'x'+Math.round(smR.height)+'@'+Math.round(smR.left)+','+Math.round(smR.top) : '?';
+      var mpStr = mpR ? Math.round(mpR.width)+'x'+Math.round(mpR.height)+'@'+Math.round(mpR.left)+','+Math.round(mpR.top) : '?';
+      var imgStr = imgR ? Math.round(imgR.width)+'x'+Math.round(imgR.height)+'@'+Math.round(imgR.left)+','+Math.round(imgR.top) : '?';
+      el.textContent = 'iw'+iw+'/ih'+ih+' sm['+smStr+'] mp['+mpStr+'] img['+imgStr+']';
     }, 500);
   })();
 </script>
@@ -1829,6 +1831,6 @@
 </div>
 
 <script src="calibration.js"></script>
-<script src="game.js?v=235"></script>
+<script src="game.js?v=236"></script>
 </body>
 </html>

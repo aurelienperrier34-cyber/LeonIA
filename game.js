@@ -2170,16 +2170,35 @@ function goToScreen(screenIdentifier, force) {
       screenMap.style.setProperty('height', h + 'px', 'important');
       screenMap.style.setProperty('min-height', h + 'px', 'important');
       screenMap.style.setProperty('max-height', h + 'px', 'important');
-      // Force aussi .full-map-pixar a remplir la hauteur. Sans ca, le combo
-      // aspect-ratio + top:0+bottom:0 laisse parfois un gap (le browser
-      // utilise aspect-ratio comme contrainte forte et n'etire pas la hauteur).
+      screenMap.style.setProperty('width', w + 'px', 'important');
+      // Force TOUTES les proprietes de positionnement de .full-map-pixar pour
+      // ne laisser aucune ambiguite avec le CSS (aspect-ratio, top, bottom,
+      // transform peuvent fight le sizing). On utilise des valeurs absolues.
       const mapPixar = screenMap.querySelector('.full-map-pixar');
       if (mapPixar) {
-        // height = pleine hauteur ecran ; width = h * 1672/941 (ratio map),
-        // borne par 100vw au cas ou ecran tres large.
         const mapW = Math.min(w, h * 1672 / 941);
-        mapPixar.style.setProperty('height', h + 'px', 'important');
+        const leftOffset = (w - mapW) / 2;
+        mapPixar.style.setProperty('position', 'absolute', 'important');
+        mapPixar.style.setProperty('top', '0', 'important');
+        mapPixar.style.setProperty('left', leftOffset + 'px', 'important');
+        mapPixar.style.setProperty('bottom', 'auto', 'important');
+        mapPixar.style.setProperty('right', 'auto', 'important');
+        mapPixar.style.setProperty('transform', 'none', 'important');
+        mapPixar.style.setProperty('aspect-ratio', 'auto', 'important');
         mapPixar.style.setProperty('width', mapW + 'px', 'important');
+        mapPixar.style.setProperty('height', h + 'px', 'important');
+        mapPixar.style.setProperty('margin', '0', 'important');
+        // Force aussi l'IMG a remplir le conteneur, au cas ou son layout
+        // se calcule differemment des dimensions du parent.
+        const img = mapPixar.querySelector('.map-bg-img');
+        if (img) {
+          img.style.setProperty('position', 'absolute', 'important');
+          img.style.setProperty('top', '0', 'important');
+          img.style.setProperty('left', '0', 'important');
+          img.style.setProperty('width', mapW + 'px', 'important');
+          img.style.setProperty('height', h + 'px', 'important');
+          img.style.setProperty('object-fit', 'cover', 'important');
+        }
       }
     }
     fixMapVH();
