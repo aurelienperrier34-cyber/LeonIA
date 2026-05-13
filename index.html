@@ -63,20 +63,25 @@
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
 <div class="build-badge" id="build-badge" title="Version chargee">v324</div>
 
-<!-- DEBUG overlay temporaire : affiche les dimensions reelles du viewport sur chaque appareil. -->
-<div id="debug-vp" style="position:fixed;top:6px;left:50%;transform:translateX(-50%);z-index:999999;background:rgba(255,0,128,0.92);color:#fff;font:700 11px/1.3 ui-monospace,monospace;padding:5px 10px;border-radius:8px;pointer-events:none;text-align:center;max-width:90vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">DEBUG</div>
+<!-- DEBUG overlay temporaire : affiche les dimensions reelles du viewport.
+     MOBILE/TOUCH UNIQUEMENT (cache sur PC via media query inline). -->
+<div id="debug-vp" style="display:none;position:fixed;top:6px;left:50%;transform:translateX(-50%);z-index:999999;background:rgba(255,0,128,0.92);color:#fff;font:700 11px/1.3 ui-monospace,monospace;padding:5px 10px;border-radius:8px;pointer-events:none;text-align:center;max-width:90vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">DEBUG</div>
 <script>
   (function(){
+    var el = document.getElementById('debug-vp');
+    if (!el) return;
+    // Affichage mobile/tactile uniquement (pointer:coarse + hover:none).
+    // Sur PC l'overlay reste display:none, donc invisible.
+    var isMobile = window.matchMedia && window.matchMedia('(pointer: coarse) and (hover: none)').matches;
+    if (!isMobile) return;
+    el.style.display = 'block';
     function fmt(){
-      var el = document.getElementById('debug-vp');
-      if (!el) return;
       var iw = window.innerWidth, ih = window.innerHeight;
       var dpr = window.devicePixelRatio || 1;
       var sw = window.screen && window.screen.width;
       var sh = window.screen && window.screen.height;
       var vp = window.__viewportApplied || '?';
       var trig = window.__viewportTriggerW || '?';
-      // raccourci affichage : si "width=915..." -> "lock=915"
       var vpShort = vp.indexOf('width=915') !== -1 ? 'lock=915' : (vp.indexOf('device-width') !== -1 ? 'device' : vp);
       el.textContent = 'iw='+iw+' ih='+ih+' dpr='+dpr+' scr='+sw+'x'+sh+' trig='+trig+' '+vpShort;
     }
