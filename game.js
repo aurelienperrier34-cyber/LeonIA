@@ -2198,8 +2198,14 @@ function goToScreen(screenIdentifier, force) {
       screenMap.style.setProperty('transform', 'none', 'important');
       const mapPixar = screenMap.querySelector('.full-map-pixar');
       if (mapPixar) {
-        const mapW = Math.min(w, h * 1672 / 941);
-        const leftOffset = (w - mapW) / 2;
+        // v337 : object-fit: fill (etirement) au lieu de cover (crop).
+        // La map remplit tout l'ecran -> mapW = innerWidth, mapH = innerHeight.
+        // L'image est etiree d'environ 26% horizontalement (ratio image 1.78
+        // vs ratio viewport 2.25 sur Pixel 9), mais aucun pixel n'est crope
+        // et les chapitres en % restent positionnes correctement sur leurs
+        // landmarks (Leon sur sa maison, observatoire sur sa tour, etc.).
+        const mapW = w;
+        const leftOffset = 0;
         mapPixar.style.setProperty('position', 'absolute', 'important');
         mapPixar.style.setProperty('top', '0', 'important');
         mapPixar.style.setProperty('left', leftOffset + 'px', 'important');
@@ -2211,8 +2217,8 @@ function goToScreen(screenIdentifier, force) {
         mapPixar.style.setProperty('width', mapW + 'px', 'important');
         mapPixar.style.setProperty('height', h + 'px', 'important');
         mapPixar.style.setProperty('margin', '0', 'important');
-        // Force aussi l'IMG a remplir le conteneur, au cas ou son layout
-        // se calcule differemment des dimensions du parent.
+        // IMG remplit le conteneur avec object-fit: fill (etirement non
+        // uniforme) pour eviter les bandes laterales.
         const img = mapPixar.querySelector('.map-bg-img');
         if (img) {
           img.style.setProperty('position', 'absolute', 'important');
@@ -2220,7 +2226,7 @@ function goToScreen(screenIdentifier, force) {
           img.style.setProperty('left', '0', 'important');
           img.style.setProperty('width', mapW + 'px', 'important');
           img.style.setProperty('height', h + 'px', 'important');
-          img.style.setProperty('object-fit', 'cover', 'important');
+          img.style.setProperty('object-fit', 'fill', 'important');
         }
       }
     }
@@ -6319,9 +6325,23 @@ function _reapplyMapHeight() {
   sm.style.setProperty('max-height', h + 'px', 'important');
   const mapPixar = sm.querySelector('.full-map-pixar');
   if (mapPixar) {
-    const mapW = Math.min(w, h * 1672 / 941);
-    mapPixar.style.setProperty('height', h + 'px', 'important');
+    // v337 : etirement plein ecran (object-fit: fill). Voir fixMapVH().
+    const mapW = w;
+    const leftOffset = 0;
+    mapPixar.style.setProperty('position', 'absolute', 'important');
+    mapPixar.style.setProperty('top', '0', 'important');
+    mapPixar.style.setProperty('left', leftOffset + 'px', 'important');
+    mapPixar.style.setProperty('bottom', 'auto', 'important');
+    mapPixar.style.setProperty('right', 'auto', 'important');
+    mapPixar.style.setProperty('transform', 'none', 'important');
     mapPixar.style.setProperty('width', mapW + 'px', 'important');
+    mapPixar.style.setProperty('height', h + 'px', 'important');
+    const img = mapPixar.querySelector('.map-bg-img');
+    if (img) {
+      img.style.setProperty('width', mapW + 'px', 'important');
+      img.style.setProperty('height', h + 'px', 'important');
+      img.style.setProperty('object-fit', 'fill', 'important');
+    }
   }
 }
 window.addEventListener('resize', () => {

@@ -3818,7 +3818,7 @@ body.novel-mode #screen-c5s5 .game-overlay {
     height: 100dvh !important;
     min-height: 100dvh !important;
     max-height: 100dvh !important;
-    background: #ff0000; /* DEBUG v332 : rouge vif pour diagnostiquer si gap layout ou blur qui leak */
+    background: #1a0d2e;
   }
   /* Bande laterale GAUCHE : flou Netflix */
   #screen-map.active::before {
