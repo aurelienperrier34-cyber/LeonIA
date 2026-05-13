@@ -13,8 +13,8 @@ window.__CALIBRATION_DATA__ = {
   },
   "mapNodePositions": {
     "1": {
-      "left": 20.2344,
-      "top": 90.4167
+      "left": 24.0046,
+      "top": 85.6355
     },
     "2": {
       "left": 42.3438,
