@@ -82,7 +82,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v334</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v335</div>
 
 <!-- DEBUG overlay temporaire : affiche les dimensions reelles du viewport + pointer/hover.
      MOBILE/TOUCH UNIQUEMENT (cache sur PC via detection JS large : touch OU width OU coarse). -->
@@ -127,11 +127,15 @@
       var iw = window.innerWidth, ih = window.innerHeight;
       var smStr = smR ? Math.round(smR.width)+'x'+Math.round(smR.height)+'@'+Math.round(smR.left)+','+Math.round(smR.top) : '?';
       var mpStr = mpR ? Math.round(mpR.width)+'x'+Math.round(mpR.height)+'@'+Math.round(mpR.left)+','+Math.round(mpR.top) : '?';
-      // computed style de mp pour identifier source du decalage
+      // computed style + offsetParent pour identifier la source du decalage
       var cs = '';
       if (mp) {
         var s = window.getComputedStyle(mp);
-        cs = ' cs:t='+s.top+' tr='+s.transform+' an='+s.animationName;
+        var op = mp.offsetParent;
+        var opR = op ? op.getBoundingClientRect() : null;
+        var opName = op ? (op.id || op.tagName.toLowerCase() + (op.className ? '.' + String(op.className).split(' ')[0] : '')) : 'null';
+        var opStr = opR ? '['+Math.round(opR.width)+'x'+Math.round(opR.height)+'@'+Math.round(opR.left)+','+Math.round(opR.top)+']' : '';
+        cs = ' p='+s.position+' ot='+mp.offsetTop+' op='+opName+opStr+' scroll='+window.scrollY;
       }
       el.textContent = 'iw'+iw+'/ih'+ih+' sm['+smStr+'] mp['+mpStr+']'+cs;
     }, 500);
