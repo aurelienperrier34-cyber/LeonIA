@@ -1667,17 +1667,16 @@ body.calib-hero-mode .hero-destination::before {
   #screen-3 .scene-text {
     margin-top: 8px;
     padding: 8px 14px;
-    /* v343 : le panneau est positionne SOUS la pastille Carte au lieu d'a sa
-       droite. Carte est calibree a top:91 (star top:41 + pill_height 42 + gap 8)
-       hauteur ~34 -> Carte bottom ~125. On place le texte a top ~135. */
-    padding-left: 14px;
+    /* v343/v344 : meme largeur que precedemment (padding-left 95, padding-right 90)
+       mais pousse sous la pastille Carte via padding-top dans la regle novel-mode. */
+    padding-left: 95px;
     padding-right: 90px;
   }
   /* Override de body.novel-mode .scene-text (padding-top: 12px) pour pousser
-     le contenu sous la pastille Carte. */
+     le contenu sous la pastille Carte (top:91, hauteur ~34 -> Carte bottom ~125).
+     Largeur conservee via padding-left 95 dans la regle au-dessus. */
   body.novel-mode #screen-3 .scene-text {
     padding-top: 135px !important;
-    padding-left: 14px !important;
   }
   #screen-3 .narration {
     font-size: 0.85rem;
