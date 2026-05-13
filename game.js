@@ -8153,18 +8153,33 @@ function activateS4Game() {
   if (cards) {
     cards.innerHTML = '';
     const shuffled = _s4Shuffle(S4_CARDS);
+    // v351 : Listeners directs per-button en bubble phase + global capture
+    // existant. Le premier qui fire wins via _s4Handled (utilise par les deux).
+    // Cas typique : global capture (pointerdown) fire en premier, marque
+    // _s4Handled=true, l'event continue jusqu'au button mais le per-button
+    // handler voit _s4Handled=true et return. Si global capture ECHOUE pour
+    // une raison X (texte node bizarre, focus stole, etc.), per-button
+    // attrape l'event direct.
+    const _s4HandleBtn = (btn) => (ev) => {
+      if (btn.classList.contains('found')) return;
+      if (btn._s4Handled) return;
+      btn._s4Handled = true;
+      setTimeout(() => { btn._s4Handled = false; }, 400);
+      s4TapCard(btn);
+    };
     shuffled.forEach((c) => {
       const btn = document.createElement('button');
       btn.className = 's4-card';
       btn.dataset.tree = c.tree ? '1' : '0';
       btn.dataset.label = c.label;
       btn.setAttribute('aria-label', c.label);
+      btn.type = 'button'; // explicite, evite que le button soit submit
       btn.innerHTML = `<div class="s4-card-emoji">${c.emoji}</div><div class="s4-card-label">${c.label}</div>`;
-      // Handlers : pointerdown ET click sur le button (defensifs). Mais le
-      // VRAI mecanisme est la delegation au niveau document.body en capture
-      // phase (cf. _s4SetupGlobalCapture ci-dessous) qui intercepte l'event
-      // AVANT qu'il n'arrive sur l'emoji enfant (qui pourrait le 'manger').
-      btn.onclick = () => { if (!btn._s4Handled) s4TapCard(btn); };
+      // Listeners directs (multi-event pour robustesse). Premier qui fire wins.
+      const h = _s4HandleBtn(btn);
+      btn.addEventListener('pointerdown', h, { passive: true });
+      btn.addEventListener('touchstart',  h, { passive: true });
+      btn.addEventListener('click',       h);
       cards.appendChild(btn);
     });
     cards.style.display = 'grid';
