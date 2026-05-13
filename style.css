@@ -1667,16 +1667,30 @@ body.calib-hero-mode .hero-destination::before {
   #screen-3 .scene-text {
     margin-top: 8px;
     padding: 8px 14px;
-    /* v343/v344 : meme largeur que precedemment (padding-left 95, padding-right 90)
-       mais pousse sous la pastille Carte via padding-top dans la regle novel-mode. */
+    /* Decale le texte a droite pour ne pas etre couvert par les pastilles
+       etoile + carte qui sont en haut-gauche (top:16, left:18, ~80px de
+       large apres reduction mobile). Et a gauche du bord droit, on laisse
+       de la place pour les boutons son/CC (top-right, ~80px). */
     padding-left: 95px;
     padding-right: 90px;
   }
-  /* Override de body.novel-mode .scene-text (padding-top: 12px) pour pousser
-     le contenu sous la pastille Carte (top:91, hauteur ~34 -> Carte bottom ~125).
-     Largeur conservee via padding-left 95 dans la regle au-dessus. */
-  body.novel-mode #screen-3 .scene-text {
-    padding-top: 135px !important;
+  /* v345 : la bulle Leon (et le label "Leon dit:") sortent du flow et se
+     positionnent en absolute juste sous la pastille Carte (calibree top:91,
+     left:53, hauteur ~34 -> Carte bottom ~125). Alignes a gauche avec la
+     pastille. La narration ("Derriere le comptoir...") reste a sa place
+     habituelle en haut (decalee a droite via padding-left 95). */
+  body.novel-mode #screen-3 .dialogue-who,
+  body.novel-mode #screen-3 .dialogue-bubble {
+    position: absolute !important;
+    left: 53px !important;
+    z-index: 3;
+  }
+  body.novel-mode #screen-3 .dialogue-who {
+    top: 130px !important;
+    margin: 0 !important;
+  }
+  body.novel-mode #screen-3 .dialogue-bubble {
+    top: 155px !important;
   }
   #screen-3 .narration {
     font-size: 0.85rem;
