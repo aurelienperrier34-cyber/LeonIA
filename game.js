@@ -1563,7 +1563,7 @@ function goToScreen(screenIdentifier, force) {
         },
         c4s5: {
           narratorAudio: 'assets/chapitre_4/t5_narrateur.mp3', leonAudio: 'assets/chapitre_4/t5_leon.mp3',
-          onLeonStart: () => { const v = document.getElementById('leon-video-c4s5'); if (v) v.play().catch(()=>{}); },
+          onLeonStart: () => { const v = document.getElementById('leon-video-c4s5'); if (v) { v.currentTime = 1.5; v.play().catch(()=>{}); } },
           onLeonEnd: () => {
             const v = document.getElementById('leon-video-c4s5'); if (v) { try { v.pause(); } catch(e) {} }
             if (typeof activateC4s5Game === 'function') activateC4s5Game();
@@ -8289,23 +8289,27 @@ function completeC3s2Game() {
   }
 }
 
-// v384 : C4S5 — loop JS (sans loop HTML) pour masquer le coeur barre.
-// Sans l'attribut loop HTML, le browser ne loop plus en interne et notre
-// timeupdate peut capter le seuil. Double securite : timeupdate 2s + ended.
+// v385 : C4S5 — le coeur barre apparait a ~1s dans la video (pas a la fin).
+// On demarre et on reloope depuis 1.5s pour le sauter proprement.
 document.addEventListener('DOMContentLoaded', () => {
   const v = document.getElementById('leon-video-c4s5');
   if (!v) return;
+  const START = 1.5; // saut du coeur barre (apparait entre 0s et ~1.03s)
   function _c4s5Restart() {
-    v.currentTime = 0;
+    v.currentTime = START;
     v.play().catch(() => {});
   }
-  // Filet 1 : coupe 2s avant la fin (attrape le cas normal)
+  // Au 1er chargement : deja pret a jouer depuis START
+  v.addEventListener('loadedmetadata', () => {
+    if (v.currentTime < START) v.currentTime = START;
+  });
+  // Filet 1 : reloope avant la fin naturelle
   v.addEventListener('timeupdate', () => {
-    if (v.duration && v.currentTime >= v.duration - 2.0) {
+    if (v.duration && v.currentTime >= v.duration - 1.0) {
       _c4s5Restart();
     }
   });
-  // Filet 2 : si timeupdate rate la fin, on redemarre a la fin naturelle
+  // Filet 2 : si timeupdate rate, redemarre a ended
   v.addEventListener('ended', _c4s5Restart);
 });
 
