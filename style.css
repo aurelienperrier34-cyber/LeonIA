@@ -3772,6 +3772,14 @@ body.novel-mode #screen-c2s7 .floating-btn {
     white-space: nowrap !important;
     border-width: 2px !important;
   }
+  /* v364 : les 2 boutons .floating-btn (Recommencer / Au quiz) sont
+     opacity:0 tant que les 3 mots ne sont pas choisis, mais gardent leur
+     hauteur de layout -> espace mort sous les mots, frame trop haute sur
+     S23 FE. On collapse le conteneur .c2s7-actions tant qu'aucun bouton
+     n'a .show-btn. Reapparait des qu'un bouton est revele. */
+  body.novel-mode #screen-c2s7 .c2s7-actions:not(:has(.floating-btn.show-btn)) {
+    display: none !important;
+  }
 }
 
 /* ============================================================
