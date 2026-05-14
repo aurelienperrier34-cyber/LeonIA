@@ -4385,7 +4385,15 @@ function _doActivateC2s2Game() {
     magnifier.className = 'c2s2-magnifier';
     sceneEl.appendChild(magnifier);
   }
-  if (magnifier) magnifier.classList.add('show');
+  if (magnifier) {
+    magnifier.classList.add('show');
+    // Position initiale visible (centre de la scene) + animation "wiggle"
+    // qui suggere a l'enfant de balader la loupe. L'animation s'arrete au
+    // 1er mouvement (cf. _c2s2OnMagnifierMove).
+    magnifier.style.left = '50%';
+    magnifier.style.top  = '52%';
+    magnifier.classList.add('hint-wiggle');
+  }
 
   if (sceneEl) {
     sceneEl.removeEventListener('mousemove', _c2s2OnMagnifierMove);
@@ -4411,6 +4419,10 @@ function _c2s2OnMagnifierMove(e) {
   const sceneEl = document.querySelector('#screen-c2s2 .story-scene');
   const magnifier = document.getElementById('c2s2-magnifier');
   if (!sceneEl || !magnifier) return;
+  // Au 1er mouvement, on retire l'animation "wiggle" (l'enfant a compris).
+  if (magnifier.classList.contains('hint-wiggle')) {
+    magnifier.classList.remove('hint-wiggle');
+  }
   const rect = sceneEl.getBoundingClientRect();
   const pt = e.touches ? e.touches[0] : e;
   const x = pt.clientX - rect.left;

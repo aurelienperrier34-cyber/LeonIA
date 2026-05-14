@@ -5778,6 +5778,16 @@ body.c2s2-magnifier-mode #screen-c2s2 .c2s2-spot-zone { cursor: none; }
   transition: border-color 0.18s, box-shadow 0.18s, transform 0.05s linear;
 }
 .c2s2-magnifier.show { display: block; }
+/* v359 : animation "wiggle" au debut du jeu pour suggerer a l'enfant de
+   balader la loupe. Retiree au 1er mouvement (cf. _c2s2OnMagnifierMove). */
+.c2s2-magnifier.hint-wiggle {
+  animation: c2s2-magnifier-wiggle 1.5s ease-in-out infinite;
+}
+@keyframes c2s2-magnifier-wiggle {
+  0%, 100% { transform: translate(-50%, -50%) translateX(0) rotate(0deg); }
+  20%      { transform: translate(-50%, -50%) translateX(-26px) rotate(-8deg); }
+  60%      { transform: translate(-50%, -50%) translateX(26px) rotate(8deg); }
+}
 /* Emoji loupe sous le cercle (remplace l'ancien manche) */
 .c2s2-magnifier::after {
   content: '🔍';
