@@ -2244,6 +2244,19 @@ body.novel-mode .game-overlay {
 .tap-option:not(.answered):hover { border-color: var(--purple); transform: translateX(5px); }
 .tap-option.correct { background: #D4F7E7; border-color: var(--mint); }
 .tap-option.wrong { background: #FFE5E5; border-color: var(--coral); animation: shake 0.4s; }
+/* v372 : en novel-mode (fond sombre glassmorphism), .tap-option.correct/.wrong
+   etaient ECRASES par 'body.novel-mode .tap-option { background: rgba(0,0,0,0.45) }'
+   (specificite 0,0,2,1 > 0,0,2,0) -> le bon tap ne se voyait pas. On force le
+   feedback visuel vert/rouge bien visible. */
+body.novel-mode .tap-option.correct {
+  background: rgba(6, 214, 160, 0.6) !important;
+  border-color: #06D6A0 !important;
+  box-shadow: 0 0 18px rgba(6, 214, 160, 0.6) !important;
+}
+body.novel-mode .tap-option.wrong {
+  background: rgba(239, 71, 111, 0.55) !important;
+  border-color: #EF476F !important;
+}
 @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
 .tap-option.answered { pointer-events: none; }
 .opt-emoji { font-size: 2rem; }

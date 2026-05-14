@@ -2433,6 +2433,17 @@ function tapAnswer(element, isCorrect) {
   const options = document.querySelectorAll('.tap-option');
   const feedback = document.getElementById('tap-feedback');
 
+  // v372 : sur mobile (panneau plein hauteur, overflow-y: auto), le feedback
+  // et le bouton "Continuons" peuvent etre sous le pli. Apres une reponse
+  // definitive, on scrolle le panneau vers le bas pour les rendre visibles.
+  const _s5ScrollToEnd = () => {
+    const panel = document.getElementById('s5-game');
+    if (!panel) return;
+    [0, 120, 350].forEach(d => setTimeout(() => {
+      try { panel.scrollTop = panel.scrollHeight; } catch(e) {}
+    }, d));
+  };
+
   if (isCorrect) {
     state.tapAnswered = true;
     options.forEach(o => o.classList.add('answered'));
@@ -2442,6 +2453,7 @@ function tapAnswer(element, isCorrect) {
     feedback.classList.add('show');
     const btnTo6 = document.getElementById('btn-to-6');
     btnTo6.classList.add('show-btn');
+    _s5ScrollToEnd();
   } else {
     state.tapAttempts++;
     element.classList.add('wrong');
@@ -2461,6 +2473,7 @@ function tapAnswer(element, isCorrect) {
       feedback.style.color = '#555';
       const btnTo6 = document.getElementById('btn-to-6');
       btnTo6.classList.add('show-btn');
+      _s5ScrollToEnd();
     }
   }
 }
