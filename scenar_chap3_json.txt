@@ -43,7 +43,7 @@
     "tableau": 6,
     "format": "video",
     "narrateur": "Léon murmure tout doucement quelque chose au micro. Sur l'écran s'affiche... « bla bla blop » !",
-    "leon": "« Mais elle peut SE TROMPER aussi ! Si tu parles trop vite ou s'il y a du bruit, elle comprend de travers ! »",
+    "leon": "« Mais elle peut se tromper aussi ! Si tu parles trop vite ou s'il y a du bruit, elle comprend de travers ! »",
     "prompt_image": "3D animated cartoon Pixar style, the friendly old wizard-inventor character with amused puzzled expression, hand on chin, pointing at a holographic screen displaying funny garbled cartoon text 'BLA BLA BLOOP' with confused emoji, sound waves squiggling chaotically, magical sound laboratory, warm lighting, 16:9 aspect ratio",
     "prompt_animation": "The cartoon text 'BLA BLA BLOOP' wobbles and glitches with playful jitter, the chaotic sound waves squiggle and dance around it, the confused emoji bounces gently, Léon points at the screen with one hand while keeping the other on his chin, his amused puzzled expression brightens into a small laugh as he speaks, static camera."
   },

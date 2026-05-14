@@ -1522,7 +1522,7 @@ function goToScreen(screenIdentifier, force) {
           }
         },
         c3s6: {
-          narratorAudio: 'assets/chapitre_3/t6_narrateur.mp3', leonAudio: 'assets/chapitre_3/t6_leon.mp3',
+          narratorAudio: 'assets/chapitre_3/t6_narrateur.mp3', leonAudio: 'assets/chapitre_3/t6_leon.mp3?v=366',
           onLeonStart: () => { const v = document.getElementById('leon-video-c3s6'); if (v) v.play().catch(()=>{}); },
           onLeonEnd:   () => { const v = document.getElementById('leon-video-c3s6'); if (v) { try { v.pause(); } catch(e) {} } }
         },
