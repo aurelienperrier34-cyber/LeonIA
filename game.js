@@ -4748,7 +4748,14 @@ function _showC5s3Phase2() {
     magnifier.className = 'c5s3-magnifier';
     sceneEl.appendChild(magnifier);
   }
-  if (magnifier) magnifier.classList.add('show');
+  if (magnifier) {
+    magnifier.classList.add('show');
+    // Position initiale en bas de la scène + animation "wiggle" qui suggère
+    // à l'enfant de balader la loupe. Retirée au 1er mouvement.
+    magnifier.style.left = '50%';
+    magnifier.style.top  = '88%';
+    magnifier.classList.add('hint-wiggle');
+  }
   if (sceneEl) {
     sceneEl.removeEventListener('mousemove', _c5s3OnMagnifierMove);
     sceneEl.removeEventListener('touchmove', _c5s3OnMagnifierMove);
@@ -4765,6 +4772,10 @@ function _c5s3OnMagnifierMove(e) {
   const sceneEl = document.querySelector('#screen-c5s3 .story-scene');
   const magnifier = document.getElementById('c5s3-magnifier');
   if (!sceneEl || !magnifier) return;
+  // Au 1er mouvement, on retire l'animation "wiggle" (l'enfant a compris).
+  if (magnifier.classList.contains('hint-wiggle')) {
+    magnifier.classList.remove('hint-wiggle');
+  }
   const rect = sceneEl.getBoundingClientRect();
   const pt = e.touches ? e.touches[0] : e;
   const x = pt.clientX - rect.left;
