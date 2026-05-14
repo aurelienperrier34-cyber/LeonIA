@@ -8515,7 +8515,7 @@ function generateStoryPrototype() {
   }
   
   if (state.stars < 1) {
-    document.getElementById('creator-error-msg').innerText = '⚠️ Tu n\\'as pas assez d\\'étoiles !';
+    document.getElementById('creator-error-msg').innerText = "⚠️ Tu n'as pas assez d'étoiles !";
     return;
   }
   
