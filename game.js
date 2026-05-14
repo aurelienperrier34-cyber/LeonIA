@@ -6035,10 +6035,28 @@ function equipAccessory(id) {
 }
 
 const ACCESSORY_PROFILES = {
-  hat:     { sizeRatio: 0.45, anchorYpct: 12, anchorXpct: 50 },
-  glasses: { sizeRatio: 0.45, anchorYpct: 35, anchorXpct: 50 },
-  cape:    { sizeRatio: 0.65, anchorYpct: 85, anchorXpct: 50 }
+  hat:     { sizeRatio: 0.45, anchorYpct: 10, anchorXpct: 50 },
+  glasses: { sizeRatio: 0.45, anchorYpct: 53, anchorXpct: 50 },
+  cape:    { sizeRatio: 0.65, anchorYpct: 70, anchorXpct: 50 }
 };
+
+function getOverrides(slot, host) {
+  let yPct = ACCESSORY_PROFILES[slot].anchorYpct;
+  
+  if (host.classList.contains('hero-win-face')) {
+    // L'ecran de victoire a un cadrage different (visage plus haut)
+    if (slot === 'hat') yPct = 5;
+    if (slot === 'glasses') yPct = 26;
+    if (slot === 'cape') yPct = 90;
+  } else if (host.classList.contains('map-candy-avatar')) {
+    if (slot === 'glasses') yPct = 52;
+    if (slot === 'cape') yPct = 73;
+  } else if (host.classList.contains('char-img')) {
+    if (slot === 'glasses') yPct = 55;
+    if (slot === 'cape') yPct = 65;
+  }
+  return yPct;
+}
 
 function applyAvatarAccessoriesEverywhere() {
   _ensureAtelierState();
@@ -6096,10 +6114,7 @@ function applyAvatarAccessoriesEverywhere() {
       
       const size = imgW * profile.sizeRatio;
       
-      let yPct = profile.anchorYpct;
-      if (host.classList.contains('hero-win-face')) {
-        yPct -= 5;
-      }
+      const yPct = getOverrides(slot, host);
 
       // Application des styles inline (le coeur du système responsive universel)
       Object.assign(acc.style, {
