@@ -5170,6 +5170,18 @@ body.novel-mode .c4s5-memory-game {
   100% { transform: rotateY(180deg) translateX(0); }
 }
 
+/* v375 : C4S5 mobile — le frame glassmorphism du texte question/reponse
+   (.c4s5-card-back-text, fond rgba 0.82 = tres opaque) cachait en partie
+   les images du memory. On augmente la transparence (0.82 -> 0.5) et on
+   renforce le flou (8 -> 11px) pour garder le texte lisible par-dessus. */
+@media (pointer: coarse) {
+  .c4s5-card-back-text {
+    background: rgba(15, 8, 35, 0.5) !important;
+    backdrop-filter: blur(11px) !important;
+    -webkit-backdrop-filter: blur(11px) !important;
+  }
+}
+
 /* Bouton "Passer" / "Continuer" */
 #screen-c4s5 .answers-group .c4s5-skip-btn {
   background: rgba(255,255,255,0.08);
