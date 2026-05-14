@@ -1813,13 +1813,14 @@ body.calib-hero-mode .hero-destination::before {
   .s4-cards {
     gap: 4px !important;
   }
-  /* v354 : .scene-4-actions (le bouton "J'ai compris" cache) est `position:
-     absolute; left: 50%; bottom: 20`, donc centre horizontalement et SUR la
-     ligne du milieu des cartes du mini-jeu. Meme si z-index 4 < cards z-index 8,
-     un quirk Android Chrome semble lui faire intercepter les taps sur les
-     cartes centrales (3e et 4e). Solution : `pointer-events: none` tant que la
-     classe `.show` n'est pas presente (= jeu pas encore termine, bouton invisible). */
-  #screen-4 .answers-group.scene-4-actions:not(.show) {
+  /* v354/v362 : .scene-4-actions (conteneur du bouton "Continuer"/"J'ai compris"
+     cache) est `position: absolute; left: 50%; bottom: 20`, centre horizontalement
+     et SUR la zone des elements interactifs du mini-jeu (cartes C1S4, zones de
+     defaut C2S5, etc.). Meme avec z-index bas, un quirk Android Chrome lui fait
+     intercepter les taps des elements centraux. Solution : `pointer-events: none`
+     tant que `.show` n'est pas la (jeu pas termine, bouton invisible).
+     v362 : generalise a TOUS les .scene-4-actions (etait scope #screen-4). */
+  .answers-group.scene-4-actions:not(.show) {
     pointer-events: none !important;
   }
   /* Override mobile : remonte encore plus le texte (12px vs 30px desktop). */
