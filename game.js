@@ -2400,19 +2400,25 @@ document.addEventListener('MSFullscreenChange',     _syncFsIcon);
 // Star Counter
 function addStars(amount) {
   state.totalStars += amount;
+  // v373 : avant, addStars mettait a jour star-count / street / map / atelier
+  // mais OUBLIAIT #global-star-count — la pastille etoiles visible PENDANT le
+  // jeu (sur les ecrans de chapitre). Resultat : les etoiles gagnees ne
+  // s'accumulaient pas a l'ecran. On delegue a updateStarBadge() qui couvre
+  // TOUS les compteurs connus, et on persiste via saveState().
+  if (typeof updateStarBadge === 'function') {
+    updateStarBadge();
+  } else {
+    // Fallback defensif si updateStarBadge n'est pas encore defini
+    const ids = ['star-count', 'street-star-count', 'global-star-count', 'map-star-count', 'atelier-star-count'];
+    ids.forEach(id => { const el = document.getElementById(id); if (el) el.textContent = state.totalStars; });
+  }
+  if (typeof saveState === 'function') saveState();
+  // Animation pop sur le compteur principal
   const starEl = document.getElementById('star-count');
   if (starEl) {
-    starEl.textContent = state.totalStars;
     starEl.style.transform = 'scale(1.5)';
     setTimeout(() => { starEl.style.transform = 'scale(1)'; }, 300);
   }
-  // Sync aussi la pastille top-left de la rue + le bouton atelier de la map
-  const ssc = document.getElementById('street-star-count');
-  if (ssc) ssc.textContent = state.totalStars;
-  const msc = document.getElementById('map-star-count');
-  if (msc) msc.textContent = state.totalStars;
-  const asc = document.getElementById('atelier-star-count');
-  if (asc) asc.textContent = state.totalStars;
 }
 
 // Bonus replay : +1 etoile la premiere fois qu'on rejoue un chapitre.
