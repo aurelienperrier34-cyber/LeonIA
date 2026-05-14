@@ -2305,7 +2305,11 @@ function walkToShopAndEnter() {
   if (window._signPointerTimer) { clearTimeout(window._signPointerTimer); window._signPointerTimer = null; }
   if (!vid2 || !sign || !scene) return;
 
-  // Position cible = marker destination heros (calibre par l'utilisateur)
+  // Position cible = marker destination heros (calibre par l'utilisateur).
+  // v386 : on re-applique applyHeroDestPos juste avant de lire la position —
+  // la scene est maintenant garantie mesurable, donc la projection cover-fit
+  // (video-content-% -> px conteneur) est correcte sur tous les formats.
+  if (typeof applyHeroDestPos === 'function') applyHeroDestPos();
   const dest      = document.getElementById('hero-destination');
   const foxRect   = vid2.getBoundingClientRect();
   const startX    = foxRect.left + foxRect.width / 2;
@@ -6620,12 +6624,46 @@ function saveHeroDestPos(p) {
   _calibSet('heroDestPos', JSON.stringify(p));
   persistCalibration({ heroDestPos: p });
 }
+// v386 : calcule le rectangle REEL du contenu video de la rue dans la scene.
+// La video street_1.mp4 (1280x720, ratio 16:9) est affichee en object-fit:cover :
+// selon l'aspect ratio de l'ecran (phone ~2.2, tablette ~2.5...), elle est
+// croppee differemment -> la PORTE de l'atelier se retrouve a des % conteneur
+// differents. Ce helper renvoie ou le contenu video est VRAIMENT rendu.
+function _streetVideoContentRect() {
+  const scene = document.querySelector('#screen-2 .immersive-scene');
+  if (!scene || !scene.clientWidth) return null;
+  const Cw = scene.clientWidth, Ch = scene.clientHeight;
+  const VR = 1280 / 720; // ratio video rue
+  let contentW, contentH;
+  if (Cw / Ch > VR) {
+    // conteneur plus large que la video -> cover remplit la largeur, crop haut/bas
+    contentW = Cw;
+    contentH = Cw / VR;
+  } else {
+    // conteneur plus haut -> cover remplit la hauteur, crop gauche/droite
+    contentH = Ch;
+    contentW = Ch * VR;
+  }
+  return { x: (Cw - contentW) / 2, y: (Ch - contentH) / 2, w: contentW, h: contentH };
+}
+
+// v386 : heroDestPos est desormais la position de la PORTE en % DU CONTENU
+// VIDEO (et non plus du conteneur). On projette en px conteneur en tenant
+// compte du crop object-fit:cover -> la porte est suivie correctement sur
+// TOUS les formats d'ecran (phone, tablette, etc.).
 function applyHeroDestPos() {
   const el = document.getElementById('hero-destination');
   if (!el) return;
   const p = loadHeroDestPos();
-  el.style.top  = p.top  + '%';
-  el.style.left = p.left + '%';
+  const rect = _streetVideoContentRect();
+  if (!rect) {
+    // Fallback (scene pas encore mesurable) : ancien comportement % conteneur
+    el.style.top  = p.top  + '%';
+    el.style.left = p.left + '%';
+    return;
+  }
+  el.style.left = (rect.x + (p.left / 100) * rect.w) + 'px';
+  el.style.top  = (rect.y + (p.top  / 100) * rect.h) + 'px';
 }
 
 // ============================================================
@@ -7149,12 +7187,54 @@ function togglePointerCalib() {
   }
 }
 
+// v386 : drag DEDIE pour la destination heros — sauvegarde en % DU CONTENU
+// VIDEO (et non % conteneur comme _genericPctDrag), pour rester coherent avec
+// applyHeroDestPos qui projette video-content-% -> px conteneur (cover-fit).
+function _heroDestDrag(el, persist) {
+  const scene = document.querySelector('#screen-2 .immersive-scene');
+  if (!scene) return null;
+  return (e) => {
+    e.preventDefault(); e.stopPropagation();
+    const getPt = (ev) => {
+      const t = ev.touches && ev.touches[0];
+      return t ? { x: t.clientX, y: t.clientY } : { x: ev.clientX, y: ev.clientY };
+    };
+    const onMove = (ev) => {
+      ev.preventDefault();
+      const pt = getPt(ev);
+      const sceneRect = scene.getBoundingClientRect();
+      const rect = _streetVideoContentRect();
+      if (!rect) return;
+      // px conteneur -> px relatif au contenu video -> % du contenu video
+      const cx = pt.x - sceneRect.left;
+      const cy = pt.y - sceneRect.top;
+      const leftPct = Math.max(0, Math.min(100, ((cx - rect.x) / rect.w) * 100));
+      const topPct  = Math.max(0, Math.min(100, ((cy - rect.y) / rect.h) * 100));
+      el.style.left = (rect.x + (leftPct / 100) * rect.w) + 'px';
+      el.style.top  = (rect.y + (topPct  / 100) * rect.h) + 'px';
+      persist({ top: topPct, left: leftPct });
+    };
+    const onUp = () => {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('mouseup',   onUp);
+      document.removeEventListener('touchend',  onUp);
+      el.style.boxShadow = '0 0 0 3px #4ade80';
+      setTimeout(() => { el.style.boxShadow = ''; }, 600);
+    };
+    document.addEventListener('mousemove', onMove, { passive: false });
+    document.addEventListener('touchmove', onMove, { passive: false });
+    document.addEventListener('mouseup',   onUp);
+    document.addEventListener('touchend',  onUp);
+  };
+}
+
 function toggleHeroDestCalib() {
   document.body.classList.toggle('calib-hero-mode');
   const el = document.getElementById('hero-destination');
   if (!el) return;
   if (document.body.classList.contains('calib-hero-mode')) {
-    if (!window._heroDestDragHandler) window._heroDestDragHandler = _genericPctDrag(el, saveHeroDestPos);
+    if (!window._heroDestDragHandler) window._heroDestDragHandler = _heroDestDrag(el, saveHeroDestPos);
     el.addEventListener('mousedown',  window._heroDestDragHandler, false);
     el.addEventListener('touchstart', window._heroDestDragHandler, { passive: false });
     console.log('Calib destination heros ON. Glisse le marker, re-clique pour terminer.');

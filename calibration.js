@@ -8,7 +8,7 @@ window.__CALIBRATION_DATA__ = {
     "left": 51.3281
   },
   "heroDestPos": {
-    "top": 71.25,
+    "top": 75,
     "left": 50.5469
   },
   "mapNodePositions": {
