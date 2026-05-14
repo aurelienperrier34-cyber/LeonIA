@@ -5121,21 +5121,26 @@ body.novel-mode .c4s5-memory-game {
 /* Texte par-dessus l'image avec fond glassmorphism pour lisibilite */
 .c4s5-card-back-text {
   position: absolute;
-  left: 6%;
-  right: 6%;
-  bottom: 6%;
-  background: rgba(15, 8, 35, 0.82);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 8, 35, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   color: white;
-  border-radius: 10px;
-  padding: 6px 8px;
+  border-radius: 0 0 10px 10px;
+  padding: 4px 6px;
   font-weight: 700;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.7);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.45);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.3);
   text-align: center;
-  font-size: 0.82rem;
-  line-height: 1.25;
+  font-size: 0.72rem;
+  line-height: 1.15;
+  max-height: 45%;
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 /* Garde une bordure colorée par type, mais NE PAS toucher au background pour
    ne pas écraser l'image perso (background-image inline). */
@@ -5170,15 +5175,15 @@ body.novel-mode .c4s5-memory-game {
   100% { transform: rotateY(180deg) translateX(0); }
 }
 
-/* v375 : C4S5 mobile — le frame glassmorphism du texte question/reponse
-   (.c4s5-card-back-text, fond rgba 0.82 = tres opaque) cachait en partie
-   les images du memory. On augmente la transparence (0.82 -> 0.5) et on
-   renforce le flou (8 -> 11px) pour garder le texte lisible par-dessus. */
+/* v375/v376 : C4S5 mobile — le texte question/reponse a ete deplace tout en bas de la carte
+   et sa taille reduite. Sur mobile on accentue la lisibilite sans masquer l'image. */
 @media (pointer: coarse) {
   .c4s5-card-back-text {
-    background: rgba(15, 8, 35, 0.5) !important;
-    backdrop-filter: blur(11px) !important;
-    -webkit-backdrop-filter: blur(11px) !important;
+    font-size: 0.65rem !important;
+    padding: 3px 4px !important;
+    background: rgba(15, 8, 35, 0.65) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
   }
 }
 
