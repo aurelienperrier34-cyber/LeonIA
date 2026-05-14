@@ -1598,7 +1598,7 @@ function goToScreen(screenIdentifier, force) {
           }
         },
         c5s3: {
-          narratorAudio: 'assets/chapitre_5/t3_narrateur.mp3', leonAudio: 'assets/chapitre_5/t3_leon.mp3',
+          narratorAudio: 'assets/chapitre_5/t3_narrateur.mp3?v=376', leonAudio: 'assets/chapitre_5/t3_leon.mp3?v=376',
           onLeonStart: () => { const v = document.getElementById('leon-video-c5s3'); if (v) v.play().catch(()=>{}); },
           onLeonEnd: () => {
             const v = document.getElementById('leon-video-c5s3'); if (v) { try { v.pause(); } catch(e) {} }

@@ -1141,11 +1141,10 @@ body.novel-mode #screen-c5s3 .scene-text .dialogue-bubble {
   max-width: min(85%, 700px);
   margin-right: auto;
 }
-/* La bulle Infos Parents par defaut est en top:70px right:15px : sur c5s3 elle
-   chevauche le panneau noir du narrateur en haut. On la descend un peu pour
-   la sortir de cette zone. */
+/* v376 : bulle Infos Parents C5S3 remontee (180px -> 108px) a la demande
+   de l'utilisateur. */
 body.novel-mode #screen-c5s3 .parent-tip {
-  top: 180px;
+  top: 108px;
 }
 
 /* c5s1 / c5s2 : bulle plus etroite et calee a gauche pour s'aligner
