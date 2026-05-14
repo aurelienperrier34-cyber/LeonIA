@@ -7355,77 +7355,11 @@ function _hoverSpeakText(text) {
 }
 
 function _setupHoverSpeak() {
-  const sel = HOVER_SPEAK_SELECTORS.join(',');
-
-  // === Souris (hover) : lit immediatement au survol ===
-  document.addEventListener('mouseover', (ev) => {
-    if (!ev.target || !ev.target.closest) return;
-    const target = ev.target.closest(sel);
-    if (!target) return;
-    // Throttle : meme element survole < 1.5s, on ignore
-    const now = Date.now();
-    if (_hoverLastEl === target && (now - _hoverLastTime) < 1500) return;
-    _hoverLastEl = target;
-    _hoverLastTime = now;
-    const text = target.dataset.speak || target.textContent;
-    _hoverSpeakText(text);
-  }, true);
-
-  // === Tactile (tap-pour-entendre / retap-pour-confirmer) ===
-  // Detecte le type de pointeur actuel pour adapter le comportement
-  document.addEventListener('pointerdown', (ev) => {
-    window._lastPointerType = ev.pointerType || 'mouse';
-  }, true);
-
-  document.addEventListener('click', (ev) => {
-    if (!ev.target || !ev.target.closest) return;
-    const target = ev.target.closest(sel);
-    if (!target) return;
-    // Exceptions : pas de blocage 2-taps, le clic doit passer directement.
-    // - .prompt-word (c2s7) : selection rapide a 3 mots
-    // - .s4-card (c1s4) : cartes melangees, plus fiable d'avoir 1-tap = action
-    // - .vf-btn (Vrai/Faux quiz) : reponse binaire, 1-tap = action
-    // - .c4s6-q-btn (questions a Bot) : 1-tap pour selectionner la question
-    //   La voix se declenche en parallele pour les enfants qui ne lisent pas.
-    if (target.classList.contains('prompt-word')) return;
-    if (target.classList.contains('vf-btn') || target.classList.contains('c4s6-q-btn')) {
-      // Lit le label en parallele, sans bloquer le click event.
-      const textParallel = target.dataset.speak
-        || target.dataset.label
-        || target.textContent;
-      setTimeout(() => _hoverSpeakText(textParallel), 0);
-      return;
-    }
-    // Mode souris : pas d'interception, le hover s'occupe de la lecture
-    // et le click confirme directement la selection.
-    if (window._lastPointerType !== 'touch') return;
-    // Mode tactile :
-    if (target.dataset.tapConfirmed === '1') {
-      // 2e tap sur le meme element : on laisse passer la selection
-      delete target.dataset.tapConfirmed;
-      target.classList.remove('tap-highlighted');
-      return;
-    }
-    // 1er tap : on bloque la selection, on lit a voix haute, on highlight
-    ev.preventDefault();
-    ev.stopPropagation();
-    // Reset l'eventuelle confirmation d'un autre element
-    document.querySelectorAll('[data-tap-confirmed="1"]').forEach(el => {
-      delete el.dataset.tapConfirmed;
-      el.classList.remove('tap-highlighted');
-    });
-    target.dataset.tapConfirmed = '1';
-    target.classList.add('tap-highlighted');
-    const text = target.dataset.speak || target.textContent;
-    _hoverSpeakText(text);
-    // Auto-reset apres 4s si pas de re-tap
-    setTimeout(() => {
-      if (target.dataset.tapConfirmed === '1') {
-        delete target.dataset.tapConfirmed;
-        target.classList.remove('tap-highlighted');
-      }
-    }, 4000);
-  }, true);
+  // v357 : RETIRE — la lecture vocale au 1er tap / au survol souris causait
+  // plus de problemes qu'autre chose (double-tap intermittent, taps avales,
+  // comportement incoherent entre Pixel et S23 FE).
+  // Desormais : 1 tap = selection directe du bouton/de la reponse, partout.
+  // La fonction est conservee en no-op pour ne pas casser l'auto-init en bas.
 }
 // Auto-init au chargement
 if (document.readyState === 'loading') {
