@@ -2008,6 +2008,12 @@ body.calib-hero-mode .hero-destination::before {
     left: 8px !important;
     padding: 6px 10px !important;
   }
+  /* v360 : C2S5 uniquement — le panneau narration+Leon etait trop etroit,
+     on l'etire vers la droite (C2S6 garde le 30%/270px). */
+  body.novel-mode #screen-c2s5 .scene-text {
+    width: 46% !important;
+    max-width: 400px !important;
+  }
   body.novel-mode #screen-c2s5 .scene-text .narration,
   body.novel-mode #screen-c2s6 .scene-text .narration {
     font-size: 0.72rem !important;
