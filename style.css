@@ -4378,6 +4378,26 @@ body.calib-map-mode .full-map-pixar::before {
 }
 .btn-atelier-map:hover { transform: scale(1.05); }
 
+.btn-creator-map {
+  position: fixed;
+  top: 170px;  /* sous l'atelier */
+  left: 15px;
+  z-index: 100;
+  background: linear-gradient(135deg, #06d6a0, #118ab2);
+  color: white;
+  border: 2px solid #04926e;
+  padding: 8px 14px;
+  border-radius: 18px;
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer; pointer-events: auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  box-shadow: 0 4px 12px rgba(6,214,160,0.5);
+  transition: transform 0.15s ease;
+}
+.btn-creator-map:hover { transform: scale(1.05); }
+
 /* === c3s7 : numero du micro + choix de reponse + comparaison Toi/IA === */
 .sound-btn .mic-num {
   font-size: 0.7em;
