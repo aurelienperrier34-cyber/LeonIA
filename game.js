@@ -5106,8 +5106,8 @@ function _c4s5SpeakCard(card) {
     utt.lang = 'fr-FR';
     utt.volume = 1;
     if (card.dataset.type === 'a') {
-      // Reponse de Bot : voix robotique aigue
-      utt.pitch = 1.5;
+      // Reponse de Bot : voix robotique (moins aigue)
+      utt.pitch = 1.15;
       utt.rate  = 0.92;
     } else {
       // Question (de l'enfant) : voix normale
@@ -5740,7 +5740,7 @@ function _c5SpeakAsRobot(text, onEnd) {
   try { window.speechSynthesis.cancel(); } catch(e) {}
   const utt = new SpeechSynthesisUtterance(text);
   utt.lang = 'fr-FR';
-  utt.pitch = 1.4;   // voix plus aigüe = plus robot/enfantine
+  utt.pitch = 1.15;   // voix plus aigüe = plus robot/enfantine
   utt.rate  = 0.95;
   utt.volume = 1;
   // Cherche une voix française si dispo
@@ -7817,8 +7817,8 @@ function _c4s2SpeakAsBot(text) {
     utt.lang = 'fr-FR';
     // v374 : pitch 2.0 + rate 0.7 etaient des EXTREMES — sur Samsung le moteur
     // TTS les gere tres mal (voix stridente / distordue "horrible"). On
-    // tempere : pitch 1.45 (encore robotique mais pas criard), rate 0.92.
-    utt.pitch = 1.45;
+    // tempere : pitch 1.15 (encore robotique mais pas criard), rate 0.92.
+    utt.pitch = 1.15;
     utt.rate  = 0.92;
     utt.volume = 1;
     try {
@@ -8281,13 +8281,13 @@ function completeC3s2Game() {
   }
 }
 
-// v378 : Raccourcir la boucle de la video C4S5 pour masquer le coeur barre à la fin
+// v378/v379 : Raccourcir la boucle de la video C4S5 pour masquer le coeur barre à la fin
 document.addEventListener('DOMContentLoaded', () => {
   const v = document.getElementById('leon-video-c4s5');
   if (v) {
     v.addEventListener('timeupdate', () => {
-      // Coupe la derniere demi-seconde (0.5s) pour zapper le coeur barré
-      if (v.duration && v.currentTime >= v.duration - 0.5) {
+      // Coupe les dernieres 0.8s pour zapper le coeur barré
+      if (v.duration && v.currentTime >= v.duration - 0.8) {
         v.currentTime = 0;
         v.play().catch(()=>{});
       }
