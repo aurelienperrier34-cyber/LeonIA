@@ -8468,3 +8468,96 @@ document.addEventListener('DOMContentLoaded', () => {
   v.addEventListener('ended', _c4s5Restart);
 });
 
+// ============================================================
+// PROTOTYPE : MODE CREATEUR (FABRIQUE A HISTOIRES)
+// ============================================================
+
+let creatorState = {
+  hero: null,
+  place: null,
+  item: null,
+  villain: null
+};
+
+function openCreatorMode() {
+  document.getElementById('creator-star-count').innerText = state.stars;
+  goToScreen('creator');
+  resetCreatorMode();
+}
+
+function selectCreatorItem(category, value) {
+  creatorState[category] = value;
+  
+  // Mettre à jour l'UI
+  const catDiv = document.getElementById('creator-cat-' + category);
+  const cards = catDiv.querySelectorAll('.creator-card');
+  
+  cards.forEach(card => {
+    // Si la carte correspond à la valeur cliquée, on lui donne la classe selected
+    // Note: on utilise le texte ou une data-value, ici on check le texte du span ou le paramètre
+    // Pour simplifier, on a mis le onclick directement avec la valeur.
+    // On va retrouver la carte cliquée en cherchant celle qui a le onclick correspondant
+    if (card.getAttribute('onclick').includes(`'${value}'`)) {
+      card.classList.add('selected');
+    } else {
+      card.classList.remove('selected');
+    }
+  });
+  
+  document.getElementById('creator-error-msg').innerText = '';
+}
+
+function generateStoryPrototype() {
+  // Vérifier si tout est sélectionné
+  if (!creatorState.hero || !creatorState.place || !creatorState.item || !creatorState.villain) {
+    document.getElementById('creator-error-msg').innerText = '⚠️ Tu dois choisir un élément dans chaque catégorie !';
+    return;
+  }
+  
+  if (state.stars < 1) {
+    document.getElementById('creator-error-msg').innerText = '⚠️ Tu n\\'as pas assez d\\'étoiles !';
+    return;
+  }
+  
+  // Dépenser 1 étoile
+  if (typeof spendStars === 'function') spendStars(1);
+  document.getElementById('creator-star-count').innerText = state.stars;
+  
+  // Cacher la sélection, montrer le chargement
+  document.getElementById('creator-step-selection').style.display = 'none';
+  document.getElementById('creator-step-loading').style.display = 'block';
+  
+  // Simuler l'attente de l'API (3 secondes)
+  setTimeout(() => {
+    showStoryResult();
+  }, 3000);
+}
+
+function showStoryResult() {
+  document.getElementById('creator-step-loading').style.display = 'none';
+  document.getElementById('creator-step-result').style.display = 'flex';
+  
+  const textContainer = document.getElementById('story-result-text');
+  
+  // Template de l'histoire
+  const story = `
+    <p>Il était une fois <span class="highlight-word">un(e) ${creatorState.hero}</span> d'un courage immense, qui voyageait à travers <span class="highlight-word">un(e) ${creatorState.place}</span> incroyable.</p>
+    <p>Notre héros ne voyageait jamais seul : il gardait toujours <span class="highlight-word">son/sa ${creatorState.item}</span> à portée de main. Un jour, une ombre terrible recouvrit le ciel...</p>
+    <p>C'était <span class="highlight-word">le ${creatorState.villain}</span> ! Un combat épique s'engagea. Grâce à la ruse de notre héros et à la magie de <span class="highlight-word">son/sa ${creatorState.item}</span>, la lumière triompha des ténèbres !</p>
+    <p>La paix revint dans <span class="highlight-word">le/la ${creatorState.place}</span>. Et notre héros vécut heureux jusqu'à sa prochaine aventure.</p>
+  `;
+  
+  textContainer.innerHTML = story;
+}
+
+function resetCreatorMode() {
+  creatorState = { hero: null, place: null, item: null, villain: null };
+  document.getElementById('creator-error-msg').innerText = '';
+  document.getElementById('creator-step-selection').style.display = 'block';
+  document.getElementById('creator-step-loading').style.display = 'none';
+  document.getElementById('creator-step-result').style.display = 'none';
+  
+  // Enlever la classe selected de toutes les cartes
+  document.querySelectorAll('.creator-card').forEach(card => card.classList.remove('selected'));
+}
+
