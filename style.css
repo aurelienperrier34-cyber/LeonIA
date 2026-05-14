@@ -2359,6 +2359,13 @@ body.novel-mode #screen-c3s7 .dialogue-bubble {
   font-style: italic;
   font-weight: 600;
 }
+/* v367 : C3S7 mobile — le texte "L'IA a entendu" (1.3rem) etait un peu trop
+   large pour l'ecran bleu du decor sur S23 FE. On reduit a peine la police. */
+@media (pointer: coarse) {
+  .ai-display-c3s7 .ai-display-text {
+    font-size: 1.05rem !important;
+  }
+}
 
 /* Game overlay c3s7 : transparent, occupe toute la largeur */
 body.novel-mode #screen-c3s7 .game-overlay {
