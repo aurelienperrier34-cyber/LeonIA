@@ -5490,6 +5490,16 @@ body.c5s3-magnifier-mode #screen-c5s3 .c5s3-spot-zone { cursor: none; }
   transition: border-color 0.18s, box-shadow 0.18s, transform 0.05s linear;
 }
 .c5s3-magnifier.show { display: block; }
+/* Animation "wiggle" au début du jeu pour suggérer à l'enfant de balader la
+   loupe. Retirée au 1er mouvement (cf. _c5s3OnMagnifierMove). */
+.c5s3-magnifier.hint-wiggle {
+  animation: c5s3-magnifier-wiggle 1.5s ease-in-out infinite;
+}
+@keyframes c5s3-magnifier-wiggle {
+  0%, 100% { transform: translate(-50%, -50%) translateX(0) rotate(0deg); }
+  20%      { transform: translate(-50%, -50%) translateX(-28px) rotate(-8deg); }
+  60%      { transform: translate(-50%, -50%) translateX(28px) rotate(8deg); }
+}
 .c5s3-magnifier::after {
   content: '🔍';
   position: absolute;
