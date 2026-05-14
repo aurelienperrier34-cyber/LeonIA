@@ -6034,9 +6034,16 @@ function equipAccessory(id) {
   applyAvatarAccessoriesEverywhere();
 }
 
+const ACCESSORY_PROFILES = {
+  hat:     { sizeRatio: 0.45, anchorYpct: 12, anchorXpct: 50 },
+  glasses: { sizeRatio: 0.45, anchorYpct: 35, anchorXpct: 50 },
+  cape:    { sizeRatio: 0.65, anchorYpct: 85, anchorXpct: 50 }
+};
+
 function applyAvatarAccessoriesEverywhere() {
   _ensureAtelierState();
   const slots = state.equippedAccessories || {};
+  
   document.querySelectorAll('.avatar-with-accessories').forEach(host => {
     let target = host;
     // Si l'host est un <img>, on l'enveloppe d'un span pour pouvoir y greffer
@@ -6051,31 +6058,83 @@ function applyAvatarAccessoriesEverywhere() {
         if (host.classList.contains('hero-win-face'))    wrap.classList.add('avatar-accessory-wrap--win');
         if (host.classList.contains('map-candy-avatar')) wrap.classList.add('avatar-accessory-wrap--map');
         if (host.classList.contains('char-img'))         wrap.classList.add('avatar-accessory-wrap--card');
+        
+        wrap.style.display = 'inline-block';
+        wrap.style.position = 'relative'; // necessaire pour que l'accessoire se positionne par rapport a l'image
+        
         host.parentNode.insertBefore(wrap, host);
         wrap.appendChild(host);
       }
       target = wrap;
     }
-    // On nettoie uniquement les accessoires DIRECTEMENT enfants pour ne pas
-    // toucher d'autres .avatar-accessory ailleurs dans le sous-arbre.
+    
+    // Nettoyage
     Array.from(target.children).forEach(n => {
       if (n.classList && n.classList.contains('avatar-accessory')) n.remove();
     });
+    
+    // Mesure de la taille réelle de l'avatar au runtime
+    // Si l'avatar n'est pas encore affiché (width=0), on abandonne (sera rappelé plus tard)
+    const imgW = host.offsetWidth || host.clientWidth;
+    const imgH = host.offsetHeight || host.clientHeight;
+    if (imgW === 0 || imgH === 0) {
+      if (host.tagName === 'IMG' && !host.complete) {
+        host.addEventListener('load', applyAvatarAccessoriesEverywhere, { once: true });
+      }
+      return;
+    }
+
     ['hat', 'glasses', 'cape'].forEach(slot => {
       const id = slots[slot];
       if (!id) return;
       const item = ARTICLES_CATALOG.find(a => a.id === id);
       if (!item) return;
+      
+      const profile = ACCESSORY_PROFILES[slot];
+      if (!profile) return;
+
       const acc = document.createElement('span');
-      // Classe par slot (.accessory-hat / -glasses / -cape) + classe par article
-      // (.accessory--cap-leon / -magic-hat / -crown / -glasses-ai / -cape-hero)
-      // pour pouvoir affiner la position/taille article par article si besoin.
       acc.className = 'avatar-accessory accessory-' + slot + ' accessory--' + item.id;
       acc.textContent = item.emoji;
+      
+      // Calcul mathématique de la position et de la taille
+      const size = imgW * profile.sizeRatio;
+      
+      // Ajustement : si c'est l'écran victoire (hero-win-face), le visage est souvent
+      // un peu plus haut dans l'image. On ajoute un petit offset vertical.
+      let yPct = profile.anchorYpct;
+      if (host.classList.contains('hero-win-face')) {
+        yPct -= 5; // On remonte un peu sur l'écran victoire
+      }
+
+      const left = (imgW * (profile.anchorXpct / 100)) - (size / 2);
+      const top  = (imgH * (yPct / 100)) - (size / 2);
+
+      // Application des styles inline (le coeur du système responsive universel)
+      Object.assign(acc.style, {
+        position: 'absolute',
+        width: size + 'px',
+        height: size + 'px',
+        left: left + 'px',
+        top: top + 'px',
+        fontSize: (size * 0.75) + 'px', // L'emoji remplit bien l'espace
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        pointerEvents: 'none', // L'accessoire ne bloque pas les clics sur l'avatar
+        zIndex: '10',
+        lineHeight: '1',
+        textShadow: '0 2px 5px rgba(0,0,0,0.3)' // Petite ombre pour detacher
+      });
+
       target.appendChild(acc);
     });
   });
 }
+
+// Repositionnement automatique lors d'un resize ou rotation (universel mobile/tablette/PC)
+window.addEventListener('resize', applyAvatarAccessoriesEverywhere);
+window.addEventListener('orientationchange', () => setTimeout(applyAvatarAccessoriesEverywhere, 150));
 
 function refreshAtelierUI() {
   if (typeof renderAtelierModal === 'function') renderAtelierModal();
