@@ -1154,6 +1154,33 @@ body.novel-mode .btn-choices, body.novel-mode .tap-game, body.novel-mode .mini-g
   position: relative; z-index: 3; margin: 15px 5vw; max-width: none;
   display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 15px;
 }
+
+/* v356 : C1S5 mobile — panneau glassmorphism du mini-jeu "ce que l'IA ne peut
+   pas faire" en pleine hauteur (meme pattern que C5S5).
+   IMPORTANT : utilise `@media (pointer: coarse)` et NON le
+   `@media (max-width: 900px), (pointer: coarse) and (hover: none)` habituel.
+   Raison : sur S23 FE le viewport peut passer >900px (viewport lock) ET il
+   rapporte hover:hover (pas hover:none), donc l'ancien @media ne matchait pas
+   et la regle globale `body.novel-mode .tap-game { flex-direction: row }`
+   gagnait (instruction a gauche, options a droite — layout casse).
+   `(pointer: coarse)` matche TOUS les telephones de façon fiable, exclut le PC. */
+@media (pointer: coarse) {
+  body.novel-mode #screen-5 .game-overlay {
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    transform: none !important;
+    padding: 16px 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    overflow-y: auto !important;
+  }
+}
 /* Boutons et cartes modernisés (Dark Glassmorphism) réduits */
 body.novel-mode .btn-choice, body.novel-mode .tap-option, body.novel-mode .vf-item {
   width: auto; padding: 12px 25px; flex: 0 1 auto;
@@ -1342,22 +1369,6 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
      contenu ne soit clippe au-dessus (avant, .game-overlay etait ancre
      bottom:4% et le stack grandissait vers le haut au-dela du viewport). */
   body.novel-mode #screen-c5s5 .game-overlay {
-    top: 0 !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    max-width: none !important;
-    transform: none !important;
-    padding: 16px 14px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    overflow-y: auto !important;
-  }
-  /* v355 : C1S5 mobile — panneau glassmorphism du mini-jeu "ce que l'IA ne
-     peut pas faire" en pleine hauteur (meme pattern que C5S5). */
-  body.novel-mode #screen-5 .game-overlay {
     top: 0 !important;
     bottom: 0 !important;
     left: 0 !important;
