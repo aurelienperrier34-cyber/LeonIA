@@ -6241,6 +6241,25 @@ body.novel-mode .c3s3-game {
   justify-content: center;
   max-width: 460px;
 }
+/* v365 : C3S3 mobile — le panneau consigne (width: auto) etait trop etroit
+   sur S23 FE -> le R de BONJOUR wrappait sur une 2e ligne. On force le
+   panneau plus large + nowrap sur les slots et les lettres pour que tout
+   tienne sur 1 ligne. Et on le descend (bottom 18% -> 6%) pour laisser
+   visible le mot modele "bonjour" affiche sur l'ecran de la machine. */
+@media (pointer: coarse) {
+  body.novel-mode #screen-c3s3 .c3s3-game {
+    width: 94% !important;
+    max-width: 94% !important;
+    bottom: 6% !important;
+  }
+  body.novel-mode #screen-c3s3 .c3s3-slots {
+    flex-wrap: nowrap !important;
+  }
+  body.novel-mode #screen-c3s3 .c3s3-letters {
+    flex-wrap: nowrap !important;
+    max-width: none !important;
+  }
+}
 .c3s3-letter {
   width: 42px;
   height: 48px;
