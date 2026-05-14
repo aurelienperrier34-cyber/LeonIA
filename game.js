@@ -7807,7 +7807,12 @@ function c4s2AskQuestion(qid, cardEl) {
 
 // SpeechSynthesis pour la voix de Bot (pitch + rate ajustes pour rendre robotique)
 function _c4s2SpeakAsBot(text) {
-  if (typeof window.speechSynthesis === 'undefined') return;
+  if (typeof window.speechSynthesis === 'undefined') {
+    // Pas de TTS : reaffiche le mic apres un delai estime (texte / 15 chars/s min 2s)
+    const delay = Math.max(2000, text.length * 66);
+    setTimeout(() => { const c = (state.c4s2QuestionsAsked||[]).length; if (c < 3) _c4s2ShowMic(); }, delay);
+    return;
+  }
   // Strip emoji + symboles non-textuels pour ne pas les faire lire a voix haute
   const cleanText = _stripEmoji(text);
   // Bug Chromium : cancel() suivi immediat de speak() peut avaler le speak.
@@ -7833,6 +7838,11 @@ function _c4s2SpeakAsBot(text) {
       if (chosen) utt.voice = chosen;
     } catch(e) {}
     utt.onerror = (ev) => console.warn('[c4s2] tts error:', ev.error);
+    // v381 : quand Bot a FINI de parler -> reafficher le mic
+    utt.onend = () => {
+      const count = (state.c4s2QuestionsAsked || []).length;
+      if (count < 3) _c4s2ShowMic();
+    };
     // Garde une reference pour eviter le garbage collection precoce
     window._c4s2Utterance = utt;
     window.speechSynthesis.speak(utt);
@@ -7866,11 +7876,9 @@ function _c4s2Typewriter(fullText, i) {
     }, 1000);
     if (count >= 3) {
       setTimeout(() => completeC4s2Game(), 1500);
-    } else {
-      // v374 : Bot a fini de repondre -> on reaffiche le mic-row pour la
-      // question suivante (cache pendant la reponse via _c4s2HideMic).
-      _c4s2ShowMic();
     }
+    // v381 : le mic sera reaffiche via utt.onend (quand Bot finit de parler),
+    // pas ici — sinon le bouton reapparait avant la fin du discours de Bot.
     return;
   }
   text.textContent = fullText.slice(0, i + 1);
