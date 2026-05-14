@@ -6936,6 +6936,25 @@ body.novel-mode .c4s2-game-pill {
   .c4s2-q-card { font-size: 0.82rem; padding: 8px 12px; min-width: 170px; }
   .c4s2-questions { grid-template-columns: 1fr; }
 }
+/* v370 : C4S2 — sur S23 FE (DPR 3, viewport plus court que Pixel DPR 2.625),
+   le mic-row (top:155px fixe) et la grille de questions (bottom:7%) se
+   chevauchaient : la bulle "Pose ta question a voix haute" etait cachee
+   derriere les cartes du haut. On cible UNIQUEMENT les tels DPR>=3 (Samsung
+   & co) via min-resolution:3dppx — Pixel (2.625) n'est PAS affecte.
+   Fix : on remonte le mic-row, on descend + compacte les questions. */
+@media (pointer: coarse) and (min-resolution: 3dppx) {
+  .c4s2-mic-row {
+    top: 116px !important;
+  }
+  .c4s2-questions {
+    bottom: 3% !important;
+  }
+  .c4s2-q-card {
+    font-size: 0.8rem !important;
+    padding: 7px 11px !important;
+    min-width: 0 !important;
+  }
+}
 
 /* ============================================================
    c5s5 — Construis ton robot IA (refonte WAW)
