@@ -8289,16 +8289,3 @@ function completeC3s2Game() {
   }
 }
 
-// v378/v379 : Raccourcir la boucle de la video C4S5 pour masquer le coeur barre à la fin
-document.addEventListener('DOMContentLoaded', () => {
-  const v = document.getElementById('leon-video-c4s5');
-  if (v) {
-    v.addEventListener('timeupdate', () => {
-      // Coupe les dernieres 0.8s pour zapper le coeur barré
-      if (v.duration && v.currentTime >= v.duration - 0.8) {
-        v.currentTime = 0;
-        v.play().catch(()=>{});
-      }
-    });
-  }
-});
