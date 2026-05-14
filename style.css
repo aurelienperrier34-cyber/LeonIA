@@ -2367,6 +2367,12 @@ body.novel-mode #screen-c3s7 .dialogue-bubble {
   .ai-display-c3s7 .ai-display-text {
     font-size: 0.95rem !important;
   }
+  /* v369 : le label "L'IA A ENTENDU :" (uppercase + letter-spacing 0.1em)
+     etait encore trop large pour l'ecran bleu. On reduit police + spacing. */
+  .ai-display-c3s7 .ai-display-label {
+    font-size: 0.62rem !important;
+    letter-spacing: 0.03em !important;
+  }
 }
 
 /* Game overlay c3s7 : transparent, occupe toute la largeur */
