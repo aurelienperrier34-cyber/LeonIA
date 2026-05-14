@@ -7740,6 +7740,13 @@ function _c4s2HideMic() {
   const row = document.getElementById('c4s2-mic-row');
   if (row) row.style.display = 'none';
 }
+// v374 : re-affiche le mic-row (uniquement si l'API vocale est dispo, comme
+// a l'activation du jeu). Utilise apres la reponse de Bot.
+function _c4s2ShowMic() {
+  if (!_c4s2HasSpeechAPI()) return;
+  const row = document.getElementById('c4s2-mic-row');
+  if (row) row.style.display = 'block';
+}
 
 function _c4s2MatchQuestion(transcript) {
   // Ne reproposer que les questions pas encore posees
@@ -7774,6 +7781,10 @@ function c4s2AskQuestion(qid, cardEl) {
   asked.push(qid);
   state.c4s2QuestionsAsked = asked;
   if (cardEl) cardEl.classList.add('used');
+  // v374 : pendant que Bot reflechit + repond, on cache la bulle "Pose ta
+  // question a voix haute" (mic-row) — elle sera reaffichee a la fin du
+  // typewriter (cf. _c4s2Typewriter), sauf si c'etait la 3e question.
+  _c4s2HideMic();
   // Phase 1 : Bot réfléchit
   const bubble = document.getElementById('c4s2-bot-bubble');
   const text   = document.getElementById('c4s2-bot-text');
@@ -7804,18 +7815,21 @@ function _c4s2SpeakAsBot(text) {
   setTimeout(() => {
     const utt = new SpeechSynthesisUtterance(cleanText);
     utt.lang = 'fr-FR';
-    utt.pitch = 2.0;   // max = effet robotique aigu
-    utt.rate  = 0.7;   // lent = effet metallique
+    // v374 : pitch 2.0 + rate 0.7 etaient des EXTREMES — sur Samsung le moteur
+    // TTS les gere tres mal (voix stridente / distordue "horrible"). On
+    // tempere : pitch 1.45 (encore robotique mais pas criard), rate 0.92.
+    utt.pitch = 1.45;
+    utt.rate  = 0.92;
     utt.volume = 1;
     try {
       const voices = window.speechSynthesis.getVoices();
-      // Prefere une voix "Compact" (moins naturelle, plus robotique) si dispo,
-      // sinon une voix dont le nom contient "Google" (mieux que la voix
-      // system par defaut sur Android), sinon n'importe quelle voix fr.
-      const compactFr = voices.find(v => v.lang && v.lang.startsWith('fr') && /compact|enhanced/i.test(v.name));
+      // v374 : priorite aux voix "Google" (consistantes Pixel/Samsung/autres),
+      // PUIS compact/enhanced en secours, puis n'importe quelle voix fr.
+      // Avant, "compact" etait prefere -> tombait sur la voix Samsung horrible.
       const googleFr  = voices.find(v => v.lang && v.lang.startsWith('fr') && /google/i.test(v.name));
+      const compactFr = voices.find(v => v.lang && v.lang.startsWith('fr') && /compact|enhanced/i.test(v.name));
       const anyFr     = voices.find(v => v.lang && v.lang.startsWith('fr'));
-      const chosen = compactFr || googleFr || anyFr;
+      const chosen = googleFr || compactFr || anyFr;
       if (chosen) utt.voice = chosen;
     } catch(e) {}
     utt.onerror = (ev) => console.warn('[c4s2] tts error:', ev.error);
@@ -7852,6 +7866,10 @@ function _c4s2Typewriter(fullText, i) {
     }, 1000);
     if (count >= 3) {
       setTimeout(() => completeC4s2Game(), 1500);
+    } else {
+      // v374 : Bot a fini de repondre -> on reaffiche le mic-row pour la
+      // question suivante (cache pendant la reponse via _c4s2HideMic).
+      _c4s2ShowMic();
     }
     return;
   }
