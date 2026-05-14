@@ -3752,6 +3752,27 @@ body.novel-mode #screen-c2s7 .floating-btn {
   padding: 7px 18px;
   font-size: 0.9rem;
 }
+/* v363 : C2S7 mobile — les 9 mots forces sur UNE seule ligne (nowrap).
+   Avant : sur S23 FE (viewport etroit) ils wrappaient sur 2 lignes -> frame
+   plus haute -> cachait le texte de Leon. Sur Pixel ils tenaient sur 1 ligne
+   mais police trop petite (0.78rem).
+   Maintenant : flex: 1 1 0 (les 9 mots se partagent la largeur a egalite et
+   retrecissent si besoin), police agrandie a 0.88rem, padding/gap compacts.
+   -> 9 mots sur 1 ligne sur les 2 telephones, frame courte, police lisible. */
+@media (pointer: coarse) {
+  body.novel-mode #screen-c2s7 .prompt-words {
+    flex-wrap: nowrap !important;
+    gap: 3px !important;
+  }
+  body.novel-mode #screen-c2s7 .prompt-word {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    padding: 6px 4px !important;
+    font-size: 0.88rem !important;
+    white-space: nowrap !important;
+    border-width: 2px !important;
+  }
+}
 
 /* ============================================================
    c5s5 — Mini-jeu "Construis ton robot IA"
