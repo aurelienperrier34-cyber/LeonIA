@@ -2359,11 +2359,13 @@ body.novel-mode #screen-c3s7 .dialogue-bubble {
   font-style: italic;
   font-weight: 600;
 }
-/* v367 : C3S7 mobile — le texte "L'IA a entendu" (1.3rem) etait un peu trop
-   large pour l'ecran bleu du decor sur S23 FE. On reduit a peine la police. */
+/* v367/v368 : C3S7 mobile — le texte "L'IA a entendu" (1.3rem) etait trop
+   large pour l'ecran bleu du decor sur S23 FE. Le meme element .ai-display-text
+   sert pour les 3 etats (J'ecoute / prompt "A toi !" / reponse de l'IA), dont
+   la reponse la plus longue « Quelqu'un fait du popcorn ! ». v368 : 1.05 -> 0.95rem. */
 @media (pointer: coarse) {
   .ai-display-c3s7 .ai-display-text {
-    font-size: 1.05rem !important;
+    font-size: 0.95rem !important;
   }
 }
 
