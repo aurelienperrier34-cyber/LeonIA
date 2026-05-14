@@ -997,6 +997,18 @@ body.novel-mode .dialogue-bubble::before {
   60%  { transform: scale(1.25); opacity: 1; }
   100% { transform: scale(1);   opacity: 1; }
 }
+/* v361 : C2S5 mobile — le check vert (::before) n'avait aucune position
+   definie, il s'affichait en haut-gauche de la zone 90x90 au lieu d'etre
+   centre sur l'image. position:absolute + inset:0 le fait remplir la zone,
+   le display:flex + align/justify (deja sur la regle globale) centre le ✅. */
+@media (pointer: coarse) {
+  .c2s5-defect-zone.found::before,
+  .c2s5-defect-zone.miss-flash::before {
+    position: absolute !important;
+    inset: 0 !important;
+    border-radius: 50% !important;
+  }
+}
 
 /* Mode calibration des hotspots c2s5 (Alt+F) */
 body.calib-c2s5 .c2s5-defect-zone {
