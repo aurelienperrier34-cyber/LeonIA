@@ -1173,12 +1173,34 @@ body.novel-mode .btn-choices, body.novel-mode .tap-game, body.novel-mode .mini-g
     width: 100% !important;
     max-width: none !important;
     transform: none !important;
-    padding: 16px 14px !important;
+    margin: 0 !important;
+    /* padding-top 56px : degage les pastilles etoile/Carte (haut-gauche) et
+       son/CC (haut-droite). justify-content: flex-start : la consigne reste
+       TOUJOURS en haut visible (avant: center -> sur S23 FE 360px de haut le
+       contenu debordait et la consigne etait poussee hors ecran). */
+    padding: 56px 14px 16px !important;
     display: flex !important;
     flex-direction: column !important;
     flex-wrap: nowrap !important;
-    justify-content: center !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    gap: 10px !important;
     overflow-y: auto !important;
+  }
+  /* .tap-options ne doit pas s'etirer : flex 0 0 auto pour garder les boutons
+     a leur hauteur de contenu (sinon ils remplissaient toute la hauteur). */
+  body.novel-mode #screen-5 .tap-options {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 620px !important;
+  }
+  body.novel-mode #screen-5 .tap-option {
+    flex: 0 0 auto !important;
+  }
+  /* La consigne ne doit pas se faire compresser non plus */
+  body.novel-mode #screen-5 .tap-instruction {
+    flex: 0 0 auto !important;
+    margin-bottom: 4px !important;
   }
 }
 /* Boutons et cartes modernisés (Dark Glassmorphism) réduits */
