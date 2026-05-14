@@ -8289,3 +8289,17 @@ function completeC3s2Game() {
   }
 }
 
+// v383 : C4S5 — boucle la video en coupant 2s avant la fin pour masquer
+// le coeur barre, tout en conservant le loop necessaire au discours de Leon.
+// 2s de marge >> 0.8s pour garantir que timeupdate capte le seuil sur mobile.
+document.addEventListener('DOMContentLoaded', () => {
+  const v = document.getElementById('leon-video-c4s5');
+  if (v) {
+    v.addEventListener('timeupdate', () => {
+      if (v.duration && v.currentTime >= v.duration - 2.0) {
+        v.currentTime = 0;
+      }
+    });
+  }
+});
+
