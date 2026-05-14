@@ -8289,17 +8289,23 @@ function completeC3s2Game() {
   }
 }
 
-// v383 : C4S5 — boucle la video en coupant 2s avant la fin pour masquer
-// le coeur barre, tout en conservant le loop necessaire au discours de Leon.
-// 2s de marge >> 0.8s pour garantir que timeupdate capte le seuil sur mobile.
+// v384 : C4S5 — loop JS (sans loop HTML) pour masquer le coeur barre.
+// Sans l'attribut loop HTML, le browser ne loop plus en interne et notre
+// timeupdate peut capter le seuil. Double securite : timeupdate 2s + ended.
 document.addEventListener('DOMContentLoaded', () => {
   const v = document.getElementById('leon-video-c4s5');
-  if (v) {
-    v.addEventListener('timeupdate', () => {
-      if (v.duration && v.currentTime >= v.duration - 2.0) {
-        v.currentTime = 0;
-      }
-    });
+  if (!v) return;
+  function _c4s5Restart() {
+    v.currentTime = 0;
+    v.play().catch(() => {});
   }
+  // Filet 1 : coupe 2s avant la fin (attrape le cas normal)
+  v.addEventListener('timeupdate', () => {
+    if (v.duration && v.currentTime >= v.duration - 2.0) {
+      _c4s5Restart();
+    }
+  });
+  // Filet 2 : si timeupdate rate la fin, on redemarre a la fin naturelle
+  v.addEventListener('ended', _c4s5Restart);
 });
 
