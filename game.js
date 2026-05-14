@@ -5440,7 +5440,7 @@ function markErrorC4(btn) {
       setTimeout(() => {
         if (label) label.textContent = '🏆 Bravo détective !';
         if (ans) ans.innerHTML = 'Tu as trouvé l\'erreur de Bot&nbsp;! Tu sais maintenant qu\'il faut <strong>toujours vérifier</strong> ce que dit l\'IA.';
-        document.getElementById('btn-to-c4s7')?.classList.add('show-btn');
+        document.getElementById('btn-to-c4s7')?.classList.add('show-btn'); const leonBravoAudio = new Audio('assets/chapitre_4/c4s6_bravo.mp3'); leonBravoAudio.play().catch(e => console.log('Audio play error:', e));
       }, 1300);
     }
   } else {
