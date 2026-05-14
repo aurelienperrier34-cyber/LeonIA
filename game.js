@@ -6059,9 +6059,6 @@ function applyAvatarAccessoriesEverywhere() {
         if (host.classList.contains('map-candy-avatar')) wrap.classList.add('avatar-accessory-wrap--map');
         if (host.classList.contains('char-img'))         wrap.classList.add('avatar-accessory-wrap--card');
         
-        wrap.style.display = 'inline-block';
-        wrap.style.position = 'relative'; // necessaire pour que l'accessoire se positionne par rapport a l'image
-        
         host.parentNode.insertBefore(wrap, host);
         wrap.appendChild(host);
       }
@@ -6073,15 +6070,15 @@ function applyAvatarAccessoriesEverywhere() {
       if (n.classList && n.classList.contains('avatar-accessory')) n.remove();
     });
     
-    // Mesure de la taille réelle de l'avatar au runtime
-    // Si l'avatar n'est pas encore affiché (width=0), on abandonne (sera rappelé plus tard)
-    const imgW = host.offsetWidth || host.clientWidth;
-    const imgH = host.offsetHeight || host.clientHeight;
-    if (imgW === 0 || imgH === 0) {
-      if (host.tagName === 'IMG' && !host.complete) {
-        host.addEventListener('load', applyAvatarAccessoriesEverywhere, { once: true });
-      }
-      return;
+    // Mesure de la taille de l'avatar (fallback pour les elements caches)
+    let imgW = host.offsetWidth || host.clientWidth;
+    // Si l'element est cache (display:none dans un tab), on approxime sa taille
+    // via sa classe pour que l'accessoire soit a la bonne taille quand il apparaitra.
+    if (imgW === 0) {
+      if (host.classList.contains('char-img')) imgW = 90;
+      else if (host.classList.contains('map-candy-avatar')) imgW = 130;
+      else if (host.classList.contains('hero-win-face')) imgW = window.innerWidth > 600 ? 300 : 200; // rough fallback
+      else return; // Trop risque d'appliquer, on attendra un resize
     }
 
     ['hat', 'glasses', 'cape'].forEach(slot => {
@@ -6097,34 +6094,27 @@ function applyAvatarAccessoriesEverywhere() {
       acc.className = 'avatar-accessory accessory-' + slot + ' accessory--' + item.id;
       acc.textContent = item.emoji;
       
-      // Calcul mathématique de la position et de la taille
       const size = imgW * profile.sizeRatio;
       
-      // Ajustement : si c'est l'écran victoire (hero-win-face), le visage est souvent
-      // un peu plus haut dans l'image. On ajoute un petit offset vertical.
       let yPct = profile.anchorYpct;
       if (host.classList.contains('hero-win-face')) {
-        yPct -= 5; // On remonte un peu sur l'écran victoire
+        yPct -= 5;
       }
-
-      const left = (imgW * (profile.anchorXpct / 100)) - (size / 2);
-      const top  = (imgH * (yPct / 100)) - (size / 2);
 
       // Application des styles inline (le coeur du système responsive universel)
       Object.assign(acc.style, {
         position: 'absolute',
-        width: size + 'px',
-        height: size + 'px',
-        left: left + 'px',
-        top: top + 'px',
-        fontSize: (size * 0.75) + 'px', // L'emoji remplit bien l'espace
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        pointerEvents: 'none', // L'accessoire ne bloque pas les clics sur l'avatar
+        left: profile.anchorXpct + '%',
+        top: yPct + '%',
+        transform: 'translate(-50%, -50%)', // Centre parfaitement sur le point d'ancrage
+        fontSize: size + 'px',
+        pointerEvents: 'none',
         zIndex: '10',
         lineHeight: '1',
-        textShadow: '0 2px 5px rgba(0,0,0,0.3)' // Petite ombre pour detacher
+        textShadow: '0 2px 5px rgba(0,0,0,0.3)',
+        display: 'block',
+        margin: '0', padding: '0',
+        width: 'auto', height: 'auto'
       });
 
       target.appendChild(acc);
