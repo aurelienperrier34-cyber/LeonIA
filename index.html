@@ -82,7 +82,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v423</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v424</div>
 
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
@@ -728,7 +728,7 @@
       <div class="story-scene full-height-scene scene-4-machine">
         <!-- Poster machine_image.png (1672x941, 16:9) = chevalet + toile magique chap 2.
              Converti en background-image CSS au DOMContentLoaded → apparition INSTANTANÉE. -->
-        <video src="assets/Leon_machine_image.mp4" poster="assets/machine_image.png" id="leon-video-c2s2" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <video src="assets/Leon_machine_image.mp4?v=2" poster="assets/machine_image.png" id="leon-video-c2s2" class="leon-machine-video" muted loop playsinline preload="auto"></video>
 
         <!-- 3 hotspots invisibles : pinceau flottant / toile lumineuse / paillettes magiques.
              Revele via loupe magique au survol. Calibrables via toggleC2s2SpotCalib() (console). -->
@@ -805,9 +805,10 @@
     <!-- c2s5 : L'IA peut se tromper -->
     <div class="screen" id="screen-c2s5">
       <div class="story-scene full-height-scene scene-4-machine">
-        <!-- Fond statique : Léon devant sa toile magique (réutilisé de c2s4 poster).
-             TODO : remplacer par Leon_peinture.mp4 quand on aura régénéré une version 16:9. -->
-        <img src="assets/machine_image.png" id="leon-bg-c2s5" class="leon-machine-video" alt="Léon devant la toile magique">
+        <!-- v424 : remplace l'image statique par la video Leon_machine_image
+             (re-encodee 5.5->2.2 Mbps, partagee avec c2s2). Poster = meme image
+             machine_image.png pour le fallback. -->
+        <video src="assets/Leon_machine_image.mp4?v=2" poster="assets/machine_image.png" id="leon-video-c2s5" class="leon-machine-video" muted loop playsinline preload="auto"></video>
         <!-- Overlay : grille 2x3 des 6 dessins (3 corrects + 3 défectueux) -->
         <img src="assets/chapitre_2/t5_grid.png?v=1" id="c2s5-grid" class="c2s5-grid-overlay" alt="6 dessins de l'IA">
         <!-- 6 hot-spots invisibles sur la grille — 3 sont défectueux (data-defective="true")
