@@ -2516,7 +2516,17 @@ function _fsExit() {
           || document.msExitFullscreen;
   if (fn) try { return fn.call(document); } catch (e) {}
 }
-function enterFullscreen() {
+function enterFullscreen(opts) {
+  // v409 (= v396/v397) : sur iOS Safari hors PWA, requestFullscreen sur
+  // documentElement fait flasher la barre de statut (heure/date) a chaque
+  // appel SANS passer reellement en plein ecran. On skip les appels AUTO
+  // (transitions de scene), mais on AUTORISE les appels INITIES PAR
+  // L UTILISATEUR (clic sur bouton FS) — user gesture, peuvent reussir.
+  const userGesture = opts && opts.userGesture;
+  if (!userGesture && typeof _isIOSDevice === 'function'
+      && _isIOSDevice() && !window.navigator.standalone) {
+    return Promise.resolve();
+  }
   if (_fsElement()) return Promise.resolve();
   return _fsRequest(document.documentElement).then(() => {
     try { tryLockLandscape(); } catch (e) {}
@@ -2526,7 +2536,8 @@ function enterFullscreen() {
 }
 function toggleFullscreen() {
   if (!_fsElement()) {
-    enterFullscreen();
+    // Appel via le bouton plein ecran = user gesture -> on autorise sur iOS aussi
+    enterFullscreen({ userGesture: true });
   } else {
     _fsExit();
   }
