@@ -5490,8 +5490,8 @@ body.calib-c5s3 .c5s3-spot-zone::before {
   text-transform: uppercase;
 }
 /* Loupe magique c5s3 (identique a c2s2) */
-body.c5s3-magnifier-mode #screen-c5s3 .story-scene { cursor: none; }
-body.c5s3-magnifier-mode #screen-c5s3 .c5s3-spot-zone { cursor: none; }
+body.c5s3-magnifier-mode #screen-c5s3 .story-scene { cursor: none; touch-action: none; }
+body.c5s3-magnifier-mode #screen-c5s3 .c5s3-spot-zone { cursor: none; touch-action: none; }
 .c5s3-magnifier {
   position: absolute;
   width: 68px;
@@ -5507,7 +5507,11 @@ body.c5s3-magnifier-mode #screen-c5s3 .c5s3-spot-zone { cursor: none; }
   pointer-events: none;
   z-index: 14;
   display: none;
-  transition: border-color 0.18s, box-shadow 0.18s, transform 0.05s linear;
+  /* v412 : retire transition sur transform (50ms de retard doigt/loupe iOS).
+     Garde border/shadow pour feedback over-hotspot. will-change promote sur
+     le compositor GPU pour deplacement fluide. */
+  transition: border-color 0.18s, box-shadow 0.18s;
+  will-change: transform;
 }
 .c5s3-magnifier.show { display: block; }
 /* Animation "wiggle" au début du jeu pour suggérer à l'enfant de balader la
@@ -5881,8 +5885,8 @@ body.calib-c2s2 .c2s2-spot-zone::before {
 
 /* === Loupe magique === */
 /* Cache le curseur natif sur la scene quand le mode loupe est actif */
-body.c2s2-magnifier-mode #screen-c2s2 .story-scene { cursor: none; }
-body.c2s2-magnifier-mode #screen-c2s2 .c2s2-spot-zone { cursor: none; }
+body.c2s2-magnifier-mode #screen-c2s2 .story-scene { cursor: none; touch-action: none; }
+body.c2s2-magnifier-mode #screen-c2s2 .c2s2-spot-zone { cursor: none; touch-action: none; }
 
 .c2s2-magnifier {
   position: absolute;
@@ -5899,7 +5903,11 @@ body.c2s2-magnifier-mode #screen-c2s2 .c2s2-spot-zone { cursor: none; }
   pointer-events: none;
   z-index: 14;
   display: none;
-  transition: border-color 0.18s, box-shadow 0.18s, transform 0.05s linear;
+  /* v412 : retire transition sur transform (50ms de retard doigt/loupe iOS).
+     Garde border/shadow pour feedback over-hotspot. will-change promote sur
+     le compositor GPU pour deplacement fluide. */
+  transition: border-color 0.18s, box-shadow 0.18s;
+  will-change: transform;
 }
 .c2s2-magnifier.show { display: block; }
 /* v359 : animation "wiggle" au debut du jeu pour suggerer a l'enfant de

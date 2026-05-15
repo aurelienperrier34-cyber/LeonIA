@@ -4608,6 +4608,12 @@ function _doActivateC2s2Game() {
     sceneEl.addEventListener('touchmove',  _c2s2OnMagnifierMove, { passive: false });
     sceneEl.addEventListener('touchstart', _c2s2OnMagnifierMove, { passive: false });
   }
+  // v412 : pre-cache geometrie (sceneRect + hotspots) pour eviter
+  // getBoundingClientRect a chaque move (reflow forcing -> latence iOS).
+  _c2s2RefreshGeometryCache();
+  // Si l ecran tourne ou redimensionne, on recalcule (sinon offset doigt/loupe).
+  window.addEventListener('resize', _c2s2RefreshGeometryCache);
+  window.addEventListener('orientationchange', _c2s2RefreshGeometryCache);
 
   // 4. Apres 5s, fade out le panneau pour ne laisser que l'image et la loupe
   //    (le pulse doré attire l'œil pendant ce temps).
@@ -4620,35 +4626,60 @@ function _doActivateC2s2Game() {
   }, 5000);
 }
 
-function _c2s2OnMagnifierMove(e) {
+// v412 : optimisations pour reduire la latence loupe sur iOS/mobile :
+// - preventDefault pour empecher scroll/zoom natif iOS pendant le drag
+// - cache du sceneRect et des hotspot rects (calcul 1x au start, pas a chaque move)
+// - position via transform translate3d (GPU compositor, pas de reflow)
+// - rAF pour batcher les mises a jour (1 seul update par frame meme si N touchmove)
+let _c2s2SceneRect = null;
+let _c2s2HotspotCache = null;
+let _c2s2PendingFrame = null;
+let _c2s2PendingPt = null;
+
+function _c2s2RefreshGeometryCache() {
   const sceneEl = document.querySelector('#screen-c2s2 .story-scene');
+  if (!sceneEl) { _c2s2SceneRect = null; _c2s2HotspotCache = null; return; }
+  _c2s2SceneRect = sceneEl.getBoundingClientRect();
+  _c2s2HotspotCache = [];
+  document.querySelectorAll('#screen-c2s2 .c2s2-spot-zone.active:not(.found)').forEach(el => {
+    const er = el.getBoundingClientRect();
+    _c2s2HotspotCache.push({
+      el,
+      cx: er.left + er.width / 2 - _c2s2SceneRect.left,
+      cy: er.top  + er.height / 2 - _c2s2SceneRect.top
+    });
+  });
+}
+
+function _c2s2ApplyMagnifierUpdate() {
+  _c2s2PendingFrame = null;
+  if (!_c2s2PendingPt || !_c2s2SceneRect) return;
   const magnifier = document.getElementById('c2s2-magnifier');
-  if (!sceneEl || !magnifier) return;
-  // Au 1er mouvement, on retire l'animation "wiggle" (l'enfant a compris).
+  if (!magnifier) return;
   if (magnifier.classList.contains('hint-wiggle')) {
     magnifier.classList.remove('hint-wiggle');
   }
-  const rect = sceneEl.getBoundingClientRect();
-  const pt = e.touches ? e.touches[0] : e;
-  const x = pt.clientX - rect.left;
-  const y = pt.clientY - rect.top;
-  magnifier.style.left = x + 'px';
-  magnifier.style.top  = y + 'px';
+  const x = _c2s2PendingPt.clientX - _c2s2SceneRect.left;
+  const y = _c2s2PendingPt.clientY - _c2s2SceneRect.top;
 
-  // Detection collision avec les hotspots non-trouves
+  // Detection collision (read seul, pas de DOM read forcant reflow)
   let overSpot = null;
-  document.querySelectorAll('#screen-c2s2 .c2s2-spot-zone.active:not(.found)').forEach(el => {
-    const er = el.getBoundingClientRect();
-    const cx = er.left + er.width / 2 - rect.left;
-    const cy = er.top  + er.height / 2 - rect.top;
-    const distance = Math.hypot(x - cx, y - cy);
-    if (distance < 50) overSpot = el; // 50px = rayon detection (loupe visible = 34px + petite marge)
-  });
+  if (_c2s2HotspotCache) {
+    for (let i = 0; i < _c2s2HotspotCache.length; i++) {
+      const h = _c2s2HotspotCache[i];
+      if (h.el.classList.contains('found')) continue;
+      const dx = x - h.cx, dy = y - h.cy;
+      if (dx*dx + dy*dy < 2500) { overSpot = h.el; break; } // 50^2
+    }
+  }
+  // Applique transform avec/sans scale en fonction de l'etat hover NOUVEAU
+  // (pas le precedent) -> reactivite immediate du scale.
+  const scalePart = overSpot ? ' scale(1.08)' : '';
+  magnifier.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%)' + scalePart;
 
   if (overSpot) {
     magnifier.classList.add('over-hotspot');
     if (_c2s2HoverSpot !== overSpot) {
-      // Reset timer si on change de spot
       if (_c2s2HoverTimer) clearTimeout(_c2s2HoverTimer);
       if (_c2s2HoverSpot) _c2s2HoverSpot.classList.remove('hovering');
       _c2s2HoverSpot = overSpot;
@@ -4658,16 +4689,29 @@ function _c2s2OnMagnifierMove(e) {
         if (_c2s2HoverSpot) _c2s2HoverSpot.classList.remove('hovering');
         _c2s2HoverSpot = null;
         _c2s2HoverTimer = null;
+        _c2s2RefreshGeometryCache(); // un spot trouve -> refresh cache
       }, 600);
     }
   } else {
     magnifier.classList.remove('over-hotspot');
     if (_c2s2HoverSpot) _c2s2HoverSpot.classList.remove('hovering');
     _c2s2HoverSpot = null;
-    if (_c2s2HoverTimer) {
-      clearTimeout(_c2s2HoverTimer);
-      _c2s2HoverTimer = null;
-    }
+    if (_c2s2HoverTimer) { clearTimeout(_c2s2HoverTimer); _c2s2HoverTimer = null; }
+  }
+}
+
+function _c2s2OnMagnifierMove(e) {
+  // preventDefault : sans ca, iOS tente de scroller/zoomer pendant le drag
+  // -> handler delaye et magnifier en retard sur le doigt. passive:false
+  // est deja pose a l'addEventListener (cf. activate).
+  if (e.cancelable) { try { e.preventDefault(); } catch(err) {} }
+  if (!_c2s2SceneRect) _c2s2RefreshGeometryCache();
+  if (!_c2s2SceneRect) return;
+  _c2s2PendingPt = e.touches ? e.touches[0] : e;
+  // rAF : si plusieurs touchmove arrivent dans la meme frame, on n'applique
+  // qu'une fois (le dernier point gagne). Reduit drastiquement le travail.
+  if (_c2s2PendingFrame == null) {
+    _c2s2PendingFrame = requestAnimationFrame(_c2s2ApplyMagnifierUpdate);
   }
 }
 
@@ -4681,6 +4725,13 @@ function _c2s2DeactivateMagnifier() {
     sceneEl.removeEventListener('touchmove', _c2s2OnMagnifierMove);
     sceneEl.removeEventListener('touchstart', _c2s2OnMagnifierMove);
   }
+  // v412 : cleanup resize listeners + pending frame
+  window.removeEventListener('resize', _c2s2RefreshGeometryCache);
+  window.removeEventListener('orientationchange', _c2s2RefreshGeometryCache);
+  if (_c2s2PendingFrame != null) { cancelAnimationFrame(_c2s2PendingFrame); _c2s2PendingFrame = null; }
+  _c2s2SceneRect = null;
+  _c2s2HotspotCache = null;
+  _c2s2PendingPt = null;
   if (_c2s2HoverTimer) { clearTimeout(_c2s2HoverTimer); _c2s2HoverTimer = null; }
   if (_c2s2HoverSpot) { _c2s2HoverSpot.classList.remove('hovering'); _c2s2HoverSpot = null; }
 }
