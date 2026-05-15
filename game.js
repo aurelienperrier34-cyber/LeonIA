@@ -7054,16 +7054,27 @@ function applyC2s7Overlays() {
   const rect = _c2s7VideoContentRect();
   if (!rect) return;
   const Cw = scene.clientWidth || 1, Ch = scene.clientHeight || 1;
-  // v430 : LEFT depend de l aspect ratio du viewport.
-  // - iPad ~4:3 (narrow, Cw/Ch < 16/9) : video extends horizontally beyond
-  //   container -> les offsets CSS fixes en % conteneur sont visuellement
-  //   trop faibles. Compensation : LEFT plus bas (0.100) -> toile shift gauche.
-  // - Pixel ~19.5:9 (wide, Cw/Ch > 16/9) : pas de extension horizontale ->
-  //   les offsets sont pile bons. LEFT = 0.115 (legerement plus grand).
-  const VR = 16 / 9;
-  const isWide = (Cw / Ch) > VR;
+  // v431 : LEFT calcule DYNAMIQUEMENT pour compenser l effet des CSS offsets
+  // internes (+1%, +4%, +5% conteneur) qui ne suivent pas la projection cover-fit.
+  //
+  // Math : le CSS +5% conteneur est sense representer ~15% de canvas-width
+  // (5/33 quand canvas-width canonical = 33%). Sur les containers ou rect.w != Cw,
+  // ce 5% conteneur n est plus le bon ratio. Formule :
+  //   LEFT_corrected = LEFT_canon + 0.05 * (1 - Cw / rect.w)
+  // - rect.w = Cw (wide, Pixel) : correction = 0 -> LEFT_canon = 0.13
+  // - rect.w > Cw (narrow, iPad) : correction positive faible
+  //
+  // Mais empiriquement (user feedback v429/v430) sur iPad il faut LEFT = 0.100
+  // (= -0.03 video) pour centrer visuellement. Donc la formule theorique sous-
+  // estime. On utilise donc :
+  //   LEFT = 0.13 + correctionFactor * (1 - Cw / rect.w)
+  // avec correctionFactor calibre empiriquement pour matcher iPad. iPad ratio
+  // Cw/rect.w ~= 0.808, on veut LEFT = 0.100 -> correctionFactor * 0.192 = -0.03
+  // -> correctionFactor = -0.156.
   const TOP = 0.08;
-  const LEFT = isWide ? 0.115 : 0.100;
+  const LEFT_CANON = 0.13;
+  const CORRECTION = -0.156;
+  const LEFT = LEFT_CANON + CORRECTION * (1 - Cw / rect.w);
   const W = 0.33, H = 0.45;
   scene.style.setProperty('--canvas-left',   ((rect.x + rect.w * LEFT) / Cw * 100) + '%');
   scene.style.setProperty('--canvas-top',    ((rect.y + rect.h * TOP)  / Ch * 100) + '%');
