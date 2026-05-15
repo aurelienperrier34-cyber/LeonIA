@@ -3018,6 +3018,17 @@ function playC2s3Demo() {
   const sBubble = document.querySelector('#screen-c2s3 .dialogue-bubble');
   if (!tw || !catZone) return;
 
+  // v415 : recalibre les overlays (texte + zone chat) sur le rect VIDEO reel.
+  // Sans ca, les --canvas-* en % CONTENEUR sont decales sur iPad/iPhone (cover
+  // crop different selon aspect ratio). Appel synchrone + 1 frame plus tard
+  // (scene pas toujours mesurable au goToScreen instant).
+  if (typeof applyC2s3Overlays === 'function') {
+    applyC2s3Overlays();
+    requestAnimationFrame(applyC2s3Overlays);
+    setTimeout(applyC2s3Overlays, 100);
+    setTimeout(applyC2s3Overlays, 400);
+  }
+
   // La narration reste visible d'entrée. Le dialogue de Léon, lui, est caché
   // jusqu'à ce que le chat soit complètement apparu.
   // (NE PAS vider bubble.textContent ici — playStoryScene en a besoin pour mémoriser le texte original)
@@ -6947,6 +6958,54 @@ function _streetVideoContentRect() {
   }
   return { x: (Cw - contentW) / 2, y: (Ch - contentH) / 2, w: contentW, h: contentH };
 }
+
+// v415 : meme principe pour c2s3 (toile_vide.mp4). La toile et le chat sont
+// positionnes en % DU CONTENU VIDEO (calibre sur le widescreen 16:9), pas
+// du conteneur. Sur ipad ~4:3 ou iPhone ~19.5:9, object-fit:cover crop
+// differemment -> la toile dans l image se retrouve a un % conteneur
+// different -> overlays decales. Ce helper renvoie le rect rendu reel.
+function _c2s3VideoContentRect() {
+  const scene = document.querySelector('#screen-c2s3 .story-scene');
+  if (!scene || !scene.clientWidth) return null;
+  const Cw = scene.clientWidth, Ch = scene.clientHeight;
+  const VR = 16 / 9; // ratio video toile (toile_vide.mp4 / toile_sans_chat.jpg 1672x941)
+  let contentW, contentH;
+  if (Cw / Ch > VR) {
+    contentW = Cw; contentH = Cw / VR;
+  } else {
+    contentH = Ch; contentW = Ch * VR;
+  }
+  return { x: (Cw - contentW) / 2, y: (Ch - contentH) / 2, w: contentW, h: contentH };
+}
+
+// Met a jour les CSS vars --canvas-* en se basant sur le rect VIDEO reel.
+// Les valeurs canoniques (top 8%, left 13%, width 33%, height 45%) sont les
+// positions de la toile dans l image source (calibrees PC widescreen).
+// On les projette en % du conteneur en tenant compte du crop cover.
+function applyC2s3Overlays() {
+  const scene = document.querySelector('#screen-c2s3 .story-scene');
+  if (!scene) return;
+  const rect = _c2s3VideoContentRect();
+  if (!rect) return;
+  const Cw = scene.clientWidth || 1, Ch = scene.clientHeight || 1;
+  // Positions canoniques de la toile dans l image (% video natif).
+  const TOP = 0.08, LEFT = 0.13, W = 0.33, H = 0.45;
+  const toilePxLeft   = rect.x + rect.w * LEFT;
+  const toilePxTop    = rect.y + rect.h * TOP;
+  const toilePxWidth  = rect.w * W;
+  const toilePxHeight = rect.h * H;
+  scene.style.setProperty('--canvas-left',   (toilePxLeft   / Cw * 100) + '%');
+  scene.style.setProperty('--canvas-top',    (toilePxTop    / Ch * 100) + '%');
+  scene.style.setProperty('--canvas-width',  (toilePxWidth  / Cw * 100) + '%');
+  scene.style.setProperty('--canvas-height', (toilePxHeight / Ch * 100) + '%');
+}
+
+// Listener resize/orientation : si on est sur c2s3, on recalcule.
+function _c2s3OnResize() {
+  if (state && state.currentScreen === 'c2s3') applyC2s3Overlays();
+}
+window.addEventListener('resize', _c2s3OnResize);
+window.addEventListener('orientationchange', _c2s3OnResize);
 
 // v386 : heroDestPos est desormais la position de la PORTE en % DU CONTENU
 // VIDEO (et non plus du conteneur). On projette en px conteneur en tenant
