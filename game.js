@@ -2517,6 +2517,13 @@ function _fsExit() {
   if (fn) try { return fn.call(document); } catch (e) {}
 }
 function enterFullscreen() {
+  // v396 : iOS Safari (hors PWA installee sur l'ecran d'accueil) ne supporte
+  // pas vraiment requestFullscreen sur document.documentElement. Chaque appel
+  // declenche un comportement de la barre de status iOS (heure/date qui flash)
+  // SANS reellement passer en plein ecran. Skip sur iOS Safari non-standalone.
+  if (typeof _isIOSDevice === 'function' && _isIOSDevice() && !window.navigator.standalone) {
+    return Promise.resolve();
+  }
   if (_fsElement()) return Promise.resolve();
   return _fsRequest(document.documentElement).then(() => {
     try { tryLockLandscape(); } catch (e) {}
