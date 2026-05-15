@@ -2340,16 +2340,10 @@ function goToScreen(screenIdentifier, force) {
       // sombre dessous). L'unite CSS 100dvh (dynamic viewport height) est PLUS
       // FIABLE sur iOS : elle suit la zone visible reelle (y compris quand
       // l'URL bar se cache).
-      // v403 : on supprime le branchement iOS (v401/v402). Meme chemin pour
-      // tous les devices — innerHeight/innerWidth font le travail comme avant
-      // les regressions de la chaine v398-v402.
-      {
-        const h0 = window.innerHeight, w0 = window.innerWidth;
-        screenMap.style.setProperty('height', h0 + 'px', 'important');
-        screenMap.style.setProperty('min-height', h0 + 'px', 'important');
-        screenMap.style.setProperty('max-height', h0 + 'px', 'important');
-        screenMap.style.setProperty('width', w0 + 'px', 'important');
-      }
+      // v404 : ne force plus le sizing en px ici. Le CSS
+      // `body.map-mode #screen-map { position:fixed; inset:0 }` pinne la map
+      // au viewport visible (universel — corrige la bande violette iOS quand
+      // l'URL bar Safari se cache et innerHeight devient stale).
       // Lit les dimensions REELLES apres application (force layout sync).
       const h = screenMap.clientHeight || window.innerHeight;
       const w = screenMap.clientWidth  || window.innerWidth;
@@ -6629,14 +6623,8 @@ function _reapplyMapHeight() {
   // v401 : sur iOS on utilise 100dvh (dynamic viewport height) car innerHeight
   // et visualViewport.height sont moins fiables (donnent ~80% de la vraie zone
   // visible -> bande sombre sous la map). Cf. fixMapVH().
-  // v403 : on supprime le branchement iOS — meme chemin pour tous.
-  {
-    const h0 = window.innerHeight, w0 = window.innerWidth;
-    sm.style.setProperty('height', h0 + 'px', 'important');
-    sm.style.setProperty('min-height', h0 + 'px', 'important');
-    sm.style.setProperty('max-height', h0 + 'px', 'important');
-    sm.style.setProperty('width', w0 + 'px', 'important');
-  }
+  // v404 : ne force plus le sizing en px — CSS position:fixed inset:0 fait
+  // le travail (cf. body.map-mode #screen-map dans style.css).
   const h = sm.clientHeight || window.innerHeight;
   const w = sm.clientWidth  || window.innerWidth;
   const mapPixar = sm.querySelector('.full-map-pixar');

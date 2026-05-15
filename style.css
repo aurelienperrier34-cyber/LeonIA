@@ -197,6 +197,19 @@ body {
 }
 
 body.map-mode { background-color: #E8D5FF; }
+/* v404 : pinne #screen-map au viewport via position:fixed + inset:0 — universel
+   (pas iOS-only). Quand la barre d'URL Safari iOS se cache, innerHeight ne
+   reflete pas instantanement la zone visible et la map (sized en px par JS)
+   laisse une bande violette du body.map-mode en bas. Avec inset:0, la map
+   suit toujours le viewport visible. Desktop/Android : inchange visuellement
+   (la map remplissait deja l'ecran). */
+body.map-mode #screen-map {
+  position: fixed !important;
+  top: 0 !important; left: 0 !important;
+  right: 0 !important; bottom: 0 !important;
+  width: auto !important; height: auto !important;
+  min-height: 0 !important; max-height: none !important;
+}
 /* v398/v399 : sur iOS en plein ecran, une bande de la couleur du body
    debordait dans les zones non couvertes par le contenu (notamment en bas,
    iOS Safari etend la zone visible en FS sans que innerHeight ne reflète
