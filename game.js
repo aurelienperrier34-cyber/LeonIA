@@ -4658,6 +4658,12 @@ function _c2s2ApplyMagnifierUpdate() {
   if (!magnifier) return;
   if (magnifier.classList.contains('hint-wiggle')) {
     magnifier.classList.remove('hint-wiggle');
+    // v412.1 : reset left/top initiaux (50% / 52% poses pour la hint-wiggle).
+    // Sans ca, JS translate3d(x,y) s'ajoute a (50%, 52%) -> loupe decalee
+    // d'environ une demi-scene par rapport au doigt. Avec left/top:0,
+    // translate3d(x,y) place la loupe pile a (x,y) dans la sceneEl.
+    magnifier.style.left = '0';
+    magnifier.style.top  = '0';
   }
   const x = _c2s2PendingPt.clientX - _c2s2SceneRect.left;
   const y = _c2s2PendingPt.clientY - _c2s2SceneRect.top;
