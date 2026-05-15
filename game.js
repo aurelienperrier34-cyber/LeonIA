@@ -1866,6 +1866,16 @@ function goToScreen(screenIdentifier, force) {
   if (screenIdentifier === 'c2s7') {
     state.c2WordsSelected = [];
     saveState();
+    // v426 : recalibre les overlays (toile + typewriter + result) sur le rect
+    // VIDEO reel (cover-fit aware), comme c2s3 (cf. applyC2s3Overlays / v415-v417).
+    // Appel synchrone + frame+timeouts car la scene n est pas toujours mesurable
+    // a l instant goToScreen.
+    if (typeof applyC2s7Overlays === 'function') {
+      applyC2s7Overlays();
+      requestAnimationFrame(applyC2s7Overlays);
+      setTimeout(applyC2s7Overlays, 100);
+      setTimeout(applyC2s7Overlays, 400);
+    }
     document.querySelectorAll('#c2s7-words .prompt-word').forEach(b => {
       b.classList.remove('selected');
       b.onclick = () => selectPromptWord(b);
@@ -7025,6 +7035,36 @@ function _c2s3OnResize() {
 }
 window.addEventListener('resize', _c2s3OnResize);
 window.addEventListener('orientationchange', _c2s3OnResize);
+
+// v426 : meme principe que c2s3 pour c2s7 (Composition dynamique sur toile).
+// Memes valeurs canoniques (LEFT 0.122 calibre en v417) car meme video source.
+function _c2s7VideoContentRect() {
+  const scene = document.querySelector('#screen-c2s7 .story-scene');
+  if (!scene || !scene.clientWidth) return null;
+  const Cw = scene.clientWidth, Ch = scene.clientHeight;
+  const VR = 16 / 9;
+  let contentW, contentH;
+  if (Cw / Ch > VR) { contentW = Cw; contentH = Cw / VR; }
+  else { contentH = Ch; contentW = Ch * VR; }
+  return { x: (Cw - contentW) / 2, y: (Ch - contentH) / 2, w: contentW, h: contentH };
+}
+function applyC2s7Overlays() {
+  const scene = document.querySelector('#screen-c2s7 .story-scene');
+  if (!scene) return;
+  const rect = _c2s7VideoContentRect();
+  if (!rect) return;
+  const Cw = scene.clientWidth || 1, Ch = scene.clientHeight || 1;
+  const TOP = 0.08, LEFT = 0.122, W = 0.33, H = 0.45;
+  scene.style.setProperty('--canvas-left',   ((rect.x + rect.w * LEFT) / Cw * 100) + '%');
+  scene.style.setProperty('--canvas-top',    ((rect.y + rect.h * TOP)  / Ch * 100) + '%');
+  scene.style.setProperty('--canvas-width',  ((rect.w * W)             / Cw * 100) + '%');
+  scene.style.setProperty('--canvas-height', ((rect.h * H)             / Ch * 100) + '%');
+}
+function _c2s7OnResize() {
+  if (state && state.currentScreen === 'c2s7') applyC2s7Overlays();
+}
+window.addEventListener('resize', _c2s7OnResize);
+window.addEventListener('orientationchange', _c2s7OnResize);
 
 // v386 : heroDestPos est desormais la position de la PORTE en % DU CONTENU
 // VIDEO (et non plus du conteneur). On projette en px conteneur en tenant
