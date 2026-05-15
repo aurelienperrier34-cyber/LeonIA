@@ -197,6 +197,14 @@ body {
 }
 
 body.map-mode { background-color: #E8D5FF; }
+/* v398 : sur iOS en plein ecran, une bande BLANCHE apparait sous l'image
+   (le bg cream du body deborde dans la zone non couverte par le contenu,
+   notamment en bas car iOS Safari etend la zone visible en FS). On force
+   le body en NOIR sur iOS : toutes les scenes immersives ont leur propre
+   fond, donc le changement n'est visible que dans les zones "gap" qu'on
+   veut justement masquer. Desktop/Android intacts. */
+body.ios-device { background-color: #000; }
+body.ios-device.map-mode { background-color: #E8D5FF; }
 
 .app {
   width: 100%; min-height: 100vh; position: relative; z-index: 10;

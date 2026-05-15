@@ -343,6 +343,15 @@ function _isIOSDevice() {
   if (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) return true;
   return false;
 }
+// v398 : marque le body avec la classe 'ios-device' au boot pour permettre
+// des overrides CSS specifiques (ex: bg body en noir pour masquer la bande
+// blanche en plein ecran iOS).
+(function _tagIOSDevice(){
+  if (!_isIOSDevice()) return;
+  const apply = () => { if (document.body) document.body.classList.add('ios-device'); };
+  if (document.body) apply();
+  else document.addEventListener('DOMContentLoaded', apply, { once: true });
+})();
 
 // Parametres chroma par type, calibres pour matcher visuellement les
 // filtres SVG #greenKey / #softGreenKey / #ultraSoftGreenKey / #whiteKey.
