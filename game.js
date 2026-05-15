@@ -1588,12 +1588,12 @@ function goToScreen(screenIdentifier, force) {
             if (v._earlyLoop) { v.removeEventListener('timeupdate', v._earlyLoop); v._earlyLoop = null; }
             v.play().catch(()=>{});
           },
-          onComplete: () => {
-            const v = document.getElementById('leon-video-c2s4');
-            if (!v) return;
-            if (v._earlyLoop) v.removeEventListener('timeupdate', v._earlyLoop);
-            try { v.pause(); } catch(e) {}
-          }
+          // v419 : RETIRE onComplete qui pausait la video. Sur mobile (touch-only),
+          // playStoryScene appelle onComplete IMMEDIATEMENT apres le fade-in du
+          // texte (~80ms apres onLeonStart) -> la video etait paused ~quart de
+          // seconde apres avoir demarre. La video doit jouer en continu (tourbillon
+          // d images) tant qu on est sur c2s4. Elle sera paused automatiquement
+          // quand on quittera la scene (cleanup via screen change).
         },
         c2s5: {
           narratorAudio: 'assets/chapitre_2/t5_narrateur.mp3', leonAudio: 'assets/chapitre_2/t5_leon.mp3',
