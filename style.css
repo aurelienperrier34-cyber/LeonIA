@@ -3717,9 +3717,12 @@ body.novel-mode #screen-c2s3 .scene-text .dialogue-bubble::before { display: non
 @keyframes subjectFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 @keyframes subjectFly   { 0%,100% { transform: translateY(0)   rotate(-8deg); } 50% { transform: translateY(-30px) rotate(8deg); } }
 @keyframes subjectWobble{ 0%,100% { transform: rotate(-14deg) scale(1); } 50% { transform: rotate(14deg) scale(1.06); } }
+/* v428 : pulse plus marque (1.15 -> 1.30 au lieu de 0.96 -> 1.0)
+   + fallback var(--subject-glow, none) pour eviter que Chrome Android
+   discard l animation si la var n est pas resolue au moment du parse. */
 @keyframes subjectGiantPulse {
-  0%, 100% { transform: scale(0.96); filter: var(--subject-glow) drop-shadow(0 0 20px rgba(255,225,102,0.6)); }
-  50%      { transform: scale(1.0);  filter: var(--subject-glow) drop-shadow(0 0 36px rgba(255,225,102,1));   }
+  0%, 100% { transform: scale(1.15); filter: var(--subject-glow, drop-shadow(0 4px 8px rgba(0,0,0,0.3))) drop-shadow(0 0 20px rgba(255,225,102,0.6)); }
+  50%      { transform: scale(1.30); filter: var(--subject-glow, drop-shadow(0 4px 8px rgba(0,0,0,0.3))) drop-shadow(0 0 36px rgba(255,225,102,1));   }
 }
 @keyframes accessoryWiggle    { 0%,100% { transform: rotate(-15deg) scale(1); } 50% { transform: rotate(15deg) scale(1.1); } }
 @keyframes accessoryFlyAround { 0%,100% { transform: translate(0,0) rotate(-20deg); } 50% { transform: translate(-20px, -25px) rotate(20deg); } }
