@@ -6988,8 +6988,10 @@ function applyC2s3Overlays() {
   const rect = _c2s3VideoContentRect();
   if (!rect) return;
   const Cw = scene.clientWidth || 1, Ch = scene.clientHeight || 1;
-  // Positions canoniques de la toile dans l image (% video natif).
-  const TOP = 0.08, LEFT = 0.13, W = 0.33, H = 0.45;
+  // v416 : ajuste LEFT 0.13 -> 0.115 (toile legerement decalee a droite sur iPad
+  // apres projection v415). Petite correction sur la position canonique pour
+  // recentrer les overlays sur la toile sur tous formats.
+  const TOP = 0.08, LEFT = 0.115, W = 0.33, H = 0.45;
   const toilePxLeft   = rect.x + rect.w * LEFT;
   const toilePxTop    = rect.y + rect.h * TOP;
   const toilePxWidth  = rect.w * W;
