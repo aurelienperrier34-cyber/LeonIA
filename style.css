@@ -205,8 +205,11 @@ body.map-mode { background-color: #E8D5FF; }
    - #1a0d2e (meme couleur que le bg du #screen-map) en mode map -> la bande
      eventuelle sous la map devient invisible visuellement.
    Desktop/Android intacts. */
-body.ios-device { background-color: #000; }
-body.ios-device.map-mode { background-color: #1a0d2e; }
+/* v403 : revoque (v398/v399). La classe body.ios-device n'est plus posee
+   par game.js (cf. _tagIOSDevice). Le fond cream de base s'applique aussi
+   sur iOS — fini les bandes sombres sous toutes les scenes. */
+/* body.ios-device { background-color: #000; } */
+/* body.ios-device.map-mode { background-color: #1a0d2e; } */
 
 .app {
   width: 100%; min-height: 100vh; position: relative; z-index: 10;

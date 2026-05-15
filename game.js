@@ -346,12 +346,17 @@ function _isIOSDevice() {
 // v398 : marque le body avec la classe 'ios-device' au boot pour permettre
 // des overrides CSS specifiques (ex: bg body en noir pour masquer la bande
 // blanche en plein ecran iOS).
-(function _tagIOSDevice(){
-  if (!_isIOSDevice()) return;
-  const apply = () => { if (document.body) document.body.classList.add('ios-device'); };
-  if (document.body) apply();
-  else document.addEventListener('DOMContentLoaded', apply, { once: true });
-})();
+// v403 : DESACTIVE. Le tag body.ios-device + canvas chroma-key (v395-v402)
+// causait des bandes sombres/blanches sous toutes les scenes iOS (modif DOM
+// + visibility:hidden de la video + body bg overrides). On revient au
+// comportement d'origine (filter SVG sur <video>) — le cadre vert iOS
+// revient mais sans regression sur le reste.
+// (function _tagIOSDevice(){
+//   if (!_isIOSDevice()) return;
+//   const apply = () => { if (document.body) document.body.classList.add('ios-device'); };
+//   if (document.body) apply();
+//   else document.addEventListener('DOMContentLoaded', apply, { once: true });
+// })();
 
 // Parametres chroma par type, calibres pour matcher visuellement les
 // filtres SVG #greenKey / #softGreenKey / #ultraSoftGreenKey / #whiteKey.
@@ -389,6 +394,9 @@ function _applyChromaToImageData(d, p) {
 // Installe le canvas chroma-key sur une <video>. No-op si non-iOS.
 // Retourne le canvas cree (ou existant) pour ref. Idempotent.
 function setupCanvasChromaKeyForVideo(video, chromaType) {
+  // v403 : DESACTIVE. Cf. commentaire sur _tagIOSDevice. No-op pour tous.
+  return null;
+  // eslint-disable-next-line no-unreachable
   if (!_isIOSDevice()) return null;
   if (!video) return null;
   if (video._chromaCanvas && video._chromaType === chromaType) {
@@ -2332,23 +2340,10 @@ function goToScreen(screenIdentifier, force) {
       // sombre dessous). L'unite CSS 100dvh (dynamic viewport height) est PLUS
       // FIABLE sur iOS : elle suit la zone visible reelle (y compris quand
       // l'URL bar se cache).
-      const isIOS = typeof _isIOSDevice === 'function' && _isIOSDevice();
-      if (isIOS) {
-        // v402 : sur iOS, ni innerHeight, ni visualViewport, ni 100dvh ne
-        // donnent fiablement la vraie zone visible iPad. On force position:
-        // fixed + inset:0 -> la map est PINNE aux 4 cotes du viewport quoi
-        // qu'il arrive. min/max-height: none pour eviter qu'un reste de CSS
-        // limite. La taille est purement determinee par top/left/right/bottom.
-        screenMap.style.setProperty('position', 'fixed', 'important');
-        screenMap.style.setProperty('top', '0', 'important');
-        screenMap.style.setProperty('left', '0', 'important');
-        screenMap.style.setProperty('right', '0', 'important');
-        screenMap.style.setProperty('bottom', '0', 'important');
-        screenMap.style.setProperty('width', 'auto', 'important');
-        screenMap.style.setProperty('height', 'auto', 'important');
-        screenMap.style.setProperty('min-height', '0', 'important');
-        screenMap.style.setProperty('max-height', 'none', 'important');
-      } else {
+      // v403 : on supprime le branchement iOS (v401/v402). Meme chemin pour
+      // tous les devices — innerHeight/innerWidth font le travail comme avant
+      // les regressions de la chaine v398-v402.
+      {
         const h0 = window.innerHeight, w0 = window.innerWidth;
         screenMap.style.setProperty('height', h0 + 'px', 'important');
         screenMap.style.setProperty('min-height', h0 + 'px', 'important');
@@ -6634,19 +6629,8 @@ function _reapplyMapHeight() {
   // v401 : sur iOS on utilise 100dvh (dynamic viewport height) car innerHeight
   // et visualViewport.height sont moins fiables (donnent ~80% de la vraie zone
   // visible -> bande sombre sous la map). Cf. fixMapVH().
-  const isIOS = typeof _isIOSDevice === 'function' && _isIOSDevice();
-  if (isIOS) {
-    // v402 : pinne la map aux 4 cotes du viewport via position:fixed + inset:0.
-    sm.style.setProperty('position', 'fixed', 'important');
-    sm.style.setProperty('top', '0', 'important');
-    sm.style.setProperty('left', '0', 'important');
-    sm.style.setProperty('right', '0', 'important');
-    sm.style.setProperty('bottom', '0', 'important');
-    sm.style.setProperty('width', 'auto', 'important');
-    sm.style.setProperty('height', 'auto', 'important');
-    sm.style.setProperty('min-height', '0', 'important');
-    sm.style.setProperty('max-height', 'none', 'important');
-  } else {
+  // v403 : on supprime le branchement iOS — meme chemin pour tous.
+  {
     const h0 = window.innerHeight, w0 = window.innerWidth;
     sm.style.setProperty('height', h0 + 'px', 'important');
     sm.style.setProperty('min-height', h0 + 'px', 'important');
@@ -6683,14 +6667,8 @@ window.addEventListener('resize', () => {
 window.addEventListener('orientationchange', () => {
   setTimeout(_reapplyMapHeight, 200);
 });
-// v400 : sur iOS, visualViewport.resize fire quand la zone visible change
-// (entree/sortie plein ecran, URL bar show/hide) — utile pour relancer la
-// mise en page de la map avec la VRAIE hauteur visible.
-if (typeof _isIOSDevice === 'function' && _isIOSDevice() && window.visualViewport) {
-  window.visualViewport.addEventListener('resize', () => {
-    _reapplyMapHeight();
-  });
-}
+// v403 : retire le listener visualViewport iOS (v400) — plus necessaire
+// puisque la chaine v398-v402 est revoquee.
 function toggleStarCalib() {
   document.body.classList.toggle('calib-star-mode');
   const el = document.getElementById('street-star-corner');
