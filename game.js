@@ -2541,18 +2541,16 @@ function _fsExit() {
   if (fn) try { return fn.call(document); } catch (e) {}
 }
 function enterFullscreen(opts) {
-  // v410 (revise v409) : sur iOS Safari hors PWA, requestFullscreen sur
-  // documentElement fait flasher la barre de statut a chaque appel auto
-  // (transitions de scene en setTimeout) SANS passer en plein ecran.
-  // MAIS si l appel vient d un user gesture (click direct, ou flag explicite),
-  // on autorise — sinon on perd l activation user gesture qui peut etre
-  // requise pour le prochain audio.play() (regression atelier audio en v409).
-  // Detection : navigator.userActivation.isActive est true pendant les
-  // gesture handlers + queue de tasks immediate. Pour les setTimeout longs
-  // (transition rue->atelier 8s), isActive sera false -> on skip le FS
-  // mais l audio queue est deja partie.
-  const userGesture = (opts && opts.userGesture)
-    || (navigator.userActivation && navigator.userActivation.isActive);
+  // v411 (revient au comportement v409) : sur iOS Safari hors PWA,
+  // requestFullscreen fait flasher la barre de statut a chaque appel.
+  // On skip TOUS les appels iOS sauf ceux explicitement marques
+  // userGesture:true (= bouton FS de l app uniquement).
+  // En v410 j avais ajoute navigator.userActivation.isActive comme
+  // detection auto -> mais chaque clic d ecran (tapAnswer, neon-shop,
+  // etc.) active le user gesture -> FS tente -> flash heure/date.
+  // Le warm-up audio (separe, dans walkToShopAndEnter) suffit pour
+  // l audio atelier sans avoir besoin du FS auto.
+  const userGesture = opts && opts.userGesture;
   if (!userGesture && typeof _isIOSDevice === 'function'
       && _isIOSDevice() && !window.navigator.standalone) {
     return Promise.resolve();
