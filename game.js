@@ -7054,7 +7054,9 @@ function applyC2s7Overlays() {
   const rect = _c2s7VideoContentRect();
   if (!rect) return;
   const Cw = scene.clientWidth || 1, Ch = scene.clientHeight || 1;
-  const TOP = 0.08, LEFT = 0.122, W = 0.33, H = 0.45;
+  // v427 : LEFT 0.122 (calibre c2s3) etait encore un peu trop a droite pour
+  // c2s7 (structure typewriter+result-zone differente). On decale a 0.110.
+  const TOP = 0.08, LEFT = 0.110, W = 0.33, H = 0.45;
   scene.style.setProperty('--canvas-left',   ((rect.x + rect.w * LEFT) / Cw * 100) + '%');
   scene.style.setProperty('--canvas-top',    ((rect.y + rect.h * TOP)  / Ch * 100) + '%');
   scene.style.setProperty('--canvas-width',  ((rect.w * W)             / Cw * 100) + '%');
