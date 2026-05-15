@@ -2448,6 +2448,30 @@ function walkToShopAndEnter() {
   if (window._signPointerTimer) { clearTimeout(window._signPointerTimer); window._signPointerTimer = null; }
   if (!vid2 || !sign || !scene) return;
 
+  // v410 : warm-up audio atelier dans le user gesture du clic sur la porte.
+  // Sans ca, sur iOS Safari, le play() differe (apres 8s de marche) est
+  // refuse par la policy autoplay -> son atelier ne demarre pas. En jouant
+  // brievement les audios maintenant (puis pause immediate), iOS marque les
+  // elements audio comme user-activated -> play() ulterieur OK.
+  try {
+    if (typeof voicesEnabled === 'function' && voicesEnabled() && typeof getVoice === 'function') {
+      const _warmList = [
+        getVoice('voix_narrateur_3', 'assets/voix_narrateur_3.mp3'),
+        getVoice('voix_leon_3',      'assets/Voix_leon_3.mp3')
+      ];
+      _warmList.forEach(a => {
+        if (!a) return;
+        try {
+          a.muted = true;
+          const p = a.play();
+          if (p && p.then) p.then(() => { try { a.pause(); a.currentTime = 0; a.muted = false; } catch(e){} })
+                            .catch(() => { try { a.muted = false; } catch(e){} });
+          else { try { a.pause(); a.currentTime = 0; a.muted = false; } catch(e){} }
+        } catch(e) { try { a.muted = false; } catch(e2){} }
+      });
+    }
+  } catch(e) {}
+
   // Position cible = marker destination heros (calibre par l'utilisateur).
   // v386 : on re-applique applyHeroDestPos juste avant de lire la position —
   // la scene est maintenant garantie mesurable, donc la projection cover-fit
@@ -2517,12 +2541,18 @@ function _fsExit() {
   if (fn) try { return fn.call(document); } catch (e) {}
 }
 function enterFullscreen(opts) {
-  // v409 (= v396/v397) : sur iOS Safari hors PWA, requestFullscreen sur
-  // documentElement fait flasher la barre de statut (heure/date) a chaque
-  // appel SANS passer reellement en plein ecran. On skip les appels AUTO
-  // (transitions de scene), mais on AUTORISE les appels INITIES PAR
-  // L UTILISATEUR (clic sur bouton FS) — user gesture, peuvent reussir.
-  const userGesture = opts && opts.userGesture;
+  // v410 (revise v409) : sur iOS Safari hors PWA, requestFullscreen sur
+  // documentElement fait flasher la barre de statut a chaque appel auto
+  // (transitions de scene en setTimeout) SANS passer en plein ecran.
+  // MAIS si l appel vient d un user gesture (click direct, ou flag explicite),
+  // on autorise — sinon on perd l activation user gesture qui peut etre
+  // requise pour le prochain audio.play() (regression atelier audio en v409).
+  // Detection : navigator.userActivation.isActive est true pendant les
+  // gesture handlers + queue de tasks immediate. Pour les setTimeout longs
+  // (transition rue->atelier 8s), isActive sera false -> on skip le FS
+  // mais l audio queue est deja partie.
+  const userGesture = (opts && opts.userGesture)
+    || (navigator.userActivation && navigator.userActivation.isActive);
   if (!userGesture && typeof _isIOSDevice === 'function'
       && _isIOSDevice() && !window.navigator.standalone) {
     return Promise.resolve();
