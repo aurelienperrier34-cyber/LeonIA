@@ -2327,16 +2327,28 @@ function goToScreen(screenIdentifier, force) {
     // normal. Il faut donc utiliser setProperty(..., 'important') pour gagner.
     function fixMapVH() {
       if (!screenMap) return;
-      // v400 : sur iOS, window.innerHeight ne reflete pas la vraie zone visible
-      // en plein ecran -> la map etait trop courte et une bande sombre apparaissait
-      // dessous. window.visualViewport.height donne la vraie taille visible iOS.
-      const useVV = typeof _isIOSDevice === 'function' && _isIOSDevice() && window.visualViewport;
-      const h = useVV ? window.visualViewport.height : window.innerHeight;
-      const w = useVV ? window.visualViewport.width  : window.innerWidth;
-      screenMap.style.setProperty('height', h + 'px', 'important');
-      screenMap.style.setProperty('min-height', h + 'px', 'important');
-      screenMap.style.setProperty('max-height', h + 'px', 'important');
-      screenMap.style.setProperty('width', w + 'px', 'important');
+      // v401 : sur iOS, window.innerHeight ET visualViewport.height retournent
+      // une valeur PLUS PETITE que la vraie zone visible iPad (~80% -> bande
+      // sombre dessous). L'unite CSS 100dvh (dynamic viewport height) est PLUS
+      // FIABLE sur iOS : elle suit la zone visible reelle (y compris quand
+      // l'URL bar se cache).
+      const isIOS = typeof _isIOSDevice === 'function' && _isIOSDevice();
+      if (isIOS) {
+        screenMap.style.setProperty('height', '100dvh', 'important');
+        screenMap.style.setProperty('min-height', '100dvh', 'important');
+        screenMap.style.setProperty('max-height', '100dvh', 'important');
+        screenMap.style.setProperty('width', '100vw', 'important');
+      } else {
+        const h0 = window.innerHeight, w0 = window.innerWidth;
+        screenMap.style.setProperty('height', h0 + 'px', 'important');
+        screenMap.style.setProperty('min-height', h0 + 'px', 'important');
+        screenMap.style.setProperty('max-height', h0 + 'px', 'important');
+        screenMap.style.setProperty('width', w0 + 'px', 'important');
+      }
+      // Lit les dimensions reelles APRES l'application du style (force layout).
+      // Sur iOS, c'est la taille calculee par 100dvh/100vw = vraie zone visible.
+      const h = screenMap.clientHeight || window.innerHeight;
+      const w = screenMap.clientWidth  || window.innerWidth;
       // Force overflow: hidden + scrollTop: 0. Le #screen-map de base a
       // `overflow-y: auto` et scrollMapToBottom() scrolle a la fin du
       // contenu. Sur mobile, cela cree un decalage visuel de -31px sur les
@@ -6610,13 +6622,25 @@ function _reapplyMapHeight() {
   if (state.currentScreen !== 'map') return;
   const sm = document.getElementById('screen-map');
   if (!sm) return;
-  // v400 : sur iOS, visualViewport donne la vraie zone visible en plein ecran
-  const useVV = typeof _isIOSDevice === 'function' && _isIOSDevice() && window.visualViewport;
-  const h = useVV ? window.visualViewport.height : window.innerHeight;
-  const w = useVV ? window.visualViewport.width  : window.innerWidth;
-  sm.style.setProperty('height', h + 'px', 'important');
-  sm.style.setProperty('min-height', h + 'px', 'important');
-  sm.style.setProperty('max-height', h + 'px', 'important');
+  // v401 : sur iOS on utilise 100dvh (dynamic viewport height) car innerHeight
+  // et visualViewport.height sont moins fiables (donnent ~80% de la vraie zone
+  // visible -> bande sombre sous la map). Cf. fixMapVH().
+  const isIOS = typeof _isIOSDevice === 'function' && _isIOSDevice();
+  if (isIOS) {
+    sm.style.setProperty('height', '100dvh', 'important');
+    sm.style.setProperty('min-height', '100dvh', 'important');
+    sm.style.setProperty('max-height', '100dvh', 'important');
+    sm.style.setProperty('width', '100vw', 'important');
+  } else {
+    const h0 = window.innerHeight, w0 = window.innerWidth;
+    sm.style.setProperty('height', h0 + 'px', 'important');
+    sm.style.setProperty('min-height', h0 + 'px', 'important');
+    sm.style.setProperty('max-height', h0 + 'px', 'important');
+    sm.style.setProperty('width', w0 + 'px', 'important');
+  }
+  const h = sm.clientHeight || window.innerHeight;
+  const w = sm.clientWidth  || window.innerWidth;
+  // Sur iOS on garde 100dvh (reactif). Sur les autres on a deja set en px.
   const mapPixar = sm.querySelector('.full-map-pixar');
   if (mapPixar) {
     // v337 : etirement plein ecran (object-fit: fill). Voir fixMapVH().
