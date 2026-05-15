@@ -1581,12 +1581,21 @@ function goToScreen(screenIdentifier, force) {
             const v = document.getElementById('leon-video-c2s4');
             if (!v) return;
             v.loop = true;
-            // v418 : retire l early-loop (LOOP_BEFORE_END=3s sur une video de 5s
-            // -> reset toutes les 2s -> impression que la video ne se lance pas).
-            // Le loop natif fait le job (petit gap de ~100ms entre iterations,
-            // negligeable visuellement pour le tourbillon d images).
-            if (v._earlyLoop) { v.removeEventListener('timeupdate', v._earlyLoop); v._earlyLoop = null; }
             v.play().catch(()=>{});
+            // v421 : early-loop a 1s avant la fin (reset a 4s sur une video de 5s).
+            // Skip la derniere seconde ou le tourbillon d images se vide (centre gris).
+            // v418 retirait l early-loop completement, mais le user veut conserver
+            // ce skip esthetique. v420 (re-encodage 19->2.3 Mbps) a regle le vrai
+            // probleme de decodeur sous-dimensionne.
+            const LOOP_BEFORE_END = 1.0;
+            if (v._earlyLoop) v.removeEventListener('timeupdate', v._earlyLoop);
+            v._earlyLoop = () => {
+              if (v.duration && v.currentTime >= v.duration - LOOP_BEFORE_END) {
+                v.currentTime = 0;
+                v.play().catch(() => {});
+              }
+            };
+            v.addEventListener('timeupdate', v._earlyLoop);
           },
           // v419 : RETIRE onComplete qui pausait la video. Sur mobile (touch-only),
           // playStoryScene appelle onComplete IMMEDIATEMENT apres le fade-in du
