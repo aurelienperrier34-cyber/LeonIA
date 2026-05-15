@@ -1581,19 +1581,12 @@ function goToScreen(screenIdentifier, force) {
             const v = document.getElementById('leon-video-c2s4');
             if (!v) return;
             v.loop = true;
+            // v418 : retire l early-loop (LOOP_BEFORE_END=3s sur une video de 5s
+            // -> reset toutes les 2s -> impression que la video ne se lance pas).
+            // Le loop natif fait le job (petit gap de ~100ms entre iterations,
+            // negligeable visuellement pour le tourbillon d images).
+            if (v._earlyLoop) { v.removeEventListener('timeupdate', v._earlyLoop); v._earlyLoop = null; }
             v.play().catch(()=>{});
-            // Early-loop : on remet a zero 3 secondes AVANT la fin pour que le
-            // tourbillon d'images ne disparaisse jamais (le `loop` natif ne
-            // redemarre qu'a la toute fin, ce qui cree un trou visuel gris).
-            const LOOP_BEFORE_END = 3.0;
-            if (v._earlyLoop) v.removeEventListener('timeupdate', v._earlyLoop);
-            v._earlyLoop = () => {
-              if (v.duration && v.currentTime >= v.duration - LOOP_BEFORE_END) {
-                v.currentTime = 0;
-                v.play().catch(() => {});
-              }
-            };
-            v.addEventListener('timeupdate', v._earlyLoop);
           },
           onComplete: () => {
             const v = document.getElementById('leon-video-c2s4');
