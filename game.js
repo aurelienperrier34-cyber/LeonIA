@@ -1582,12 +1582,11 @@ function goToScreen(screenIdentifier, force) {
             if (!v) return;
             v.loop = true;
             v.play().catch(()=>{});
-            // v421 : early-loop a 1s avant la fin (reset a 4s sur une video de 5s).
-            // Skip la derniere seconde ou le tourbillon d images se vide (centre gris).
-            // v418 retirait l early-loop completement, mais le user veut conserver
-            // ce skip esthetique. v420 (re-encodage 19->2.3 Mbps) a regle le vrai
-            // probleme de decodeur sous-dimensionne.
-            const LOOP_BEFORE_END = 2.0;
+            // v423 : LOOP_BEFORE_END = 3.0 -> reset a 2s sur les 5s. Skip la moitie
+            // finale ou le tourbillon se vide (centre gris qui grandit). Le user
+            // confirme que 1s et 2s skip etaient insuffisants. Le re-encodage v420
+            // (19->2.3 Mbps) evite tout probleme de stall meme avec reset frequent.
+            const LOOP_BEFORE_END = 3.0;
             if (v._earlyLoop) v.removeEventListener('timeupdate', v._earlyLoop);
             v._earlyLoop = () => {
               if (v.duration && v.currentTime >= v.duration - LOOP_BEFORE_END) {
@@ -1596,11 +1595,25 @@ function goToScreen(screenIdentifier, force) {
               }
             };
             v.addEventListener('timeupdate', v._earlyLoop);
+
+            // v423 : double-securite pour pauser la video quand l audio Leon finit.
+            // onLeonEnd (via fireLeonEnd) marche en theorie mais user observe la
+            // video continue. On attache aussi un listener direct sur leonAudio
+            // 'ended' qui pause v + retire l early-loop. Idempotent (si onLeonEnd
+            // fire d abord, le 2eme handler trouvera v deja pause).
+            const a = window.leonAudio;
+            if (a) {
+              if (v._pauseHandler) a.removeEventListener('ended', v._pauseHandler);
+              v._pauseHandler = () => {
+                if (v._earlyLoop) { v.removeEventListener('timeupdate', v._earlyLoop); v._earlyLoop = null; }
+                try { v.pause(); } catch(e) {}
+              };
+              a.addEventListener('ended', v._pauseHandler, { once: true });
+            }
           },
           // v422 : pause la video a la fin de l audio Leon (comme les autres
-          // scenes c2). On utilise onLeonEnd (event 'ended' de leonAudio, fonctionne
-          // mobile + desktop), pas onComplete (qui fire trop tot sur mobile car
-          // skip du typewriter). Retire aussi l early-loop pour proprete.
+          // scenes c2). On utilise onLeonEnd (event 'ended' de leonAudio).
+          // v423 ajoute un listener direct comme backup (cf. onLeonStart).
           onLeonEnd: () => {
             const v = document.getElementById('leon-video-c2s4');
             if (!v) return;
