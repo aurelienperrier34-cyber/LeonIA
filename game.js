@@ -2327,8 +2327,12 @@ function goToScreen(screenIdentifier, force) {
     // normal. Il faut donc utiliser setProperty(..., 'important') pour gagner.
     function fixMapVH() {
       if (!screenMap) return;
-      const h = window.innerHeight;
-      const w = window.innerWidth;
+      // v400 : sur iOS, window.innerHeight ne reflete pas la vraie zone visible
+      // en plein ecran -> la map etait trop courte et une bande sombre apparaissait
+      // dessous. window.visualViewport.height donne la vraie taille visible iOS.
+      const useVV = typeof _isIOSDevice === 'function' && _isIOSDevice() && window.visualViewport;
+      const h = useVV ? window.visualViewport.height : window.innerHeight;
+      const w = useVV ? window.visualViewport.width  : window.innerWidth;
       screenMap.style.setProperty('height', h + 'px', 'important');
       screenMap.style.setProperty('min-height', h + 'px', 'important');
       screenMap.style.setProperty('max-height', h + 'px', 'important');
@@ -6606,8 +6610,10 @@ function _reapplyMapHeight() {
   if (state.currentScreen !== 'map') return;
   const sm = document.getElementById('screen-map');
   if (!sm) return;
-  const h = window.innerHeight;
-  const w = window.innerWidth;
+  // v400 : sur iOS, visualViewport donne la vraie zone visible en plein ecran
+  const useVV = typeof _isIOSDevice === 'function' && _isIOSDevice() && window.visualViewport;
+  const h = useVV ? window.visualViewport.height : window.innerHeight;
+  const w = useVV ? window.visualViewport.width  : window.innerWidth;
   sm.style.setProperty('height', h + 'px', 'important');
   sm.style.setProperty('min-height', h + 'px', 'important');
   sm.style.setProperty('max-height', h + 'px', 'important');
@@ -6639,6 +6645,14 @@ window.addEventListener('resize', () => {
 window.addEventListener('orientationchange', () => {
   setTimeout(_reapplyMapHeight, 200);
 });
+// v400 : sur iOS, visualViewport.resize fire quand la zone visible change
+// (entree/sortie plein ecran, URL bar show/hide) — utile pour relancer la
+// mise en page de la map avec la VRAIE hauteur visible.
+if (typeof _isIOSDevice === 'function' && _isIOSDevice() && window.visualViewport) {
+  window.visualViewport.addEventListener('resize', () => {
+    _reapplyMapHeight();
+  });
+}
 function toggleStarCalib() {
   document.body.classList.toggle('calib-star-mode');
   const el = document.getElementById('street-star-corner');
