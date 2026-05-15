@@ -325,6 +325,143 @@ const charData = {
   robot:   { name: 'Pixel', img: 'assets/avatar_robot_1776108872947.png?v=2',  backVideo: 'assets/pixel marche de dos.mp4', chromaKey: 'softGreenKey', backImg: null, walkRate: 0.6, profileImg: 'assets/pixel_de_profil-removebg-preview.png', faceImg: 'assets/pixel_face.jpg',      faceImgClean: 'assets/pixel_face-removebg-preview.png' }
 };
 
+// ============================================================
+// CHROMA KEY iOS-COMPATIBLE (v395)
+// ============================================================
+// iOS Safari ne supporte PAS fiablement les filtres SVG sur <video>
+// (ex: filter: url(#greenKey) reste sans effet -> le perso garde son
+// cadre vert). Sur iOS uniquement, on dessine la video frame-par-frame
+// dans un <canvas> place au-dessus, et on applique le chroma key en
+// manipulation pixel JS. Un MutationObserver mirroe automatiquement
+// transform/style de la video sur le canvas -> toutes les animations
+// existantes (marche, scale) fonctionnent sans toucher au code appelant.
+
+function _isIOSDevice() {
+  const ua = navigator.userAgent || '';
+  if (/iPad|iPhone|iPod/.test(ua)) return true;
+  // iPadOS 13+ rapporte 'MacIntel' mais avec touch
+  if (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) return true;
+  return false;
+}
+
+// Parametres chroma par type, calibres pour matcher visuellement les
+// filtres SVG #greenKey / #softGreenKey / #ultraSoftGreenKey / #whiteKey.
+function _chromaParamsForType(type) {
+  if (type === 'whiteKey') {
+    return { kind: 'white', threshold: 232 };
+  }
+  // Green keys : 'g doit etre dominant ET pas trop sombre'
+  const map = {
+    'ultraSoftGreenKey': { gMin: 110, gOverR: 1.45, gOverB: 1.45 },
+    'softGreenKey':      { gMin:  80, gOverR: 1.25, gOverB: 1.25 },
+    'aiGreenKey':        { gMin:  70, gOverR: 1.20, gOverB: 1.20 },
+    'greenKey':          { gMin:  60, gOverR: 1.15, gOverB: 1.15 },
+    'greenKeyShadow':    { gMin:  60, gOverR: 1.15, gOverB: 1.15 },
+    'leonGreenKey':      { gMin:  70, gOverR: 1.20, gOverB: 1.20 }
+  };
+  return Object.assign({ kind: 'green' }, map[type] || map.greenKey);
+}
+
+function _applyChromaToImageData(d, p) {
+  if (p.kind === 'white') {
+    const t = p.threshold;
+    for (let i = 0; i < d.length; i += 4) {
+      if (d[i] > t && d[i+1] > t && d[i+2] > t) d[i+3] = 0;
+    }
+  } else {
+    const gMin = p.gMin, gOverR = p.gOverR, gOverB = p.gOverB;
+    for (let i = 0; i < d.length; i += 4) {
+      const r = d[i], g = d[i+1], b = d[i+2];
+      if (g > gMin && g > r * gOverR && g > b * gOverB) d[i+3] = 0;
+    }
+  }
+}
+
+// Installe le canvas chroma-key sur une <video>. No-op si non-iOS.
+// Retourne le canvas cree (ou existant) pour ref. Idempotent.
+function setupCanvasChromaKeyForVideo(video, chromaType) {
+  if (!_isIOSDevice()) return null;
+  if (!video) return null;
+  if (video._chromaCanvas && video._chromaType === chromaType) {
+    // Deja installe pour le bon type
+    return video._chromaCanvas;
+  }
+  // Si chroma type a change, retire l'ancien observer/raf
+  if (video._chromaStop) { try { video._chromaStop(); } catch(e){} }
+  if (video._chromaObs)  { try { video._chromaObs.disconnect(); } catch(e){} }
+
+  const parent = video.parentElement;
+  if (!parent) return null;
+
+  // Reutilise le canvas existant ou en cree un nouveau
+  let canvas = video._chromaCanvas;
+  if (!canvas) {
+    canvas = document.createElement('canvas');
+    canvas.id = (video.id || 'hero-video') + '-canvas';
+    parent.insertBefore(canvas, video.nextSibling);
+  }
+  // Le canvas reprend les classes de la video -> meme positionnement CSS
+  canvas.className = video.className;
+  // La video sert de source : on la cache (visibility) tout en gardant
+  // le layout. play() continue de fonctionner sur visibility:hidden.
+  video.style.visibility = 'hidden';
+  // Le canvas prend la place de la video au-dessus visuellement
+  canvas.style.pointerEvents = 'none';
+
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  const params = _chromaParamsForType(chromaType);
+
+  let rafId = null;
+  let lastDrawnTime = -1;
+  const draw = () => {
+    if (video.readyState >= 2 && video.videoWidth > 0) {
+      // Redimensionne le canvas a la resolution intrinseque de la video
+      if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+      }
+      // Ne redessine que si la video a avance (evite du travail inutile)
+      const t = video.currentTime;
+      if (t !== lastDrawnTime) {
+        lastDrawnTime = t;
+        try {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          _applyChromaToImageData(img.data, params);
+          ctx.putImageData(img, 0, 0);
+        } catch(e) { /* tainted canvas / cross-origin : on ne plante pas */ }
+      }
+    }
+    rafId = requestAnimationFrame(draw);
+  };
+  draw();
+
+  // Mirroe les changements de style (transform, opacity, display, transition)
+  // de la video sur le canvas — toutes les animations existantes fonctionnent.
+  const syncStyles = () => {
+    const v = video.style;
+    const c = canvas.style;
+    c.transform = v.transform;
+    c.transition = v.transition;
+    c.opacity = v.opacity;
+    c.display = v.display === 'none' ? 'none' : '';
+    // Filter doit etre 'none' sur le canvas (le keying est deja fait pixel)
+    c.filter = 'none';
+    c.webkitFilter = 'none';
+  };
+  syncStyles();
+  const mo = new MutationObserver(syncStyles);
+  mo.observe(video, { attributes: true, attributeFilter: ['style', 'class'] });
+  // Re-applique aussi la class si elle change
+  const classObs = () => { canvas.className = video.className; };
+
+  video._chromaCanvas = canvas;
+  video._chromaType = chromaType;
+  video._chromaStop = () => { if (rafId) cancelAnimationFrame(rafId); };
+  video._chromaObs = mo;
+  return canvas;
+}
+
 const vfCorrectAnswers = [true, false, true, false];
 
 // Quiz chapitre 2 : (1) IA crée images avec mots, (2) IA dessine sans avoir vu, (3) IA peut se tromper, (4) IA dessine par plaisir
@@ -1285,6 +1422,12 @@ function goToScreen(screenIdentifier, force) {
       vid2.style.display = 'none';
       vid2.style.opacity = '0';
       if (vidSrc.getAttribute('src') !== back) { vidSrc.src = back; vid2.load(); }
+      // v395 : iOS Safari ne supporte pas SVG filter sur <video> -> le perso
+      // garde son cadre vert. On installe un canvas chroma-key qui rend la
+      // video sans fond. No-op sur Android/PC (SVG filter fonctionne).
+      if (typeof setupCanvasChromaKeyForVideo === 'function') {
+        setupCanvasChromaKeyForVideo(vid2, chroma);
+      }
 
       let _seekRetries = 0;
       const reveal = () => {
