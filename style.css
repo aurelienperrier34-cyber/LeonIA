@@ -891,8 +891,16 @@ body.novel-mode .dialogue-bubble::before {
   display: none;
   z-index: 12;
   transform: translate(-50%, -50%);
+  /* v425 : touch-action manipulation supprime le delai 300ms iOS Safari
+     sur tap + bloque le pinch-zoom sur la zone -> single tap fiable. */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   /* Default : invisible. Devient visible quand .active (apres karaoke) */
 }
+/* v425 : la video de fond c2s5 (ajoutee en v424) pourrait capter les taps
+   sur iOS (quirk video elements). On la rend transparente aux pointer events
+   - elle n'a pas de controles ni de purpose interactif. */
+#leon-video-c2s5 { pointer-events: none; }
 .c2s5-defect-zone.active {
   display: block;
 }
