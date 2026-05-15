@@ -190,11 +190,21 @@ body.cc-off .dialogue-who { display: none !important; }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html { min-height: 100vh; min-height: 100dvh; background-color: var(--cream); }
 body {
   font-family: 'Nunito', sans-serif; background-color: var(--cream);
-  color: var(--dark); min-height: 100vh; overflow-x: hidden;
+  color: var(--dark);
+  /* v405 : 100dvh (dynamic viewport height) au lieu de 100vh pour suivre la
+     vraie zone visible quand iOS Safari entre/sort de plein ecran via le
+     bouton FS de l'app (sinon bande couleur body en bas car 100vh fige a
+     l'ancienne hauteur). Fallback 100vh pour vieux browsers. */
+  min-height: 100vh; min-height: 100dvh;
+  overflow-x: hidden;
   overscroll-behavior-y: none; transition: background-color 0.4s;
 }
+/* v405 : html suit le mode du body (cream / violet) pour qu'aucune bande
+   ne soit visible meme si body est plus petit que html. */
+html:has(body.map-mode) { background-color: #E8D5FF; }
 
 body.map-mode { background-color: #E8D5FF; }
 /* v404 : pinne #screen-map au viewport via position:fixed + inset:0 — universel
@@ -225,7 +235,8 @@ body.map-mode #screen-map {
 /* body.ios-device.map-mode { background-color: #1a0d2e; } */
 
 .app {
-  width: 100%; min-height: 100vh; position: relative; z-index: 10;
+  /* v405 : 100dvh pour suivre la zone visible iOS en plein ecran. */
+  width: 100%; min-height: 100vh; min-height: 100dvh; position: relative; z-index: 10;
   display: flex; flex-direction: column; padding: 15px 5vw 40px;
   background-color: var(--white); transition: all 0.4s;
 }
