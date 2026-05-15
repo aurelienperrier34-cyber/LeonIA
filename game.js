@@ -1587,7 +1587,7 @@ function goToScreen(screenIdentifier, force) {
             // v418 retirait l early-loop completement, mais le user veut conserver
             // ce skip esthetique. v420 (re-encodage 19->2.3 Mbps) a regle le vrai
             // probleme de decodeur sous-dimensionne.
-            const LOOP_BEFORE_END = 1.0;
+            const LOOP_BEFORE_END = 2.0;
             if (v._earlyLoop) v.removeEventListener('timeupdate', v._earlyLoop);
             v._earlyLoop = () => {
               if (v.duration && v.currentTime >= v.duration - LOOP_BEFORE_END) {
@@ -1597,12 +1597,16 @@ function goToScreen(screenIdentifier, force) {
             };
             v.addEventListener('timeupdate', v._earlyLoop);
           },
-          // v419 : RETIRE onComplete qui pausait la video. Sur mobile (touch-only),
-          // playStoryScene appelle onComplete IMMEDIATEMENT apres le fade-in du
-          // texte (~80ms apres onLeonStart) -> la video etait paused ~quart de
-          // seconde apres avoir demarre. La video doit jouer en continu (tourbillon
-          // d images) tant qu on est sur c2s4. Elle sera paused automatiquement
-          // quand on quittera la scene (cleanup via screen change).
+          // v422 : pause la video a la fin de l audio Leon (comme les autres
+          // scenes c2). On utilise onLeonEnd (event 'ended' de leonAudio, fonctionne
+          // mobile + desktop), pas onComplete (qui fire trop tot sur mobile car
+          // skip du typewriter). Retire aussi l early-loop pour proprete.
+          onLeonEnd: () => {
+            const v = document.getElementById('leon-video-c2s4');
+            if (!v) return;
+            if (v._earlyLoop) { v.removeEventListener('timeupdate', v._earlyLoop); v._earlyLoop = null; }
+            try { v.pause(); } catch(e) {}
+          }
         },
         c2s5: {
           narratorAudio: 'assets/chapitre_2/t5_narrateur.mp3', leonAudio: 'assets/chapitre_2/t5_leon.mp3',
