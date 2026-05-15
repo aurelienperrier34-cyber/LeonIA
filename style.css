@@ -190,72 +190,16 @@ body.cc-off .dialogue-who { display: none !important; }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { min-height: 100vh; min-height: 100dvh; background-color: var(--cream); }
 body {
   font-family: 'Nunito', sans-serif; background-color: var(--cream);
-  color: var(--dark);
-  /* v405 : 100dvh (dynamic viewport height) au lieu de 100vh pour suivre la
-     vraie zone visible quand iOS Safari entre/sort de plein ecran via le
-     bouton FS de l'app (sinon bande couleur body en bas car 100vh fige a
-     l'ancienne hauteur). Fallback 100vh pour vieux browsers. */
-  min-height: 100vh; min-height: 100dvh;
-  overflow-x: hidden;
+  color: var(--dark); min-height: 100vh; overflow-x: hidden;
   overscroll-behavior-y: none; transition: background-color 0.4s;
 }
-/* v405 : html suit le mode du body (cream / violet) pour qu'aucune bande
-   ne soit visible meme si body est plus petit que html. */
-html:has(body.map-mode) { background-color: #E8D5FF; }
 
 body.map-mode { background-color: #E8D5FF; }
-/* v406 : en modes immersifs (map / street / novel), on lock html et body au
-   viewport visible (overflow hidden + position fixed) pour empecher tout
-   debordement qui revele une bande de couleur body en bas. Universal
-   (fonctionne sur iOS Safari FS, PWA, Android, desktop). */
-html:has(body.map-mode),
-html:has(body.street-mode),
-html:has(body.novel-mode) {
-  overflow: hidden !important;
-  height: 100vh; height: 100dvh;
-}
-body.map-mode,
-body.street-mode,
-body.novel-mode {
-  position: fixed !important;
-  top: 0; left: 0; right: 0; bottom: 0;
-  width: 100%;
-  overflow: hidden !important;
-  height: 100vh; height: 100dvh;
-}
-/* v404 : pinne #screen-map au viewport via position:fixed + inset:0 — universel
-   (pas iOS-only). Quand la barre d'URL Safari iOS se cache, innerHeight ne
-   reflete pas instantanement la zone visible et la map (sized en px par JS)
-   laisse une bande violette du body.map-mode en bas. Avec inset:0, la map
-   suit toujours le viewport visible. Desktop/Android : inchange visuellement
-   (la map remplissait deja l'ecran). */
-body.map-mode #screen-map {
-  position: fixed !important;
-  top: 0 !important; left: 0 !important;
-  right: 0 !important; bottom: 0 !important;
-  width: auto !important; height: auto !important;
-  min-height: 0 !important; max-height: none !important;
-}
-/* v398/v399 : sur iOS en plein ecran, une bande de la couleur du body
-   debordait dans les zones non couvertes par le contenu (notamment en bas,
-   iOS Safari etend la zone visible en FS sans que innerHeight ne reflète
-   pile la nouvelle taille). On force le body sur iOS en :
-   - NOIR par defaut (les scenes immersives ont leur propre fond)
-   - #1a0d2e (meme couleur que le bg du #screen-map) en mode map -> la bande
-     eventuelle sous la map devient invisible visuellement.
-   Desktop/Android intacts. */
-/* v403 : revoque (v398/v399). La classe body.ios-device n'est plus posee
-   par game.js (cf. _tagIOSDevice). Le fond cream de base s'applique aussi
-   sur iOS — fini les bandes sombres sous toutes les scenes. */
-/* body.ios-device { background-color: #000; } */
-/* body.ios-device.map-mode { background-color: #1a0d2e; } */
 
 .app {
-  /* v405 : 100dvh pour suivre la zone visible iOS en plein ecran. */
-  width: 100%; min-height: 100vh; min-height: 100dvh; position: relative; z-index: 10;
+  width: 100%; min-height: 100vh; position: relative; z-index: 10;
   display: flex; flex-direction: column; padding: 15px 5vw 40px;
   background-color: var(--white); transition: all 0.4s;
 }
@@ -674,19 +618,9 @@ body.street-mode .app {
 body.street-mode #main-header,
 body.street-mode #main-progress { display: none !important; }
 body.street-mode #screen-2 .immersive-scene {
-  /* v406 : pinne la scene rue au viewport visible via position:fixed + inset:0
-     comme la map (v404). Les unites 100dvh/100vh ne suivent pas fiablement
-     iOS Safari quand l URL bar/FS API change la zone visible -> bande couleur
-     body en bas. inset:0 corrige universellement. */
-  position: fixed !important;
-  top: 0 !important; left: 0 !important;
-  right: 0 !important; bottom: 0 !important;
-  width: auto !important; height: auto !important;
-  min-height: 0 !important; max-height: none !important;
-  max-width: none !important;
-  border-radius: 0; border: none; margin: 0;
+  width: 100vw; height: 100dvh; min-height: 100dvh; max-height: none;
+  border-radius: 0; border: none; margin: 0; max-width: none;
   box-shadow: none;
-  z-index: 1;
 }
 body.street-mode #screen-2 .parent-tip { display: none; }
 
