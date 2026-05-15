@@ -7054,8 +7054,17 @@ function applyC2s7Overlays() {
   const rect = _c2s7VideoContentRect();
   if (!rect) return;
   const Cw = scene.clientWidth || 1, Ch = scene.clientHeight || 1;
-  // v429 : 0.110 etait encore trop a droite sur iPad. Decale a 0.100.
-  const TOP = 0.08, LEFT = 0.100, W = 0.33, H = 0.45;
+  // v430 : LEFT depend de l aspect ratio du viewport.
+  // - iPad ~4:3 (narrow, Cw/Ch < 16/9) : video extends horizontally beyond
+  //   container -> les offsets CSS fixes en % conteneur sont visuellement
+  //   trop faibles. Compensation : LEFT plus bas (0.100) -> toile shift gauche.
+  // - Pixel ~19.5:9 (wide, Cw/Ch > 16/9) : pas de extension horizontale ->
+  //   les offsets sont pile bons. LEFT = 0.115 (legerement plus grand).
+  const VR = 16 / 9;
+  const isWide = (Cw / Ch) > VR;
+  const TOP = 0.08;
+  const LEFT = isWide ? 0.115 : 0.100;
+  const W = 0.33, H = 0.45;
   scene.style.setProperty('--canvas-left',   ((rect.x + rect.w * LEFT) / Cw * 100) + '%');
   scene.style.setProperty('--canvas-top',    ((rect.y + rect.h * TOP)  / Ch * 100) + '%');
   scene.style.setProperty('--canvas-width',  ((rect.w * W)             / Cw * 100) + '%');
