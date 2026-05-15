@@ -207,6 +207,25 @@ body {
 html:has(body.map-mode) { background-color: #E8D5FF; }
 
 body.map-mode { background-color: #E8D5FF; }
+/* v406 : en modes immersifs (map / street / novel), on lock html et body au
+   viewport visible (overflow hidden + position fixed) pour empecher tout
+   debordement qui revele une bande de couleur body en bas. Universal
+   (fonctionne sur iOS Safari FS, PWA, Android, desktop). */
+html:has(body.map-mode),
+html:has(body.street-mode),
+html:has(body.novel-mode) {
+  overflow: hidden !important;
+  height: 100vh; height: 100dvh;
+}
+body.map-mode,
+body.street-mode,
+body.novel-mode {
+  position: fixed !important;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%;
+  overflow: hidden !important;
+  height: 100vh; height: 100dvh;
+}
 /* v404 : pinne #screen-map au viewport via position:fixed + inset:0 — universel
    (pas iOS-only). Quand la barre d'URL Safari iOS se cache, innerHeight ne
    reflete pas instantanement la zone visible et la map (sized en px par JS)
@@ -655,9 +674,19 @@ body.street-mode .app {
 body.street-mode #main-header,
 body.street-mode #main-progress { display: none !important; }
 body.street-mode #screen-2 .immersive-scene {
-  width: 100vw; height: 100dvh; min-height: 100dvh; max-height: none;
-  border-radius: 0; border: none; margin: 0; max-width: none;
+  /* v406 : pinne la scene rue au viewport visible via position:fixed + inset:0
+     comme la map (v404). Les unites 100dvh/100vh ne suivent pas fiablement
+     iOS Safari quand l URL bar/FS API change la zone visible -> bande couleur
+     body en bas. inset:0 corrige universellement. */
+  position: fixed !important;
+  top: 0 !important; left: 0 !important;
+  right: 0 !important; bottom: 0 !important;
+  width: auto !important; height: auto !important;
+  min-height: 0 !important; max-height: none !important;
+  max-width: none !important;
+  border-radius: 0; border: none; margin: 0;
   box-shadow: none;
+  z-index: 1;
 }
 body.street-mode #screen-2 .parent-tip { display: none; }
 
