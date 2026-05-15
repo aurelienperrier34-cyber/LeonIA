@@ -7073,7 +7073,9 @@ function applyC2s7Overlays() {
   // -> correctionFactor = -0.156.
   const TOP = 0.08;
   const LEFT_CANON = 0.13;
-  const CORRECTION = -0.156;
+  // v432 : correction moins agressive (-0.080 au lieu de -0.156). v431 mettait
+  // iPad a 0.100 (trop a gauche). 0.115 (iPad) / 0.13 (Pixel) -> milieu OK.
+  const CORRECTION = -0.080;
   const LEFT = LEFT_CANON + CORRECTION * (1 - Cw / rect.w);
   const W = 0.33, H = 0.45;
   scene.style.setProperty('--canvas-left',   ((rect.x + rect.w * LEFT) / Cw * 100) + '%');
