@@ -4658,12 +4658,6 @@ function _c2s2ApplyMagnifierUpdate() {
   if (!magnifier) return;
   if (magnifier.classList.contains('hint-wiggle')) {
     magnifier.classList.remove('hint-wiggle');
-    // v412.1 : reset left/top initiaux (50% / 52% poses pour la hint-wiggle).
-    // Sans ca, JS translate3d(x,y) s'ajoute a (50%, 52%) -> loupe decalee
-    // d'environ une demi-scene par rapport au doigt. Avec left/top:0,
-    // translate3d(x,y) place la loupe pile a (x,y) dans la sceneEl.
-    magnifier.style.left = '0';
-    magnifier.style.top  = '0';
   }
   const x = _c2s2PendingPt.clientX - _c2s2SceneRect.left;
   const y = _c2s2PendingPt.clientY - _c2s2SceneRect.top;
@@ -4678,10 +4672,14 @@ function _c2s2ApplyMagnifierUpdate() {
       if (dx*dx + dy*dy < 2500) { overSpot = h.el; break; } // 50^2
     }
   }
-  // Applique transform avec/sans scale en fonction de l'etat hover NOUVEAU
-  // (pas le precedent) -> reactivite immediate du scale.
-  const scalePart = overSpot ? ' scale(1.08)' : '';
-  magnifier.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%)' + scalePart;
+  // v414 : retour a left/top (qui marchait avant v412). Le translate3d JS
+  // entrait en conflit avec le translate(-50%,-50%) CSS pour des raisons de
+  // containing block / scale parent -> decalage doigt/loupe. left/top en px
+  // est plus simple et marche partout. preventDefault + rAF + cache restent.
+  // Le transform CSS de base translate(-50%,-50%) gere le centrage.
+  // .over-hotspot gere son scale(1.08) via CSS.
+  magnifier.style.left = x + 'px';
+  magnifier.style.top  = y + 'px';
 
   if (overSpot) {
     magnifier.classList.add('over-hotspot');
