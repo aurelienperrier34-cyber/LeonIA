@@ -5020,26 +5020,13 @@ function activateC5s3Game() {
   // Montre phase 1 (la question)
   const p1 = document.getElementById('c5s3-phase1');
   if (p1) p1.style.display = 'flex';
-  // v465 : re-wire les boutons explicitement via JS (onclick HTML ne fire pas
-  // toujours sur iOS Safari avec certaines positions / stacking contexts).
-  // On utilise pointerdown qui marche universellement (click+touch).
+  // v467 : revient au simple onclick (le pointerdown avec preventDefault
+  // de v465 pouvait bloquer le click sur RÉELLE sur iOS). Le onclick HTML
+  // existe deja, on s assure juste qu il est bien wired.
   const realBtn = document.querySelector('#c5s3-phase1 .c5s3-q-real');
   const aiBtn   = document.querySelector('#c5s3-phase1 .c5s3-q-ai');
-  const wire = (btn, val) => {
-    if (!btn) return;
-    const handler = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      answerC5s3Phase1(val);
-    };
-    btn.removeEventListener('pointerdown', btn._c5s3Handler || (()=>{}));
-    btn._c5s3Handler = handler;
-    btn.addEventListener('pointerdown', handler);
-    // Keep onclick comme fallback (PC non tactile sans pointerdown)
-    btn.onclick = handler;
-  };
-  wire(realBtn, true);
-  wire(aiBtn, false);
+  if (realBtn) realBtn.onclick = () => answerC5s3Phase1(true);
+  if (aiBtn)   aiBtn.onclick   = () => answerC5s3Phase1(false);
 }
 
 function answerC5s3Phase1(saysReal) {
