@@ -8217,11 +8217,9 @@ function _c4s2HasSpeechAPI() {
   }
   // Backup : explicitement detecte file://
   if (location && location.protocol === 'file:') return false;
-  // v438 : iOS Safari expose l API SpeechRecognition mais l implementation n est
-  // pas fiable (start() ne declenche pas de demande de permission, ne capture pas
-  // l audio). Pour ne pas montrer un bouton micro non-fonctionnel aux enfants,
-  // on retourne false sur iOS -> bouton micro cache, seules les cartes tap restent.
-  if (typeof _isIOSDevice === 'function' && _isIOSDevice()) return false;
+  // v439 : revert v438. iOS Safari 14.5+ supporte SpeechRecognition (vrai).
+  // Le bug user etait probablement un permission denied silencieux, pas
+  // l API. On garde le bouton micro et on ameliore le handling d erreur.
   return true;
 }
 
@@ -8263,7 +8261,20 @@ function c4s2ToggleMic() {
       console.warn('[c4s2] mic error:', ev.error);
       _c4s2StopMic();
       if (ev.error === 'not-allowed' || ev.error === 'service-not-allowed') {
+        // v439 : message visible au user quand permission micro refusee (iOS surtout).
+        // L'enfant ne sait pas pourquoi le bouton ne marche pas - on l aide.
+        const label = document.getElementById('c4s2-mic-label');
+        if (label) {
+          const isIOS = typeof _isIOSDevice === 'function' && _isIOSDevice();
+          label.textContent = isIOS
+            ? 'Microphone bloque : Reglages > Safari > Microphone'
+            : 'Microphone refuse — utilise les cartes ci-dessus';
+        }
         _c4s2HideMic();
+      } else if (ev.error === 'no-speech') {
+        // Pas d audio detecte — message court, on garde le bouton actif
+        const label = document.getElementById('c4s2-mic-label');
+        if (label) label.textContent = 'Je n ai rien entendu, re-essaie';
       }
     };
     _c4s2Recognition.onend = () => { _c4s2StopMic(); };
