@@ -8328,6 +8328,18 @@ function c4s2AskQuestion(qid, cardEl) {
   asked.push(qid);
   state.c4s2QuestionsAsked = asked;
   if (cardEl) cardEl.classList.add('used');
+  // v437 : warm-up speechSynthesis iOS DANS le user gesture du clic.
+  // Sans ca, le speak() declenche 1.2s plus tard (apres setTimeout) sort
+  // du gesture context iOS -> TTS silencieux + utt.onend ne fire pas ->
+  // _c4s2ShowMic n est jamais appele -> bouton 'Pose ta question' ne
+  // reapparait pas. Le silent utterance debloque le TTS pour la session.
+  try {
+    if (typeof window.speechSynthesis !== 'undefined') {
+      const warm = new SpeechSynthesisUtterance('');
+      warm.volume = 0;
+      window.speechSynthesis.speak(warm);
+    }
+  } catch(e) {}
   // v374 : pendant que Bot reflechit + repond, on cache la bulle "Pose ta
   // question a voix haute" (mic-row) — elle sera reaffichee a la fin du
   // typewriter (cf. _c4s2Typewriter), sauf si c'etait la 3e question.
@@ -8386,10 +8398,21 @@ function _c4s2SpeakAsBot(text) {
     } catch(e) {}
     utt.onerror = (ev) => console.warn('[c4s2] tts error:', ev.error);
     // v381 : quand Bot a FINI de parler -> reafficher le mic
+    let _onEndFired = false;
     utt.onend = () => {
+      _onEndFired = true;
       const count = (state.c4s2QuestionsAsked || []).length;
       if (count < 3) _c4s2ShowMic();
     };
+    // v437 : fallback iOS Safari ou utt.onend ne fire pas toujours fiable.
+    // On reaffiche le mic apres la duree estimee + marge, sauf si onend
+    // a deja fire. Estimation : ~13 chars/seconde + 800ms marge.
+    const estimatedMs = Math.max(2000, cleanText.length * 77 + 800);
+    setTimeout(() => {
+      if (_onEndFired) return;
+      const count = (state.c4s2QuestionsAsked || []).length;
+      if (count < 3) _c4s2ShowMic();
+    }, estimatedMs);
     // Garde une reference pour eviter le garbage collection precoce
     window._c4s2Utterance = utt;
     window.speechSynthesis.speak(utt);
