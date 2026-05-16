@@ -6024,10 +6024,26 @@ function selectC5Module(btn) {
   saveState();
   // Quand 3 sont choisis : on dévoile le robot
   if (state.c5RobotModules.length === 3) {
-    // v483 : v482 a corrige le bug pointerdown vs click iOS. Maintenant le
-    // clic 3e module est un vrai user gesture iOS -> revealC5Robot peut
-    // speak normalement apres le countdown (comme sur PC). Plus besoin du
-    // hack v481 early-speak.
+    // v484 : iOS bloque encore le speak() apres setTimeout (gesture window
+    // expire ~4s). v482 a permis le click gesture, mais le speak doit etre
+    // synchrone. Hack iOS-only : speak greeting dans le clic, accepter
+    // overlap audio avec countdown.
+    const isIOSDev = typeof _isIOSDevice === 'function' && _isIOSDevice();
+    if (isIOSDev && typeof window.speechSynthesis !== 'undefined') {
+      try {
+        const mods = (state.c5RobotModules || []).slice().sort();
+        const key = mods.join('+');
+        const persona = (typeof C5_ROBOT_PERSONAS !== 'undefined' && C5_ROBOT_PERSONAS[key]) || { name: 'Stella' };
+        const greeting = `Bonjour ! Je suis ${persona.name}. Je vais te tenir compagnie.`;
+        const utt = new SpeechSynthesisUtterance(greeting);
+        utt.lang = 'fr-FR';
+        utt.pitch = 1.15;
+        utt.rate = 0.95;
+        utt.volume = 1;
+        window._c5GreetingQueued = true;
+        window.speechSynthesis.speak(utt);
+      } catch(e) {}
+    }
     revealC5Robot();
   } else {
     // Sinon, masque le résultat
