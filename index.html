@@ -82,7 +82,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v456</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v457</div>
 
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
@@ -805,7 +805,7 @@
     <!-- c2s5 : L'IA peut se tromper -->
     <div class="screen" id="screen-c2s5">
       <div class="story-scene full-height-scene scene-4-machine">
-        <!-- v456 : remplace l'image statique par la video Leon_machine_image
+        <!-- v457 : remplace l'image statique par la video Leon_machine_image
              (re-encodee 5.5->2.2 Mbps, partagee avec c2s2). Poster = meme image
              machine_image.png pour le fallback. -->
         <video src="assets/Leon_machine_image.mp4?v=2" poster="assets/machine_image.png" id="leon-video-c2s5" class="leon-machine-video" muted loop playsinline preload="auto"></video>
@@ -1442,9 +1442,14 @@
               </span>
             </button>
           </div>
-          <!-- v456 : frame "Bot repond / a ton tour" + texte jaune retire.
-               Les reponses Bot sont deja affichees dans chaque carte question
-               via .q-answer (visible apres clic). -->
+          <!-- v457 : frame restaure mais cache par defaut (display:none).
+               Apparait UNIQUEMENT en phase 2 (hunt mode) via activateHuntModeC4
+               qui le show. Pendant la phase 1 (4 questions), les reponses Bot
+               sont dans chaque carte question via .q-answer. -->
+          <div class="sound-result" id="c4s6-result" style="display:none">
+            <p class="sound-result-label" id="c4s6-result-label">Bot répond&nbsp;:</p>
+            <p class="sound-result-text" id="c4s6-answer">— —</p>
+          </div>
           <button class="btn btn-primary btn-large floating-btn" id="btn-to-c4s7" onclick="goToScreen('c4s7')">Au quiz&nbsp;! 🎮</button>
         </div>
       </div>

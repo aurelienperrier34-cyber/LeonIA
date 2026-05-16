@@ -2058,6 +2058,10 @@ function goToScreen(screenIdentifier, force) {
     if (label) label.textContent = 'Bot répond :';
     // v455 : texte aligne sur l audio Leon (v452 dans HTML, restaure ici au reset)
     if (instr) instr.textContent = '👆 Clique sur une question et donne la réponse. Clique à nouveau pour voir la réponse de Bot.';
+    // v457 : cache le frame .sound-result au reset (revisit de la scene).
+    // Il sera re-show en phase 2 via activateHuntModeC4.
+    const result = document.getElementById('c4s6-result');
+    if (result) result.style.display = 'none';
     document.getElementById('btn-to-c4s7')?.classList.remove('show-btn');
   }
 
@@ -5745,6 +5749,11 @@ function activateHuntModeC4() {
     b.disabled = false;
     b.onclick = () => markErrorC4(b);
   });
+  // v457 : show le frame sound-result UNIQUEMENT en phase 2 (hunt mode).
+  // Pendant la phase 1, il est cache (les reponses sont dans les .q-answer
+  // de chaque carte). Voir HTML : sound-result a style=display:none par defaut.
+  const result = document.getElementById('c4s6-result');
+  if (result) result.style.display = '';
   const ans = document.getElementById('c4s6-answer');
   const label = document.getElementById('c4s6-result-label');
   if (label) label.textContent = 'À toi de jouer :';
