@@ -8014,12 +8014,109 @@ body:has(#screen-creator.active) #global-star-corner {
   50%      { transform: scale(1.2) rotate(180deg); opacity: 1; }
 }
 
-/* === LIVRE 3D === */
+/* === NIVEAU + ACTIONS (phase pick) === */
+.creator-level-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.5vw, 16px);
+  flex-wrap: wrap;
+  margin: clamp(8px, 1.5vw, 14px) 0;
+}
+.creator-level-label {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 1.3vw, 1rem);
+  color: #FFE166;
+}
+.creator-level-btns {
+  display: inline-flex;
+  gap: clamp(6px, 1vw, 10px);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.creator-level-btn {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.18);
+  border-radius: 999px;
+  padding: clamp(6px, 1vw, 10px) clamp(12px, 1.8vw, 18px);
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.18s, border-color 0.18s, transform 0.15s;
+}
+.creator-level-btn:hover { background: rgba(255,255,255,0.14); }
+.creator-level-btn.selected {
+  background: rgba(255,209,102,0.22);
+  border-color: #FFE166;
+  color: #FFE166;
+  box-shadow: 0 0 14px rgba(255,225,102,0.35);
+}
+
+.creator-actions {
+  display: flex;
+  gap: clamp(10px, 1.8vw, 16px);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.creator-surprise {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 1.3vw, 1rem);
+  padding: clamp(10px, 1.5vw, 14px) clamp(18px, 2.5vw, 24px);
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.25);
+  border-radius: 999px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.18s, transform 0.15s;
+}
+.creator-surprise:hover { background: rgba(255,255,255,0.2); transform: scale(1.04); }
+
+/* === LIVRE 3D STYLE GRIMOIRE === */
 .creator-phase-book {
   align-items: center;
   justify-content: flex-start;
   text-align: center;
+  position: relative;
+  /* fond ambient nuit etoilee + glow central */
+  background:
+    radial-gradient(ellipse at 50% 55%, rgba(120,90,200,0.35) 0%, transparent 55%),
+    radial-gradient(circle at 20% 30%, rgba(255,225,102,0.08) 0%, transparent 30%),
+    radial-gradient(circle at 80% 70%, rgba(155,93,229,0.1) 0%, transparent 30%);
 }
+/* Etoiles flottantes via pseudo */
+.creator-phase-book::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 12% 20%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1.5px 1.5px at 80% 10%, rgba(255,225,102,0.8), transparent),
+    radial-gradient(1.5px 1.5px at 30% 80%, rgba(200,180,255,0.7), transparent),
+    radial-gradient(2px 2px at 65% 60%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(2px 2px at 50% 15%, rgba(255,225,102,0.4), transparent),
+    radial-gradient(1.5px 1.5px at 10% 60%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 75% 85%, rgba(200,180,255,0.6), transparent);
+  background-size: 100% 100%;
+  pointer-events: none;
+  animation: starsFloat 12s ease-in-out infinite alternate;
+  opacity: 0.7;
+  z-index: 0;
+}
+@keyframes starsFloat {
+  0%   { transform: translate(0,0); opacity: 0.55; }
+  50%  { opacity: 0.85; }
+  100% { transform: translate(8px, -6px); opacity: 0.55; }
+}
+
 .book-close {
   position: absolute;
   top: clamp(10px, 1.5vw, 18px);
@@ -8035,108 +8132,181 @@ body:has(#screen-creator.active) #global-star-corner {
   font-weight: 800;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  z-index: 10;
+  z-index: 20;
 }
 .book-close:hover { background: rgba(255,255,255,0.28); }
 
 .book-title {
-  font-family: 'Baloo 2', cursive;
-  font-weight: 800;
-  font-size: clamp(1.1rem, 2.4vw, 1.8rem);
+  font-family: 'Cormorant Garamond', 'Baloo 2', cursive;
+  font-weight: 700;
+  font-style: italic;
+  font-size: clamp(1.2rem, 2.6vw, 2rem);
   color: #FFE166;
-  text-shadow: 0 4px 14px rgba(0,0,0,0.6);
-  margin: 0 0 clamp(8px, 1.5vw, 16px) 0;
+  text-shadow: 0 4px 18px rgba(0,0,0,0.7), 0 0 24px rgba(255,225,102,0.3);
+  margin: 0 0 clamp(8px, 1.5vw, 18px) 0;
+  letter-spacing: 0.02em;
+  position: relative;
+  z-index: 5;
 }
 
+/* Stage = perspective container */
 .book-stage {
   flex: 1;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 1500px;
+  perspective: 2000px;
   perspective-origin: 50% 50%;
   min-height: 0;
+  position: relative;
+  z-index: 5;
+  padding: clamp(8px, 1.5vw, 16px);
 }
+
+/* Le livre = aspect ratio paysage, dimensions responsive */
 .book {
   position: relative;
   width: min(94vw, 880px);
-  /* ratio livre paysage ~3:2 */
   aspect-ratio: 3 / 2;
-  max-height: 70dvh;
+  max-height: 72dvh;
   transform-style: preserve-3d;
-  transition: none;
+  /* Halo magique derriere */
+  filter: drop-shadow(0 30px 50px rgba(0,0,0,0.7)) drop-shadow(0 0 30px rgba(255,225,102,0.15));
 }
 
-/* Chaque page = un panel positionne en absolu, on flip via transform */
+/* Reliure (spine) sur la gauche = visible quand on regarde le livre */
+.book::before {
+  content: '';
+  position: absolute;
+  left: -6px; top: 0; bottom: 0;
+  width: 18px;
+  background:
+    linear-gradient(90deg,
+      #1a0d05 0%,
+      #4a2a18 25%,
+      #6b3d24 50%,
+      #4a2a18 75%,
+      #2a1a10 100%);
+  border-radius: 4px 0 0 4px;
+  box-shadow:
+    inset 0 0 6px rgba(0,0,0,0.6),
+    inset -2px 0 4px rgba(0,0,0,0.4);
+  z-index: 0;
+}
+
+/* === PAGES DU LIVRE === */
 .book-page {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #fdfbf7 0%, #f5ebd5 100%);
-  border-radius: clamp(10px, 1.5vw, 18px);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
-  color: #2b1e3e;
-  padding: clamp(14px, 2vw, 28px);
+  /* Parchemin : gradient creme + vignette */
+  background:
+    radial-gradient(ellipse at center, #faf0d8 0%, #f0dfb8 75%, #d8c08a 100%),
+    #f5ebd5;
+  border-radius: 2px 14px 14px 2px;
+  box-shadow:
+    /* Profondeur de la pile de pages */
+    inset 4px 0 8px rgba(120,80,40,0.18),
+    /* Vignette interieure */
+    inset 0 0 80px rgba(120,80,40,0.18),
+    /* Reflet doux */
+    inset 2px 2px 2px rgba(255,255,255,0.4),
+    /* Ombre exterieure */
+    0 4px 12px rgba(0,0,0,0.3);
+  color: #2b1810;
+  padding: clamp(16px, 2.4vw, 32px) clamp(20px, 3vw, 38px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  backface-visibility: hidden;
+  /* Pour le flip 3D */
   transform-origin: left center;
-  transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform 1.1s cubic-bezier(0.65, 0, 0.35, 1);
 }
-.book-page.hidden {
-  display: none;
-}
-.book-page.flipping-out {
-  /* page courante qui s en va vers la gauche (effet livre tourne) */
-  transform: rotateY(-180deg);
-  z-index: 2;
-}
-.book-page.entering {
-  /* page qui apparait depuis la droite */
-  z-index: 1;
+/* Pseudo-element : ornement de coin (decoration) */
+.book-page::after {
+  content: '✦';
+  position: absolute;
+  top: clamp(8px, 1.2vw, 14px);
+  left: clamp(12px, 2vw, 20px);
+  font-size: clamp(0.9rem, 1.4vw, 1.2rem);
+  color: rgba(120, 60, 30, 0.35);
+  pointer-events: none;
 }
 
+.book-page.hidden { display: none; }
+
+/* Flip-out : page actuelle s en va vers la gauche en se tournant */
+.book-page.flipping-out {
+  transform: rotateY(-178deg);
+  /* Pendant la rotation, l ombre suit le mouvement */
+  box-shadow:
+    inset 0 0 80px rgba(120,80,40,0.18),
+    -10px 0 30px rgba(0,0,0,0.4);
+  z-index: 3;
+}
+
+/* Image illustration en haut de page */
 .book-page-image {
   width: 100%;
-  height: clamp(120px, 22dvh, 280px);
-  background: #ddd center/cover no-repeat;
-  border-radius: clamp(8px, 1.2vw, 12px);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
-  margin-bottom: clamp(10px, 1.5vw, 18px);
+  height: clamp(120px, 24dvh, 300px);
+  background: #d4c89a center/cover no-repeat;
+  border-radius: clamp(4px, 0.8vw, 8px);
+  box-shadow:
+    inset 0 0 0 1px rgba(120,80,40,0.3),
+    0 4px 12px rgba(0,0,0,0.15);
+  margin-bottom: clamp(12px, 1.8vw, 22px);
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
 }
 .book-page-image.placeholder {
-  background: linear-gradient(135deg, #c5a0ff, #9b5de5);
+  background: linear-gradient(135deg, #d8b48a, #b8854a 50%, #8a5a2a);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(2rem, 5vw, 4rem);
-  color: rgba(255,255,255,0.7);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  color: rgba(255,240,200,0.8);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
 
+/* Texte serif comme un vrai livre */
 .book-page-text {
-  font-family: 'Nunito', sans-serif;
-  font-size: clamp(0.95rem, 1.7vw, 1.25rem);
-  line-height: 1.55;
-  color: #2b1e3e;
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(1rem, 1.8vw, 1.35rem);
+  line-height: 1.65;
+  color: #2b1810;
   flex: 1;
   overflow-y: auto;
-  text-align: left;
+  text-align: justify;
+  /* Subtle text shadow pour effet papier */
+  text-shadow: 0 0.5px 0 rgba(255,250,240,0.8);
+  padding-right: clamp(6px, 1vw, 10px); /* respiration droite */
 }
 .book-page-text p {
-  margin: 0 0 clamp(8px, 1.2vw, 14px) 0;
+  margin: 0 0 clamp(10px, 1.4vw, 16px) 0;
 }
+/* Lettrine (drop cap) sur le 1er paragraphe */
+.book-page-text p:first-child::first-letter {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 5vw, 3.8rem);
+  line-height: 0.85;
+  float: left;
+  padding: clamp(4px, 0.6vw, 8px) clamp(6px, 1vw, 10px) 0 0;
+  color: #8a3a18;
+  text-shadow: 1px 1px 0 rgba(255,240,200,0.6);
+}
+
 .book-page-number {
   position: absolute;
-  bottom: clamp(8px, 1vw, 14px);
-  right: clamp(14px, 2vw, 22px);
-  font-family: 'Baloo 2', cursive;
-  font-weight: 700;
-  font-size: clamp(0.7rem, 1vw, 0.85rem);
-  color: rgba(43, 30, 62, 0.45);
+  bottom: clamp(10px, 1.4vw, 18px);
+  right: clamp(20px, 2.5vw, 32px);
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-style: italic;
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
+  color: rgba(120, 60, 30, 0.5);
 }
 
 /* === NAV LIVRE === */

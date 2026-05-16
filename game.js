@@ -9121,34 +9121,36 @@ const CREATOR_CATEGORIES = [
   }
 ];
 
-// Catalogue des histoires. Cle = hero_place_item_villain (sans accents).
-// 1 histoire test pour valider le flow. Les 80 autres seront generees.
+// Catalogue des histoires. Cle = level_hero_place_item_villain (sans accents).
+// Pour chaque combo, 3 niveaux possibles : 'courte' (3-4 pages), 'soir' (6
+// pages), 'aventure' (8-10 pages). Pour l instant : quelques histoires de
+// qualite ecrites manuellement, le reste fallback sur _buildPlaceholderStory.
 const CREATOR_STORIES = {
-  'astronaute_planete_baguette_monstre': {
-    title: 'Mila et le secret de la planète mauve',
+  'soir_astronaute_planete_baguette_monstre': {
+    title: 'Mila et le murmure des étoiles',
     pages: [
       {
-        text: 'Mila l\'astronaute posa son vaisseau sur Lila-7, une planète aux montagnes mauves et aux rivières de lumière. Son casque scintillait sous trois soleils. C\'était sa première mission solo, et son cœur battait fort.',
+        text: 'Mila n\'avait que neuf ans, mais elle pilotait déjà son propre petit vaisseau, le <em>Cœur-Lumière</em>. Ce matin-là, elle posa ses bottes argentées sur Lila-7, une planète violette que personne, dans toute la galaxie, n\'avait osé explorer. « Trois soleils… murmura-t-elle en levant les yeux. C\'est presque trop beau pour être vrai. » Le sol crissait doucement sous ses pas, comme s\'il chuchotait des secrets.',
         image: ''
       },
       {
-        text: 'En explorant une grotte de cristal, Mila découvrit une baguette translucide enfouie dans le sable. Quand elle la toucha, elle entendit un murmure : "Aide-nous..." La baguette s\'illumina de mille couleurs.',
+        text: 'Au pied d\'une montagne en forme de spirale, Mila aperçut une lueur étrange entre deux rochers. Elle s\'approcha, le souffle court. C\'était une baguette de cristal, fine comme une plume et transparente comme l\'eau. À l\'instant où ses doigts l\'effleurèrent, une petite voix résonna dans sa tête : <em>« Aide-nous, s\'il te plaît. »</em> Mila sursauta. Ce n\'était pas peur qu\'elle ressentait, mais une vague chaleur, comme si la baguette la connaissait depuis toujours.',
         image: ''
       },
       {
-        text: 'Soudain, un grondement secoua la grotte. Un Monstre gigantesque aux yeux orange surgit de l\'ombre. Il pleurait ! Ses larmes faisaient trembler la planète entière. "Personne ne veut jouer avec moi", sanglota-t-il.',
+        text: 'Soudain, la terre trembla. Un immense Monstre violet émergea de derrière les rochers, plus grand qu\'une fusée. Ses yeux orange brillaient comme deux feux. Mila aurait voulu fuir, mais ses jambes ne bougeaient plus. Le Monstre ouvrit la bouche… et un sanglot terrible en sortit. « Personne ne veut jamais s\'approcher, gémit-il, parce que je suis trop grand, trop laid. » Une larme tomba à ses pieds et fit pousser une fleur turquoise.',
         image: ''
       },
       {
-        text: 'Mila eut une idée. Avec sa baguette, elle dessina dans l\'air des étoiles, des fleurs, des animaux fantastiques. Le Monstre cessa de pleurer et écarquilla ses grands yeux. "Tu... tu joues avec moi ?" murmura-t-il, émerveillé.',
+        text: 'Le cœur de Mila se serra. Elle leva sa baguette, hésita, puis dessina dans l\'air. Aussitôt, des étoiles miniatures, des oiseaux de lumière, des poissons argentés tournoyèrent autour du Monstre. « Tu vois, dit-elle doucement, je ne te trouve pas laid. Je te trouve… extraordinaire. » Le Monstre cligna des yeux, surpris. Pour la première fois depuis très, très longtemps, ses larmes s\'arrêtèrent.',
         image: ''
       },
       {
-        text: 'Ensemble, ils inventèrent un jeu d\'ombres et de lumières qui dura trois lunes. Le Monstre rit pour la première fois depuis mille ans. Son rire fit fleurir la planète Lila-7 de roses argentées.',
+        text: 'Ils jouèrent ensemble jusqu\'à ce que les trois soleils descendent à l\'horizon. Mila lui apprit un jeu d\'ombres avec ses mains ; lui, en échange, souffla un nuage de bulles roses qui chantaient des berceuses. Lila-7, qui avait été grise pendant mille ans, se mit à reverdir. Des arbres aux feuilles dorées poussèrent en quelques minutes, et le ciel se teinta d\'un mauve doux et tendre.',
         image: ''
       },
       {
-        text: 'Quand Mila repartit vers les étoiles, le Monstre lui offrit une plume de sa crinière. "Reviens, mon amie." Dans son vaisseau, Mila sourit. Elle avait découvert que parfois, le plus grand pouvoir d\'une baguette, c\'est de tendre la main.',
+        text: 'Quand vint l\'heure du retour, Mila promit de revenir. Le Monstre, qui s\'appelait en réalité Brume, lui offrit une plume de sa crinière. « Pour ne jamais oublier. » Dans son vaisseau, Mila serra la baguette contre son cœur. Elle comprit, en regardant Lila-7 s\'éloigner par le hublot, que la vraie magie n\'était pas dans la baguette. Elle était dans le courage de tendre la main, même quand on a peur.',
         image: ''
       }
     ]
@@ -9164,9 +9166,10 @@ const CREATOR_PLACEHOLDER_EMOJI = {
 
 let creatorState = {
   hero: null, place: null, item: null, villain: null,
-  story: null,        // l objet histoire courante (CREATOR_STORIES[key])
-  currentPage: 0,     // 0-indexed
-  isAnimating: false  // verrou pendant le flip
+  level: 'courte',    // courte | soir | aventure
+  story: null,        // l objet histoire courante
+  currentPage: 0,
+  isAnimating: false
 };
 
 function openCreatorMode() {
@@ -9182,13 +9185,14 @@ function openCreatorMode() {
 
 // === PHASE 1 : SELECTION === =================================
 function initCreatorPick() {
-  // Reset state
+  // Reset state (mais on garde le level choisi)
   creatorState.hero = null;
   creatorState.place = null;
   creatorState.item = null;
   creatorState.villain = null;
   creatorState.story = null;
   creatorState.currentPage = 0;
+  if (!creatorState.level) creatorState.level = 'courte';
   // Show pick, hide others
   document.getElementById('creator-pick').hidden = false;
   document.getElementById('creator-loading').hidden = true;
@@ -9198,6 +9202,43 @@ function initCreatorPick() {
   if (sc) sc.textContent = state.totalStars || 0;
   // Build grid
   renderCreatorGrid();
+  wireCreatorLevelBtns();
+  updateCreatorGoBtn();
+  const err = document.getElementById('creator-error-msg');
+  if (err) err.textContent = '';
+}
+
+function wireCreatorLevelBtns() {
+  document.querySelectorAll('#creator-level-btns .creator-level-btn').forEach(btn => {
+    btn.onclick = () => {
+      creatorState.level = btn.dataset.level;
+      document.querySelectorAll('#creator-level-btns .creator-level-btn')
+        .forEach(b => b.classList.toggle('selected', b === btn));
+    };
+    // Reflect current state
+    btn.classList.toggle('selected', btn.dataset.level === creatorState.level);
+  });
+}
+
+function surpriseMeCreator() {
+  // Choisit aleatoirement 1 item dans chaque categorie + niveau random
+  CREATOR_CATEGORIES.forEach(cat => {
+    const rndIdx = Math.floor(Math.random() * cat.items.length);
+    const rndVal = cat.items[rndIdx].value;
+    creatorState[cat.key] = rndVal;
+    // Update UI
+    const catDiv = document.getElementById('creator-cat-' + cat.key);
+    if (catDiv) {
+      catDiv.querySelectorAll('.creator-card').forEach(c => {
+        c.classList.toggle('selected', c.dataset.value === rndVal);
+      });
+    }
+  });
+  // Random level aussi
+  const levels = ['courte', 'soir', 'aventure'];
+  creatorState.level = levels[Math.floor(Math.random() * levels.length)];
+  document.querySelectorAll('#creator-level-btns .creator-level-btn')
+    .forEach(b => b.classList.toggle('selected', b.dataset.level === creatorState.level));
   updateCreatorGoBtn();
   const err = document.getElementById('creator-error-msg');
   if (err) err.textContent = '';
@@ -9258,16 +9299,20 @@ function generateCreatorStory() {
   // Show loading, hide pick
   document.getElementById('creator-pick').hidden = true;
   document.getElementById('creator-loading').hidden = false;
-  // Lookup story
-  const key = creatorState.hero + '_' + creatorState.place + '_' + creatorState.item + '_' + creatorState.villain;
-  const story = CREATOR_STORIES[key];
-  setTimeout(() => {
-    if (!story) {
-      // Fallback : histoire generique tant que les 81 ne sont pas generees
-      creatorState.story = _buildPlaceholderStory();
-    } else {
-      creatorState.story = story;
+  // Lookup story : cle = level_hero_place_item_villain
+  const lvl = creatorState.level || 'courte';
+  const combo = creatorState.hero + '_' + creatorState.place + '_' + creatorState.item + '_' + creatorState.villain;
+  const fullKey = lvl + '_' + combo;
+  // Essaye d abord level+combo specifique, sinon n importe quel niveau pour ce combo, sinon fallback
+  let story = CREATOR_STORIES[fullKey];
+  if (!story) {
+    // Cherche n importe quel niveau pour ce combo
+    for (const k of Object.keys(CREATOR_STORIES)) {
+      if (k.endsWith('_' + combo)) { story = CREATOR_STORIES[k]; break; }
     }
+  }
+  setTimeout(() => {
+    creatorState.story = story || _buildPlaceholderStory();
     creatorState.currentPage = 0;
     showCreatorBook();
   }, 800);
