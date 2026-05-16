@@ -1557,12 +1557,6 @@ function goToScreen(screenIdentifier, force) {
     if (screenIdentifier === 'c2s3') {
       playC2s3Demo();
     }
-    // v473 : pour c5s5, bust le cache voice AVANT playStoryScene au cas ou
-    // les cached Audios sont dans un etat casse iOS (silence total observe).
-    // Force fresh Audio creation pour narrator+leon.
-    if (screenIdentifier === 'c5s5') {
-      try { delete _voiceCache['narr_c5s5']; delete _voiceCache['leon_c5s5']; } catch(e) {}
-    }
     // Effet karaoké pour les écrans narratifs (pas pour mini-jeu/quiz/démo)
     const narrativeC2 = ['c2s1','c2s2','c2s4','c2s5','c2s6','c2s7'];
     const narrativeC3 = ['c3s1','c3s2','c3s3','c3s4','c3s5','c3s6','c3s7'];
@@ -1818,30 +1812,11 @@ function goToScreen(screenIdentifier, force) {
             if (typeof activateC5s4Wish === 'function') activateC5s4Wish();
           }
         },
-        // c5s5 : mini-jeu "construis ton robot IA" (image fixe, pas de video)
-        // v472 : ajout fallback timer pour playConsigne car onLeonEnd ne fire
-        // pas toujours sur iOS (leonAudio 'ended' peu fiable). On schedule la
-        // consigne dans onLeonStart base sur la duree leon audio (~10s) + marge.
-        c5s5: {
-          narratorAudio: 'assets/chapitre_5/t5_narrateur.mp3', leonAudio: 'assets/chapitre_5/t5_leon.mp3',
-          onLeonStart: () => {
-            // Fallback : si onLeonEnd ne fire pas, on declenche quand meme la
-            // consigne apres la duree estimee de l audio (10s + 800ms marge).
-            if (window._c5s5ConsigneTimer) clearTimeout(window._c5s5ConsigneTimer);
-            window._c5s5ConsigneTimer = setTimeout(() => {
-              if (window._c5s5ConsigneFired) return;
-              window._c5s5ConsigneFired = true;
-              if (typeof playConsigne === 'function') playConsigne('c5s5');
-            }, 10800);
-            window._c5s5ConsigneFired = false;
-          },
-          onLeonEnd: () => {
-            if (window._c5s5ConsigneFired) return;
-            window._c5s5ConsigneFired = true;
-            if (window._c5s5ConsigneTimer) { clearTimeout(window._c5s5ConsigneTimer); window._c5s5ConsigneTimer = null; }
-            if (typeof playConsigne === 'function') playConsigne('c5s5');
-          }
-        }
+        // c5s5 : mini-jeu "construis ton robot IA" (image fixe, pas de video,
+        // pas de dialogue intro). v475 : narrateur+leon audios retires - le
+        // user veut juste la consigne directe. La consigne est jouee dans le
+        // handler 'c5s5' du screen change (cf. plus bas), pas via onLeonEnd.
+        c5s5: {}
       };
       playStoryScene(screenIdentifier, optsMap[screenIdentifier] || {});
     } else if (screenIdentifier !== 'c2s3') {
@@ -2140,17 +2115,10 @@ function goToScreen(screenIdentifier, force) {
   // CHAPITRE 5 — Le toit aux étoiles : mini-jeu robot + victoire
   // ============================================================
   if (screenIdentifier === 'c5s5') {
-    // v473 : busts les caches voice pour c5s5 (au cas ou cached Audio est
-    // dans un etat casse iOS). Forcera fresh Audio creation au prochain
-    // playStoryScene call.
-    try {
-      delete _voiceCache['narr_c5s5'];
-      delete _voiceCache['leon_c5s5'];
-    } catch(e) {}
-    // v474 : TEST DIAGNOSTIC - joue la consigne IMMEDIATEMENT a l entree
-    // pour voir si l infra audio fonctionne. Si on entend la consigne mais
-    // pas narrator/leon, le probleme est specifique a playStoryScene/leon
-    // audio. Si silence total, infrastructure audio cassee sur cet ecran.
+    // v475 : c5s5 n a PAS de dialogue intro narrateur/leon (le mini-jeu
+    // demarre direct). On joue juste la consigne audio Leon "Choisis 3
+    // modules pour ton robot" a l entree, apres une petite pause pour
+    // laisser la scene se rendre.
     setTimeout(() => {
       if (typeof playConsigne === 'function') playConsigne('c5s5');
     }, 500);
