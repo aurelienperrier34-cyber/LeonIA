@@ -849,6 +849,22 @@ body.novel-mode #screen-c5s4 .dialogue-bubble {
     top: calc(32vh + 28px) !important;
   }
 }
+/* v468 : c5s4 - descend la bulle Leon vers le centre vertical sur iOS
+   uniquement (la version Android/PC reste haut). 2 mecanismes redondants. */
+body.ios-device.novel-mode #screen-c5s4 .dialogue-who {
+  top: 32vh !important;
+}
+body.ios-device.novel-mode #screen-c5s4 .dialogue-bubble {
+  top: calc(32vh + 28px) !important;
+}
+@supports (-webkit-touch-callout: none) {
+  body.novel-mode #screen-c5s4 .dialogue-who {
+    top: 32vh !important;
+  }
+  body.novel-mode #screen-c5s4 .dialogue-bubble {
+    top: calc(32vh + 28px) !important;
+  }
+}
 /* Adaptation des textes au fond noir */
 body.novel-mode .narration { color: #EEE; text-shadow: 0 1px 4px rgba(0,0,0,0.8); margin-bottom: 8px; }
 body.novel-mode .dialogue-who { color: #FFE166; font-size: 1.1rem; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
