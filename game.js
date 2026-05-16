@@ -5048,12 +5048,25 @@ function answerC5s3Phase1(saysReal) {
   const aiBtn   = document.querySelector('#c5s3-phase1 .c5s3-q-ai');
 
   if (saysReal) {
-    // Mauvaise réponse → indice
-    if (hint) hint.textContent = '🔎 Regarde mieux... Cette photo a des petits défauts cachés !';
+    // v466 : Mauvaise reponse -> feedback ULTRA visible (etait subtil).
+    // Hint texte gros + couleur, bouton RÉELLE flash rouge + shake.
+    if (hint) {
+      hint.textContent = '❌ Non ! Regarde mieux, cette photo a des défauts...';
+      hint.style.color = '#FF6B6B';
+      hint.style.fontWeight = '800';
+      hint.style.fontSize = '1.05rem';
+    }
     if (realBtn) {
       realBtn.classList.remove('shake');
       void realBtn.offsetWidth;
       realBtn.classList.add('shake');
+      // Flash rouge persistant
+      realBtn.style.background = 'rgba(255, 107, 107, 0.45)';
+      realBtn.style.borderColor = '#FF6B6B';
+      setTimeout(() => {
+        realBtn.style.background = '';
+        realBtn.style.borderColor = '';
+      }, 1200);
     }
     return;
   }
