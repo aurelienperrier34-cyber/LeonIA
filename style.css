@@ -1176,13 +1176,18 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   margin-right: auto;
 }
 
-/* v458 : fallback CSS-only iOS WebKit (au cas ou body.ios-device n est pas
-   pose par JS). Decale la bulle Leon c5s2 a 28vw sur iOS pour qu elle ne
-   soit pas trop a gauche (Leon est croppe differemment iPad ~4:3). */
+/* v458 / v459 : fallbacks CSS-only iOS WebKit (au cas ou body.ios-device
+   n est pas pose par JS). */
 @supports (-webkit-touch-callout: none) {
+  /* c5s2 : bulle Leon decalee a 28vw (etait trop a gauche sur iPad ~4:3) */
   body.novel-mode #screen-c5s2 .dialogue-who,
   body.novel-mode #screen-c5s2 .dialogue-bubble {
     left: 28vw !important;
+  }
+  /* c5s3 : narration shiftee a droite (etait trop a gauche sur iPad) */
+  body.novel-mode #screen-c5s3 .scene-text {
+    padding-left: 22vw !important;
+    width: 72vw !important;
   }
 }
 body.novel-mode #screen-c5s1 .scene-text .narration,
@@ -1387,6 +1392,13 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
     font-size: 0.78rem !important;
     line-height: 1.25 !important;
     margin-right: auto !important;
+  }
+  /* v459 : sur iOS la narration c5s3 est trop a gauche (le .scene-text
+     a padding-left 90px qui colle au bord sur iPad ~4:3). Pousse le contenu
+     plus a droite via padding-left 22vw (~260px iPad). Scoped iOS. */
+  body.ios-device.novel-mode #screen-c5s3 .scene-text {
+    padding-left: 22vw !important;
+    width: 72vw !important;
   }
   /* C5S3 mobile : bulle "Photo reelle ou IA ?" remontee, eclaircie, et
      decalee a gauche (etait centree avec left:50% translateX(-50%)). */
