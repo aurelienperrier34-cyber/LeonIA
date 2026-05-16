@@ -6108,6 +6108,28 @@ function _c5SpawnConfetti() {
   }
 }
 
+// v476 : helper qui s assure que les voices sont chargees (iOS lazy load).
+// Retourne une Promise qui resout avec la liste des voices (peut etre vide
+// si le browser n a pas de voices, on continue quand meme).
+function _ensureVoicesLoaded() {
+  return new Promise((resolve) => {
+    if (typeof window.speechSynthesis === 'undefined') { resolve([]); return; }
+    let voices = window.speechSynthesis.getVoices();
+    if (voices && voices.length) { resolve(voices); return; }
+    // Attendre voiceschanged (iOS / certains browsers)
+    const handler = () => {
+      window.speechSynthesis.removeEventListener('voiceschanged', handler);
+      resolve(window.speechSynthesis.getVoices() || []);
+    };
+    window.speechSynthesis.addEventListener('voiceschanged', handler);
+    // Timeout de securite si voiceschanged ne fire jamais
+    setTimeout(() => {
+      window.speechSynthesis.removeEventListener('voiceschanged', handler);
+      resolve(window.speechSynthesis.getVoices() || []);
+    }, 1500);
+  });
+}
+
 function _c5SpeakAsRobot(text, onEnd) {
   // Si pas de speechSynthesis dispo : on appelle quand meme onEnd pour ne pas
   // bloquer le flow (sinon le bouton Continuer ne s'afficherait jamais).
@@ -6115,30 +6137,32 @@ function _c5SpeakAsRobot(text, onEnd) {
     if (typeof onEnd === 'function') setTimeout(onEnd, 600);
     return;
   }
-  // v470 : cancel + resume pour reset etat 'stuck' iOS Safari.
-  try { window.speechSynthesis.cancel(); } catch(e) {}
-  try { window.speechSynthesis.resume(); } catch(e) {}
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'fr-FR';
-  utt.pitch = 1.15;   // voix plus aigüe = plus robot/enfantine
-  utt.rate  = 0.95;
-  utt.volume = 1;
-  // Cherche une voix française si dispo
-  try {
-    const voices = window.speechSynthesis.getVoices();
-    const fr = voices.find(v => v.lang && v.lang.startsWith('fr'));
-    if (fr) utt.voice = fr;
-  } catch(e) {}
-  // v470 : fallback timer pour onEnd si utt.onend ne fire pas (iOS quirk).
-  let _ended = false;
-  const wrap = () => { if (_ended) return; _ended = true; if (typeof onEnd === 'function') onEnd(); };
-  if (typeof onEnd === 'function') {
-    utt.onend   = wrap;
-    utt.onerror = wrap;
-    // Estimation : ~13 chars/sec + 800ms marge
-    setTimeout(wrap, Math.max(2000, text.length * 77 + 800));
-  }
-  window.speechSynthesis.speak(utt);
+  // v476 : attend que les voices soient chargees avant de speak (iOS quirk).
+  _ensureVoicesLoaded().then((voices) => {
+    // Reset etat 'stuck' iOS
+    try { window.speechSynthesis.cancel(); } catch(e) {}
+    try { window.speechSynthesis.resume(); } catch(e) {}
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'fr-FR';
+    utt.pitch = 1.15;
+    utt.rate  = 0.95;
+    utt.volume = 1;
+    // v476 : pick voice avec fallback - prefere fr-FR, sinon n importe quelle
+    // voix fr, sinon n importe quelle voix (mieux que rien sur iOS si pas de fr).
+    const frFR = voices.find(v => v.lang === 'fr-FR');
+    const fr   = voices.find(v => v.lang && v.lang.startsWith('fr'));
+    const any  = voices[0];
+    const chosen = frFR || fr || any;
+    if (chosen) utt.voice = chosen;
+    let _ended = false;
+    const wrap = () => { if (_ended) return; _ended = true; if (typeof onEnd === 'function') onEnd(); };
+    if (typeof onEnd === 'function') {
+      utt.onend   = wrap;
+      utt.onerror = wrap;
+      setTimeout(wrap, Math.max(2000, text.length * 77 + 800));
+    }
+    window.speechSynthesis.speak(utt);
+  });
 }
 
 function revealC5Robot() {
