@@ -9076,95 +9076,316 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================================
-// PROTOTYPE : MODE CREATEUR (FABRIQUE A HISTOIRES)
+// FABRIQUE A HISTOIRES — v487 refonte complete
 // ============================================================
+// Architecture :
+//  - PHASE 1 (pick) : selection 4 ingredients (hero, place, item, villain)
+//  - PHASE 2 (loading) : transition rapide vers le livre
+//  - PHASE 3 (book)   : livre 3D avec pages illustrees, flip horizontal
+// Data : CREATOR_CATEGORIES (catalog 4x3) + CREATOR_STORIES (81 combos)
+// Pour l instant : 1 histoire test hardcoded. Les 81 seront generees via
+// script Python Claude + Leonardo (phase ulterieure).
+
+const CREATOR_CATEGORIES = [
+  {
+    key: 'hero', title: '1. Le héros',
+    items: [
+      { value: 'astronaute', label: 'Astronaute', emoji: '🧑‍🚀' },
+      { value: 'sorciere',   label: 'Sorcière',   emoji: '🧙‍♀️' },
+      { value: 'dragon',     label: 'Dragon',     emoji: '🐉' }
+    ]
+  },
+  {
+    key: 'place', title: '2. Le lieu',
+    items: [
+      { value: 'planete', label: 'Planète', emoji: '🪐' },
+      { value: 'chateau', label: 'Château', emoji: '🏰' },
+      { value: 'ocean',   label: 'Océan',   emoji: '🌊' }
+    ]
+  },
+  {
+    key: 'item', title: '3. L\'objet magique',
+    items: [
+      { value: 'baguette',   label: 'Baguette',   emoji: '🪄' },
+      { value: 'skateboard', label: 'Skateboard', emoji: '🛹' },
+      { value: 'guitare',    label: 'Guitare',    emoji: '🎸' }
+    ]
+  },
+  {
+    key: 'villain', title: '4. Le défi',
+    items: [
+      { value: 'monstre', label: 'Monstre',  emoji: '👾' },
+      { value: 'robot',   label: 'Robot fou', emoji: '🤖' },
+      { value: 'fantome', label: 'Fantôme',  emoji: '👻' }
+    ]
+  }
+];
+
+// Catalogue des histoires. Cle = hero_place_item_villain (sans accents).
+// 1 histoire test pour valider le flow. Les 80 autres seront generees.
+const CREATOR_STORIES = {
+  'astronaute_planete_baguette_monstre': {
+    title: 'Mila et le secret de la planète mauve',
+    pages: [
+      {
+        text: 'Mila l\'astronaute posa son vaisseau sur Lila-7, une planète aux montagnes mauves et aux rivières de lumière. Son casque scintillait sous trois soleils. C\'était sa première mission solo, et son cœur battait fort.',
+        image: ''
+      },
+      {
+        text: 'En explorant une grotte de cristal, Mila découvrit une baguette translucide enfouie dans le sable. Quand elle la toucha, elle entendit un murmure : "Aide-nous..." La baguette s\'illumina de mille couleurs.',
+        image: ''
+      },
+      {
+        text: 'Soudain, un grondement secoua la grotte. Un Monstre gigantesque aux yeux orange surgit de l\'ombre. Il pleurait ! Ses larmes faisaient trembler la planète entière. "Personne ne veut jouer avec moi", sanglota-t-il.',
+        image: ''
+      },
+      {
+        text: 'Mila eut une idée. Avec sa baguette, elle dessina dans l\'air des étoiles, des fleurs, des animaux fantastiques. Le Monstre cessa de pleurer et écarquilla ses grands yeux. "Tu... tu joues avec moi ?" murmura-t-il, émerveillé.',
+        image: ''
+      },
+      {
+        text: 'Ensemble, ils inventèrent un jeu d\'ombres et de lumières qui dura trois lunes. Le Monstre rit pour la première fois depuis mille ans. Son rire fit fleurir la planète Lila-7 de roses argentées.',
+        image: ''
+      },
+      {
+        text: 'Quand Mila repartit vers les étoiles, le Monstre lui offrit une plume de sa crinière. "Reviens, mon amie." Dans son vaisseau, Mila sourit. Elle avait découvert que parfois, le plus grand pouvoir d\'une baguette, c\'est de tendre la main.',
+        image: ''
+      }
+    ]
+  }
+};
+
+const CREATOR_PLACEHOLDER_EMOJI = {
+  astronaute: '🧑‍🚀', sorciere: '🧙‍♀️', dragon: '🐉',
+  planete: '🪐', chateau: '🏰', ocean: '🌊',
+  baguette: '🪄', skateboard: '🛹', guitare: '🎸',
+  monstre: '👾', robot: '🤖', fantome: '👻'
+};
 
 let creatorState = {
-  hero: null,
-  place: null,
-  item: null,
-  villain: null
+  hero: null, place: null, item: null, villain: null,
+  story: null,        // l objet histoire courante (CREATOR_STORIES[key])
+  currentPage: 0,     // 0-indexed
+  isAnimating: false  // verrou pendant le flip
 };
 
 function openCreatorMode() {
-  document.getElementById('creator-star-count').innerText = state.stars;
   goToScreen('creator');
-  resetCreatorMode();
+  initCreatorPick();
 }
 
-function selectCreatorItem(category, value) {
-  creatorState[category] = value;
-  
-  // Mettre à jour l'UI
-  const catDiv = document.getElementById('creator-cat-' + category);
-  const cards = catDiv.querySelectorAll('.creator-card');
-  
-  cards.forEach(card => {
-    // Si la carte correspond à la valeur cliquée, on lui donne la classe selected
-    // Note: on utilise le texte ou une data-value, ici on check le texte du span ou le paramètre
-    // Pour simplifier, on a mis le onclick directement avec la valeur.
-    // On va retrouver la carte cliquée en cherchant celle qui a le onclick correspondant
-    if (card.getAttribute('onclick').includes(`'${value}'`)) {
-      card.classList.add('selected');
-    } else {
-      card.classList.remove('selected');
-    }
+// === PHASE 1 : SELECTION === =================================
+function initCreatorPick() {
+  // Reset state
+  creatorState.hero = null;
+  creatorState.place = null;
+  creatorState.item = null;
+  creatorState.villain = null;
+  creatorState.story = null;
+  creatorState.currentPage = 0;
+  // Show pick, hide others
+  document.getElementById('creator-pick').hidden = false;
+  document.getElementById('creator-loading').hidden = true;
+  document.getElementById('creator-book').hidden = true;
+  // Star count
+  const sc = document.getElementById('creator-star-count');
+  if (sc) sc.textContent = state.totalStars || 0;
+  // Build grid
+  renderCreatorGrid();
+  updateCreatorGoBtn();
+  const err = document.getElementById('creator-error-msg');
+  if (err) err.textContent = '';
+}
+
+function renderCreatorGrid() {
+  const grid = document.getElementById('creator-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  CREATOR_CATEGORIES.forEach(cat => {
+    const catDiv = document.createElement('div');
+    catDiv.className = 'creator-cat';
+    catDiv.id = 'creator-cat-' + cat.key;
+    catDiv.innerHTML = '<h3 class="creator-cat-title">' + cat.title + '</h3>' +
+      '<div class="creator-cards">' +
+      cat.items.map(item =>
+        `<button class="creator-card" data-cat="${cat.key}" data-value="${item.value}" type="button">
+          <span class="creator-card-emoji">${item.emoji}</span>
+          <span class="creator-card-label">${item.label}</span>
+        </button>`
+      ).join('') +
+      '</div>';
+    grid.appendChild(catDiv);
   });
-  
-  document.getElementById('creator-error-msg').innerText = '';
+  // Wire clicks (onclick = vrai gesture iOS pour eventuel audio futur)
+  grid.querySelectorAll('.creator-card').forEach(btn => {
+    btn.onclick = () => selectCreatorItem(btn.dataset.cat, btn.dataset.value, btn);
+  });
 }
 
-function generateStoryPrototype() {
-  // Vérifier si tout est sélectionné
+function selectCreatorItem(category, value, btnEl) {
+  creatorState[category] = value;
+  // Toggle visual
+  const catDiv = document.getElementById('creator-cat-' + category);
+  if (catDiv) {
+    catDiv.querySelectorAll('.creator-card').forEach(c => c.classList.remove('selected'));
+  }
+  if (btnEl) btnEl.classList.add('selected');
+  updateCreatorGoBtn();
+  const err = document.getElementById('creator-error-msg');
+  if (err) err.textContent = '';
+}
+
+function updateCreatorGoBtn() {
+  const btn = document.getElementById('creator-go-btn');
+  if (!btn) return;
+  const ready = creatorState.hero && creatorState.place && creatorState.item && creatorState.villain;
+  btn.disabled = !ready;
+}
+
+// === PHASE 2 : LOADING + LOAD STORY === ======================
+function generateCreatorStory() {
   if (!creatorState.hero || !creatorState.place || !creatorState.item || !creatorState.villain) {
-    document.getElementById('creator-error-msg').innerText = '⚠️ Tu dois choisir un élément dans chaque catégorie !';
+    const err = document.getElementById('creator-error-msg');
+    if (err) err.textContent = '⚠️ Choisis un élément dans chaque catégorie !';
     return;
   }
-  
-  if (state.stars < 1) {
-    document.getElementById('creator-error-msg').innerText = "⚠️ Tu n'as pas assez d'étoiles !";
-    return;
-  }
-  
-  // Dépenser 1 étoile
-  if (typeof spendStars === 'function') spendStars(1);
-  document.getElementById('creator-star-count').innerText = state.stars;
-  
-  // Cacher la sélection, montrer le chargement
-  document.getElementById('creator-step-selection').style.display = 'none';
-  document.getElementById('creator-step-loading').style.display = 'block';
-  
-  // Simuler l'attente de l'API (3 secondes)
+  // Show loading, hide pick
+  document.getElementById('creator-pick').hidden = true;
+  document.getElementById('creator-loading').hidden = false;
+  // Lookup story
+  const key = creatorState.hero + '_' + creatorState.place + '_' + creatorState.item + '_' + creatorState.villain;
+  const story = CREATOR_STORIES[key];
   setTimeout(() => {
-    showStoryResult();
-  }, 3000);
+    if (!story) {
+      // Fallback : histoire generique tant que les 81 ne sont pas generees
+      creatorState.story = _buildPlaceholderStory();
+    } else {
+      creatorState.story = story;
+    }
+    creatorState.currentPage = 0;
+    showCreatorBook();
+  }, 800);
 }
 
-function showStoryResult() {
-  document.getElementById('creator-step-loading').style.display = 'none';
-  document.getElementById('creator-step-result').style.display = 'flex';
-  
-  const textContainer = document.getElementById('story-result-text');
-  
-  // Template de l'histoire
-  const story = `
-    <p>Il était une fois <span class="highlight-word">un(e) ${creatorState.hero}</span> d'un courage immense, qui voyageait à travers <span class="highlight-word">un(e) ${creatorState.place}</span> incroyable.</p>
-    <p>Notre héros ne voyageait jamais seul : il gardait toujours <span class="highlight-word">son/sa ${creatorState.item}</span> à portée de main. Un jour, une ombre terrible recouvrit le ciel...</p>
-    <p>C'était <span class="highlight-word">le ${creatorState.villain}</span> ! Un combat épique s'engagea. Grâce à la ruse de notre héros et à la magie de <span class="highlight-word">son/sa ${creatorState.item}</span>, la lumière triompha des ténèbres !</p>
-    <p>La paix revint dans <span class="highlight-word">le/la ${creatorState.place}</span>. Et notre héros vécut heureux jusqu'à sa prochaine aventure.</p>
-  `;
-  
-  textContainer.innerHTML = story;
+function _buildPlaceholderStory() {
+  const h = creatorState.hero, p = creatorState.place;
+  const i = creatorState.item, v = creatorState.villain;
+  return {
+    title: `L'aventure du ${h}`,
+    pages: [
+      { text: `Notre histoire commence dans un ${p} extraordinaire. Le ${h}, plein de courage, s'apprêtait à vivre une grande aventure.`, image: '' },
+      { text: `Près d'un arbre ancien, il découvrit ${i === 'baguette' ? 'une baguette' : i === 'skateboard' ? 'un skateboard' : 'une guitare'} aux pouvoirs étranges. Quelque chose en elle semblait vibrer.`, image: '' },
+      { text: `Mais soudain, un ${v} surgit, prêt à tout détruire. Le ${h} sentit son cœur s'emballer.`, image: '' },
+      { text: `Au lieu de fuir, le ${h} tendit la main. Il découvrit que le ${v} n'était pas méchant, juste perdu.`, image: '' },
+      { text: `Avec l'aide de l'objet magique, ils trouvèrent ensemble un nouveau chemin. Le ${p} reprit ses couleurs.`, image: '' },
+      { text: `Le ${h} rentra chez lui, plus sage qu'avant. Il avait appris que l'amitié vaut mieux que les batailles.`, image: '' }
+    ]
+  };
 }
 
-function resetCreatorMode() {
-  creatorState = { hero: null, place: null, item: null, villain: null };
-  document.getElementById('creator-error-msg').innerText = '';
-  document.getElementById('creator-step-selection').style.display = 'block';
-  document.getElementById('creator-step-loading').style.display = 'none';
-  document.getElementById('creator-step-result').style.display = 'none';
-  
-  // Enlever la classe selected de toutes les cartes
-  document.querySelectorAll('.creator-card').forEach(card => card.classList.remove('selected'));
+// === PHASE 3 : LIVRE 3D === ==================================
+function showCreatorBook() {
+  document.getElementById('creator-loading').hidden = true;
+  document.getElementById('creator-book').hidden = false;
+  // Title
+  const titleEl = document.getElementById('book-title');
+  if (titleEl) titleEl.textContent = creatorState.story.title || 'Mon histoire';
+  // Inject pages
+  renderBookPages();
+  // Show first page
+  showBookPage(0, true);
+}
+
+function renderBookPages() {
+  const book = document.getElementById('book');
+  if (!book || !creatorState.story) return;
+  book.innerHTML = '';
+  const pages = creatorState.story.pages || [];
+  pages.forEach((page, idx) => {
+    const pageDiv = document.createElement('div');
+    pageDiv.className = 'book-page hidden';
+    pageDiv.dataset.pageIndex = idx;
+    // Image (placeholder si vide)
+    const imgUrl = page.image && page.image.trim() ? page.image : '';
+    const imgClass = imgUrl ? 'book-page-image' : 'book-page-image placeholder';
+    const imgStyle = imgUrl ? `style="background-image: url('${imgUrl}');"` : '';
+    const placeholderContent = imgUrl ? '' : (CREATOR_PLACEHOLDER_EMOJI[creatorState.hero] || '✨');
+    pageDiv.innerHTML =
+      `<div class="${imgClass}" ${imgStyle}>${placeholderContent}</div>` +
+      `<div class="book-page-text"><p>${page.text}</p></div>` +
+      `<div class="book-page-number">${idx + 1} / ${pages.length}</div>`;
+    book.appendChild(pageDiv);
+  });
+}
+
+function showBookPage(idx, instant) {
+  const pages = creatorState.story.pages || [];
+  if (idx < 0 || idx >= pages.length) return;
+  if (creatorState.isAnimating && !instant) return;
+  const book = document.getElementById('book');
+  if (!book) return;
+  creatorState.currentPage = idx;
+  // Show only the current page
+  book.querySelectorAll('.book-page').forEach((p, i) => {
+    p.classList.toggle('hidden', i !== idx);
+    p.classList.remove('flipping-out', 'entering');
+  });
+  // Update nav
+  updateBookNav();
+}
+
+function bookNextPage() {
+  const pages = creatorState.story.pages || [];
+  if (creatorState.currentPage >= pages.length - 1) return;
+  if (creatorState.isAnimating) return;
+  flipPage(creatorState.currentPage, creatorState.currentPage + 1, 'forward');
+}
+function bookPrevPage() {
+  if (creatorState.currentPage <= 0) return;
+  if (creatorState.isAnimating) return;
+  flipPage(creatorState.currentPage, creatorState.currentPage - 1, 'backward');
+}
+
+function flipPage(from, to, dir) {
+  creatorState.isAnimating = true;
+  const book = document.getElementById('book');
+  if (!book) { creatorState.isAnimating = false; return; }
+  const pages = book.querySelectorAll('.book-page');
+  const fromPage = pages[from], toPage = pages[to];
+  if (!fromPage || !toPage) { creatorState.isAnimating = false; return; }
+
+  // Pour eviter complication transform-origin droite/gauche, on fait un flip simple :
+  // page actuelle disparait avec rotation, page suivante apparait
+  fromPage.classList.add('flipping-out');
+  toPage.classList.remove('hidden');
+  toPage.classList.add('entering');
+
+  setTimeout(() => {
+    fromPage.classList.add('hidden');
+    fromPage.classList.remove('flipping-out');
+    toPage.classList.remove('entering');
+    creatorState.currentPage = to;
+    updateBookNav();
+    creatorState.isAnimating = false;
+  }, 700);
+}
+
+function updateBookNav() {
+  const pages = (creatorState.story && creatorState.story.pages) || [];
+  const total = pages.length;
+  const cur = creatorState.currentPage + 1;
+  const prog = document.getElementById('book-progress');
+  if (prog) prog.textContent = cur + ' / ' + total;
+  const prev = document.getElementById('book-prev');
+  const next = document.getElementById('book-next');
+  if (prev) prev.disabled = creatorState.currentPage <= 0;
+  if (next) next.disabled = creatorState.currentPage >= total - 1;
+}
+
+function closeCreatorBook() {
+  goToScreen('map');
+}
+function restartCreatorPick() {
+  initCreatorPick();
 }
 

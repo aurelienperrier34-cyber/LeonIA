@@ -7781,192 +7781,400 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   min-height: 100vh;
 }
 
-.creator-header {
-  width: 100%;
-  max-width: 800px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
+/* ============================================================
+   FABRIQUE A HISTOIRES — v487 refonte
+   Universal : clamp/vw/dvh, touch-action manipulation, 3D flip
+   ============================================================ */
 
-.creator-header h2 {
-  font-family: 'Baloo 2', cursive;
-  font-size: 2.5rem;
-  color: #ffd166;
-  text-shadow: 0 4px 10px rgba(0,0,0,0.5);
-  margin: 0;
-}
-
-.creator-subtitle {
-  font-size: 1.2rem;
-  text-align: center;
-  margin-bottom: 20px;
-  opacity: 0.9;
-}
-
-.creator-grid {
-  display: flex;
+/* Screen container : fond degrade nuit etoilee, pleine zone visible */
+#screen-creator {
+  display: none;
   flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  max-width: 800px;
-}
-
-.creator-category {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  padding: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.creator-category h3 {
-  margin: 0 0 10px 0;
-  font-size: 1.2rem;
-  color: #06d6a0;
-}
-
-.creator-options {
-  display: flex;
-  gap: 15px;
-  overflow-x: auto;
-  padding-bottom: 10px;
-}
-
-.creator-card {
-  min-width: 100px;
-  background: rgba(0, 0, 0, 0.3);
-  border: 3px solid transparent;
-  border-radius: 12px;
-  padding: 10px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.creator-card:hover {
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.creator-card.selected {
-  border-color: #ffd166;
-  background: rgba(255, 209, 102, 0.2);
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(255, 209, 102, 0.4);
-}
-
-.creator-card-img {
-  width: 70px;
-  height: 70px;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2.5rem;
-  margin-bottom: 8px;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-}
-
-/* On utilisera des vraies images plus tard. Si la div contient une image (miniature de Veo) : */
-.creator-card-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.creator-action-area {
-  margin-top: 30px;
-  text-align: center;
-  width: 100%;
-}
-
-.btn-generate-story {
-  font-family: 'Baloo 2', cursive;
-  font-size: 1.5rem;
-  padding: 15px 40px;
-  background: linear-gradient(135deg, #06d6a0, #118ab2);
-  color: white;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  box-shadow: 0 8px 20px rgba(6, 214, 160, 0.4);
-  transition: transform 0.2s;
-}
-
-.btn-generate-story:hover {
-  transform: scale(1.05);
-}
-
-.creator-error {
-  color: #ff6b6b;
-  font-weight: bold;
-  height: 24px;
-  margin-bottom: 10px;
-}
-
-/* Loading & Result */
-#creator-step-loading {
-  text-align: center;
-  margin-top: 100px;
-}
-
-.magic-sparkles {
-  font-size: 4rem;
-  animation: pulseRotate 2s infinite ease-in-out;
-}
-
-@keyframes pulseRotate {
-  0% { transform: scale(0.8) rotate(0deg); opacity: 0.7; }
-  50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
-  100% { transform: scale(0.8) rotate(360deg); opacity: 0.7; }
-}
-
-.story-book {
-  background: #fdfbf7;
-  color: #2b2b2b;
-  border-radius: 20px;
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto 30px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.story-image-placeholder {
-  width: 100%;
-  height: 300px;
-  background: #ddd;
-  border-radius: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.2rem;
-  color: #666;
-  border: 2px dashed #aaa;
+  background: linear-gradient(180deg, #1a0d2e 0%, #2b1e54 50%, #4b2d8c 100%);
+  color: #fff;
+  min-height: 100dvh;
+  padding: clamp(8px, 1.5vw, 18px) clamp(10px, 2vw, 24px);
+  font-family: 'Nunito', sans-serif;
+  position: relative;
   overflow: hidden;
 }
+#screen-creator.active { display: flex; }
 
-.story-text {
-  font-family: 'Nunito', sans-serif;
-  font-size: 1.2rem;
-  line-height: 1.6;
+.creator-phase {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
+.creator-phase[hidden] { display: none; }
 
-.story-text p {
-  margin-bottom: 15px;
+/* === TOPBAR === */
+.creator-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(8px, 1.5vw, 16px);
+  margin-bottom: clamp(8px, 1.5vw, 18px);
 }
-
-.highlight-word {
-  color: #118ab2;
+.creator-back {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  border-radius: 999px;
+  padding: clamp(6px, 1vw, 10px) clamp(12px, 2vw, 18px);
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.creator-back:hover { background: rgba(255,255,255,0.2); }
+.creator-title {
+  font-family: 'Baloo 2', cursive;
   font-weight: 800;
+  font-size: clamp(1.1rem, 2.6vw, 1.8rem);
+  color: #FFE166;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  margin: 0;
+  text-align: center;
+  flex: 1;
 }
+.creator-stars-pill {
+  background: rgba(255,209,102,0.18);
+  color: #FFE166;
+  border: 1.5px solid rgba(255,225,102,0.4);
+  border-radius: 999px;
+  padding: clamp(6px, 1vw, 10px) clamp(12px, 1.5vw, 16px);
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  white-space: nowrap;
+}
+
+.creator-intro {
+  text-align: center;
+  font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+  margin: 0 0 clamp(10px, 2vw, 20px) 0;
+  opacity: 0.92;
+}
+.creator-intro strong { color: #FFE166; }
+
+/* === GRILLE DES 4 CATEGORIES === */
+.creator-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(8px, 1.5vw, 16px);
+  margin-bottom: clamp(10px, 2vw, 18px);
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  align-content: start;
+}
+@media (max-width: 600px) {
+  .creator-grid { grid-template-columns: 1fr; }
+}
+
+.creator-cat {
+  background: rgba(255,255,255,0.06);
+  border-radius: clamp(10px, 1.5vw, 16px);
+  padding: clamp(8px, 1.5vw, 14px);
+  border: 1px solid rgba(255,255,255,0.12);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.creator-cat-title {
+  margin: 0 0 clamp(6px, 1vw, 10px) 0;
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(0.85rem, 1.3vw, 1.05rem);
+  font-weight: 800;
+  color: #06D6A0;
+  letter-spacing: 0.02em;
+}
+.creator-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(6px, 1vw, 10px);
+}
+.creator-card {
+  background: rgba(0,0,0,0.35);
+  border: 2.5px solid transparent;
+  border-radius: clamp(8px, 1.2vw, 14px);
+  padding: clamp(6px, 1vw, 12px) clamp(4px, 0.8vw, 8px);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.18s, background 0.18s, border-color 0.18s, box-shadow 0.18s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(4px, 0.6vw, 8px);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+  font-weight: 700;
+}
+.creator-card:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-2px);
+}
+.creator-card.selected {
+  border-color: #FFE166;
+  background: rgba(255,209,102,0.18);
+  box-shadow: 0 0 18px rgba(255,225,102,0.45);
+  transform: scale(1.04);
+}
+.creator-card-emoji {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1;
+}
+.creator-card-label {
+  display: block;
+  line-height: 1.1;
+}
+
+/* === BOUTON GO === */
+.creator-cta-zone {
+  text-align: center;
+  margin-top: auto;
+}
+.creator-error {
+  color: #FF6B6B;
+  font-weight: 700;
+  min-height: 1.4em;
+  margin: 0 0 clamp(6px, 1vw, 10px) 0;
+  font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+}
+.creator-go {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
+  padding: clamp(10px, 1.5vw, 14px) clamp(24px, 3.5vw, 40px);
+  background: linear-gradient(135deg, #06D6A0, #118AB2);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(6,214,160,0.4);
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.creator-go:hover:not(:disabled) {
+  transform: scale(1.04);
+  box-shadow: 0 10px 28px rgba(6,214,160,0.55);
+}
+.creator-go:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* === LOADING === */
+.creator-phase-loading {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.loading-sparkles {
+  font-size: clamp(3rem, 8vw, 5rem);
+  animation: loadingSpark 1.6s ease-in-out infinite;
+}
+.creator-phase-loading h3 {
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  color: #FFE166;
+  margin: clamp(10px, 2vw, 18px) 0 clamp(6px, 1vw, 10px);
+}
+.creator-phase-loading p {
+  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+  opacity: 0.85;
+}
+@keyframes loadingSpark {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+  50%      { transform: scale(1.2) rotate(180deg); opacity: 1; }
+}
+
+/* === LIVRE 3D === */
+.creator-phase-book {
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+}
+.book-close {
+  position: absolute;
+  top: clamp(10px, 1.5vw, 18px);
+  right: clamp(10px, 1.5vw, 18px);
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  width: clamp(32px, 4vw, 42px);
+  height: clamp(32px, 4vw, 42px);
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
+  cursor: pointer;
+  font-weight: 800;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  z-index: 10;
+}
+.book-close:hover { background: rgba(255,255,255,0.28); }
+
+.book-title {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: clamp(1.1rem, 2.4vw, 1.8rem);
+  color: #FFE166;
+  text-shadow: 0 4px 14px rgba(0,0,0,0.6);
+  margin: 0 0 clamp(8px, 1.5vw, 16px) 0;
+}
+
+.book-stage {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1500px;
+  perspective-origin: 50% 50%;
+  min-height: 0;
+}
+.book {
+  position: relative;
+  width: min(94vw, 880px);
+  /* ratio livre paysage ~3:2 */
+  aspect-ratio: 3 / 2;
+  max-height: 70dvh;
+  transform-style: preserve-3d;
+  transition: none;
+}
+
+/* Chaque page = un panel positionne en absolu, on flip via transform */
+.book-page {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #fdfbf7 0%, #f5ebd5 100%);
+  border-radius: clamp(10px, 1.5vw, 18px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+  color: #2b1e3e;
+  padding: clamp(14px, 2vw, 28px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  backface-visibility: hidden;
+  transform-origin: left center;
+  transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+.book-page.hidden {
+  display: none;
+}
+.book-page.flipping-out {
+  /* page courante qui s en va vers la gauche (effet livre tourne) */
+  transform: rotateY(-180deg);
+  z-index: 2;
+}
+.book-page.entering {
+  /* page qui apparait depuis la droite */
+  z-index: 1;
+}
+
+.book-page-image {
+  width: 100%;
+  height: clamp(120px, 22dvh, 280px);
+  background: #ddd center/cover no-repeat;
+  border-radius: clamp(8px, 1.2vw, 12px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  margin-bottom: clamp(10px, 1.5vw, 18px);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.book-page-image.placeholder {
+  background: linear-gradient(135deg, #c5a0ff, #9b5de5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(2rem, 5vw, 4rem);
+  color: rgba(255,255,255,0.7);
+}
+
+.book-page-text {
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(0.95rem, 1.7vw, 1.25rem);
+  line-height: 1.55;
+  color: #2b1e3e;
+  flex: 1;
+  overflow-y: auto;
+  text-align: left;
+}
+.book-page-text p {
+  margin: 0 0 clamp(8px, 1.2vw, 14px) 0;
+}
+.book-page-number {
+  position: absolute;
+  bottom: clamp(8px, 1vw, 14px);
+  right: clamp(14px, 2vw, 22px);
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: clamp(0.7rem, 1vw, 0.85rem);
+  color: rgba(43, 30, 62, 0.45);
+}
+
+/* === NAV LIVRE === */
+.book-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 2vw, 22px);
+  margin: clamp(10px, 1.5vw, 18px) 0 clamp(6px, 1vw, 12px);
+}
+.book-prev, .book-next {
+  background: rgba(255,255,255,0.16);
+  color: #FFE166;
+  border: 1.5px solid rgba(255,225,102,0.4);
+  border-radius: 50%;
+  width: clamp(42px, 5vw, 56px);
+  height: clamp(42px, 5vw, 56px);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s, transform 0.15s;
+}
+.book-prev:hover, .book-next:hover { background: rgba(255,255,255,0.26); transform: scale(1.06); }
+.book-prev:disabled, .book-next:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.book-progress {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  color: #FFE166;
+  min-width: clamp(50px, 6vw, 70px);
+}
+
+.creator-restart {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  border-radius: 999px;
+  padding: clamp(8px, 1.2vw, 12px) clamp(18px, 2.5vw, 28px);
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.creator-restart:hover { background: rgba(255,255,255,0.18); }
 
 
 

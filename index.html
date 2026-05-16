@@ -63,7 +63,7 @@
   <meta name="theme-color" content="#000000">
   <title>IA : Le monde de Léon</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=468">
+  <link rel="stylesheet" href="style.css?v=487">
 </head>
 <body>
 <!-- Overlay "Tourne ton téléphone" (portrait mobile uniquement) -->
@@ -82,7 +82,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v486</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v487</div>
 
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
@@ -1787,126 +1787,64 @@
 </div>
 
 <!-- ==========================================
-     PROTOTYPE : MODE CREATEUR (FABRIQUE A HISTOIRES)
+     FABRIQUE À HISTOIRES — v487 refonte complete
      ========================================== -->
 <div class="screen" id="screen-creator">
-  <div class="creator-header">
-    <button class="btn-back-map" onclick="goToScreen('map')">⬅ Retour Carte</button>
-    <h2>La Fabrique à Histoires</h2>
-    <div class="creator-stars-badge">⭐ <span id="creator-star-count">0</span></div>
-  </div>
 
-  <div class="creator-content" id="creator-step-selection">
-    <p class="creator-subtitle">Choisis 4 éléments pour ton histoire !</p>
-    
-    <div class="creator-grid">
-      <!-- Héros -->
-      <div class="creator-category" id="creator-cat-hero">
-        <h3>1. Le Héros</h3>
-        <div class="creator-options">
-          <div class="creator-card" onclick="selectCreatorItem('hero', 'astronaute')">
-            <div class="creator-card-img" style="background-color: #2b2b52;">🧑‍🚀</div>
-            <span>Astronaute</span>
-          </div>
-          <div class="creator-card" onclick="selectCreatorItem('hero', 'sorcière')">
-            <div class="creator-card-img" style="background-color: #5c2b82;">🧙‍♀️</div>
-            <span>Sorcière</span>
-          </div>
-          <div class="creator-card" onclick="selectCreatorItem('hero', 'dragon')">
-            <div class="creator-card-img" style="background-color: #2b8250;">🐉</div>
-            <span>Dragon</span>
-          </div>
-        </div>
-      </div>
+  <!-- PHASE 1 : SELECTION des 4 ingredients -->
+  <div class="creator-phase creator-phase-pick" id="creator-pick">
+    <header class="creator-topbar">
+      <button class="creator-back" onclick="goToScreen('map')" aria-label="Retour carte">← Carte</button>
+      <h1 class="creator-title">✨ La Fabrique à Histoires</h1>
+      <div class="creator-stars-pill">⭐ <span id="creator-star-count">0</span></div>
+    </header>
 
-      <!-- Lieu -->
-      <div class="creator-category" id="creator-cat-place">
-        <h3>2. Le Lieu</h3>
-        <div class="creator-options">
-          <div class="creator-card" onclick="selectCreatorItem('place', 'planète')">
-            <div class="creator-card-img" style="background-color: #822b5e;">🪐</div>
-            <span>Planète</span>
-          </div>
-          <div class="creator-card" onclick="selectCreatorItem('place', 'château')">
-            <div class="creator-card-img" style="background-color: #4a4a4a;">🏰</div>
-            <span>Château</span>
-          </div>
-          <div class="creator-card" onclick="selectCreatorItem('place', 'océan')">
-            <div class="creator-card-img" style="background-color: #2b6a82;">🌊</div>
-            <span>Océan</span>
-          </div>
-        </div>
-      </div>
+    <p class="creator-intro">Choisis les <strong>4 ingrédients</strong> de ton histoire</p>
 
-      <!-- Objet -->
-      <div class="creator-category" id="creator-cat-item">
-        <h3>3. L'Objet</h3>
-        <div class="creator-options">
-          <div class="creator-card" onclick="selectCreatorItem('item', 'baguette')">
-            <div class="creator-card-img" style="background-color: #826c2b;">🪄</div>
-            <span>Baguette</span>
-          </div>
-          <div class="creator-card" onclick="selectCreatorItem('item', 'skateboard')">
-            <div class="creator-card-img" style="background-color: #82472b;">🛹</div>
-            <span>Skateboard</span>
-          </div>
-          <div class="creator-card" onclick="selectCreatorItem('item', 'guitare')">
-            <div class="creator-card-img" style="background-color: #822b2b;">🎸</div>
-            <span>Guitare</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Méchant / Défi -->
-      <div class="creator-category" id="creator-cat-villain">
-        <h3>4. Le Défi</h3>
-        <div class="creator-options">
-          <div class="creator-card" onclick="selectCreatorItem('villain', 'monstre')">
-            <div class="creator-card-img" style="background-color: #4c822b;">👾</div>
-            <span>Monstre</span>
-          </div>
-          <div class="creator-card" onclick="selectCreatorItem('villain', 'robot')">
-            <div class="creator-card-img" style="background-color: #636b75;">🤖</div>
-            <span>Robot fou</span>
-          </div>
-          <div class="creator-card" onclick="selectCreatorItem('villain', 'fantôme')">
-            <div class="creator-card-img" style="background-color: #92b8c9;">👻</div>
-            <span>Fantôme</span>
-          </div>
-        </div>
-      </div>
+    <div class="creator-grid" id="creator-grid">
+      <!-- Categories injectees par JS pour data-driven -->
     </div>
 
-    <div class="creator-action-area">
-      <p id="creator-error-msg" class="creator-error"></p>
-      <button class="btn-generate-story" onclick="generateStoryPrototype()">✨ Créer mon histoire</button>
+    <div class="creator-cta-zone">
+      <p class="creator-error" id="creator-error-msg" aria-live="polite"></p>
+      <button class="creator-go" id="creator-go-btn" onclick="generateCreatorStory()" disabled>
+        📖 Écrire mon histoire
+      </button>
     </div>
   </div>
 
-  <div class="creator-content" id="creator-step-loading" style="display: none;">
-    <div class="creator-loading-anim">
-      <div class="magic-sparkles">✨🤖✨</div>
-      <h3>L'IA écrit ton histoire...</h3>
-      <p>Léon rassemble tes idées magiques !</p>
+  <!-- PHASE 2 : LIVRE 3D -->
+  <div class="creator-phase creator-phase-book" id="creator-book" hidden>
+    <button class="book-close" onclick="closeCreatorBook()" aria-label="Fermer le livre">✕</button>
+
+    <h2 class="book-title" id="book-title">Mon histoire</h2>
+
+    <div class="book-stage" id="book-stage">
+      <div class="book" id="book">
+        <!-- Pages injectees par renderBookPages() -->
+      </div>
     </div>
+
+    <div class="book-nav">
+      <button class="book-prev" id="book-prev" onclick="bookPrevPage()" aria-label="Page precedente">‹</button>
+      <span class="book-progress" id="book-progress">1 / 6</span>
+      <button class="book-next" id="book-next" onclick="bookNextPage()" aria-label="Page suivante">›</button>
+    </div>
+
+    <button class="creator-restart" onclick="restartCreatorPick()">
+      🔄 Créer une autre histoire
+    </button>
   </div>
 
-  <div class="creator-content" id="creator-step-result" style="display: none;">
-    <div class="story-book">
-      <div class="story-image-placeholder" id="story-result-img">
-        <div class="placeholder-tip">Place pour ton image générée avec Veo 3.1</div>
-      </div>
-      <div class="story-text" id="story-result-text">
-        <!-- Le texte généré apparaîtra ici -->
-      </div>
-    </div>
-    <div class="creator-action-area">
-      <button class="btn-generate-story" onclick="resetCreatorMode()">🔄 Créer une autre histoire</button>
-    </div>
+  <!-- PHASE 3 : LOADING (transition vers livre) -->
+  <div class="creator-phase creator-phase-loading" id="creator-loading" hidden>
+    <div class="loading-sparkles">✨</div>
+    <h3>Ton histoire arrive...</h3>
+    <p>Léon prépare le livre magique</p>
   </div>
 </div>
 
 <script src="calibration.js"></script>
-<script src="game.js?v=486"></script>
+<script src="game.js?v=487"></script>
 </body>
 </html>
