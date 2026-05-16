@@ -5064,7 +5064,9 @@ body.novel-mode .c4s5-memory-game {
     margin: 0 auto !important;
   }
 
-  /* C4S6 : meme pattern, panel plein ecran pour que les 4 questions s'affichent. */
+  /* C4S6 : meme pattern, panel plein ecran pour que les 4 questions s'affichent.
+     v453 : flex column + justify-content center pour centrer verticalement
+     tout le contenu (consigne + 4 questions + cadres "reponse") dans le frame. */
   body.novel-mode #screen-c4s6 .game-overlay {
     width: 100vw !important;
     max-width: 100vw !important;
@@ -5077,6 +5079,10 @@ body.novel-mode .c4s5-memory-game {
     border-radius: 0 !important;
     padding: 50px 14px 14px !important;
     overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
   }
   #screen-c4s6 .c4s6-buttons {
     flex-wrap: wrap !important;
