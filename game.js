@@ -6013,33 +6013,29 @@ function selectC5Module(btn) {
   saveState();
   // Quand 3 sont choisis : on dévoile le robot
   if (state.c5RobotModules.length === 3) {
-    // v478 : speak le greeting IMMEDIATEMENT dans le user gesture du clic
-    // 3eme module. La queue silente de v477 ne marchait pas sur iOS.
-    // On accepte que le greeting commence pendant le countdown (audio
-    // overlap avec les bleeps, OK acoustiquement). Le visuel reveal
-    // arrive 3s plus tard mais le robot a deja commence a parler.
+    // v480 : speak INLINE minimal, sans passer par _c5SpeakAsRobot, pour
+    // garantir 100% que le speak() est dans le user gesture iOS. Pas de
+    // cancel() avant (peut bloquer), pas de fallback, juste speak().
     try {
       if (typeof window.speechSynthesis !== 'undefined') {
         const mods = (state.c5RobotModules || []).slice().sort();
         const key = mods.join('+');
         const persona = (typeof C5_ROBOT_PERSONAS !== 'undefined' && C5_ROBOT_PERSONAS[key]) || { name: 'Stella' };
-        const kidName = state.characterName || '';
-        let greeting;
-        if (state.characterType === 'robot') {
-          greeting = kidName
-            ? `Salut copain robot ${kidName} ! Je suis ${persona.name}. Copains pour toujours !`
-            : `Salut copain robot ! Je suis ${persona.name}. Copains pour toujours !`;
-        } else {
-          greeting = kidName
-            ? `Bonjour ${kidName} ! Je suis ${persona.name}. Je vais te tenir compagnie.`
-            : `Bonjour ! Je suis ${persona.name}. Je vais te tenir compagnie.`;
-        }
-        // Marque pour que revealC5Robot ne re-speak pas le greeting 4s plus tard
+        const greeting = `Bonjour ! Je suis ${persona.name}. Je vais te tenir compagnie.`;
+        console.log('[c5s5] greeting speak:', greeting);
+        const utt = new SpeechSynthesisUtterance(greeting);
+        utt.lang = 'fr-FR';
+        utt.pitch = 1.15;
+        utt.rate = 0.95;
+        utt.volume = 1;
+        utt.onstart = () => console.log('[c5s5] greeting STARTED');
+        utt.onend   = () => console.log('[c5s5] greeting ENDED');
+        utt.onerror = (e) => console.warn('[c5s5] greeting ERROR:', e.error);
         window._c5GreetingQueued = true;
-        // Speak IMMEDIATEMENT - dans le user gesture, garanti iOS
-        _c5SpeakAsRobot(greeting);
+        window.speechSynthesis.speak(utt);
+        console.log('[c5s5] speak() called. paused:', window.speechSynthesis.paused, 'speaking:', window.speechSynthesis.speaking, 'pending:', window.speechSynthesis.pending);
       }
-    } catch(e) {}
+    } catch(e) { console.warn('[c5s5] greeting threw:', e); }
     revealC5Robot();
   } else {
     // Sinon, masque le résultat
