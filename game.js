@@ -2147,6 +2147,13 @@ function goToScreen(screenIdentifier, force) {
       delete _voiceCache['narr_c5s5'];
       delete _voiceCache['leon_c5s5'];
     } catch(e) {}
+    // v474 : TEST DIAGNOSTIC - joue la consigne IMMEDIATEMENT a l entree
+    // pour voir si l infra audio fonctionne. Si on entend la consigne mais
+    // pas narrator/leon, le probleme est specifique a playStoryScene/leon
+    // audio. Si silence total, infrastructure audio cassee sur cet ecran.
+    setTimeout(() => {
+      if (typeof playConsigne === 'function') playConsigne('c5s5');
+    }, 500);
     state.c5RobotModules = [];
     saveState();
     document.querySelectorAll('#c5s5-modules .c5-module-btn').forEach(b => {
