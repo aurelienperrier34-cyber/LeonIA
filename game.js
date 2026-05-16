@@ -5997,15 +5997,15 @@ function selectC5Module(btn) {
 
 // === Mappings modules → emoji, nom français, vidéo ===
 const C5_MODULE_DATA = {
-  see:   { emoji: '👁️', name: 'Voir',     video: 'assets/c5s5_robot/robot_see.mp4',
+  see:   { emoji: '👁️', name: 'Voir',     video: 'assets/c5s5_robot/robot_see.mp4?v=462',
            demo: 'Je vois un chat, un arbre, un ciel bleu. Je peux reconnaître plein de choses !' },
-  hear:  { emoji: '👂', name: 'Écouter',  video: 'assets/c5s5_robot/robot_hear.mp4',
+  hear:  { emoji: '👂', name: 'Écouter',  video: 'assets/c5s5_robot/robot_hear.mp4?v=462',
            demo: 'Tic-tac… j\'entends une horloge, des oiseaux, et même ta voix !' },
-  speak: { emoji: '💬', name: 'Parler',   video: 'assets/c5s5_robot/robot_speak.mp4',
+  speak: { emoji: '💬', name: 'Parler',   video: 'assets/c5s5_robot/robot_speak.mp4?v=462',
            demo: 'Je peux te parler, te raconter des histoires, et répondre à tes questions !' },
-  think: { emoji: '🧠', name: 'Réfléchir', video: 'assets/c5s5_robot/robot_think.mp4',
+  think: { emoji: '🧠', name: 'Réfléchir', video: 'assets/c5s5_robot/robot_think.mp4?v=462',
            demo: 'Hmm… 3 plus 4 font 7. 8 fois 8 font 64 ! Je suis très fort en calcul.' },
-  act:   { emoji: '💪', name: 'Agir',      video: 'assets/c5s5_robot/robot_act.mp4',
+  act:   { emoji: '💪', name: 'Agir',      video: 'assets/c5s5_robot/robot_act.mp4?v=462',
            demo: 'Je peux ranger ta chambre, attraper des objets, et même cuisiner !' }
 };
 

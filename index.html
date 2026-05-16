@@ -82,7 +82,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v461</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v462</div>
 
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
@@ -259,7 +259,7 @@
     <div class="screen" id="screen-2">
       <div class="immersive-scene street-bg">
         <!-- Video de fond rue (Veo 3.1) - en pause au demarrage, demarre apres la narration -->
-        <video src="assets/street_1.mp4" id="street-bg-video" class="street-bg-video" muted loop playsinline preload="auto" poster="assets/street_1_poster.jpg"></video>
+        <video src="assets/street_1.mp4?v=462" id="street-bg-video" class="street-bg-video" muted loop playsinline preload="auto" poster="assets/street_1_poster.jpg"></video>
 
         <!-- Pastille etoile en haut a gauche : couvre le watermark de l'editeur video
              + raccourci futur vers Mon Atelier -->
@@ -464,7 +464,7 @@
                 montre Leon immobile pret a parler. Image extraite via :
                 ffmpeg -i 'assets/Léon qui parle.mp4' -ss 0 -frames:v 1 \
                   -update 1 assets/atelier_avec_leon.jpg -->
-           <video src="assets/Léon%20qui%20parle.mp4" poster="assets/atelier_avec_leon.jpg" class="leon-video-bg" muted playsinline preload="auto"></video>
+           <video src="assets/Léon%20qui%20parle.mp4?v=462" poster="assets/atelier_avec_leon.jpg" class="leon-video-bg" muted playsinline preload="auto"></video>
            <div class="watermark-cover"></div>
         </div>
         <div class="scene-text">
@@ -484,7 +484,7 @@
       <div class="story-scene full-height-scene scene-4-machine">
         <!-- Vidéo Léon devant la machine (sans fond vert, décor 100% plein) -->
         <!-- poster = frame statique affichee immediatement (evite le flash blanc le temps du decodage video) -->
-        <video src="assets/Leon_devant_machine.mp4" poster="assets/Leon_devant_machine.jpg" id="leon-video-bg-4" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <video src="assets/Leon_devant_machine.mp4?v=462" poster="assets/Leon_devant_machine.jpg" id="leon-video-bg-4" class="leon-machine-video" muted loop playsinline preload="auto"></video>
         <!-- Héros de dos en overlay (tiers droit de la scène) -->
         <img src="" id="hero-back-4" class="hero-back-overlay" alt="Héros de dos">
         <video id="hero-back-video-4" class="hero-back-overlay hero-back-video" muted loop playsinline preload="auto" style="display:none"></video>
@@ -711,7 +711,7 @@
     <!-- c2s1 : Léon devant la porte de la salle des images -->
     <div class="screen" id="screen-c2s1">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/Leon_devant_porte.mp4" poster="assets/Leon_devant_porte.png" id="leon-video-c2s1" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <video src="assets/Leon_devant_porte.mp4?v=462" poster="assets/Leon_devant_porte.png" id="leon-video-c2s1" class="leon-machine-video" muted loop playsinline preload="auto"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">De retour à l'atelier, Léon t'invite à le suivre vers une porte mystérieuse...</p>
           <p class="dialogue-who">👴 Léon dit :</p>
@@ -728,7 +728,7 @@
       <div class="story-scene full-height-scene scene-4-machine">
         <!-- Poster machine_image.png (1672x941, 16:9) = chevalet + toile magique chap 2.
              Converti en background-image CSS au DOMContentLoaded → apparition INSTANTANÉE. -->
-        <video src="assets/Leon_machine_image.mp4?v=2" poster="assets/machine_image.png" id="leon-video-c2s2" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <video src="assets/Leon_machine_image.mp4?v=462" poster="assets/machine_image.png" id="leon-video-c2s2" class="leon-machine-video" muted loop playsinline preload="auto"></video>
 
         <!-- 3 hotspots invisibles : pinceau flottant / toile lumineuse / paillettes magiques.
              Revele via loupe magique au survol. Calibrables via toggleC2s2SpotCalib() (console). -->
@@ -760,7 +760,7 @@
     <!-- c2s3 : Démonstration -->
     <div class="screen" id="screen-c2s3">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/toile_vide.mp4" poster="assets/toile_sans_chat.jpg" id="leon-video-c2s3" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <video src="assets/toile_vide.mp4?v=462" poster="assets/toile_sans_chat.jpg" id="leon-video-c2s3" class="leon-machine-video" muted loop playsinline preload="auto"></video>
         <!-- Texte qui s'écrit lettre par lettre directement sur la toile -->
         <div class="canvas-typewriter" id="canvas-typewriter-c2s3">
           <span class="prompt-text" id="prompt-typewriter-c2s3"></span><span class="prompt-cursor">▌</span>
@@ -781,7 +781,7 @@
     <!-- c2s4 : Apprentissage (millions d'images) -->
     <div class="screen" id="screen-c2s4">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/images_millions.mp4?v=2" poster="assets/machine_image.png" id="leon-video-c2s4" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <video src="assets/images_millions.mp4?v=462" poster="assets/machine_image.png" id="leon-video-c2s4" class="leon-machine-video" muted loop playsinline preload="auto"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Mais comment la machine sait-elle dessiner ?</p>
           <p class="dialogue-who">👴 Léon explique :</p>
@@ -808,7 +808,7 @@
         <!-- v461 : remplace l'image statique par la video Leon_machine_image
              (re-encodee 5.5->2.2 Mbps, partagee avec c2s2). Poster = meme image
              machine_image.png pour le fallback. -->
-        <video src="assets/Leon_machine_image.mp4?v=2" poster="assets/machine_image.png" id="leon-video-c2s5" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <video src="assets/Leon_machine_image.mp4?v=462" poster="assets/machine_image.png" id="leon-video-c2s5" class="leon-machine-video" muted loop playsinline preload="auto"></video>
         <!-- Overlay : grille 2x3 des 6 dessins (3 corrects + 3 défectueux) -->
         <img src="assets/chapitre_2/t5_grid.png?v=1" id="c2s5-grid" class="c2s5-grid-overlay" alt="6 dessins de l'IA">
         <!-- 6 hot-spots invisibles sur la grille — 3 sont défectueux (data-defective="true")
@@ -842,7 +842,7 @@
     <!-- c2s6 : Pas d'émotion -->
     <div class="screen" id="screen-c2s6">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/Leon_machine_image.mp4" poster="assets/Leon_devant_machine.jpg" id="leon-video-c2s6" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <video src="assets/Leon_machine_image.mp4?v=462" poster="assets/Leon_devant_machine.jpg" id="leon-video-c2s6" class="leon-machine-video" muted loop playsinline preload="auto"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Léon devient un peu plus sérieux...</p>
           <p class="dialogue-who">👴 Léon ajoute :</p>
@@ -866,7 +866,7 @@
     <!-- c2s7 : Mini-jeu — choisir 3 mots, voir l'image générée par "l'IA" -->
     <div class="screen" id="screen-c2s7">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/toile_vide.mp4" poster="assets/toile_sans_chat.jpg" id="leon-video-c2s7" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <video src="assets/toile_vide.mp4?v=462" poster="assets/toile_sans_chat.jpg" id="leon-video-c2s7" class="leon-machine-video" muted loop playsinline preload="auto"></video>
 
         <!-- Prompt typewriter sur la toile (apparaît quand 3 mots choisis) -->
         <div class="canvas-typewriter" id="prompt-typewriter-c2s7"><span class="prompt-text-c7"></span><span class="prompt-cursor">▌</span></div>
@@ -991,7 +991,7 @@
     <!-- c3s1 : Léon t'invite dans son labo des sons -->
     <div class="screen" id="screen-c3s1">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/t1_bg.mp4" id="leon-video-c3s1" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t1_bg.jpg"></video>
+        <video src="assets/t1_bg.mp4?v=462" id="leon-video-c3s1" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t1_bg.jpg"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Léon te tend un casque audio et te fait signe de le suivre dans une nouvelle salle pleine de microphones et de lumières...</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
@@ -1006,7 +1006,7 @@
     <!-- c3s2 : L'IA peut écouter et comprendre -->
     <div class="screen" id="screen-c3s2">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/t2_bg.mp4" id="leon-video-c3s2" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t2_bg.jpg"></video>
+        <video src="assets/t2_bg.mp4?v=462" id="leon-video-c3s2" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t2_bg.jpg"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Léon parle à un micro... Aussitôt, des mots se mettent à danser dans l'air autour de lui&nbsp;!</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
@@ -1028,7 +1028,7 @@
     <!-- c3s3 : Démo reconnaissance vocale -->
     <div class="screen" id="screen-c3s3">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/t3_bg.mp4" id="leon-video-c3s3" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t3_bg.jpg"></video>
+        <video src="assets/t3_bg.mp4?v=462" id="leon-video-c3s3" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t3_bg.jpg"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Léon prononce le mot «&nbsp;bonjour&nbsp;». Sur l'écran, les ondes dansent puis... le mot s'écrit tout seul&nbsp;!</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
@@ -1068,7 +1068,7 @@
     <!-- c3s4 : L'IA peut parler (synthèse vocale) -->
     <div class="screen" id="screen-c3s4">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/t4_bg.mp4" id="leon-video-c3s4" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t4_bg.jpg"></video>
+        <video src="assets/t4_bg.mp4?v=462" id="leon-video-c3s4" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t4_bg.jpg"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Léon active une boîte parlante en métal doré. Une voix robotique chaleureuse commence à raconter une histoire&nbsp;!</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
@@ -1092,7 +1092,7 @@
     <!-- c3s5 : L'IA peut composer de la musique -->
     <div class="screen" id="screen-c3s5">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/t5_bg.mp4" id="leon-video-c3s5" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t5_bg.jpg"></video>
+        <video src="assets/t5_bg.mp4?v=462" id="leon-video-c3s5" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t5_bg.jpg"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Une grande machine pleine de touches dorées s'allume seule et joue une mélodie fantastique. Des notes colorées s'envolent&nbsp;!</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
@@ -1123,7 +1123,7 @@
     <!-- c3s6 : L'IA peut se tromper -->
     <div class="screen" id="screen-c3s6">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/t6_bg.mp4" id="leon-video-c3s6" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t6_bg.jpg"></video>
+        <video src="assets/t6_bg.mp4?v=462" id="leon-video-c3s6" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/t6_bg.jpg"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Léon murmure tout doucement quelque chose au micro. Sur l'écran s'affiche... «&nbsp;bla bla blop&nbsp;»&nbsp;!</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
@@ -1264,7 +1264,7 @@
     <!-- c4s1 : Rencontre avec Bot -->
     <div class="screen" id="screen-c4s1">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/chapitre_4/t1_bg.mp4" id="leon-video-c4s1" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_4/t1_bg.jpg"></video>
+        <video src="assets/chapitre_4/t1_bg.mp4?v=462" id="leon-video-c4s1" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_4/t1_bg.jpg"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Léon t'emmène dans une bibliothèque magique pleine de livres flottants. Près d'une table en bois, un petit robot blanc et turquoise t'attend...</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
@@ -1279,7 +1279,7 @@
     <!-- c4s2 : Bot répond à une question simple -->
     <div class="screen" id="screen-c4s2">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/chapitre_4/t2_bg.mp4" id="leon-video-c4s2" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_4/t2_bg.jpg"></video>
+        <video src="assets/chapitre_4/t2_bg.mp4?v=462" id="leon-video-c4s2" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_4/t2_bg.jpg"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Léon demande à Bot la couleur du ciel. Aussitôt, sur l'écran-visage de Bot, des lettres apparaissent et forment une réponse&nbsp;!</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
@@ -1294,7 +1294,7 @@
         <div class="c4s2-bot-bubble" id="c4s2-bot-bubble" style="display:none">
           <video class="c4s2-bot-video" id="c4s2-bot-video" muted loop playsinline preload="auto"
                  poster="assets/c4s2_bot/bot_portrait.jpg"
-                 src="assets/c4s2_bot/bot_talking.mp4?v=2"></video>
+                 src="assets/c4s2_bot/bot_talking.mp4?v=462"></video>
           <span class="c4s2-bot-text" id="c4s2-bot-text"></span>
         </div>
         <div class="c4s2-mic-row" id="c4s2-mic-row" style="display:none">
@@ -1318,7 +1318,7 @@
     <!-- c4s3 : Comment Bot a appris -->
     <div class="screen" id="screen-c4s3">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/chapitre_4/t3_bg.mp4?v=2" id="leon-video-c4s3" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_4/t3_bg.jpg"></video>
+        <video src="assets/chapitre_4/t3_bg.mp4?v=462" id="leon-video-c4s3" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_4/t3_bg.jpg"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Mais comment Bot connaît-il toutes ces réponses&nbsp;? Léon t'explique&nbsp;: Bot a 'lu' des millions de livres avant de pouvoir parler avec toi&nbsp;!</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
@@ -1346,7 +1346,7 @@
     <!-- c4s4 : Bot se trompe -->
     <div class="screen" id="screen-c4s4">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/chapitre_4/t4_bg.mp4" id="leon-video-c4s4" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_4/t4_bg.jpg"></video>
+        <video src="assets/chapitre_4/t4_bg.mp4?v=462" id="leon-video-c4s4" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_4/t4_bg.jpg"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Léon pose une nouvelle question&nbsp;: «&nbsp;Combien font 1 et 1&nbsp;?&nbsp;». Bot répond avec un grand sourire... mais sa réponse est complètement fausse&nbsp;!</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
@@ -1370,7 +1370,7 @@
     <!-- c4s5 : Bot n'est pas un ami (vidéo deferred, lèvres animées) -->
     <div class="screen" id="screen-c4s5">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/chapitre_4/t5_bg.mp4?v=2" id="leon-video-c4s5" class="leon-machine-video" muted playsinline preload="auto" poster="assets/chapitre_4/t5_bg.jpg"></video>
+        <video src="assets/chapitre_4/t5_bg.mp4?v=462" id="leon-video-c4s5" class="leon-machine-video" muted playsinline preload="auto" poster="assets/chapitre_4/t5_bg.jpg"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Léon prend un ton plus sérieux. Il s'approche de toi pour t'expliquer une chose importante au sujet de Bot...</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
@@ -1538,7 +1538,7 @@
     <!-- c5s1 : Arrivée sur le toit -->
     <div class="screen" id="screen-c5s1">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/chapitre_5/t1_bg.mp4" id="leon-video-c5s1" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_5/t1_bg.jpg"></video>
+        <video src="assets/chapitre_5/t1_bg.mp4?v=462" id="leon-video-c5s1" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_5/t1_bg.jpg"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Léon t'emmène par un escalier en colimaçon... vous arrivez sur le toit de l'atelier&nbsp;! Devant toi, un ciel étoilé magique avec des aurores boréales, des télescopes en cuivre, des planisphères qui flottent.</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
@@ -1553,7 +1553,7 @@
     <!-- c5s2 : L'IA dans la vie de tous les jours -->
     <div class="screen" id="screen-c5s2">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/chapitre_5/t2_bg.mp4" id="leon-video-c5s2" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_5/t2_bg.jpg"></video>
+        <video src="assets/chapitre_5/t2_bg.mp4?v=462" id="leon-video-c5s2" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_5/t2_bg.jpg"></video>
 
         <div class="scene-text scene-4-text">
           <p class="narration">Léon claque des doigts. Soudain, autour de toi, quatre hologrammes apparaissent.</p>
@@ -1598,7 +1598,7 @@
     <!-- c5s3 : Les pièges de l'IA — esprit critique -->
     <div class="screen" id="screen-c5s3">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/chapitre_5/t3_bg.mp4?v=2" id="leon-video-c5s3" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_5/t3_bg.jpg"></video>
+        <video src="assets/chapitre_5/t3_bg.mp4?v=462" id="leon-video-c5s3" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_5/t3_bg.jpg"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Mais Léon prend un ton sérieux. Trois images apparaissent l'une après l'autre, toutes fausses&nbsp;: un éléphant qui vole avec des petites ailes, un chat avec 3 têtes, et la Lune toute en fromage avec un grand sourire.</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
@@ -1657,7 +1657,7 @@
     <!-- c5s4 : Et toi, qu'est-ce que tu vas inventer ? -->
     <div class="screen" id="screen-c5s4">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/chapitre_5/t4_bg.mp4" id="leon-video-c5s4" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_5/t4_bg.jpg"></video>
+        <video src="assets/chapitre_5/t4_bg.mp4?v=462" id="leon-video-c5s4" class="leon-machine-video" muted loop playsinline preload="auto" poster="assets/chapitre_5/t4_bg.jpg"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Léon tend les mains vers toi. Les étoiles dans le ciel se mettent à bouger, à se rassembler... et forment ton portrait à toi, là-haut&nbsp;!</p>
           <p class="dialogue-who">👴 Léon dit&nbsp;:</p>
