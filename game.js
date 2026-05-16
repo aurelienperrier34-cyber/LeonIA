@@ -1739,10 +1739,27 @@ function goToScreen(screenIdentifier, force) {
         },
         c4s5: {
           narratorAudio: 'assets/chapitre_4/t5_narrateur.mp3', leonAudio: 'assets/chapitre_4/t5_leon.mp3',
-          onLeonStart: () => { const v = document.getElementById('leon-video-c4s5'); if (v) { v.currentTime = 1.5; v.play().catch(()=>{}); } },
+          onLeonStart: () => {
+            const v = document.getElementById('leon-video-c4s5');
+            if (v) { v.currentTime = 1.5; v.play().catch(()=>{}); }
+            // v447 : trace le moment ou Leon commence pour proteger contre
+            // un onLeonEnd premature (sur iOS, leonAudio peut fire 'ended'
+            // instantanement si play() echoue silencieux -> activateC4s5Game
+            // declenche trop tot, video a peine demarree).
+            window._c4s5LeonStartTs = Date.now();
+          },
           onLeonEnd: () => {
-            const v = document.getElementById('leon-video-c4s5'); if (v) { try { v.pause(); } catch(e) {} }
-            if (typeof activateC4s5Game === 'function') activateC4s5Game();
+            const v = document.getElementById('leon-video-c4s5');
+            // v447 : si onLeonEnd fire <8s apres onLeonStart, c est trop tot
+            // (audio Leon dure ~13.5s). On reschedule l activation du game
+            // pour laisser la video tourner le temps voulu.
+            const elapsed = Date.now() - (window._c4s5LeonStartTs || 0);
+            const MIN_PLAY_MS = 13500;
+            const remaining = Math.max(0, MIN_PLAY_MS - elapsed);
+            setTimeout(() => {
+              if (v) { try { v.pause(); } catch(e) {} }
+              if (typeof activateC4s5Game === 'function') activateC4s5Game();
+            }, remaining);
           }
         },
         // c4s6 : mini-jeu "Trouve l'erreur de Bot" (image fixe, pas de video)
