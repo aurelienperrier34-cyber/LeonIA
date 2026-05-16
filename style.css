@@ -7786,19 +7786,27 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
    Universal : clamp/vw/dvh, touch-action manipulation, 3D flip
    ============================================================ */
 
-/* Screen container : fond degrade nuit etoilee, pleine zone visible */
+/* Screen container : fond degrade nuit etoilee, FULL viewport overlay
+   pour ne pas avoir le .app blanc qui deborde. */
 #screen-creator {
   display: none;
   flex-direction: column;
   background: linear-gradient(180deg, #1a0d2e 0%, #2b1e54 50%, #4b2d8c 100%);
   color: #fff;
-  min-height: 100dvh;
   padding: clamp(8px, 1.5vw, 18px) clamp(10px, 2vw, 24px);
   font-family: 'Nunito', sans-serif;
-  position: relative;
   overflow: hidden;
 }
-#screen-creator.active { display: flex; }
+#screen-creator.active {
+  display: flex !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0;
+}
 
 .creator-phase {
   flex: 1;
