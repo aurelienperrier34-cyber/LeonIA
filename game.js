@@ -1557,6 +1557,12 @@ function goToScreen(screenIdentifier, force) {
     if (screenIdentifier === 'c2s3') {
       playC2s3Demo();
     }
+    // v473 : pour c5s5, bust le cache voice AVANT playStoryScene au cas ou
+    // les cached Audios sont dans un etat casse iOS (silence total observe).
+    // Force fresh Audio creation pour narrator+leon.
+    if (screenIdentifier === 'c5s5') {
+      try { delete _voiceCache['narr_c5s5']; delete _voiceCache['leon_c5s5']; } catch(e) {}
+    }
     // Effet karaoké pour les écrans narratifs (pas pour mini-jeu/quiz/démo)
     const narrativeC2 = ['c2s1','c2s2','c2s4','c2s5','c2s6','c2s7'];
     const narrativeC3 = ['c3s1','c3s2','c3s3','c3s4','c3s5','c3s6','c3s7'];
@@ -2134,6 +2140,13 @@ function goToScreen(screenIdentifier, force) {
   // CHAPITRE 5 — Le toit aux étoiles : mini-jeu robot + victoire
   // ============================================================
   if (screenIdentifier === 'c5s5') {
+    // v473 : busts les caches voice pour c5s5 (au cas ou cached Audio est
+    // dans un etat casse iOS). Forcera fresh Audio creation au prochain
+    // playStoryScene call.
+    try {
+      delete _voiceCache['narr_c5s5'];
+      delete _voiceCache['leon_c5s5'];
+    } catch(e) {}
     state.c5RobotModules = [];
     saveState();
     document.querySelectorAll('#c5s5-modules .c5-module-btn').forEach(b => {
