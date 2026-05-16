@@ -8229,6 +8229,23 @@ function c4s2ToggleMic() {
     return;
   }
   if (!_c4s2HasSpeechAPI()) return;
+  // v441 : sur iOS, le prompt de permission micro n est pas affichable
+  // quand on est en plein ecran (FS API cache la UI systeme). On exit
+  // d abord le FS, puis on lance la recognition. Pas de re-entree auto
+  // (le user peut re-cliquer le bouton FS si besoin).
+  const isIOS = typeof _isIOSDevice === 'function' && _isIOSDevice();
+  if (isIOS && typeof _fsElement === 'function' && _fsElement()) {
+    if (typeof _fsExit === 'function') {
+      try { _fsExit(); } catch(e) {}
+    }
+    // Petit message visible pour expliquer
+    const label = document.getElementById('c4s2-mic-label');
+    if (label) label.textContent = 'Autorise le micro puis re-clique';
+    // On laisse le user re-cliquer apres avoir autorise (le prompt
+    // s affiche maintenant que le FS est exit). Pas de start() ici car
+    // FS exit + start() simultanes ne marche pas iOS.
+    return;
+  }
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   try {
     _c4s2Recognition = new SR();
