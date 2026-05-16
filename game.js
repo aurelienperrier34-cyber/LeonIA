@@ -7891,7 +7891,9 @@ function playConsigne(consigneId) {
     try { window._consigneAudio.pause(); } catch(e) {}
   }
   try {
-    window._consigneAudio = new Audio(`assets/consignes/${consigneId}.mp3`);
+    // v451 : cache buster pour eviter que le browser serve une ancienne
+    // version du mp3 quand on regenere la voix (Date.now garantit nouveau).
+    window._consigneAudio = new Audio(`assets/consignes/${consigneId}.mp3?v=${Date.now()}`);
     window._consigneAudio.volume = 1;
     window._consigneAudio.play().catch(() => {});
   } catch(e) {}
