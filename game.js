@@ -6010,6 +6010,18 @@ function selectC5Module(btn) {
   saveState();
   // Quand 3 sont choisis : on dévoile le robot
   if (state.c5RobotModules.length === 3) {
+    // v470 : warm-up speechSynthesis DANS le user gesture du clic 3eme module.
+    // Sans ca, sur iOS, le speak() declenche 1.1s plus tard via setTimeout
+    // dans revealC5Robot sort du gesture context iOS -> Robot muet a la
+    // reveal et aux demos.
+    try {
+      if (typeof window.speechSynthesis !== 'undefined') {
+        const warm = new SpeechSynthesisUtterance(' ');
+        warm.volume = 0;
+        warm.rate = 10;
+        window.speechSynthesis.speak(warm);
+      }
+    } catch(e) {}
     revealC5Robot();
   } else {
     // Sinon, masque le résultat
@@ -6100,7 +6112,9 @@ function _c5SpeakAsRobot(text, onEnd) {
     if (typeof onEnd === 'function') setTimeout(onEnd, 600);
     return;
   }
+  // v470 : cancel + resume pour reset etat 'stuck' iOS Safari.
   try { window.speechSynthesis.cancel(); } catch(e) {}
+  try { window.speechSynthesis.resume(); } catch(e) {}
   const utt = new SpeechSynthesisUtterance(text);
   utt.lang = 'fr-FR';
   utt.pitch = 1.15;   // voix plus aigüe = plus robot/enfantine
@@ -6112,9 +6126,14 @@ function _c5SpeakAsRobot(text, onEnd) {
     const fr = voices.find(v => v.lang && v.lang.startsWith('fr'));
     if (fr) utt.voice = fr;
   } catch(e) {}
+  // v470 : fallback timer pour onEnd si utt.onend ne fire pas (iOS quirk).
+  let _ended = false;
+  const wrap = () => { if (_ended) return; _ended = true; if (typeof onEnd === 'function') onEnd(); };
   if (typeof onEnd === 'function') {
-    utt.onend   = onEnd;
-    utt.onerror = onEnd;
+    utt.onend   = wrap;
+    utt.onerror = wrap;
+    // Estimation : ~13 chars/sec + 800ms marge
+    setTimeout(wrap, Math.max(2000, text.length * 77 + 800));
   }
   window.speechSynthesis.speak(utt);
 }
