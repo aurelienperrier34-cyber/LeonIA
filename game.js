@@ -6013,16 +6013,48 @@ function selectC5Module(btn) {
   saveState();
   // Quand 3 sont choisis : on dévoile le robot
   if (state.c5RobotModules.length === 3) {
-    // v470 : warm-up speechSynthesis DANS le user gesture du clic 3eme module.
-    // Sans ca, sur iOS, le speak() declenche 1.1s plus tard via setTimeout
-    // dans revealC5Robot sort du gesture context iOS -> Robot muet a la
-    // reveal et aux demos.
+    // v477 : QUEUE le greeting speech DANS le user gesture du clic 3eme module.
+    // Sur iOS, speak() apres setTimeout (4s plus tard pour countdown+reveal)
+    // sort du gesture context -> muet. La SOLUTION : queue plusieurs utterances
+    // silentes pour combler les 4s du countdown, puis le greeting. iOS garde
+    // la speech 'active' tant qu il y a des utterances en queue.
     try {
       if (typeof window.speechSynthesis !== 'undefined') {
-        const warm = new SpeechSynthesisUtterance(' ');
-        warm.volume = 0;
-        warm.rate = 10;
-        window.speechSynthesis.speak(warm);
+        // 1. Compute le greeting (meme logique que revealC5Robot)
+        const mods = (state.c5RobotModules || []).slice().sort();
+        const key = mods.join('+');
+        const persona = (typeof C5_ROBOT_PERSONAS !== 'undefined' && C5_ROBOT_PERSONAS[key]) || { name: 'Stella' };
+        const kidName = state.characterName || '';
+        let greeting;
+        if (state.characterType === 'robot') {
+          greeting = kidName
+            ? `Salut copain robot ${kidName} ! Je suis ${persona.name}. Copains pour toujours ! Clique sur un module pour me voir en action !`
+            : `Salut copain robot ! Je suis ${persona.name}. Copains pour toujours ! Clique sur un module pour me voir en action !`;
+        } else {
+          greeting = kidName
+            ? `Bonjour ${kidName} ! Je suis ${persona.name}. Je vais te tenir compagnie. Clique sur un module pour me voir en action !`
+            : `Bonjour ! Je suis ${persona.name}. Je vais te tenir compagnie. Clique sur un module pour me voir en action !`;
+        }
+        // 2. Queue ~8 utterances silentes (~4s total) pour combler countdown+reveal
+        for (let i = 0; i < 8; i++) {
+          const s = new SpeechSynthesisUtterance(' ');
+          s.volume = 0;
+          s.rate = 1;
+          window.speechSynthesis.speak(s);
+        }
+        // 3. Queue le greeting reel
+        const utt = new SpeechSynthesisUtterance(greeting);
+        utt.lang = 'fr-FR';
+        utt.pitch = 1.15;
+        utt.rate = 0.95;
+        utt.volume = 1;
+        // Marque pour que revealC5Robot ne re-speak pas le greeting
+        window._c5GreetingQueued = true;
+        // Showcase 'btn Continuer' a la fin du greeting si c est la derniere demo
+        utt.onend = () => {
+          // L attribution showContinueBtn est gere ailleurs dans playC5ModuleDemo
+        };
+        window.speechSynthesis.speak(utt);
       }
     } catch(e) {}
     revealC5Robot();
@@ -6239,7 +6271,13 @@ function revealC5Robot() {
           ? `Bonjour ${kidName} ! Je suis ${persona.name}. Je vais te tenir compagnie. Clique sur un module pour me voir en action !`
           : `Bonjour ! Je suis ${persona.name}. Je vais te tenir compagnie. Clique sur un module pour me voir en action !`;
       }
-      _c5SpeakAsRobot(greeting);
+      // v477 : ne re-speak pas le greeting si deja queued dans selectC5Module
+      // (cas iOS ou on doit queue dans le user gesture).
+      if (!window._c5GreetingQueued) {
+        _c5SpeakAsRobot(greeting);
+      } else {
+        window._c5GreetingQueued = false; // reset pour prochaines visites
+      }
     }, 1100);
 
     // === Phase D : génère les boutons de démo des 3 modules choisis ===
