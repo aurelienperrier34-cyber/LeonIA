@@ -8229,6 +8229,19 @@ function c4s2ToggleMic() {
     return;
   }
   if (!_c4s2HasSpeechAPI()) return;
+  // v442 : warm-up speechSynthesis DANS le user gesture du clic mic. Sans ca,
+  // sur iOS, le speak() appele plus tard depuis onresult (callback async du
+  // SpeechRecognition, hors user gesture) echoue silencieusement -> Bot muet
+  // lors de la premiere question posee a la voix. L utterance speak() ici
+  // debloque le TTS pour la session.
+  try {
+    if (typeof window.speechSynthesis !== 'undefined') {
+      const warm = new SpeechSynthesisUtterance(' ');
+      warm.volume = 0;
+      warm.rate = 10; // ultra-rapide pour finir vite
+      window.speechSynthesis.speak(warm);
+    }
+  } catch(e) {}
   // v441 : sur iOS, le prompt de permission micro n est pas affichable
   // quand on est en plein ecran (FS API cache la UI systeme). On exit
   // d abord le FS, puis on lance la recognition. Pas de re-entree auto
