@@ -5079,7 +5079,11 @@ body.novel-mode .c4s5-memory-game {
     border-radius: 0 !important;
     padding: 50px 14px 14px !important;
     overflow-y: auto !important;
-    display: flex !important;
+    /* v454 : pas de !important sur display ! Le panel a style="display:none"
+       inline jusqu a ce que JS l affiche. !important trumperait l inline et
+       afficherait le panel immediatement, cachant l image Leon. JS fait
+       style.display = '' (vide) -> tombe sur la valeur CSS = flex -> visible. */
+    display: flex;
     flex-direction: column !important;
     justify-content: center !important;
     align-items: center !important;
