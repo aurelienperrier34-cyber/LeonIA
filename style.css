@@ -838,16 +838,10 @@ body.novel-mode #screen-c5s4 .dialogue-bubble {
   top: 88px !important;
 }
 
-/* v445 : sur iOS, descend la bulle Leon c4s3 vers le centre vertical de
-   l ecran (le user veut plus de visibilite, le top 60/88px est trop en haut).
-   Scoped iOS only via body.ios-device + fallback @supports -webkit-touch-callout. */
-body.ios-device.novel-mode #screen-c4s3 .dialogue-who {
-  top: 32vh !important;
-}
-body.ios-device.novel-mode #screen-c4s3 .dialogue-bubble {
-  top: calc(32vh + 28px) !important;
-}
-@supports (-webkit-touch-callout: none) {
+/* v446 : descend la bulle Leon c4s3 vers le centre vertical sur TOUT
+   appareil tactile (iOS + Android), via @media (pointer: coarse).
+   Le top 60/88px etait trop haut sur tablette/phone. PC inchange. */
+@media (pointer: coarse) {
   body.novel-mode #screen-c4s3 .dialogue-who {
     top: 32vh !important;
   }
