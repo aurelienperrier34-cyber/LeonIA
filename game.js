@@ -9171,7 +9171,13 @@ let creatorState = {
 
 function openCreatorMode() {
   goToScreen('creator');
-  initCreatorPick();
+  // v490 : rAF pour s assurer que le screen est visible (.active applique
+  // + layout flush) avant de render la grille. Sinon premier affichage vide.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      initCreatorPick();
+    });
+  });
 }
 
 // === PHASE 1 : SELECTION === =================================

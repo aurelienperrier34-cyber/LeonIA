@@ -7807,10 +7807,9 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   height: 100dvh;
   margin: 0;
 }
-/* v489 : sur l ecran creator, cache la pastille Carte globale, le bouton FS,
-   les av-toggles et le global-star-corner (on a nos propres elements topbar). */
+/* v490 : sur creator, cache les UI overlays globaux qui font double avec
+   notre topbar (carte, av-toggles, star). Garde le bouton FS (utile). */
 body:has(#screen-creator.active) #btn-back-map-global,
-body:has(#screen-creator.active) #btn-fullscreen,
 body:has(#screen-creator.active) .av-toggles,
 body:has(#screen-creator.active) #global-star-corner {
   display: none !important;
