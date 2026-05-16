@@ -8148,6 +8148,7 @@ const C4S2_QUESTIONS = {
 let _c4s2Recognition = null;
 let _c4s2Listening = false;
 let _c4s2TypewriterTimer = null;
+let _c4s2PendingQid = null; // v443 : qid en attente, declenche dans SR.onend (iOS audio session)
 
 function resetC4s2Game() {
   state.c4s2QuestionsAsked = [];
@@ -8281,8 +8282,11 @@ function c4s2ToggleMic() {
       console.log('[c4s2] heard:', transcript);
       const matched = _c4s2MatchQuestion(transcript);
       if (matched) {
-        const card = document.querySelector(`#c4s2-questions .c4s2-q-card[data-qid="${matched}"]`);
-        c4s2AskQuestion(matched, card);
+        // v443 : sur iOS, le speechSynthesis ne marche pas tant que SR tient
+        // l audio session. _c4s2Recognition.stop() est async -> on memorise
+        // la question et on attend onend (= SR fully released) avant de
+        // declencher c4s2AskQuestion (qui appelle speak()).
+        _c4s2PendingQid = matched;
       } else {
         _c4s2HintNoMatch();
       }
@@ -8307,7 +8311,19 @@ function c4s2ToggleMic() {
         if (label) label.textContent = 'Je n ai rien entendu, re-essaie';
       }
     };
-    _c4s2Recognition.onend = () => { _c4s2StopMic(); };
+    _c4s2Recognition.onend = () => {
+      _c4s2StopMic();
+      // v443 : SR pleinement libere -> on peut maintenant declencher la question
+      // (qui appelle speechSynthesis.speak()). Sur iOS, speak() avant onend est
+      // bloque car SR tient encore l audio session.
+      if (_c4s2PendingQid) {
+        const qid = _c4s2PendingQid;
+        _c4s2PendingQid = null;
+        const card = document.querySelector(`#c4s2-questions .c4s2-q-card[data-qid="${qid}"]`);
+        // Petit delai pour laisser le browser finir de relacher l audio session
+        setTimeout(() => c4s2AskQuestion(qid, card), 100);
+      }
+    };
     _c4s2Recognition.start();
   } catch(e) {
     console.warn('[c4s2] mic init failed:', e);
@@ -8413,9 +8429,12 @@ function _c4s2SpeakAsBot(text) {
   }
   // Strip emoji + symboles non-textuels pour ne pas les faire lire a voix haute
   const cleanText = _stripEmoji(text);
-  // v440 : sur iOS, le speak() DOIT etre dans le user gesture (pas via setTimeout
-  // imbrique sinon). On appelle synchronement. Le bug Chromium 'cancel+speak'
-  // n existe pas si on ne cancel pas. On skip donc le cancel + setTimeout 150ms.
+  // v443 : sur iOS, speechSynthesis peut etre 'stuck' apres usage du
+  // SpeechRecognition (les 2 partagent l audio session). cancel() + resume()
+  // resetent l etat avant speak(). Necessaire pour les questions posees a
+  // la voix (sinon Bot reste muet meme apres warm-up).
+  try { window.speechSynthesis.cancel(); } catch(e) {}
+  try { window.speechSynthesis.resume(); } catch(e) {}
   {
     const utt = new SpeechSynthesisUtterance(cleanText);
     utt.lang = 'fr-FR';
