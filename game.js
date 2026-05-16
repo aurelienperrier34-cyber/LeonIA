@@ -2056,7 +2056,8 @@ function goToScreen(screenIdentifier, force) {
     const instr = document.getElementById('c4s6-instruction');
     if (ans) ans.textContent = 'Pose une question à Bot pour voir sa réponse...';
     if (label) label.textContent = 'Bot répond :';
-    if (instr) instr.textContent = 'Pose une question à Bot 👇';
+    // v455 : texte aligne sur l audio Leon (v452 dans HTML, restaure ici au reset)
+    if (instr) instr.textContent = '👆 Clique sur une question et donne la réponse. Clique à nouveau pour voir la réponse de Bot.';
     document.getElementById('btn-to-c4s7')?.classList.remove('show-btn');
   }
 
