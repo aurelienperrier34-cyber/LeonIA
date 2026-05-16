@@ -1763,18 +1763,22 @@ function goToScreen(screenIdentifier, force) {
           }
         },
         // c4s6 : mini-jeu "Trouve l'erreur de Bot" (image fixe, pas de video)
-        // v449 : narrateur retire (le user veut juste la voix Leon disant la
-        // consigne du jeu). t6_leon.mp3 regenere avec le texte consigne.
-        // playConsigne('c4s6') retire (Leon dit deja la consigne en dialogue).
+        // v450 : narrateur retire (pas de narration). Leon dit son dialogue
+        // original (Choisis une question et observe la reponse de Bot...) puis
+        // a la fin du dialogue, le mini-jeu apparait + Leon dit la consigne
+        // specifique du jeu (Clique sur une question et donne la reponse...).
         c4s6: {
           leonAudio: 'assets/chapitre_4/t6_leon.mp3',
           // Active le panneau de questions a la fin de l'audio Leon (+ 600ms)
+          // puis joue la consigne audio specifique du jeu.
           onLeonEnd: () => {
             setTimeout(() => {
               const sceneText = document.querySelector('#screen-c4s6 .scene-text');
               if (sceneText) sceneText.style.display = 'none';
               const game = document.getElementById('c4s6-game');
               if (game) game.style.display = '';
+              // Consigne du mini-jeu, voix Leon (assets/consignes/c4s6.mp3)
+              if (typeof playConsigne === 'function') playConsigne('c4s6');
             }, 600);
           }
         },
