@@ -1813,11 +1813,26 @@ function goToScreen(screenIdentifier, force) {
           }
         },
         // c5s5 : mini-jeu "construis ton robot IA" (image fixe, pas de video)
-        // v469 : ajout consigne audio Leon "Choisis 3 modules pour ton robot."
-        // (genere via generer_voix VOICE_ID_LEON, fichier assets/consignes/c5s5.mp3)
+        // v472 : ajout fallback timer pour playConsigne car onLeonEnd ne fire
+        // pas toujours sur iOS (leonAudio 'ended' peu fiable). On schedule la
+        // consigne dans onLeonStart base sur la duree leon audio (~10s) + marge.
         c5s5: {
           narratorAudio: 'assets/chapitre_5/t5_narrateur.mp3', leonAudio: 'assets/chapitre_5/t5_leon.mp3',
+          onLeonStart: () => {
+            // Fallback : si onLeonEnd ne fire pas, on declenche quand meme la
+            // consigne apres la duree estimee de l audio (10s + 800ms marge).
+            if (window._c5s5ConsigneTimer) clearTimeout(window._c5s5ConsigneTimer);
+            window._c5s5ConsigneTimer = setTimeout(() => {
+              if (window._c5s5ConsigneFired) return;
+              window._c5s5ConsigneFired = true;
+              if (typeof playConsigne === 'function') playConsigne('c5s5');
+            }, 10800);
+            window._c5s5ConsigneFired = false;
+          },
           onLeonEnd: () => {
+            if (window._c5s5ConsigneFired) return;
+            window._c5s5ConsigneFired = true;
+            if (window._c5s5ConsigneTimer) { clearTimeout(window._c5s5ConsigneTimer); window._c5s5ConsigneTimer = null; }
             if (typeof playConsigne === 'function') playConsigne('c5s5');
           }
         }
