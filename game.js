@@ -8344,18 +8344,13 @@ function c4s2AskQuestion(qid, cardEl) {
   asked.push(qid);
   state.c4s2QuestionsAsked = asked;
   if (cardEl) cardEl.classList.add('used');
-  // v437 : warm-up speechSynthesis iOS DANS le user gesture du clic.
-  // Sans ca, le speak() declenche 1.2s plus tard (apres setTimeout) sort
-  // du gesture context iOS -> TTS silencieux + utt.onend ne fire pas ->
-  // _c4s2ShowMic n est jamais appele -> bouton 'Pose ta question' ne
-  // reapparait pas. Le silent utterance debloque le TTS pour la session.
-  try {
-    if (typeof window.speechSynthesis !== 'undefined') {
-      const warm = new SpeechSynthesisUtterance('');
-      warm.volume = 0;
-      window.speechSynthesis.speak(warm);
-    }
-  } catch(e) {}
+  const answer = C4S2_QUESTIONS[qid].answer;
+  // v440 : iOS Safari exige que speechSynthesis.speak() soit appele DIRECTEMENT
+  // dans le user gesture (pas via setTimeout). v437 warm-up (volume 0) ne suffit
+  // pas chez certains users. On lance maintenant le TTS IMMEDIATEMENT dans le
+  // click handler, et on garde le delai de 1.2s 'Bot reflechit' juste pour le
+  // typewriter visuel.
+  _c4s2SpeakAsBot(answer);
   // v374 : pendant que Bot reflechit + repond, on cache la bulle "Pose ta
   // question a voix haute" (mic-row) — elle sera reaffichee a la fin du
   // typewriter (cf. _c4s2Typewriter), sauf si c'etait la 3e question.
@@ -8372,11 +8367,9 @@ function c4s2AskQuestion(qid, cardEl) {
   }
   if (_c4s2TypewriterTimer) clearTimeout(_c4s2TypewriterTimer);
   _c4s2TypewriterTimer = setTimeout(() => {
-    // Phase 2 : Bot répond avec typewriter ET voix robotique
+    // Phase 2 : Bot répond avec typewriter (la voix tourne deja en parallele)
     if (text) { text.classList.remove('thinking'); text.textContent = ''; }
-    _c4s2Typewriter(C4S2_QUESTIONS[qid].answer, 0);
-    // Voix de Bot (pitch eleve = robotique) en parallele du typewriter
-    _c4s2SpeakAsBot(C4S2_QUESTIONS[qid].answer);
+    _c4s2Typewriter(answer, 0);
   }, 1200);
 }
 
@@ -8390,9 +8383,10 @@ function _c4s2SpeakAsBot(text) {
   }
   // Strip emoji + symboles non-textuels pour ne pas les faire lire a voix haute
   const cleanText = _stripEmoji(text);
-  // Bug Chromium : cancel() suivi immediat de speak() peut avaler le speak.
-  try { window.speechSynthesis.cancel(); } catch(e) {}
-  setTimeout(() => {
+  // v440 : sur iOS, le speak() DOIT etre dans le user gesture (pas via setTimeout
+  // imbrique sinon). On appelle synchronement. Le bug Chromium 'cancel+speak'
+  // n existe pas si on ne cancel pas. On skip donc le cancel + setTimeout 150ms.
+  {
     const utt = new SpeechSynthesisUtterance(cleanText);
     utt.lang = 'fr-FR';
     // v374 : pitch 2.0 + rate 0.7 etaient des EXTREMES — sur Samsung le moteur
@@ -8432,7 +8426,7 @@ function _c4s2SpeakAsBot(text) {
     // Garde une reference pour eviter le garbage collection precoce
     window._c4s2Utterance = utt;
     window.speechSynthesis.speak(utt);
-  }, 150);
+  }
 }
 
 // Retire emojis + symboles pictographiques pour ne pas les faire lire en TTS.
