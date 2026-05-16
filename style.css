@@ -1189,9 +1189,10 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
     padding-left: 22vw !important;
     width: 72vw !important;
   }
-  /* c5s3-phase1 : bulle "Photo reelle ou IA ?" shiftee aussi a droite */
+  /* c5s3-phase1 : bulle "Photo reelle ou IA ?" centree (v464) */
   body.novel-mode #screen-c5s3 .c5s3-phase1 {
-    left: 22vw !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
   }
 }
 body.novel-mode #screen-c5s1 .scene-text .narration,
@@ -1404,10 +1405,11 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
     padding-left: 22vw !important;
     width: 72vw !important;
   }
-  /* v460 : bulle "Photo reelle ou IA ?" (c5s3-phase1) etait left:8px ->
-     decalee vers le centre sur iOS pour rester alignee avec la narration. */
+  /* v464 : c5s3-phase1 centree sur iOS (au lieu de left:22vw qui clippait
+     les boutons RÉELLE/IA). left:50% + translateX(-50%) = centrage classique. */
   body.ios-device.novel-mode #screen-c5s3 .c5s3-phase1 {
-    left: 22vw !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
   }
   /* C5S3 mobile : bulle "Photo reelle ou IA ?" remontee, eclaircie, et
      decalee a gauche (etait centree avec left:50% translateX(-50%)). */
