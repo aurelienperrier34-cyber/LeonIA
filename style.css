@@ -5432,6 +5432,11 @@ body.novel-mode .c5s3-phase1 {
   cursor: pointer;
   background: rgba(255,255,255,0.12);
   color: white;
+  /* v463 : single tap fiable sur iOS (zappe le delai 300ms + bloque pinch-zoom). */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  z-index: 10;
   text-align: center;
   line-height: 1;
   transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
