@@ -6152,32 +6152,35 @@ function _c5SpeakAsRobot(text, onEnd) {
     if (typeof onEnd === 'function') setTimeout(onEnd, 600);
     return;
   }
-  // v476 : attend que les voices soient chargees avant de speak (iOS quirk).
-  _ensureVoicesLoaded().then((voices) => {
-    // Reset etat 'stuck' iOS
-    try { window.speechSynthesis.cancel(); } catch(e) {}
-    try { window.speechSynthesis.resume(); } catch(e) {}
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.lang = 'fr-FR';
-    utt.pitch = 1.15;
-    utt.rate  = 0.95;
-    utt.volume = 1;
-    // v476 : pick voice avec fallback - prefere fr-FR, sinon n importe quelle
-    // voix fr, sinon n importe quelle voix (mieux que rien sur iOS si pas de fr).
+  // v479 : SYNCHRONE - speak() doit etre dans le user gesture iOS. v476
+  // utilisait _ensureVoicesLoaded().then(speak) qui rendait speak() async
+  // (microtask) -> hors gesture iOS -> muet. On revient en sync.
+  try { window.speechSynthesis.cancel(); } catch(e) {}
+  try { window.speechSynthesis.resume(); } catch(e) {}
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'fr-FR';
+  utt.pitch = 1.15;
+  utt.rate  = 0.95;
+  utt.volume = 1;
+  // Pick voice avec ce qui est disponible MAINTENANT (synchrone).
+  // Si voices encore vides (iOS lazy), on speak sans voix -> iOS utilise
+  // sa voix par defaut, mieux que rien.
+  try {
+    const voices = window.speechSynthesis.getVoices() || [];
     const frFR = voices.find(v => v.lang === 'fr-FR');
     const fr   = voices.find(v => v.lang && v.lang.startsWith('fr'));
     const any  = voices[0];
     const chosen = frFR || fr || any;
     if (chosen) utt.voice = chosen;
-    let _ended = false;
-    const wrap = () => { if (_ended) return; _ended = true; if (typeof onEnd === 'function') onEnd(); };
-    if (typeof onEnd === 'function') {
-      utt.onend   = wrap;
-      utt.onerror = wrap;
-      setTimeout(wrap, Math.max(2000, text.length * 77 + 800));
-    }
-    window.speechSynthesis.speak(utt);
-  });
+  } catch(e) {}
+  let _ended = false;
+  const wrap = () => { if (_ended) return; _ended = true; if (typeof onEnd === 'function') onEnd(); };
+  if (typeof onEnd === 'function') {
+    utt.onend   = wrap;
+    utt.onerror = wrap;
+    setTimeout(wrap, Math.max(2000, text.length * 77 + 800));
+  }
+  window.speechSynthesis.speak(utt);
 }
 
 function revealC5Robot() {
