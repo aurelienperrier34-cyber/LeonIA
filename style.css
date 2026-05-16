@@ -1175,6 +1175,16 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   max-width: min(52%, 460px);
   margin-right: auto;
 }
+
+/* v458 : fallback CSS-only iOS WebKit (au cas ou body.ios-device n est pas
+   pose par JS). Decale la bulle Leon c5s2 a 28vw sur iOS pour qu elle ne
+   soit pas trop a gauche (Leon est croppe differemment iPad ~4:3). */
+@supports (-webkit-touch-callout: none) {
+  body.novel-mode #screen-c5s2 .dialogue-who,
+  body.novel-mode #screen-c5s2 .dialogue-bubble {
+    left: 28vw !important;
+  }
+}
 body.novel-mode #screen-c5s1 .scene-text .narration,
 body.novel-mode #screen-c5s2 .scene-text .narration {
   max-width: min(60%, 520px);
@@ -1316,6 +1326,14 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
     padding: 8px 12px !important;
     font-size: 0.85rem !important;
     line-height: 1.3 !important;
+  }
+  /* v458 : sur iOS, la bulle Leon c5s2 (left:200px) tombe trop a gauche
+     (l image Leon est croppee differemment en cover-fit sur iPad ~4:3).
+     Decale a 28vw (~330px iPad, ~672px iPhone landscape). Scoped iOS via
+     body.ios-device. Reste dans le @media (pointer:coarse) du bloc parent. */
+  body.ios-device.novel-mode #screen-c5s2 .dialogue-who,
+  body.ios-device.novel-mode #screen-c5s2 .dialogue-bubble {
+    left: 28vw !important;
   }
   /* C5S2 mobile : parent-tip plus etroite et legerement decalee a droite. */
   body.novel-mode #screen-c5s2 .parent-tip {
