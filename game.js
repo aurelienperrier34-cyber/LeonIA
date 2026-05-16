@@ -8217,6 +8217,11 @@ function _c4s2HasSpeechAPI() {
   }
   // Backup : explicitement detecte file://
   if (location && location.protocol === 'file:') return false;
+  // v438 : iOS Safari expose l API SpeechRecognition mais l implementation n est
+  // pas fiable (start() ne declenche pas de demande de permission, ne capture pas
+  // l audio). Pour ne pas montrer un bouton micro non-fonctionnel aux enfants,
+  // on retourne false sur iOS -> bouton micro cache, seules les cartes tap restent.
+  if (typeof _isIOSDevice === 'function' && _isIOSDevice()) return false;
   return true;
 }
 
