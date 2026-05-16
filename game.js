@@ -344,6 +344,17 @@ function _isIOSDevice() {
   return false;
 }
 
+// v433 : ajoute body.ios-device pour cibler les overrides typo/UI iOS-only
+// via CSS. Pas de bg/color modif globale (les rules iOS-specifiques sont
+// scopees a des elements precis, ex .c3s7-hint). Re-introduction safe car
+// AUCUNE rule body.ios-device { bg/color } generale ne consomme la classe.
+(function _tagIOSDevice(){
+  if (!_isIOSDevice()) return;
+  const apply = () => { if (document.body) document.body.classList.add('ios-device'); };
+  if (document.body) apply();
+  else document.addEventListener('DOMContentLoaded', apply, { once: true });
+})();
+
 // Parametres chroma par type, calibres pour matcher visuellement les
 // filtres SVG #greenKey / #softGreenKey / #ultraSoftGreenKey / #whiteKey.
 function _chromaParamsForType(type) {

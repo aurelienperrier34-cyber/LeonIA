@@ -2701,6 +2701,16 @@ body.calib-c3s7-mics::before {
   }
 }
 
+/* v433 : consigne c3s7 trop petite sur iOS (font-size 0.7rem trop reduit
+   pour les enfants sur iPad). Override scoped iOS only (via body.ios-device
+   reintroduit en v433). Padding aussi augmente pour proportions equilibrees. */
+body.ios-device.novel-mode #screen-c3s7 .c3s7-hint {
+  font-size: 1.05rem !important;
+  padding: 8px 18px !important;
+  line-height: 1.3 !important;
+  max-width: 92vw !important;
+}
+
 /* === Anciens styles partagés .sound-buttons (pour autres écrans) === */
 .sound-buttons {
   display: flex;
