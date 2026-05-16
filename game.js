@@ -1813,9 +1813,13 @@ function goToScreen(screenIdentifier, force) {
           }
         },
         // c5s5 : mini-jeu "construis ton robot IA" (image fixe, pas de video)
+        // v469 : ajout consigne audio Leon "Choisis 3 modules pour ton robot."
+        // (genere via generer_voix VOICE_ID_LEON, fichier assets/consignes/c5s5.mp3)
         c5s5: {
           narratorAudio: 'assets/chapitre_5/t5_narrateur.mp3', leonAudio: 'assets/chapitre_5/t5_leon.mp3',
-          onLeonEnd: () => { /* Pas de playConsigne('c5s5') : Leon dit deja la consigne. */ }
+          onLeonEnd: () => {
+            if (typeof playConsigne === 'function') playConsigne('c5s5');
+          }
         }
       };
       playStoryScene(screenIdentifier, optsMap[screenIdentifier] || {});
