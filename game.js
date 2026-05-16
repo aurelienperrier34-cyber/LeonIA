@@ -339,7 +339,10 @@ const charData = {
 function _isIOSDevice() {
   const ua = navigator.userAgent || '';
   if (/iPad|iPhone|iPod/.test(ua)) return true;
-  // iPadOS 13+ rapporte 'MacIntel' mais avec touch
+  // v435 : detection iPadOS 13+ robuste. UA = Macintosh, mais touch
+  // (vrai Mac = pas de touch). navigator.platform deprecie -> on utilise UA + touch.
+  if (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) return true;
+  // Fallback : ancien check platform si UA ne contient pas Macintosh
   if (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) return true;
   return false;
 }

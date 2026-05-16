@@ -2710,6 +2710,19 @@ body.ios-device.novel-mode #screen-c3s7 .c3s7-hint {
   max-width: 94vw !important;
   bottom: 24px !important;
 }
+/* v435 : fallback CSS-only ciblant iOS Safari WebKit (au cas ou la classe
+   body.ios-device n est pas posee par JS sur iPadOS recent). Le selecteur
+   -webkit-touch-callout est WebKit-only et matche Safari iOS + Chrome iOS.
+   Ne matche pas Mac Safari desktop (pas de -webkit-touch-callout par defaut). */
+@supports (-webkit-touch-callout: none) {
+  body.novel-mode #screen-c3s7 .c3s7-hint {
+    font-size: 1.25rem !important;
+    padding: 10px 22px !important;
+    line-height: 1.3 !important;
+    max-width: 94vw !important;
+    bottom: 24px !important;
+  }
+}
 
 /* === Anciens styles partagés .sound-buttons (pour autres écrans) === */
 .sound-buttons {
