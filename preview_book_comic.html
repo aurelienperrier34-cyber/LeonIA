@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview Comic — Le livre magique</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  background: #000;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: #fff;
+  position: relative;
+}
+
+/* Fond = l illustration pleine page */
+.bg-image {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-color: #1a0d2e;
+  transition: opacity 0.5s, transform 8s ease-out;
+  z-index: 0;
+}
+/* Ken Burns subtil sur l image */
+.bg-image.kenburns {
+  transform: scale(1.08) translate(-1%, 1%);
+}
+/* Vignette pour densifier l image et lisibilite du texte */
+.bg-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center top, transparent 30%, rgba(0,0,0,0.5) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 25%, transparent 60%, rgba(0,0,0,0.85) 100%);
+}
+
+/* Titre en haut */
+.title-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 10;
+  padding: clamp(14px, 2.5vw, 24px) clamp(20px, 4vw, 40px);
+  background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, transparent 100%);
+  pointer-events: none;
+}
+.book-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: clamp(1.1rem, 2.4vw, 1.8rem);
+  letter-spacing: 0.05em;
+  color: #ffe9a8;
+  text-shadow: 0 0 20px rgba(0,0,0,0.9), 0 4px 12px rgba(0,0,0,0.7);
+}
+
+/* Bande de texte en bas - style cuir + parchemin */
+.text-band {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 5;
+  min-height: 32dvh;
+  max-height: 50dvh;
+  padding: clamp(20px, 3vw, 36px) clamp(28px, 5vw, 80px) clamp(80px, 9vw, 100px);
+  background:
+    /* Reflet doux haut */
+    linear-gradient(to bottom,
+      rgba(255,240,200,0) 0%,
+      rgba(255,240,200,0.05) 8%,
+      rgba(255,240,200,0) 12%),
+    /* Parchemin */
+    radial-gradient(ellipse at center, #faf0d8 0%, #ecd9b0 70%, #c8a76a 100%);
+  box-shadow:
+    0 -10px 40px rgba(0,0,0,0.8),
+    inset 0 0 80px rgba(120,80,40,0.2);
+  border-top: 4px solid;
+  border-image: linear-gradient(90deg, #4a2a18 0%, #b8854a 50%, #4a2a18 100%) 1;
+  overflow-y: auto;
+}
+/* Petits ornements aux coins de la bande */
+.text-band::before, .text-band::after {
+  content: '✦';
+  position: absolute;
+  top: clamp(14px, 2vw, 22px);
+  color: rgba(120,60,30,0.4);
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+}
+.text-band::before { left: clamp(14px, 2vw, 24px); }
+.text-band::after  { right: clamp(14px, 2vw, 24px); }
+
+.text-content {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.05rem, 1.9vw, 1.35rem);
+  line-height: 1.65;
+  color: #2b1810;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: justify;
+  transition: opacity 0.4s, transform 0.4s;
+}
+.text-content.changing { opacity: 0; transform: translateY(15px); }
+.text-content em { font-style: italic; color: #5a2a18; }
+.text-content p:first-child::first-letter {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: clamp(2.6rem, 5vw, 3.6rem);
+  float: left;
+  line-height: 0.85;
+  padding: 4px 8px 0 0;
+  color: #8a3a18;
+}
+
+/* Nav fixée en bas du parchemin */
+.nav {
+  position: fixed;
+  bottom: clamp(18px, 2.5vw, 28px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.5vw, 24px);
+}
+.nav button {
+  background: linear-gradient(135deg, #6b3d24, #3a1e10);
+  color: #ffe9a8;
+  border: 2px solid #b8854a;
+  border-radius: 50%;
+  width: clamp(44px, 5vw, 54px);
+  height: clamp(44px, 5vw, 54px);
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: background 0.2s, transform 0.15s;
+}
+.nav button:hover { background: linear-gradient(135deg, #8a5236, #4a2a18); transform: scale(1.06); }
+.nav button:disabled { opacity: 0.4; cursor: not-allowed; }
+.nav .progress {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  color: #ffe9a8;
+  background: rgba(0,0,0,0.6);
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(184,133,74,0.5);
+  min-width: clamp(60px, 8vw, 80px);
+  text-align: center;
+}
+
+.badge {
+  position: fixed;
+  top: 12px; right: 12px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  z-index: 100;
+}
+</style>
+</head>
+<body>
+<div class="badge">Preview — Comic / Full screen + bande</div>
+
+<div class="bg-image" id="bg"></div>
+
+<div class="title-bar">
+  <h1 class="book-title">Brio et la guitare des sept silences</h1>
+</div>
+
+<div class="text-band">
+  <div class="text-content" id="text">
+    <!-- charge par JS -->
+  </div>
+</div>
+
+<div class="nav">
+  <button id="prev">‹</button>
+  <span class="progress" id="progress">1 / 10</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const PAGES = [
+  {
+    text: `Brio n'était pas un dragon comme les autres. D'abord, il avait à peine la taille d'un gros chat. Ensuite, ses écailles, au lieu d'être rouges ou vertes, brillaient d'un bleu très doux, comme le ciel juste après l'orage. Et surtout, surtout, Brio n'aimait pas cracher du feu. Cela faisait tousser les fleurs. Depuis trois lunes, il vivait seul dans le château de Belmondrie. Une vraie ruine, mais il s'y plaisait.`,
+    // Placeholder gradient en attendant image Leonardo
+    bg: 'linear-gradient(135deg, #1a4a6e 0%, #2a3060 50%, #4a2a6e 100%)'
+  },
+  {
+    text: `C'était une guitare. Posée sur un coussin de velours rouge, comme si quelqu'un venait de la déposer. Le bois sentait la résine et le miel. Ses cordes, au nombre de six, scintillaient — argenté, avec des reflets violets et dorés. Brio effleura la première corde. <em>Pliiing.</em> Au même instant, dans toutes les pièces, les vieilles bougies se rallumèrent une à une.`,
+    bg: 'linear-gradient(135deg, #6e4a1a 0%, #4a2810 50%, #2a1810 100%)'
+  },
+  {
+    text: `Cette nuit-là, Brio ne parvint pas à dormir. Vers minuit, il entendit une voix. Très faible. Très triste. <em>« Quelqu'un… joue, je t'en prie… »</em> Brio prit la guitare entre ses pattes et gratta les six cordes. Un accord se forma. Mélancolique. Et quelque part au fond du château, une porte fermée depuis très longtemps se mit lentement à grincer.`,
+    bg: 'linear-gradient(135deg, #1a0d2e 0%, #2b1854 50%, #1a0d2e 100%)'
+  },
+  {
+    text: `Brio arriva dans le couloir des miroirs. Sept grands miroirs. Aucun ne reflétait Brio. Le dernier montrait le visage flou d'un vieil homme aux yeux gris transparents. <em>« On m'appelait Maître Otho. J'ai fabriqué cette guitare. Voudrais-tu m'aider à me souvenir ? »</em> Brio hocha vivement la tête.`,
+    bg: 'linear-gradient(135deg, #2a3060 0%, #4a2a6e 50%, #1a1a4a 100%)'
+  },
+  {
+    text: `Brio gratta la deuxième corde. Une porte s'ouvrit sur un atelier. Des copeaux jonchaient le sol, l'air sentait la cire chaude. Le fantôme de Maître Otho, plus jeune, rabotait une planche. <em>« Toute ma vie, j'ai construit des instruments. Mais j'ai oublié pour qui je construisais. Et même mon propre nom. »</em> Brio sentit ses narines piquer. Pas du feu — des larmes.`,
+    bg: 'linear-gradient(135deg, #4a3010 0%, #6e4a1a 50%, #2a1a08 100%)'
+  },
+  {
+    text: `La troisième corde ouvrit une salle de bal immense. Mille bougies. Des dames tournoyaient. Au centre, Maître Otho jouait, sa guitare paraissait vivante. <em>« Le bal des longues nuits. Les enfants dormaient enroulés sous les bancs. C'est la dernière fois que j'ai été heureux. Après, il y a eu… »</em> Il se tut. Brio comprit qu'il fallait jouer la corde suivante. Mais il avait peur de la suite.`,
+    bg: 'linear-gradient(135deg, #8a5a10 0%, #6e3a10 50%, #2a1a08 100%)'
+  },
+  {
+    text: `La quatrième corde fit naître une flamme. Le château brûlait. Maître Otho courait. <em>« Ma guitare ! »</em> — Mais elle est sauvée, regardez ! Le fantôme vit la guitare entre les pattes du petit dragon. <em>« Quelqu'un… l'a sauvée. Malgré le feu… »</em> — Quelqu'un vous aimait beaucoup, murmura Brio. Une larme glissa, qui n'était plus une larme — une goutte de musique, peut-être.`,
+    bg: 'linear-gradient(135deg, #8a1010 0%, #6e2a10 50%, #2a0808 100%)'
+  },
+  {
+    text: `Brio gratta les sept cordes ensemble. Aucune ne fit de bruit. Sept silences purs. Et dans ces silences, Brio entendit tout. Les notes oubliées. Les rires des enfants endormis. La voix d'une femme qui chantonnait. Maître Otho rouvrit les yeux. <em>« Tu écoutes les silences. C'est plus rare que d'entendre la musique. »</em>`,
+    bg: 'linear-gradient(135deg, #1a0d4a 0%, #4a2a6e 50%, #1a0d2e 100%)'
+  },
+  {
+    text: `Quand Brio se réveilla, il était dans la galerie. Avait-il rêvé ? Mais sur la pierre, il y avait une petite mèche de cheveux blancs, tressée en forme d'étoile. — Merci, Maître Otho, chuchota-t-il. Le soleil entra. Le lierre fit éclore de petites fleurs jaunes. Brio essaya un accord. Puis un autre. C'était laid, c'était faux, c'était merveilleux. Il sourit, le premier vrai sourire de sa vie.`,
+    bg: 'linear-gradient(135deg, #ffd166 0%, #8a5a30 50%, #4a3018 100%)'
+  },
+  {
+    text: `Les mois passèrent. Brio apprit à jouer. Un soir d'hiver, des voyageurs perdus arrivèrent. Brio leur offrit la soupe, puis joua. Les enfants s'endormirent sous les bancs, les parents dansèrent en pleurant un peu, comme on pleure quand on est trop heureux. Belmondrie était devenu la maison où l'on jouait du silence. Et les gens disaient : — Là-bas, c'est si beau qu'on a presque envie de pleurer.`,
+    bg: 'linear-gradient(135deg, #2a1a4a 0%, #ffd166 70%, #6e4a1a 100%)'
+  }
+];
+
+const bg = document.getElementById('bg');
+const text = document.getElementById('text');
+const progress = document.getElementById('progress');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+let i = 0;
+
+function show(idx) {
+  text.classList.add('changing');
+  bg.style.opacity = '0';
+  bg.classList.remove('kenburns');
+  setTimeout(() => {
+    bg.style.background = PAGES[idx].bg;
+    bg.style.backgroundSize = 'cover';
+    bg.style.backgroundPosition = 'center';
+    text.innerHTML = '<p>' + PAGES[idx].text + '</p>';
+    progress.textContent = (idx + 1) + ' / ' + PAGES.length;
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === PAGES.length - 1;
+    bg.style.opacity = '1';
+    requestAnimationFrame(() => bg.classList.add('kenburns'));
+    text.classList.remove('changing');
+  }, 400);
+}
+prevBtn.onclick = () => { if (i > 0) { i--; show(i); } };
+nextBtn.onclick = () => { if (i < PAGES.length - 1) { i++; show(i); } };
+show(0);
+</script>
+</body>
+</html>

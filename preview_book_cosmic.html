@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview Cosmic — Le livre magique</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  background:
+    radial-gradient(ellipse at 50% 50%, #2d1a4a 0%, #100823 70%, #050213 100%);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: #fff;
+  position: relative;
+}
+
+/* Etoiles animees - 3 couches pour profondeur */
+body::before, body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+body::before {
+  background-image:
+    radial-gradient(2px 2px at 8% 15%, white, transparent),
+    radial-gradient(2px 2px at 22% 80%, white, transparent),
+    radial-gradient(1.5px 1.5px at 50% 30%, white, transparent),
+    radial-gradient(1.5px 1.5px at 75% 20%, white, transparent),
+    radial-gradient(2px 2px at 90% 75%, white, transparent),
+    radial-gradient(1px 1px at 15% 50%, white, transparent),
+    radial-gradient(2px 2px at 60% 90%, white, transparent),
+    radial-gradient(1.5px 1.5px at 35% 10%, white, transparent),
+    radial-gradient(1px 1px at 85% 45%, white, transparent),
+    radial-gradient(2px 2px at 5% 70%, white, transparent),
+    radial-gradient(1.5px 1.5px at 95% 5%, white, transparent),
+    radial-gradient(1px 1px at 45% 60%, white, transparent);
+  opacity: 0.7;
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+body::after {
+  background-image:
+    radial-gradient(3px 3px at 25% 35%, #ffd166, transparent),
+    radial-gradient(2px 2px at 70% 55%, #ffd166, transparent),
+    radial-gradient(3px 3px at 40% 75%, #c5a0ff, transparent),
+    radial-gradient(2px 2px at 80% 25%, #c5a0ff, transparent),
+    radial-gradient(3px 3px at 15% 85%, #ffd166, transparent);
+  opacity: 0.5;
+  filter: blur(0.5px);
+  animation: floatStars 18s ease-in-out infinite alternate;
+}
+@keyframes twinkle {
+  0%   { opacity: 0.4; }
+  100% { opacity: 0.85; }
+}
+@keyframes floatStars {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(12px, -8px); }
+}
+
+/* Nebula sous le scroll */
+.nebula {
+  position: fixed;
+  top: 50%; left: 50%;
+  width: 70vw; height: 70vh;
+  transform: translate(-50%, -50%);
+  background:
+    radial-gradient(ellipse at center,
+      rgba(155,93,229,0.25) 0%,
+      rgba(120,90,200,0.15) 30%,
+      transparent 60%);
+  pointer-events: none;
+  animation: pulse 5s ease-in-out infinite alternate;
+  z-index: 0;
+}
+@keyframes pulse {
+  0%   { transform: translate(-50%, -50%) scale(0.95); opacity: 0.7; }
+  100% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+}
+
+/* Container */
+.stage {
+  position: relative;
+  z-index: 5;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(20px, 3vw, 40px);
+  gap: clamp(20px, 3vw, 30px);
+}
+
+.book-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: clamp(1.4rem, 3vw, 2.4rem);
+  letter-spacing: 0.06em;
+  color: #ffe9a8;
+  text-shadow: 0 0 30px rgba(255,233,168,0.5), 0 4px 20px rgba(0,0,0,0.6);
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+.book-title::before,
+.book-title::after {
+  content: '✦';
+  margin: 0 clamp(8px, 1.5vw, 14px);
+  color: rgba(255,233,168,0.6);
+  font-size: 0.7em;
+}
+
+/* Le parchemin flottant */
+.scroll {
+  position: relative;
+  width: min(85vw, 700px);
+  max-height: 70dvh;
+  background:
+    /* Reflet doux */
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,200,0.4) 0%, transparent 40%),
+    /* Texture parchemin */
+    radial-gradient(ellipse at center, #faf0d8 0%, #ecd9b0 60%, #c8a76a 100%);
+  border-radius: 4px;
+  padding: clamp(28px, 4vw, 48px) clamp(32px, 5vw, 60px);
+  box-shadow:
+    /* Halo magique */
+    0 0 60px rgba(255,220,140,0.4),
+    0 0 100px rgba(155,93,229,0.3),
+    /* Vignette interne */
+    inset 0 0 80px rgba(120,80,40,0.25);
+  color: #2b1810;
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  line-height: 1.7;
+  text-align: justify;
+  overflow-y: auto;
+  animation: scrollFloat 6s ease-in-out infinite alternate;
+}
+@keyframes scrollFloat {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
+}
+
+/* Bords irreguliers du parchemin (haut + bas) */
+.scroll::before, .scroll::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 14px;
+  background:
+    /* Petits triangles dechires */
+    repeating-linear-gradient(90deg,
+      transparent 0, transparent 8px,
+      #c8a76a 8px, #c8a76a 12px,
+      transparent 12px, transparent 20px);
+  filter: blur(0.5px);
+}
+.scroll::before { top: -7px; }
+.scroll::after  { bottom: -7px; }
+
+/* Lettrine */
+.scroll p:first-child::first-letter {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: clamp(2.8rem, 5.5vw, 4rem);
+  float: left;
+  line-height: 0.85;
+  padding: 4px 10px 0 0;
+  color: #8a3a18;
+  text-shadow: 1px 1px 0 rgba(255,240,200,0.6);
+}
+.scroll p { margin-bottom: 1em; }
+.scroll em { font-style: italic; color: #5a2a18; }
+
+/* Nav */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 3vw, 32px);
+  z-index: 10;
+}
+.nav button {
+  background: rgba(255,255,255,0.1);
+  color: #ffe9a8;
+  border: 1.5px solid rgba(255,233,168,0.4);
+  border-radius: 50%;
+  width: clamp(46px, 5vw, 58px);
+  height: clamp(46px, 5vw, 58px);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: background 0.2s, transform 0.15s;
+}
+.nav button:hover { background: rgba(255,233,168,0.25); transform: scale(1.08); }
+.nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav .progress {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  color: #ffe9a8;
+  text-shadow: 0 0 12px rgba(255,233,168,0.5);
+  min-width: clamp(60px, 8vw, 80px);
+  text-align: center;
+}
+
+/* Transition fade entre pages */
+.scroll.changing { opacity: 0; transform: translateY(20px) scale(0.98); transition: opacity 0.4s, transform 0.4s; }
+
+.badge {
+  position: fixed;
+  top: 12px; left: 12px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  z-index: 100;
+}
+</style>
+</head>
+<body>
+<div class="badge">Preview — Cosmic / Pages flottantes</div>
+<div class="nebula"></div>
+
+<div class="stage">
+  <h1 class="book-title">Brio et la guitare des sept silences</h1>
+
+  <div class="scroll" id="scroll">
+    <!-- Page chargee par JS -->
+  </div>
+
+  <div class="nav">
+    <button id="prev">‹</button>
+    <span class="progress" id="progress">1 / 10</span>
+    <button id="next">›</button>
+  </div>
+</div>
+
+<script>
+const PAGES = [
+  `Brio n'était pas un dragon comme les autres. D'abord, il avait à peine la taille d'un gros chat. Ensuite, ses écailles, au lieu d'être rouges ou vertes, brillaient d'un bleu très doux, comme le ciel juste après l'orage. Et surtout, surtout, Brio n'aimait pas cracher du feu. Cela faisait tousser les fleurs.<br><br>Depuis trois lunes, il vivait seul dans le château de Belmondrie. Une vraie ruine. Les murs étaient couverts de lierre, les fenêtres n'avaient plus de carreaux, et le vent y jouait du saxophone sous les portes mal fermées.`,
+
+  `C'était une guitare. Posée sur un coussin de velours rouge, comme si quelqu'un venait juste de la déposer. Elle était belle. Le bois sentait la résine et le miel. Ses cordes, au nombre de six, scintillaient d'un éclat impossible — argenté, avec des reflets violets et dorés.<br><br>Brio tendit une griffe et effleura la première corde. <em>Pliiing.</em> Une note pure jaillit. Au même instant, dans toutes les pièces du château, les vieilles bougies, qui n'avaient pas brûlé depuis des siècles, se rallumèrent une à une.`,
+
+  `Cette nuit-là, Brio ne parvint pas à dormir. Vers minuit, il entendit une voix. Très faible. Très triste. <em>« Quelqu'un… joue, je t'en prie… »</em><br><br>Brio bondit. Aucune ombre, aucun visage. Juste la guitare, qui vibrait toute seule. Il la prit entre ses pattes, ferma les yeux, et gratta les six cordes l'une après l'autre. Un accord se forma. Étrange. Mélancolique. Et quelque part au fond du château, une porte fermée depuis très longtemps se mit lentement à grincer.`,
+
+  `Brio arriva dans un couloir qu'il n'avait jamais vu. Le couloir des miroirs. Sur les murs, sept grands miroirs. Aucun ne reflétait Brio. Le dernier montrait le visage flou d'un vieil homme.<br><br>— Bonsoir, murmura Brio.<br><br>Le vieil homme tourna lentement la tête. <em>« Tu joues, et tu vois. Cela faisait si longtemps. On m'appelait Maître Otho. J'ai fabriqué cette guitare. Voudrais-tu m'aider à me souvenir ? »</em> Brio hocha vivement la tête.`,
+
+  `Brio gratta la deuxième corde. Une porte s'ouvrit sur un atelier. Des copeaux jonchaient le sol, l'air sentait la cire chaude. Le fantôme de Maître Otho, plus jeune, rabotait une planche.<br><br>— Vous travaillez ?<br><br><em>« Toute ma vie, j'ai construit des instruments. Pour que la musique entre dans les maisons. Mais j'ai oublié pour qui je construisais. Et même mon propre nom, par instants. »</em><br><br>Brio sentit ses narines piquer. Pas du feu — des larmes.`,
+
+  `La troisième corde ouvrit une immense salle de bal. Le sol noir et blanc brillait sous mille bougies. Des dames tournoyaient. Au centre, sur une estrade, Maître Otho jouait. Sa guitare paraissait vivante, presque heureuse.<br><br>— C'est ici que vous étiez heureux ?<br><br><em>« Le bal des longues nuits. Les enfants dormaient enroulés sous les bancs. C'est la dernière fois que j'ai été heureux. Après, il y a eu… »</em> Il se tut. Brio comprit qu'il fallait jouer la corde suivante. Mais il avait peur de la suite.`,
+
+  `La quatrième corde fit naître une flamme. Brio se retrouva devant le château qui brûlait. Maître Otho courait, essayant d'entrer. <em>« Ma guitare ! »</em><br><br>— Mais elle est sauvée, regardez ! Je l'ai !<br><br>Le fantôme vit la guitare entre les pattes du petit dragon. Ses épaules tremblèrent.<br><br><em>« Quelqu'un… l'a sauvée. Malgré le feu… »</em><br><br>— Quelqu'un vous aimait beaucoup, murmura Brio. Une larme glissa, qui n'était plus tout à fait une larme — une goutte de musique, peut-être.`,
+
+  `Brio gratta les sept cordes ensemble. Aucune ne fit de bruit. Sept silences purs.<br><br>Et dans ces silences, Brio entendit tout. Les notes oubliées de cent ans de musique. Les rires des enfants endormis. La voix d'une femme qui chantonnait. Les pas d'un chien fidèle.<br><br>Maître Otho rouvrit les yeux. <em>« Voilà ce que j'avais oublié. Pas les notes. Tout le reste. Tout ce qui vivait autour des notes. Tu écoutes les silences. C'est plus rare que d'entendre la musique. »</em>`,
+
+  `Quand Brio se réveilla, il était dans la galerie. La guitare dormait à ses côtés. Avait-il rêvé ? Mais sur la pierre, juste à côté de lui, il y avait une petite mèche de cheveux blancs, tressée en forme d'étoile.<br><br>— Merci, Maître Otho, chuchota-t-il.<br><br>Le soleil entra par les fenêtres brisées. Le lierre fit éclore de petites fleurs jaunes. Brio essaya un accord. Puis un autre. C'était laid, c'était faux, c'était merveilleux. Il sourit, le premier vrai sourire de sa vie.`,
+
+  `Les mois passèrent. Brio apprit à jouer. Un soir d'hiver, des voyageurs perdus dans la tempête arrivèrent. Brio leur ouvrit, offrit un bol de soupe. Puis il joua. Les enfants s'endormirent sous les bancs, les parents dansèrent en pleurant un peu, comme on pleure quand on est trop heureux.<br><br>Belmondrie était devenu la maison où l'on jouait du silence. Et les gens disaient en passant sur la route :<br><br>— Vous entendez ? Là-bas, dans le vieux château… c'est si beau qu'on a presque envie de pleurer.`
+];
+
+const scroll = document.getElementById('scroll');
+const progress = document.getElementById('progress');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+let i = 0;
+
+function show(idx) {
+  scroll.classList.add('changing');
+  setTimeout(() => {
+    scroll.innerHTML = '<p>' + PAGES[idx] + '</p>';
+    progress.textContent = (idx + 1) + ' / ' + PAGES.length;
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === PAGES.length - 1;
+    scroll.classList.remove('changing');
+  }, 400);
+}
+prevBtn.onclick = () => { if (i > 0) { i--; show(i); } };
+nextBtn.onclick = () => { if (i < PAGES.length - 1) { i++; show(i); } };
+show(0);
+</script>
+</body>
+</html>
