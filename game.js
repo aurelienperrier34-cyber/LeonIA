@@ -9179,13 +9179,32 @@ let creatorState = {
 
 function openCreatorMode() {
   goToScreen('creator');
-  // v490 : rAF pour s assurer que le screen est visible (.active applique
-  // + layout flush) avant de render la grille. Sinon premier affichage vide.
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
+  // v500 : le double rAF du v490 ne suffit pas avec le nouveau layout
+  // position:absolute. On poll en rAF jusqu'a ce que l'ecran soit reellement
+  // dimensionne (offsetWidth > 0). C'est instant en regle generale (1-2
+  // frames) mais resilient si le navigateur traine.
+  let _retries = 0;
+  function _waitReady() {
+    const sc = document.getElementById('screen-creator');
+    if (sc && sc.classList.contains('active') && sc.offsetWidth > 0) {
       initCreatorPick();
-    });
-  });
+      // Filet : si pour une raison X le DOM est vide apres render, on re-tente
+      setTimeout(() => {
+        const pages = document.getElementById('pick-book-pages');
+        if (pages && pages.children.length === 0) {
+          console.warn('[creator] pick-book-pages vide apres render, re-tentative');
+          initCreatorPick();
+        }
+      }, 80);
+    } else if (_retries < 40) {  // max 40 frames (~660ms)
+      _retries++;
+      requestAnimationFrame(_waitReady);
+    } else {
+      console.warn('[creator] screen-creator jamais devenu visible, init force');
+      initCreatorPick();
+    }
+  }
+  requestAnimationFrame(_waitReady);
 }
 
 // === PHASE 1 : SELECTION (v499 - livre interactif 5 pages) ====
@@ -9228,7 +9247,8 @@ function initCreatorPick() {
 
 function renderPickBook() {
   const pagesEl = document.getElementById('pick-book-pages');
-  if (!pagesEl) return;
+  console.log('[creator] renderPickBook : pagesEl =', pagesEl);
+  if (!pagesEl) { console.warn('[creator] #pick-book-pages introuvable'); return; }
   pagesEl.innerHTML = '';
   PICK_STEPS.forEach((step, idx) => {
     const spread = document.createElement('div');

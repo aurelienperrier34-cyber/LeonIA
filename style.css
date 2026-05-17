@@ -7940,10 +7940,15 @@ body:has(#screen-creator.active) #global-star-corner {
   top: 54%;
   transform: translate(-50%, -50%);
   width: clamp(360px, 46vw, 660px);
+  /* Fallback height explicite si aspect-ratio non supporte (older Safari) */
+  height: clamp(240px, 30vw, 440px);
   aspect-ratio: 3 / 2;
   perspective: 1800px;
   -webkit-perspective: 1800px;
   z-index: 3;
+  /* Filet de securite : si pages vides, on voit au moins le contour du livre */
+  background: rgba(245, 233, 208, 0.05);
+  border-radius: 14px;
 }
 
 /* Ombre portée derrière le livre, sur les mains */
