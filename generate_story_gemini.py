@@ -276,12 +276,26 @@ def gen_image_gemini(prompt, dest_path, ref_images=None,
             last_err = f"404 {mdl}"
             continue
         if r.status_code == 429:
-            # Quota depassee sur CE modele : tente le suivant
+            # Vertex AI rate-limit (par minute). On wait + retry le MEME modele.
             last_err = f"429 quota {mdl}"
-            print(f"    QUOTA 429 sur {mdl}, body:")
-            print(f"    {r.text[:600]}")
-            print(f"    on essaie modele suivant...")
-            continue
+            body_short = r.text[:300].replace('\n', ' ')
+            print(f"    RATE LIMIT 429 sur {mdl} : {body_short}")
+            # 3 tentatives avec backoff (15s, 30s, 60s)
+            for retry_i, wait_s in enumerate([15, 30, 60], 1):
+                print(f"    wait {wait_s}s puis retry {retry_i}/3...")
+                time.sleep(wait_s)
+                r2 = _api_call(url_tpl, mdl, payload, timeout=180)
+                if r2.status_code == 429:
+                    print(f"    encore 429 (retry {retry_i})")
+                    continue
+                r = r2
+                break
+            else:
+                # Apres 3 retries 429, on tente le modele suivant
+                print(f"    Echec apres 3 retries, on essaie modele suivant")
+                continue
+            if r.status_code == 429:
+                continue
         if r.status_code == 403:
             # Probleme d'autorisation (API non activee, role insuffisant...)
             print(f"    FORBIDDEN 403 sur {mdl}, body:")
@@ -346,6 +360,9 @@ def main():
                    help="Max tentatives par page si verify echoue (defaut 3)")
     p.add_argument("--lax", action="store_true",
                    help="Mode laxe : ok=true si kid_safe seulement (ignore drift)")
+    p.add_argument("--page-delay", type=float, default=12.0,
+                   help="Delai en secondes entre 2 pages successives (defaut 12s, "
+                        "pour respecter le rate-limit Vertex AI ~5 req/min)")
     args = p.parse_args()
 
     if args.story not in STORIES:
@@ -382,6 +399,7 @@ def main():
         verify_portraits = auto_portraits(hero, place, item, villain)
 
     success, fail, skipped, retried = 0, 0, 0, 0
+    first_processed = True
     for idx, raw_prompt in enumerate(prompts, 1):
         if only and idx not in only:
             continue
@@ -390,6 +408,11 @@ def main():
             print(f"[{idx}/{len(prompts)}] page{idx}.jpg : existe (skip, --force pour regenerer)")
             skipped += 1
             continue
+        # Delai entre pages pour respecter rate-limit Vertex
+        if not first_processed and args.page_delay > 0:
+            print(f"  (attente {args.page_delay}s pour rate-limit Vertex)")
+            time.sleep(args.page_delay)
+        first_processed = False
 
         # Determine les refs (et donc les personnages a inclure) pour CETTE page
         if auto_refs:
