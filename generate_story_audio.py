@@ -49,6 +49,12 @@ for candidate in [
         break
 
 from generate_story_images import STORIES
+try:
+    from verify_story_audio import verify_audio
+    _HAS_AUDIO_VERIFIER = True
+except Exception as _e:
+    print(f"[verify] module audio verifier indispo : {_e}")
+    _HAS_AUDIO_VERIFIER = False
 
 # ============================================================
 # Auth : on reutilise le service account utilise pour Gemini Image
@@ -145,6 +151,12 @@ def main():
                    help="Pitch -20.0 a +20.0 (defaut 0.0)")
     p.add_argument("--force", action="store_true",
                    help="Regenere meme si le MP3 existe deja")
+    p.add_argument("--verify", action="store_true",
+                   help="Verifie via Gemini que l'audio dit bien le texte")
+    p.add_argument("--lax", action="store_true",
+                   help="Mode laxe : accepte 95%+ au lieu de match parfait")
+    p.add_argument("--max-retries", type=int, default=3,
+                   help="Max tentatives par page si verify echoue (defaut 3)")
     args = p.parse_args()
 
     if args.story not in STORIES:
@@ -161,7 +173,7 @@ def main():
     print(f"Output : {out_dir}/page*.mp3\n")
 
     # Les pages dans STORIES ont la forme {"text": "...", "image": "..."}
-    success, fail, skipped = 0, 0, 0
+    success, fail, skipped, retried = 0, 0, 0, 0
     for idx, page in enumerate(pages, 1):
         if only and idx not in only:
             continue
@@ -174,16 +186,57 @@ def main():
         clean_text = clean_html_for_tts(raw_text)
         chars = len(clean_text)
         print(f"[{idx}/{len(pages)}] page{idx}.mp3 ({chars} chars)")
-        ok = synthesize_page(clean_text, dest, voice=args.voice,
-                             speaking_rate=args.rate, pitch=args.pitch)
-        if ok:
+
+        max_tries = args.max_retries if args.verify and _HAS_AUDIO_VERIFIER else 1
+        attempt = 0
+        page_ok = False
+        while attempt < max_tries:
+            attempt += 1
+            if attempt > 1:
+                print(f"  --- TENTATIVE {attempt}/{max_tries} ---")
+                if dest.exists():
+                    dest.unlink()
+            ok = synthesize_page(clean_text, dest, voice=args.voice,
+                                 speaking_rate=args.rate, pitch=args.pitch)
+            if not ok:
+                continue
             size_kb = dest.stat().st_size // 1024
-            print(f"  OK -> {dest} ({size_kb} KB)")
+            print(f"  OK gen -> {dest} ({size_kb} KB)")
+
+            if not args.verify or not _HAS_AUDIO_VERIFIER:
+                page_ok = True
+                break
+
+            print(f"  [verify] Gemini audio...")
+            vr = verify_audio(dest, expected_text=clean_text, lax=args.lax)
+            if vr.get("error"):
+                print(f"  [verify] ERREUR: {vr['error']} (on garde le MP3)")
+                page_ok = True
+                break
+            if vr.get("ok"):
+                print(f"  [verify] OK ({vr.get('match_score')}% match)")
+                page_ok = True
+                break
+            score = vr.get("match_score", 0)
+            issues = vr.get("issues", [])
+            missing = vr.get("missing_words", [])
+            wrong = vr.get("wrong_words", [])
+            print(f"  [verify] KO ({score}% match)")
+            for iss in issues[:5]:
+                print(f"          - {iss}")
+            if missing:
+                print(f"          missing: {missing[:5]}")
+            if wrong:
+                print(f"          wrong:   {wrong[:5]}")
+            retried += 1
+
+        if page_ok:
             success += 1
         else:
+            print(f"  [{idx}] ECHEC apres {max_tries} tentatives - review manuelle")
             fail += 1
 
-    print(f"\nBilan : {success} OK, {fail} echec(s), {skipped} skip(s)")
+    print(f"\nBilan : {success} OK, {fail} echec(s), {skipped} skip(s), {retried} retry(s)")
     if success > 0:
         # Estimation cout (Neural2 = $16/1M chars)
         total_chars = sum(
