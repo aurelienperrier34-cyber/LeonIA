@@ -88,12 +88,14 @@ def _get_auth_token():
 
 def _api_call(url_tpl, model, payload, timeout=120):
     """Wrapper requests.post qui ajoute auth SA ou ?key=API_KEY selon dispo."""
-    url = url_tpl.format(model=model)
     if _USE_SA:
+        # Vertex AI : URL contient projet + region
+        url = url_tpl.format(model=model, project=_SA_PROJECT)
         headers = {"Authorization": f"Bearer {_get_auth_token()}",
                    "Content-Type": "application/json"}
         return requests.post(url, json=payload, headers=headers, timeout=timeout)
     else:
+        url = url_tpl.format(model=model)
         return requests.post(f"{url}?key={GEMINI_API_KEY}", json=payload, timeout=timeout)
 
 # On reutilise tout l'ecosysteme deja construit pour Leonardo
@@ -115,7 +117,21 @@ GEMINI_IMAGE_MODELS = [
     "gemini-2.0-flash-preview-image-generation",
     "gemini-2.0-flash-exp",
 ]
-API_URL_TPL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+
+# v511 : deux endpoints possibles selon l'auth :
+# - Service Account (Google Cloud billing $$$) -> Vertex AI endpoint
+# - API key (AI Studio prepay credits) -> generativelanguage endpoint
+VERTEX_REGION = os.getenv("VERTEX_REGION", "us-central1")
+VERTEX_URL_TPL = (
+    "https://" + VERTEX_REGION + "-aiplatform.googleapis.com/v1/projects/"
+    "{project}/locations/" + VERTEX_REGION +
+    "/publishers/google/models/{model}:generateContent"
+)
+AISTUDIO_URL_TPL = (
+    "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+)
+API_URL_TPL = VERTEX_URL_TPL if _USE_SA else AISTUDIO_URL_TPL
+print(f"[api] Endpoint utilise : {'Vertex AI (' + VERTEX_REGION + ')' if _USE_SA else 'AI Studio'}")
 
 
 # ============================================================
