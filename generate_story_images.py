@@ -20,6 +20,11 @@ import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
+# v502 : on utilise la bible visuelle commune (item_canon.py) pour
+# auto-injecter les descriptions canoniques des 4 elements dans CHAQUE prompt
+# de page. Garantit que Brio le dragon ressemble au dragon du picker.
+from item_canon import get_canon_for_combo, STORY_STYLE as CANON_STORY_STYLE
+
 # Charge .env du projet root
 for candidate in [
     Path(__file__).parent / ".env",
@@ -55,7 +60,8 @@ MODELS = {
 }
 STORY_NEGATIVE = (
     "low quality, blurry, watermark, text, letters, deformed, mutated, bad anatomy, "
-    "extra limbs, distorted face, ugly, modern clothes, modern technology, no text overlay"
+    "extra limbs, distorted face, ugly, modern clothes, modern technology, no text overlay, "
+    "different character design, inconsistent character"
 )
 
 def gen_image_story(prompt, dest_path, model_key="flux-dev"):
@@ -101,13 +107,9 @@ def gen_image_story(prompt, dest_path, model_key="flux-dev"):
 
 # ============================================================
 # Style commun pour toutes les illustrations du Livre magique
+# (importe depuis item_canon pour rester en phase avec les portraits)
 # ============================================================
-STORY_STYLE = (
-    "watercolor illustration, soft Pixar-style children's book illustration, "
-    "fairy-tale atmosphere, gentle painterly lighting, dreamy magical mood, "
-    "rich color palette but soft tones, no text in image, no watermark, "
-    "16:9 widescreen composition. "
-)
+STORY_STYLE = CANON_STORY_STYLE
 
 # ============================================================
 # Catalog des histoires + prompts d images par page
@@ -207,6 +209,25 @@ def main():
     prompts = STORIES[args.story]
     only = set(int(x) for x in args.only.split(",")) if args.only else None
 
+    # v502 : decompose la cle hero_place_item_villain pour injecter le CANON
+    # Les histoires sont nommees ex: "dragon_chateau_guitare_fantome"
+    # ou eventuellement prefixees du niveau "aventure_dragon_chateau_..."
+    parts = args.story.split("_")
+    if len(parts) == 5 and parts[0] in ("courte", "soir", "aventure"):
+        hero, place, item, villain = parts[1], parts[2], parts[3], parts[4]
+    elif len(parts) == 4:
+        hero, place, item, villain = parts
+    else:
+        print(f"WARN: impossible de decomposer '{args.story}' en (hero,place,item,villain). "
+              f"Pas de canon injecte.")
+        hero = place = item = villain = None
+
+    canon_prefix = ""
+    if hero:
+        canon_prefix = get_canon_for_combo(hero, place, item, villain)
+        print(f"\n[canon] Injecte pour {hero} + {place} + {item} + {villain}")
+        print(f"        ({len(canon_prefix)} chars)")
+
     out_dir = Path("assets/stories") / args.story
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -223,7 +244,8 @@ def main():
             print(f"[{idx}/{len(prompts)}] page{idx}.jpg : existe deja (skip)")
             skipped += 1
             continue
-        full_prompt = STORY_STYLE + raw_prompt
+        # Ordre : STORY_STYLE -> CANON references -> prompt page-specifique
+        full_prompt = STORY_STYLE + canon_prefix + raw_prompt
         print(f"\n[{idx}/{len(prompts)}] page{idx}.jpg")
         ok = gen_image_story(full_prompt, dest, model_key=args.model)
         if ok:

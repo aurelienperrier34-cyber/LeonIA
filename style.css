@@ -8110,6 +8110,24 @@ body:has(#screen-creator.active) #global-star-corner {
   font-size: clamp(1.6rem, 2.8vw, 2.2rem);
   line-height: 1;
   flex-shrink: 0;
+  display: inline-block;  /* JS basculera display:none/inline-block selon load img */
+}
+
+/* Portrait image (charge depuis assets/items/<cat>_<value>.jpg si genere)
+   Si erreur 404, le onerror inline cache l'img et reaffiche l'emoji */
+.pick-item-img {
+  width: clamp(42px, 5vw, 56px);
+  height: clamp(42px, 5vw, 56px);
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(80, 40, 10, 0.25);
+  border: 2px solid rgba(139, 90, 43, 0.4);
+  background: rgba(255,250,235,0.5);
+}
+.pick-item.selected .pick-item-img {
+  border-color: #c8881a;
+  box-shadow: 0 3px 10px rgba(200, 136, 26, 0.45);
 }
 .pick-item-label {
   font-size: clamp(0.9rem, 1.3vw, 1.1rem);

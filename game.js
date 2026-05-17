@@ -9293,7 +9293,9 @@ function renderPickBook() {
           <div class="pick-items">
             ${cat.items.map(item => `
               <button class="pick-item ${creatorState[step.key] === item.value ? 'selected' : ''}" data-cat="${step.key}" data-value="${item.value}" type="button">
-                <span class="pick-item-emoji">${item.emoji}</span>
+                <img class="pick-item-img" src="assets/items/${step.key}_${item.value}.jpg?v=502" alt="" loading="lazy"
+                     onerror="this.style.display='none'; var em=this.nextElementSibling; if(em) em.style.display='inline-block';">
+                <span class="pick-item-emoji" style="display:none">${item.emoji}</span>
                 <span class="pick-item-label">${item.label}</span>
               </button>
             `).join('')}
