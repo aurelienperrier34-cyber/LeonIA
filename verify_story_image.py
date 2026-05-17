@@ -51,10 +51,18 @@ for candidate in [
         break
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-GEMINI_MODEL = "gemini-1.5-flash"  # gratuit, vision, rapide
-GEMINI_URL = (
-    f"https://generativelanguage.googleapis.com/v1beta/models/"
-    f"{GEMINI_MODEL}:generateContent"
+# Modeles tentes dans l'ordre (le 1er dispo gagne).
+# gemini-1.5-flash a ete deprecate en 2025 -> on bascule sur 2.5 puis 2.0.
+GEMINI_MODELS = [
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "gemini-2.5-flash-lite",
+    "gemini-flash-latest",
+]
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", GEMINI_MODELS[0])
+GEMINI_URL_TPL = (
+    "https://generativelanguage.googleapis.com/v1beta/models/"
+    "{model}:generateContent"
 )
 
 
@@ -152,16 +160,37 @@ You MUST reply with ONLY a JSON object (no markdown, no commentary), in this exa
         },
     }
 
+    # On essaie le modele courant, puis fallback sur la liste si 404
+    models_to_try = [GEMINI_MODEL] + [m for m in GEMINI_MODELS if m != GEMINI_MODEL]
+    last_err = None
+    rj = None
+    for mdl in models_to_try:
+        url = GEMINI_URL_TPL.format(model=mdl)
+        try:
+            r = requests.post(f"{url}?key={GEMINI_API_KEY}",
+                              json=payload, timeout=60)
+            if r.status_code == 404:
+                last_err = f"404 {mdl}"
+                continue  # essaie le suivant
+            if r.status_code >= 400:
+                return {"ok": False,
+                        "error": f"Gemini {mdl} HTTP {r.status_code}: {r.text[:300]}"}
+            rj = r.json()
+            if mdl != GEMINI_MODEL:
+                print(f"[verify] fallback model utilise: {mdl}")
+            break
+        except Exception as e:
+            last_err = str(e)
+            continue
+    if rj is None:
+        return {"ok": False,
+                "error": f"Aucun modele Gemini dispo (dernier essai: {last_err}). "
+                         f"Modeles tentes: {models_to_try}"}
     try:
-        r = requests.post(f"{GEMINI_URL}?key={GEMINI_API_KEY}",
-                          json=payload, timeout=60)
-        if r.status_code >= 400:
-            return {"ok": False, "error": f"Gemini HTTP {r.status_code}: {r.text[:300]}"}
-        rj = r.json()
         text = rj["candidates"][0]["content"]["parts"][0]["text"]
         result = json.loads(text)
     except Exception as e:
-        return {"ok": False, "error": f"Parsing Gemini: {e}"}
+        return {"ok": False, "error": f"Parsing reponse Gemini: {e} -> {str(rj)[:400]}"}
 
     # Synthese
     if strict:
