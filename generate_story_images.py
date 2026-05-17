@@ -400,15 +400,19 @@ def main():
                       f"prompt:{vr.get('matches_prompt')} kid_safe:{vr.get('kid_safe')}")
                 page_ok = True
                 break
-            # KO : on enrichit le negative et on relance
+            # KO : on REMPLACE le negative (pas accumulation -> overflow 1000 chars)
+            # Chaque retry repart sur les nouveaux problemes observes par Gemini.
             issues = vr.get("issues", [])
             print(f"   [verify] KO ({len(issues)} probleme(s)) :")
             for iss in issues:
                 print(f"           - {iss}")
-            extra_add = vr.get("extra_negative", "")
-            if extra_add:
-                extra_neg = (extra_neg + ", " + extra_add).strip(", ")
-                print(f"   [verify] +negative : {extra_add}")
+            extra_neg = vr.get("extra_negative", "")
+            # Garde anti-overflow : Leonardo plafonne a 1000 chars (STORY_NEGATIVE
+            # fait deja ~700 chars, donc extra_neg max ~250 chars)
+            if len(extra_neg) > 250:
+                extra_neg = extra_neg[:250].rsplit(",", 1)[0]
+            if extra_neg:
+                print(f"   [verify] negative remplace par : {extra_neg}")
             retried += 1
 
         if page_ok:
