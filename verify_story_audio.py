@@ -48,8 +48,17 @@ from verify_story_image import (
     _USE_SA, _SA_PROJECT, _auth_headers, _call,
     GEMINI_MODELS, GEMINI_MODEL, _build_url
 )
-# Pour nettoyer le texte (enlever HTML)
-from generate_story_audio import clean_html_for_tts
+
+# Inline pour eviter import circulaire avec generate_story_audio
+import re as _re
+def clean_html_for_tts(text):
+    text = _re.sub(r"<br\s*/?>", "\n", text, flags=_re.IGNORECASE)
+    text = _re.sub(r"<[^>]+>", "", text)
+    text = text.replace("&nbsp;", " ").replace("&amp;", "&")
+    text = text.replace("&lt;", "<").replace("&gt;", ">")
+    text = _re.sub(r"[ \t]+", " ", text)
+    text = _re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
 
 
 def _b64(p):

@@ -178,30 +178,43 @@ def main():
         if only and idx not in only:
             continue
         dest = out_dir / f"page{idx}.mp3"
-        if dest.exists() and not args.force:
-            print(f"[{idx}/{len(pages)}] page{idx}.mp3 : existe (skip, --force pour regenerer)")
-            skipped += 1
-            continue
         raw_text = page.get("text") if isinstance(page, dict) else page
         clean_text = clean_html_for_tts(raw_text)
         chars = len(clean_text)
-        print(f"[{idx}/{len(pages)}] page{idx}.mp3 ({chars} chars)")
+
+        # v524 : si MP3 existe et qu'on a --verify, on verifie d'abord SANS regenerer
+        # Skip uniquement si pas de verify ET fichier existe ET pas de force
+        already_exists = dest.exists()
+        if already_exists and not args.force and not args.verify:
+            print(f"[{idx}/{len(pages)}] page{idx}.mp3 : existe (skip, --force pour regenerer)")
+            skipped += 1
+            continue
+
+        print(f"[{idx}/{len(pages)}] page{idx}.mp3 ({chars} chars)"
+              + (" [existe deja, verif en cours]" if already_exists and args.verify and not args.force else ""))
 
         max_tries = args.max_retries if args.verify and _HAS_AUDIO_VERIFIER else 1
         attempt = 0
         page_ok = False
+        # v524 : si --verify et le fichier existe deja, on commence par tester
+        # l'existant. Si OK -> on ne touche pas. Si KO -> on regenere.
+        skip_first_gen = (already_exists and args.verify and not args.force
+                          and _HAS_AUDIO_VERIFIER)
         while attempt < max_tries:
             attempt += 1
-            if attempt > 1:
-                print(f"  --- TENTATIVE {attempt}/{max_tries} ---")
-                if dest.exists():
+            if attempt == 1 and skip_first_gen:
+                print(f"  (verif du MP3 existant avant regeneration)")
+            else:
+                if attempt > 1:
+                    print(f"  --- TENTATIVE {attempt}/{max_tries} ---")
+                if dest.exists() and (attempt > 1 or args.force):
                     dest.unlink()
-            ok = synthesize_page(clean_text, dest, voice=args.voice,
-                                 speaking_rate=args.rate, pitch=args.pitch)
-            if not ok:
-                continue
-            size_kb = dest.stat().st_size // 1024
-            print(f"  OK gen -> {dest} ({size_kb} KB)")
+                ok = synthesize_page(clean_text, dest, voice=args.voice,
+                                     speaking_rate=args.rate, pitch=args.pitch)
+                if not ok:
+                    continue
+                size_kb = dest.stat().st_size // 1024
+                print(f"  OK gen -> {dest} ({size_kb} KB)")
 
             if not args.verify or not _HAS_AUDIO_VERIFIER:
                 page_ok = True
