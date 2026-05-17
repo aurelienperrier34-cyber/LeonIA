@@ -9338,87 +9338,73 @@ function _buildPlaceholderStory() {
 function showCreatorBook() {
   document.getElementById('creator-loading').hidden = true;
   document.getElementById('creator-book').hidden = false;
-  // Title
+  // Title (visible sur chaque page, en overlay sur l image)
   const titleEl = document.getElementById('book-title');
   if (titleEl) titleEl.textContent = creatorState.story.title || 'Mon histoire';
-  // Inject pages
-  renderBookPages();
-  // Show first page
+  // Show first page (instant = pas d animation initiale)
   showBookPage(0, true);
 }
 
-function renderBookPages() {
-  const book = document.getElementById('book');
-  if (!book || !creatorState.story) return;
-  book.innerHTML = '';
-  const pages = creatorState.story.pages || [];
-  pages.forEach((page, idx) => {
-    const pageDiv = document.createElement('div');
-    pageDiv.className = 'book-page hidden';
-    pageDiv.dataset.pageIndex = idx;
-    // Image (placeholder si vide)
-    const imgUrl = page.image && page.image.trim() ? page.image : '';
-    const imgClass = imgUrl ? 'book-page-image' : 'book-page-image placeholder';
-    const imgStyle = imgUrl ? `style="background-image: url('${imgUrl}');"` : '';
-    const placeholderContent = imgUrl ? '' : (CREATOR_PLACEHOLDER_EMOJI[creatorState.hero] || '✨');
-    pageDiv.innerHTML =
-      `<div class="${imgClass}" ${imgStyle}>${placeholderContent}</div>` +
-      `<div class="book-page-text"><p>${page.text}</p></div>` +
-      `<div class="book-page-number">${idx + 1} / ${pages.length}</div>`;
-    book.appendChild(pageDiv);
-  });
-}
-
+// v494 : plus de renderBookPages (plus de pile de pages DOM). On change juste
+// le contenu de .book-image (background-image) et .book-text (innerHTML) a
+// chaque page, avec transitions fade+slide.
 function showBookPage(idx, instant) {
-  const pages = creatorState.story.pages || [];
+  const pages = (creatorState.story && creatorState.story.pages) || [];
   if (idx < 0 || idx >= pages.length) return;
   if (creatorState.isAnimating && !instant) return;
-  const book = document.getElementById('book');
-  if (!book) return;
-  creatorState.currentPage = idx;
-  // Show only the current page
-  book.querySelectorAll('.book-page').forEach((p, i) => {
-    p.classList.toggle('hidden', i !== idx);
-    p.classList.remove('flipping-out', 'entering');
-  });
-  // Update nav
-  updateBookNav();
+  const page = pages[idx];
+  const imgEl  = document.getElementById('book-image');
+  const textEl = document.getElementById('book-text');
+  if (!imgEl || !textEl) return;
+
+  const setContent = () => {
+    creatorState.currentPage = idx;
+    // Image
+    if (page.image && page.image.trim()) {
+      imgEl.style.backgroundImage = `url('${page.image}')`;
+    } else {
+      // Placeholder gradient en attente d image generee
+      const emoji = CREATOR_PLACEHOLDER_EMOJI[creatorState.hero] || '✨';
+      imgEl.style.backgroundImage = `linear-gradient(135deg, #4a2a8a 0%, #2b1854 50%, #1a0d2e 100%)`;
+    }
+    // Texte
+    textEl.innerHTML = '<p>' + (page.text || '') + '</p>';
+    updateBookNav();
+  };
+
+  if (instant) {
+    setContent();
+    imgEl.classList.remove('fading', 'kenburns');
+    textEl.classList.remove('changing');
+    requestAnimationFrame(() => imgEl.classList.add('kenburns'));
+    return;
+  }
+
+  // Transition : fade out, swap, fade in
+  creatorState.isAnimating = true;
+  imgEl.classList.add('fading');
+  imgEl.classList.remove('kenburns');
+  textEl.classList.add('changing');
+
+  setTimeout(() => {
+    setContent();
+    imgEl.classList.remove('fading');
+    textEl.classList.remove('changing');
+    requestAnimationFrame(() => imgEl.classList.add('kenburns'));
+    creatorState.isAnimating = false;
+  }, 450);
 }
 
 function bookNextPage() {
-  const pages = creatorState.story.pages || [];
+  const pages = (creatorState.story && creatorState.story.pages) || [];
   if (creatorState.currentPage >= pages.length - 1) return;
   if (creatorState.isAnimating) return;
-  flipPage(creatorState.currentPage, creatorState.currentPage + 1, 'forward');
+  showBookPage(creatorState.currentPage + 1);
 }
 function bookPrevPage() {
   if (creatorState.currentPage <= 0) return;
   if (creatorState.isAnimating) return;
-  flipPage(creatorState.currentPage, creatorState.currentPage - 1, 'backward');
-}
-
-function flipPage(from, to, dir) {
-  creatorState.isAnimating = true;
-  const book = document.getElementById('book');
-  if (!book) { creatorState.isAnimating = false; return; }
-  const pages = book.querySelectorAll('.book-page');
-  const fromPage = pages[from], toPage = pages[to];
-  if (!fromPage || !toPage) { creatorState.isAnimating = false; return; }
-
-  // Pour eviter complication transform-origin droite/gauche, on fait un flip simple :
-  // page actuelle disparait avec rotation, page suivante apparait
-  fromPage.classList.add('flipping-out');
-  toPage.classList.remove('hidden');
-  toPage.classList.add('entering');
-
-  setTimeout(() => {
-    fromPage.classList.add('hidden');
-    fromPage.classList.remove('flipping-out');
-    toPage.classList.remove('entering');
-    creatorState.currentPage = to;
-    updateBookNav();
-    creatorState.isAnimating = false;
-  }, 700);
+  showBookPage(creatorState.currentPage - 1);
 }
 
 function updateBookNav() {
