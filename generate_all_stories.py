@@ -122,6 +122,10 @@ def process_one_story(key, args, ckpt):
     jlog({"event": "story_start", "key": key})
     stats = {"key": key, "text": "n/a", "images": "n/a", "audio": "n/a"}
     p = parse_key(key)
+    # v528 : voix selon le niveau (Studio pour soir, Neural2 ailleurs par defaut)
+    level_voice = getattr(args, f"voice_{p['level']}", None)
+    voice_for_this = level_voice or args.voice
+    log(f"  voix pour ce niveau ({p['level']}) : {voice_for_this}")
 
     # ============== ETAPE 1 : TEXTE ==============
     if args.skip_text or story_exists(key):
@@ -260,7 +264,7 @@ def process_one_story(key, args, ckpt):
                     log(f"      retry audio {attempt}/{args.max_audio_retries}")
                     if dest.exists():
                         dest.unlink()
-                ok = synthesize_page(clean_text, dest, voice=args.voice,
+                ok = synthesize_page(clean_text, dest, voice=voice_for_this,
                                      speaking_rate=args.rate, pitch=0.0)
                 if not ok:
                     log(f"    [{idx}/{n_pages}] echec generation audio")
@@ -319,8 +323,11 @@ def main():
     p.add_argument("--image-delay", type=float, default=12.0,
                    help="Sleep entre 2 images (rate limit Vertex AI)")
     p.add_argument("--audio-delay", type=float, default=2.0)
-    p.add_argument("--voice", default="fr-FR-Studio-A",
-                   help="Voix TTS (defaut Studio-A premium)")
+    p.add_argument("--voice", default="fr-FR-Neural2-A",
+                   help="Voix TTS par defaut (fallback si pas de voice-<level>)")
+    p.add_argument("--voice-courte", help="Voix specifique pour stories courtes")
+    p.add_argument("--voice-soir", help="Voix specifique pour stories du soir")
+    p.add_argument("--voice-aventure", help="Voix specifique pour stories voyage")
     p.add_argument("--rate", type=float, default=0.95)
     p.add_argument("--from-key", help="Reprend a partir de cette cle (skip les precedentes)")
     p.add_argument("--limit", type=int, help="Limite N stories pour test")
@@ -358,7 +365,11 @@ def main():
     log(f"\n{'#'*70}")
     log(f"# OVERNIGHT GENERATION START")
     log(f"# Cles a traiter : {len(keys)}")
-    log(f"# Voix audio : {args.voice}")
+    log(f"# Voix audio par defaut : {args.voice}")
+    for lvl in ["courte", "soir", "aventure"]:
+        ov = getattr(args, f"voice_{lvl}", None)
+        if ov:
+            log(f"#   override {lvl} -> {ov}")
     log(f"# Image verify : {'ON strict' if not args.no_verify_images else 'OFF'} (lax={args.lax_verify})")
     log(f"# Audio verify : {'ON strict' if not args.no_verify_audio else 'OFF'} (lax={args.lax_verify})")
     log(f"# Log file : {LOG_FILE}")
