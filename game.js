@@ -602,7 +602,16 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById('main-header').style.display = 'flex';
       document.getElementById('main-progress').style.display = 'flex';
     }
-    setTimeout(() => goToScreen(resumeTarget), 0);
+    setTimeout(() => {
+      goToScreen(resumeTarget);
+      // v496 : re-trigger l enveloppement des avatars apres la navigation
+      // de resume. Sur F5 depuis screen-1, le timing initial peut faire
+      // que les avatars ne sont pas correctement enveloppes/affiches.
+      // Idempotent : si deja wraps, ne refait rien.
+      if (typeof applyAvatarAccessoriesEverywhere === 'function') {
+        requestAnimationFrame(() => applyAvatarAccessoriesEverywhere());
+      }
+    }, 0);
   }
 
   // Raccourcis développeur : Alt+2 … Alt+8, Alt+M pour la carte
