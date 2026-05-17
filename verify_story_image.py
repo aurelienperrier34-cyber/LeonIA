@@ -163,32 +163,42 @@ def verify_image(image_path, hero=None, place=None, item=None, villain=None,
 
     instruction = f"""You are a quality controller for a children's picture book (ages 5-9).
 
-I will give you a generated illustration. You must check:
+I give you a generated illustration. Check 3 things, being PRACTICAL not nitpicky:
 
-1. CHARACTER CONSISTENCY: each character must match its canonical description EXACTLY (colors, age, distinguishing features). List any differences.
+1. CHARACTER CONSISTENCY: do the characters look like the reference portraits I provided?
+   - Same SPECIES, AGE, GENERAL APPEARANCE (color family, distinctive features)
+   - DO NOT invent canon details that aren't explicitly listed (e.g., do not assume horn color if not specified)
+   - Minor variations (lighting, pose, expression nuance) are ACCEPTABLE
+   - Only flag if a character is clearly the WRONG character or has MAJOR design drift
 
-2. CONTENT MATCH: does the image illustrate the scene described in the page prompt?
+2. CONTENT MATCH: does the image broadly illustrate the scene?
+   - Right setting (indoor/outdoor, day/night, key landmarks)
+   - Right characters present (only the ones explicitly mentioned in the prompt)
+   - Be GENEROUS: standing vs sitting, exact pose, expression nuances = OK
+   - Only flag MAJOR mismatches (wrong location, wrong time of day, missing key element)
 
-3. KID-SAFETY: is this image appropriate for a 5-9 year old? Specifically reject if you see:
-   - Scary or threatening faces (sharp fangs, glowing red eyes, demonic expressions)
-   - Disturbing or horror atmosphere
-   - Blood, gore, weapons
-   - Anything that could cause nightmares
+3. KID-SAFETY: is this image appropriate for a 5-9 year old?
+   - REJECT if: scary/threatening faces, sharp fangs, glowing red eyes, demonic looks
+   - REJECT if: blood, gore, weapons, horror atmosphere, anything nightmare-inducing
+   - ACCEPT if: characters are friendly-looking, atmosphere is fairy-tale magical
+   - Slight gloom/melancholy is OK for narrative purposes (Brio is "lonely" = OK)
 
-CANONICAL CHARACTERS THAT MUST APPEAR:
+CANONICAL CHARACTERS (only those explicitly mentioned below should appear in the scene):
 {canon_block}
 
 PAGE PROMPT (describes the scene):
 "{prompt[:1000]}"
 
-You MUST reply with ONLY a JSON object (no markdown, no commentary), in this exact format:
+You MUST reply with ONLY a JSON object (no markdown, no commentary):
 {{
   "matches_canon": true/false,
   "matches_prompt": true/false,
   "kid_safe": true/false,
-  "issues": ["specific issue 1", "specific issue 2", ...],
-  "extra_negative": "comma-separated terms to add to negative prompt for retry, focused on visible problems (ex: 'grey hair, long beard, dark atmosphere')"
+  "issues": ["only MAJOR issues, max 3 most important"],
+  "extra_negative": "terms to add to negative prompt for retry (only if major issues)"
 }}
+
+Remember: be PRACTICAL. A working children's book illustration with minor nuances vs the prompt is OK. Only reject for real problems (wrong character, scary, totally wrong scene).
 """
 
     parts = [{"text": instruction}]
