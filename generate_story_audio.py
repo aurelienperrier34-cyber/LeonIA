@@ -137,8 +137,8 @@ def main():
     p.add_argument("--story", required=True,
                    help="Combo (ex: dragon_chateau_guitare_fantome)")
     p.add_argument("--only", help="Filtre pages (ex: 1 ou 1,3,5)")
-    p.add_argument("--voice", default="fr-FR-Neural2-A",
-                   help="Voice ID Google TTS (defaut: fr-FR-Neural2-A)")
+    p.add_argument("--voice", default="fr-FR-Studio-A",
+                   help="Voice ID Google TTS (defaut: fr-FR-Studio-A premium)")
     p.add_argument("--rate", type=float, default=0.95,
                    help="Vitesse de parole (0.25-4.0, defaut 0.95 = doux pour enfants)")
     p.add_argument("--pitch", type=float, default=0.0,
@@ -191,8 +191,10 @@ def main():
             for idx, p in enumerate(pages, 1)
             if not only or idx in only
         )
-        cost_usd = total_chars / 1_000_000 * 16
-        print(f"Cout estime : ~${cost_usd:.3f} ({total_chars} chars x $16/M)")
+        # Studio = $160/M, Neural2/Wavenet = $16/M
+        rate_per_m = 160 if "Studio" in args.voice else 16
+        cost_usd = total_chars / 1_000_000 * rate_per_m
+        print(f"Cout estime : ~${cost_usd:.3f} ({total_chars} chars x ${rate_per_m}/M)")
 
 
 if __name__ == "__main__":
