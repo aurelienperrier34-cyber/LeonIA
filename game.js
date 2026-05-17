@@ -9308,12 +9308,21 @@ function generateCreatorStory() {
   const lvl = creatorState.level || 'courte';
   const combo = creatorState.hero + '_' + creatorState.place + '_' + creatorState.item + '_' + creatorState.villain;
   const fullKey = lvl + '_' + combo;
-  // Essaye d abord level+combo specifique, sinon n importe quel niveau pour ce combo, sinon fallback
   let story = CREATOR_STORIES[fullKey];
   if (!story) {
-    // Cherche n importe quel niveau pour ce combo
     for (const k of Object.keys(CREATOR_STORIES)) {
       if (k.endsWith('_' + combo)) { story = CREATOR_STORIES[k]; break; }
+    }
+  }
+  // v497 : DEV - tant que les 81 histoires ne sont pas generees, on retombe
+  // sur la PREMIERE histoire disponible (Brio) plutot que sur le placeholder
+  // generique. Permet de tester le visuel/flow sans avoir a picker le combo
+  // exact. A retirer quand toutes les histoires seront en base.
+  if (!story) {
+    const keys = Object.keys(CREATOR_STORIES);
+    if (keys.length > 0) {
+      story = CREATOR_STORIES[keys[0]];
+      console.log('[creator] DEV fallback : ' + keys[0]);
     }
   }
   setTimeout(() => {
