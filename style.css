@@ -8505,8 +8505,28 @@ body:has(#screen-creator.active) #global-star-corner {
   text-align: justify;
   flex: 1;
   overflow-y: auto;
+  /* v520 : decale la scrollbar a droite (loin du texte) + padding interne
+     pour aerer + scrollbar custom plus discrete et thematique */
+  padding-right: clamp(16px, 2.5vw, 28px);
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 90, 43, 0.45) transparent;
   transition: opacity 0.4s ease, transform 0.4s ease;
   will-change: opacity, transform;
+}
+/* WebKit (Chrome/Safari/iOS) : scrollbar custom couleur cuir */
+.book-text::-webkit-scrollbar {
+  width: 8px;
+}
+.book-text::-webkit-scrollbar-track {
+  background: transparent;
+}
+.book-text::-webkit-scrollbar-thumb {
+  background: rgba(139, 90, 43, 0.4);
+  border-radius: 4px;
+}
+.book-text::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 90, 43, 0.7);
 }
 .book-text.changing { opacity: 0; transform: translateY(15px); }
 .book-text p { margin: 0 0 clamp(10px, 1.4vw, 16px) 0; }
