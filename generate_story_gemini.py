@@ -170,6 +170,55 @@ def collect_ref_portraits(hero, place, item, villain, ref_roles):
     return refs
 
 
+# Mots-cles communs par role pour la detection auto dans le prompt
+ROLE_KEYWORDS = {
+    "hero": {
+        "dragon":     ["dragon", "Brio"],
+        "sorciere":   ["witch", "sorciere", "Pimprenelle"],
+        "astronaute": ["astronaut", "astronaute", "Lea", "Léa"],
+    },
+    "villain": {
+        "fantome":  ["ghost", "spirit", "phantom", "fantome", "Otho", "old man", "old craftsman"],
+        "monstre":  ["monster", "monstre", "Grobi", "creature"],
+        "robot":    ["robot", "Bipboup", "machine", "android"],
+    },
+    "item": {
+        "guitare":    ["guitar", "guitare"],
+        "baguette":   ["wand", "baguette", "Etoile", "Étoile"],
+        "skateboard": ["skateboard", "skate", "board", "Fusee", "Fusée"],
+    },
+    "place": {
+        "chateau": ["castle", "chateau", "château", "Belmondrie", "ballroom", "tower", "corridor"],
+        "planete": ["planet", "planete", "planète", "Vega"],
+        "ocean":   ["ocean", "océan", "sea", "wave", "Aural"],
+    },
+}
+
+
+def auto_detect_refs_for_page(prompt_text, hero, place, item, villain,
+                                always_include=None):
+    """
+    Detecte quels refs sont reellement necessaires pour CETTE page
+    en cherchant les noms canoniques et mots-cles dans le prompt.
+
+    always_include : liste de roles a toujours inclure (ex: ['hero'])
+    Retourne une liste filtree de roles a passer en ref.
+    """
+    always_include = always_include or []
+    prompt_lower = prompt_text.lower()
+    detected = list(always_include)
+    role_to_val = {"hero": hero, "place": place, "item": item, "villain": villain}
+    for role, val in role_to_val.items():
+        if role in detected:
+            continue
+        if not val:
+            continue
+        kws = ROLE_KEYWORDS.get(role, {}).get(val, [val])
+        if any(kw.lower() in prompt_lower for kw in kws):
+            detected.append(role)
+    return detected
+
+
 # ============================================================
 # Generation via Gemini Image
 # ============================================================
@@ -284,8 +333,10 @@ def main():
     p.add_argument("--only", help="Filtre pages (ex: 1 ou 1,3,5)")
     p.add_argument("--model", help="Forcer un modele Gemini precis "
                                      "(defaut: cascade gemini-2.5-flash-image puis fallback)")
-    p.add_argument("--refs", default="hero,villain,item",
-                   help="Roles a passer comme refs visuelles (defaut: hero,villain,item)")
+    p.add_argument("--refs", default="auto",
+                   help="Roles a passer comme refs visuelles. 'auto' (defaut): "
+                        "detection automatique par page selon les mots-cles du prompt. "
+                        "Sinon liste explicite (ex: hero,villain,item,place)")
     p.add_argument("--force", action="store_true",
                    help="Regenere meme si la page existe deja")
     p.add_argument("--verify", action="store_true",
@@ -301,7 +352,8 @@ def main():
 
     prompts = STORIES[args.story]
     only = set(int(x) for x in args.only.split(",")) if args.only else None
-    ref_roles = [r.strip() for r in args.refs.split(",") if r.strip()]
+    auto_refs = args.refs.lower() == "auto"
+    ref_roles_static = [r.strip() for r in args.refs.split(",") if r.strip() and r.strip() != "auto"]
 
     # Decompose la cle hero_place_item_villain
     parts = args.story.split("_")
@@ -312,14 +364,13 @@ def main():
     else:
         sys.exit(f"Impossible de decomposer '{args.story}' en (hero,place,item,villain)")
 
-    # Construit la liste des portraits a passer en reference
-    ref_images = collect_ref_portraits(hero, place, item, villain, ref_roles)
     canon_prefix = get_canon_for_combo(hero, place, item, villain)
 
     print(f"\n[canon] Decompose : hero={hero}, place={place}, item={item}, villain={villain}")
-    print(f"[refs]  Portraits passes a Gemini : {list(ref_images.keys())}")
-    if not ref_images:
-        print("[refs]  AUCUN portrait trouve - genere d'abord generate_item_portraits.py")
+    if auto_refs:
+        print(f"[refs]  Mode AUTO : detection par page selon mots-cles du prompt")
+    else:
+        print(f"[refs]  Mode STATIC : roles fixes {ref_roles_static}")
 
     out_dir = Path("assets/stories") / args.story
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -343,7 +394,19 @@ def main():
 
         # STORY_STYLE + CANON textuel + page-specific
         full_prompt = STORY_STYLE + canon_prefix + raw_prompt
+
+        # Determine les refs pour CETTE page
+        if auto_refs:
+            # Toujours inclure le hero (presence quasi-systematique)
+            page_roles = auto_detect_refs_for_page(
+                raw_prompt, hero, place, item, villain,
+                always_include=["hero"])
+        else:
+            page_roles = ref_roles_static
+        ref_images = collect_ref_portraits(hero, place, item, villain, page_roles)
+
         print(f"\n[{idx}/{len(prompts)}] page{idx}.jpg")
+        print(f"  refs pour cette page : {list(ref_images.keys())}")
 
         attempt = 0
         page_ok = False
