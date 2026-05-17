@@ -63,7 +63,7 @@
   <meta name="theme-color" content="#000000">
   <title>IA : Le monde de Léon</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=492">
+  <link rel="stylesheet" href="style.css?v=493">
 </head>
 <body>
 <!-- Overlay "Tourne ton téléphone" (portrait mobile uniquement) -->
@@ -82,7 +82,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v492</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v493</div>
 
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
@@ -1787,7 +1787,7 @@
 </div>
 
 <!-- ==========================================
-     FABRIQUE À HISTOIRES — v492 refonte complete
+     FABRIQUE À HISTOIRES — v493 refonte complete
      ========================================== -->
 <div class="screen" id="screen-creator">
 
@@ -1809,9 +1809,18 @@
     <div class="creator-level-row">
       <span class="creator-level-label">📚 Type d'histoire :</span>
       <div class="creator-level-btns" id="creator-level-btns">
-        <button class="creator-level-btn selected" data-level="courte" type="button">⚡ Courte</button>
-        <button class="creator-level-btn" data-level="soir" type="button">🌙 Du soir</button>
-        <button class="creator-level-btn" data-level="aventure" type="button">🗺️ Grande aventure</button>
+        <button class="creator-level-btn selected" data-level="courte" type="button">
+          <span class="creator-level-name">⚡ Courte</span>
+          <span class="creator-level-time">3-5 min</span>
+        </button>
+        <button class="creator-level-btn" data-level="soir" type="button">
+          <span class="creator-level-name">🌙 Du soir</span>
+          <span class="creator-level-time">7-10 min</span>
+        </button>
+        <button class="creator-level-btn" data-level="aventure" type="button">
+          <span class="creator-level-name">🗺️ Voyage extraordinaire</span>
+          <span class="creator-level-time">~20 min</span>
+        </button>
       </div>
     </div>
 
@@ -1860,6 +1869,6 @@
 </div>
 
 <script src="calibration.js"></script>
-<script src="game.js?v=492"></script>
+<script src="game.js?v=493"></script>
 </body>
 </html>
