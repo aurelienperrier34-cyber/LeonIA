@@ -24,6 +24,13 @@ from dotenv import load_dotenv
 # auto-injecter les descriptions canoniques des 4 elements dans CHAQUE prompt
 # de page. Garantit que Brio le dragon ressemble au dragon du picker.
 from item_canon import get_canon_for_combo, STORY_STYLE as CANON_STORY_STYLE
+# v503 : validateur Gemini optionnel (si GEMINI_API_KEY dans .env)
+try:
+    from verify_story_image import verify_image, auto_portraits
+    _HAS_VERIFIER = True
+except Exception as _e:
+    print(f"[verify] module verifier indisponible : {_e}")
+    _HAS_VERIFIER = False
 
 # Charge .env du projet root
 for candidate in [
@@ -59,23 +66,69 @@ MODELS = {
     "flux-schnell": "1dd50843-d653-4516-a8e3-f0238ee453ff",  # Flux Schnell (rapide)
 }
 STORY_NEGATIVE = (
-    "low quality, blurry, watermark, text, letters, deformed, mutated, bad anatomy, "
-    "extra limbs, distorted face, ugly, modern clothes, modern technology, no text overlay, "
-    "different character design, inconsistent character"
+    # Qualite et coherence visuelle
+    "low quality, blurry, watermark, text, letters, deformed, mutated, "
+    "bad anatomy, extra limbs, distorted face, ugly, modern clothes, "
+    "modern technology, no text overlay, "
+    "different character design, inconsistent character, character drift, "
+    # Anti-scary (livre pour enfants 5-9 ans)
+    "scary face, sharp fangs, glowing red eyes, threatening pose, "
+    "horror, terrifying, nightmare fuel, dark threatening atmosphere, "
+    "blood, weapons, gore, evil expression, demonic, sinister, "
+    # Anti-drift dragon specifique (corrige Brio v1)
+    "dragon with hair, dragon with beard, grey scales, white scales, "
+    "old dragon, elderly dragon, large adult dragon, fire-breathing"
 )
 
-def gen_image_story(prompt, dest_path, model_key="flux-dev"):
+def upload_init_image(image_path):
+    """Upload une image vers Leonardo, retourne l'imageId (pour reference)."""
+    ext = image_path.suffix.lstrip(".").lower()
+    if ext == "jpg":
+        ext = "jpeg"
+    r = requests.post(f"{BASE_V1}/init-image", json={"extension": ext}, headers=HEADERS)
+    if r.status_code != 200:
+        print(f"   WARN upload init: {r.text[:200]}")
+        return None
+    data = r.json()["uploadInitImage"]
+    fields = json.loads(data["fields"])
+    with image_path.open("rb") as f:
+        up = requests.post(data["url"], data=fields, files={"file": f})
+    if up.status_code in (200, 204):
+        return data["id"]
+    print(f"   WARN S3: {up.status_code}")
+    return None
+
+
+def gen_image_story(prompt, dest_path, model_key="flux-dev",
+                    char_ref_id=None, char_ref_strength="High",
+                    extra_negative=""):
+    """
+    Genere une illustration de story.
+    Si char_ref_id est fourni, on l'utilise en Character Reference
+    (preprocessorId 133) pour verrouiller l'apparence du heros sur le
+    portrait canonique.
+    """
     print(f"  Leonardo {model_key} -> {dest_path.name}")
+    full_neg = STORY_NEGATIVE + (" " + extra_negative if extra_negative else "")
     payload = {
         "modelId": MODELS[model_key],
         "prompt": prompt,
-        "negative_prompt": STORY_NEGATIVE,
+        "negative_prompt": full_neg,
         "width": 1344,
         "height": 768,
         "num_images": 1,
         "guidance_scale": 7,
         "contrast": 3.5,
     }
+    if char_ref_id:
+        # Character Reference fort : lock l'apparence sur le portrait canon
+        payload["controlnets"] = [{
+            "initImageId": char_ref_id,
+            "initImageType": "UPLOADED",
+            "preprocessorId": 133,   # Character Reference
+            "strengthType": char_ref_strength,  # Low / Mid / High / Max
+        }]
+        print(f"   Character Reference: {char_ref_strength} strength")
     r = requests.post(f"{BASE_V1}/generations", json=payload, headers=HEADERS)
     if r.status_code >= 400:
         print(f"  ERREUR init : {r.status_code} {r.text[:300]}")
@@ -200,7 +253,20 @@ def main():
                    help="Nom du combo (sans niveau), ex: dragon_chateau_guitare_fantome")
     p.add_argument("--only", help="Filtre pages (ex: 1 ou 1,3,5)")
     p.add_argument("--model", default="flux-dev",
-                   help="Modele Leonardo : flux-dev (defaut), flux-schnell, phoenix, nano-banana")
+                   help="Modele Leonardo : flux-dev (defaut), flux-schnell, phoenix")
+    p.add_argument("--charref-strength", default="High",
+                   choices=["Low", "Mid", "High", "Max"],
+                   help="Force de la Character Reference (defaut: High)")
+    p.add_argument("--no-charref", action="store_true",
+                   help="Desactive la Character Reference meme si le portrait existe")
+    p.add_argument("--force", action="store_true",
+                   help="Regenere meme si la page existe deja")
+    p.add_argument("--verify", action="store_true",
+                   help="Active la validation Gemini Vision apres chaque generation")
+    p.add_argument("--max-retries", type=int, default=3,
+                   help="Nombre max de tentatives par page si verify echoue (defaut 3)")
+    p.add_argument("--lax", action="store_true",
+                   help="Mode laxe : accepte tant que kid_safe meme si character drift")
     args = p.parse_args()
 
     if args.story not in STORIES:
@@ -231,29 +297,112 @@ def main():
     out_dir = Path("assets/stories") / args.story
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    # v502 : si le portrait du heros existe, on l'upload une fois et on le
+    # passe en Character Reference pour TOUTES les pages -> apparence verrouillee
+    char_ref_id = None
+    if hero and not args.no_charref:
+        portrait_path = Path("assets/items") / f"hero_{hero}.jpg"
+        if portrait_path.exists():
+            print(f"\n[charref] Upload du portrait {portrait_path.name} vers Leonardo...")
+            char_ref_id = upload_init_image(portrait_path)
+            if char_ref_id:
+                print(f"[charref] Upload OK, imageId={char_ref_id} (sera utilise sur toutes les pages)")
+            else:
+                print(f"[charref] WARN upload echoue, on continue sans Character Reference")
+        else:
+            print(f"\n[charref] WARN {portrait_path} introuvable, "
+                  f"genere d'abord avec: python generate_item_portraits.py --only {hero}")
+            print(f"[charref] On continue SANS Character Reference (coherence faible)")
+
     print(f"\nGeneration de {len(prompts)} illustrations pour '{args.story}'")
     print(f"Modele : {args.model}")
-    print(f"Output : {out_dir}/\n")
+    print(f"Output : {out_dir}/")
+    print(f"Character Reference: {'ACTIVE (' + args.charref_strength + ')' if char_ref_id else 'INACTIVE'}\n")
 
-    success, fail, skipped = 0, 0, 0
+    # Setup portraits canon a passer au verifier pour comparaison directe
+    verify_portraits = None
+    if args.verify and _HAS_VERIFIER and hero:
+        verify_portraits = auto_portraits(hero, place, item, villain)
+        if verify_portraits:
+            print(f"[verify] Portraits canon disponibles pour comparaison: "
+                  f"{list(verify_portraits.keys())}")
+
+    success, fail, skipped, retried = 0, 0, 0, 0
     for idx, raw_prompt in enumerate(prompts, 1):
         if only and idx not in only:
             continue
         dest = out_dir / f"page{idx}.jpg"
-        if dest.exists():
-            print(f"[{idx}/{len(prompts)}] page{idx}.jpg : existe deja (skip)")
+        if dest.exists() and not args.force:
+            print(f"[{idx}/{len(prompts)}] page{idx}.jpg : existe deja (skip, --force pour regenerer)")
             skipped += 1
             continue
+
         # Ordre : STORY_STYLE -> CANON references -> prompt page-specifique
         full_prompt = STORY_STYLE + canon_prefix + raw_prompt
         print(f"\n[{idx}/{len(prompts)}] page{idx}.jpg")
-        ok = gen_image_story(full_prompt, dest, model_key=args.model)
-        if ok:
+
+        # Boucle generate -> verify -> retry-with-corrected-negative
+        attempt = 0
+        page_ok = False
+        extra_neg = ""
+        max_tries = args.max_retries if args.verify and _HAS_VERIFIER else 1
+        while attempt < max_tries:
+            attempt += 1
+            if attempt > 1:
+                print(f"   --- TENTATIVE {attempt}/{max_tries} ---")
+                # Si le fichier existe d'un essai precedent, on le supprime
+                if dest.exists():
+                    dest.unlink()
+            ok = gen_image_story(full_prompt, dest, model_key=args.model,
+                                 char_ref_id=char_ref_id,
+                                 char_ref_strength=args.charref_strength,
+                                 extra_negative=extra_neg)
+            if not ok:
+                print(f"   Generation echec (tentative {attempt})")
+                continue
+
+            # Verification optionnelle
+            if not args.verify or not _HAS_VERIFIER:
+                page_ok = True
+                break
+
+            print(f"   [verify] Gemini Vision...")
+            vr = verify_image(dest, hero=hero, place=place,
+                              item=item, villain=villain,
+                              prompt=raw_prompt,
+                              portrait_paths=verify_portraits,
+                              strict=not args.lax)
+            if vr.get("skipped"):
+                print(f"   [verify] skipped: {vr.get('reason')}")
+                page_ok = True
+                break
+            if vr.get("error"):
+                print(f"   [verify] ERREUR: {vr['error']} (on garde l'image quand meme)")
+                page_ok = True
+                break
+            if vr.get("ok"):
+                print(f"   [verify] OK -> canon:{vr.get('matches_canon')} "
+                      f"prompt:{vr.get('matches_prompt')} kid_safe:{vr.get('kid_safe')}")
+                page_ok = True
+                break
+            # KO : on enrichit le negative et on relance
+            issues = vr.get("issues", [])
+            print(f"   [verify] KO ({len(issues)} probleme(s)) :")
+            for iss in issues:
+                print(f"           - {iss}")
+            extra_add = vr.get("extra_negative", "")
+            if extra_add:
+                extra_neg = (extra_neg + ", " + extra_add).strip(", ")
+                print(f"   [verify] +negative : {extra_add}")
+            retried += 1
+
+        if page_ok:
             success += 1
         else:
+            print(f"   [{idx}] ECHEC apres {max_tries} tentatives - log pour review manuelle")
             fail += 1
 
-    print(f"\nBilan : {success} OK, {fail} echec(s), {skipped} skip(s)")
+    print(f"\nBilan : {success} OK, {fail} echec(s), {skipped} skip(s), {retried} retry(s)")
 
 
 if __name__ == "__main__":
