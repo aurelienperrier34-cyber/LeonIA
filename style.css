@@ -7968,7 +7968,7 @@ body:has(#screen-creator.active) #global-star-corner {
   height: 100%;
 }
 
-/* Une spread = une page double = un step */
+/* Une spread = une page double = un step (page gauche + page droite) */
 .pick-spread {
   position: absolute;
   inset: 0;
@@ -7985,15 +7985,38 @@ body:has(#screen-creator.active) #global-star-corner {
     0 22px 50px rgba(0,0,0,0.5),
     inset 0 0 40px rgba(140, 90, 40, 0.2),
     inset 0 -8px 20px rgba(80,40,10,0.15);
-  padding: clamp(14px, 2.5vw, 28px) clamp(12px, 2vw, 24px);
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  overflow: hidden;
+}
+.pick-spread[hidden] { display: none; }
+
+/* Page gauche et droite : chacune 50%, respectant la pliure centrale */
+.pick-page {
+  flex: 1 1 50%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(12px, 2.5vw, 22px);
-  overflow: hidden;
+  padding: clamp(12px, 2vw, 22px);
+  gap: clamp(8px, 1.5vw, 14px);
+  position: relative;
+  z-index: 2;
 }
-.pick-spread[hidden] { display: none; }
+/* Padding cote pliure plus grand pour eviter de coller au centre */
+.pick-page-left { padding-right: clamp(18px, 2.5vw, 32px); }
+.pick-page-right { padding-left: clamp(18px, 2.5vw, 32px); }
+
+/* Decor : grand emoji symbolique sur la page de gauche */
+.pick-cat-decor {
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  line-height: 1;
+  filter: drop-shadow(0 4px 8px rgba(80,40,10,0.35));
+  margin-bottom: clamp(4px, 1vw, 10px);
+}
 
 /* Coins légèrement écornés pour effet vieux livre */
 .pick-spread::after {
@@ -8009,47 +8032,50 @@ body:has(#screen-creator.active) #global-star-corner {
 
 .pick-cat-title {
   font-family: 'Cinzel', serif;
-  font-size: clamp(1.05rem, 2.2vw, 1.7rem);
+  font-size: clamp(1rem, 1.9vw, 1.5rem);
   font-weight: 700;
   color: #5a3a1a;
   margin: 0;
   text-align: center;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   text-shadow: 0 1px 0 rgba(255,255,255,0.5);
   position: relative;
   z-index: 2;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .pick-items {
   display: flex;
-  gap: clamp(10px, 2vw, 24px);
+  flex-direction: column;
+  gap: clamp(8px, 1.4vw, 14px);
   justify-content: center;
   align-items: stretch;
-  flex-wrap: wrap;
   position: relative;
   z-index: 2;
+  width: 100%;
 }
 
 .pick-item {
-  background: rgba(255,250,235,0.7);
+  background: rgba(255,250,235,0.78);
   border: 2.5px solid rgba(139, 90, 43, 0.35);
-  border-radius: 14px;
-  padding: clamp(10px, 1.5vw, 16px) clamp(12px, 1.8vw, 20px);
+  border-radius: 12px;
+  padding: clamp(8px, 1.3vw, 14px) clamp(12px, 1.8vw, 18px);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: clamp(4px, 0.8vw, 8px);
+  justify-content: flex-start;
+  gap: clamp(10px, 1.6vw, 18px);
   cursor: pointer;
   font-family: 'Cormorant Garamond', 'Baloo 2', serif;
   font-weight: 600;
-  min-width: clamp(88px, 13vw, 140px);
-  min-height: clamp(96px, 13vh, 130px);
+  width: 100%;
+  min-height: clamp(52px, 7vh, 70px);
   position: relative;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   transition: transform 0.18s, background 0.18s, border-color 0.18s, box-shadow 0.2s;
   color: #4a2a0a;
+  text-align: left;
 }
 .pick-item:hover, .pick-item:active {
   transform: translateY(-3px);
@@ -8081,19 +8107,22 @@ body:has(#screen-creator.active) #global-star-corner {
   box-shadow: 0 3px 8px rgba(0,0,0,0.4);
 }
 .pick-item-emoji {
-  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-size: clamp(1.6rem, 2.8vw, 2.2rem);
   line-height: 1;
+  flex-shrink: 0;
 }
 .pick-item-label {
   font-size: clamp(0.9rem, 1.3vw, 1.1rem);
   font-weight: 700;
-  text-align: center;
+  text-align: left;
+  line-height: 1.2;
 }
 .pick-level-time {
   font-size: clamp(0.72rem, 1vw, 0.85rem);
   color: #7a5520;
   font-style: italic;
-  margin-top: 2px;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 /* Bouton Écrire (page 5) */
@@ -8119,12 +8148,23 @@ body:has(#screen-creator.active) #global-star-corner {
 
 .pick-summary {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+  font-size: clamp(0.78rem, 1.05vw, 0.95rem);
   font-style: italic;
   color: #5a3a1a;
   text-align: center;
-  margin: 4px 0 0 0;
-  line-height: 1.3;
+  margin: clamp(6px, 1.2vw, 12px) 0 0 0;
+  line-height: 1.35;
+  padding: 0 clamp(4px, 1vw, 8px);
+}
+.pick-summary em {
+  display: block;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 0.9em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #7a5520;
+  margin-bottom: 4px;
 }
 
 /* === Animation page-flip 3D === */
@@ -8280,13 +8320,31 @@ body:has(#screen-creator.active) #global-star-corner {
   .pick-book {
     left: 50%;
     top: 50%;
-    width: min(92vw, 600px);
+    width: min(94vw, 600px);
   }
   .pick-surprise {
     top: clamp(54px, 8vh, 70px);
     padding: 6px 12px;
     font-size: 0.78rem;
   }
+}
+
+/* Tres petit ecran : le livre devient une seule page (pas de double page) */
+@media (max-width: 520px) {
+  .pick-spread {
+    background: linear-gradient(135deg, #f5e9d0, #f0dfb8);
+    flex-direction: column;
+  }
+  .pick-page-left, .pick-page-right {
+    padding: clamp(8px, 2vw, 16px);
+    flex: 0 0 auto;
+  }
+  .pick-page-left {
+    border-bottom: 2px dashed rgba(140,90,40,0.3);
+    padding-bottom: clamp(8px, 1.5vw, 14px);
+  }
+  .pick-page-right { padding-top: clamp(8px, 1.5vw, 14px); }
+  .pick-cat-decor { font-size: clamp(2rem, 8vw, 3rem); }
 }
 
 /* iOS-only ajustements (notch, safe area) */

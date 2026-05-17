@@ -9212,11 +9212,11 @@ function openCreatorMode() {
 // 5 etapes : heros, lieu, objet, ennemi, niveau+CTA.
 // Page-flip 3D, swipe mobile, auto-advance apres selection.
 const PICK_STEPS = [
-  { key: 'hero',    title: '🦸 Choisis ton héros',         catIdx: 0 },
-  { key: 'place',   title: '🏰 Choisis le lieu',           catIdx: 1 },
-  { key: 'item',    title: "🪄 Choisis l'objet magique",   catIdx: 2 },
-  { key: 'villain', title: '👻 Choisis le défi',           catIdx: 3 },
-  { key: 'level',   title: "📚 Quel type d'histoire ?",   isLevel: true }
+  { key: 'hero',    title: 'Choisis ton héros',       catIdx: 0, decor: '🦸' },
+  { key: 'place',   title: 'Choisis le lieu',         catIdx: 1, decor: '🏰' },
+  { key: 'item',    title: "Choisis l'objet magique", catIdx: 2, decor: '🪄' },
+  { key: 'villain', title: 'Choisis le défi',         catIdx: 3, decor: '👻' },
+  { key: 'level',   title: "Quel type d'histoire ?",  isLevel: true, decor: '📚' }
 ];
 let pickBookState = { currentStep: 0, isFlipping: false, swipeWired: false };
 
@@ -9259,38 +9259,45 @@ function renderPickBook() {
 
     if (step.isLevel) {
       spread.innerHTML = `
-        <h2 class="pick-cat-title">${step.title}</h2>
-        <div class="pick-items">
-          <button class="pick-item pick-level-item ${creatorState.level === 'courte' ? 'selected' : ''}" data-level="courte" type="button">
-            <span class="pick-item-emoji">⚡</span>
-            <span class="pick-item-label">Courte</span>
-            <span class="pick-level-time">3-5 min</span>
-          </button>
-          <button class="pick-item pick-level-item ${creatorState.level === 'soir' ? 'selected' : ''}" data-level="soir" type="button">
-            <span class="pick-item-emoji">🌙</span>
-            <span class="pick-item-label">Du soir</span>
-            <span class="pick-level-time">7-10 min</span>
-          </button>
-          <button class="pick-item pick-level-item ${creatorState.level === 'aventure' ? 'selected' : ''}" data-level="aventure" type="button">
-            <span class="pick-item-emoji">🗺️</span>
-            <span class="pick-item-label">Voyage</span>
-            <span class="pick-level-time">~20 min</span>
-          </button>
+        <div class="pick-page pick-page-left">
+          <div class="pick-cat-decor">${step.decor}</div>
+          <h2 class="pick-cat-title">${step.title}</h2>
+          <p class="pick-summary" id="pick-summary"></p>
         </div>
-        <p class="pick-summary" id="pick-summary"></p>
-        <button class="pick-go" id="creator-go-btn" type="button" onclick="generateCreatorStory()">📖 Écrire mon histoire</button>
+        <div class="pick-page pick-page-right">
+          <div class="pick-items">
+            <button class="pick-item pick-level-item ${creatorState.level === 'courte' ? 'selected' : ''}" data-level="courte" type="button">
+              <span class="pick-item-emoji">⚡</span>
+              <span class="pick-item-label">Courte <span class="pick-level-time">(3-5 min)</span></span>
+            </button>
+            <button class="pick-item pick-level-item ${creatorState.level === 'soir' ? 'selected' : ''}" data-level="soir" type="button">
+              <span class="pick-item-emoji">🌙</span>
+              <span class="pick-item-label">Du soir <span class="pick-level-time">(7-10 min)</span></span>
+            </button>
+            <button class="pick-item pick-level-item ${creatorState.level === 'aventure' ? 'selected' : ''}" data-level="aventure" type="button">
+              <span class="pick-item-emoji">🗺️</span>
+              <span class="pick-item-label">Voyage <span class="pick-level-time">(~20 min)</span></span>
+            </button>
+          </div>
+          <button class="pick-go" id="creator-go-btn" type="button" onclick="generateCreatorStory()">📖 Écrire mon histoire</button>
+        </div>
       `;
     } else {
       const cat = CREATOR_CATEGORIES[step.catIdx];
       spread.innerHTML = `
-        <h2 class="pick-cat-title">${step.title}</h2>
-        <div class="pick-items">
-          ${cat.items.map(item => `
-            <button class="pick-item ${creatorState[step.key] === item.value ? 'selected' : ''}" data-cat="${step.key}" data-value="${item.value}" type="button">
-              <span class="pick-item-emoji">${item.emoji}</span>
-              <span class="pick-item-label">${item.label}</span>
-            </button>
-          `).join('')}
+        <div class="pick-page pick-page-left">
+          <div class="pick-cat-decor">${step.decor}</div>
+          <h2 class="pick-cat-title">${step.title}</h2>
+        </div>
+        <div class="pick-page pick-page-right">
+          <div class="pick-items">
+            ${cat.items.map(item => `
+              <button class="pick-item ${creatorState[step.key] === item.value ? 'selected' : ''}" data-cat="${step.key}" data-value="${item.value}" type="button">
+                <span class="pick-item-emoji">${item.emoji}</span>
+                <span class="pick-item-label">${item.label}</span>
+              </button>
+            `).join('')}
+          </div>
         </div>
       `;
     }
