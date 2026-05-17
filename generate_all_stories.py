@@ -169,9 +169,12 @@ def process_one_story(key, args, ckpt):
                 continue
 
             # Determine les refs pour cette page (auto-detection)
+            # v527 : hero + place TOUJOURS inclus (le decor est presque toujours
+            # important pour la coherence visuelle, meme si pas mentionne mot
+            # pour mot dans le prompt)
             page_roles = auto_detect_refs_for_page(
                 image_prompt, p["hero"], p["place"], p["item"], p["villain"],
-                always_include=["hero"])
+                always_include=["hero", "place"])
             ref_images = collect_ref_portraits(
                 p["hero"], p["place"], p["item"], p["villain"], page_roles)
             canon_prefix = get_canon_for_combo(
@@ -310,7 +313,8 @@ def main():
     p.add_argument("--no-verify-images", action="store_true", help="Skip verif images")
     p.add_argument("--no-verify-audio", action="store_true", help="Skip verif audio")
     p.add_argument("--lax-verify", action="store_true", help="Verif laxe (accepte 95%%)")
-    p.add_argument("--max-image-retries", type=int, default=3)
+    p.add_argument("--max-image-retries", type=int, default=5,
+                   help="Defaut 5 (strict mode -> + de retries necessaires)")
     p.add_argument("--max-audio-retries", type=int, default=3)
     p.add_argument("--image-delay", type=float, default=12.0,
                    help="Sleep entre 2 images (rate limit Vertex AI)")
