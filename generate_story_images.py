@@ -61,9 +61,15 @@ HEADERS = {
     "authorization": f"Bearer {LEONARDO_API_KEY}",
 }
 MODELS = {
+    # Modeles recents (imagePrompts soft guidance uniquement) :
     "phoenix":      "6b645e3a-d64f-4341-a6d8-7a3690fbf042",  # Phoenix 1.0
     "flux-dev":     "b2614463-296c-462a-9586-aafdb8f00e36",  # Flux Dev
-    "flux-schnell": "1dd50843-d653-4516-a8e3-f0238ee453ff",  # Flux Schnell (rapide)
+    "flux-schnell": "1dd50843-d653-4516-a8e3-f0238ee453ff",  # Flux Schnell
+    # Modeles SDXL (supportent Character Reference fort preprocessorId 133) :
+    "lightning":    "b24e16ff-06e3-43eb-8d33-4416c2d75876",  # Leonardo Lightning XL
+    "albedobase":   "2067ae52-33fd-4a82-bb92-c2c55e7d2786",  # AlbedoBase XL
+    "kino":         "aa77f04e-3eec-4034-9c07-d0f619684628",  # Kino XL (cinema)
+    "vision":       "5c232a9e-9061-4777-980a-ddc8e65647c6",  # Vision XL
 }
 STORY_NEGATIVE = (
     # Qualite et coherence visuelle
@@ -124,20 +130,21 @@ def gen_image_story(prompt, dest_path, model_key="flux-dev",
         # Normalise en liste (compat avec ancien arg single)
         if isinstance(char_ref_ids, str):
             char_ref_ids = [char_ref_ids]
-        is_flux = model_key.startswith("flux")
-        if is_flux:
-            # Flux Dev/Schnell : imagePrompts (soft image guidance, multi-ref OK)
-            payload["imagePrompts"] = char_ref_ids[:4]  # max 4 raisonnable
-            print(f"   imagePrompts (Flux soft guidance): {len(char_ref_ids[:4])} ref(s)")
+        # Modeles recents (Flux/Phoenix) -> imagePrompts soft only
+        # Modeles SDXL (lightning, albedobase, kino, vision) -> Character Reference fort
+        SOFT_GUIDANCE_MODELS = {"flux-dev", "flux-schnell", "phoenix"}
+        if model_key in SOFT_GUIDANCE_MODELS:
+            payload["imagePrompts"] = char_ref_ids[:4]
+            print(f"   imagePrompts (soft guidance): {len(char_ref_ids[:4])} ref(s)")
         else:
-            # Phoenix : Character Reference fort (1 ref seulement)
+            # SDXL : Character Reference fort (preprocessorId 133, 1 ref)
             payload["controlnets"] = [{
                 "initImageId": char_ref_ids[0],
                 "initImageType": "UPLOADED",
-                "preprocessorId": 133,   # Character Reference (Phoenix)
+                "preprocessorId": 133,
                 "strengthType": char_ref_strength,
             }]
-            print(f"   Character Reference (Phoenix): {char_ref_strength}")
+            print(f"   Character Reference (SDXL): {char_ref_strength}")
     r = requests.post(f"{BASE_V1}/generations", json=payload, headers=HEADERS)
     if r.status_code >= 400:
         print(f"  ERREUR init : {r.status_code} {r.text[:300]}")
