@@ -242,9 +242,9 @@ function show(idx) {
   bg.style.opacity = '0';
   bg.classList.remove('kenburns');
   setTimeout(() => {
-    bg.style.background = PAGES[idx].bg;
-    bg.style.backgroundSize = 'cover';
-    bg.style.backgroundPosition = 'center';
+    // Gradient via backgroundImage (pas background shorthand qui ecraserait size/position)
+    bg.style.backgroundImage = PAGES[idx].bg;
+    bg.style.backgroundColor = '#1a0d2e';
     text.innerHTML = '<p>' + PAGES[idx].text + '</p>';
     progress.textContent = (idx + 1) + ' / ' + PAGES.length;
     prevBtn.disabled = idx === 0;
@@ -252,11 +252,18 @@ function show(idx) {
     bg.style.opacity = '1';
     requestAnimationFrame(() => bg.classList.add('kenburns'));
     text.classList.remove('changing');
-  }, 400);
+  }, 300);
 }
-prevBtn.onclick = () => { if (i > 0) { i--; show(i); } };
-nextBtn.onclick = () => { if (i < PAGES.length - 1) { i++; show(i); } };
-show(0);
+prevBtn.addEventListener('click', () => { if (i > 0) { i--; show(i); } });
+nextBtn.addEventListener('click', () => { if (i < PAGES.length - 1) { i++; show(i); } });
+// Init immediat sans attendre le timeout (premier affichage)
+text.innerHTML = '<p>' + PAGES[0].text + '</p>';
+bg.style.backgroundImage = PAGES[0].bg;
+bg.style.backgroundColor = '#1a0d2e';
+bg.style.opacity = '1';
+progress.textContent = '1 / ' + PAGES.length;
+prevBtn.disabled = true;
+requestAnimationFrame(() => bg.classList.add('kenburns'));
 </script>
 </body>
 </html>
