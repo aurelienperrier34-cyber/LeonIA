@@ -53,3 +53,4 @@ tests/playwright-report/
 tests/test-results/
 playwright-report/
 test-results/
+service-account.json

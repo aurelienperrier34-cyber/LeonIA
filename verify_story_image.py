@@ -52,7 +52,6 @@ for candidate in [
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 # Modeles tentes dans l'ordre (le 1er dispo gagne).
-# gemini-1.5-flash a ete deprecate en 2025 -> on bascule sur 2.5 puis 2.0.
 GEMINI_MODELS = [
     "gemini-2.5-flash",
     "gemini-2.0-flash",
@@ -64,6 +63,41 @@ GEMINI_URL_TPL = (
     "https://generativelanguage.googleapis.com/v1beta/models/"
     "{model}:generateContent"
 )
+
+# v510 : support service account (priorite sur cle API)
+_SA_FILE = Path("service-account.json")
+_USE_SA = _SA_FILE.exists()
+_SA_CREDS = None
+if _USE_SA:
+    try:
+        from google.oauth2 import service_account as _sa
+        from google.auth.transport.requests import Request as _AuthRequest
+        _SCOPES = ["https://www.googleapis.com/auth/cloud-platform",
+                   "https://www.googleapis.com/auth/generative-language"]
+        _SA_CREDS = _sa.Credentials.from_service_account_file(
+            str(_SA_FILE), scopes=_SCOPES)
+        print(f"[verify auth] Service Account detecte")
+    except ImportError:
+        print("[verify auth] google-auth manquant : pip install google-auth google-auth-httplib2")
+        _USE_SA = False
+    except Exception as e:
+        print(f"[verify auth] Erreur SA : {e}")
+        _USE_SA = False
+
+
+def _auth_headers():
+    if not _USE_SA:
+        return None
+    if _SA_CREDS.expired or not _SA_CREDS.token:
+        _SA_CREDS.refresh(_AuthRequest())
+    return {"Authorization": f"Bearer {_SA_CREDS.token}",
+            "Content-Type": "application/json"}
+
+
+def _call(url, payload, timeout=60):
+    if _USE_SA:
+        return requests.post(url, json=payload, headers=_auth_headers(), timeout=timeout)
+    return requests.post(f"{url}?key={GEMINI_API_KEY}", json=payload, timeout=timeout)
 
 
 def _b64(image_path: Path) -> str:
@@ -91,9 +125,9 @@ def verify_image(image_path, hero=None, place=None, item=None, villain=None,
 
     Retourne un dict (voir docstring du fichier).
     """
-    if not GEMINI_API_KEY:
+    if not GEMINI_API_KEY and not _USE_SA:
         return {"ok": True, "skipped": True,
-                "reason": "GEMINI_API_KEY manquant dans .env"}
+                "reason": "Ni service-account.json ni GEMINI_API_KEY dispo"}
 
     image_path = Path(image_path)
     if not image_path.exists():
@@ -167,8 +201,7 @@ You MUST reply with ONLY a JSON object (no markdown, no commentary), in this exa
     for mdl in models_to_try:
         url = GEMINI_URL_TPL.format(model=mdl)
         try:
-            r = requests.post(f"{url}?key={GEMINI_API_KEY}",
-                              json=payload, timeout=60)
+            r = _call(url, payload, timeout=60)
             if r.status_code == 404:
                 last_err = f"404 {mdl}"
                 continue  # essaie le suivant

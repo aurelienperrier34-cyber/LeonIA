@@ -48,8 +48,53 @@ for candidate in [
         break
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-if not GEMINI_API_KEY:
-    sys.exit("ERREUR : GEMINI_API_KEY introuvable dans .env")
+
+# v510 : support service account (preferable a la cle API simple si on est
+# bloque par une policy d'organisation Google Workspace). Si service-account.json
+# existe a la racine du projet, on l'utilise. Sinon fallback sur la cle API.
+_SA_FILE = Path("service-account.json")
+_USE_SA = _SA_FILE.exists()
+_SA_CREDS = None
+_SA_PROJECT = None
+if _USE_SA:
+    try:
+        from google.oauth2 import service_account as _sa
+        from google.auth.transport.requests import Request as _AuthRequest
+        _SCOPES = ["https://www.googleapis.com/auth/cloud-platform",
+                   "https://www.googleapis.com/auth/generative-language"]
+        _SA_CREDS = _sa.Credentials.from_service_account_file(
+            str(_SA_FILE), scopes=_SCOPES)
+        # Recupere project_id depuis le JSON
+        import json as _json
+        _SA_PROJECT = _json.loads(_SA_FILE.read_text(encoding="utf-8")).get("project_id")
+        print(f"[auth] Service Account detecte (project={_SA_PROJECT})")
+    except ImportError:
+        print("[auth] google-auth manquant. Installe : pip install google-auth google-auth-httplib2")
+        _USE_SA = False
+    except Exception as e:
+        print(f"[auth] Erreur chargement service account : {e}")
+        _USE_SA = False
+
+if not _USE_SA and not GEMINI_API_KEY:
+    sys.exit("ERREUR : ni service-account.json ni GEMINI_API_KEY dispo")
+
+
+def _get_auth_token():
+    """Retourne un access token frais depuis le service account."""
+    if _SA_CREDS.expired or not _SA_CREDS.token:
+        _SA_CREDS.refresh(_AuthRequest())
+    return _SA_CREDS.token
+
+
+def _api_call(url_tpl, model, payload, timeout=120):
+    """Wrapper requests.post qui ajoute auth SA ou ?key=API_KEY selon dispo."""
+    url = url_tpl.format(model=model)
+    if _USE_SA:
+        headers = {"Authorization": f"Bearer {_get_auth_token()}",
+                   "Content-Type": "application/json"}
+        return requests.post(url, json=payload, headers=headers, timeout=timeout)
+    else:
+        return requests.post(f"{url}?key={GEMINI_API_KEY}", json=payload, timeout=timeout)
 
 # On reutilise tout l'ecosysteme deja construit pour Leonardo
 from item_canon import ITEM_CANON, get_canon_for_combo, STORY_STYLE
@@ -152,11 +197,9 @@ def gen_image_gemini(prompt, dest_path, ref_images=None,
     models_to_try = [model] if model else GEMINI_IMAGE_MODELS
     last_err = None
     for mdl in models_to_try:
-        url = API_URL_TPL.format(model=mdl)
         print(f"  Gemini {mdl} -> {dest_path.name}")
         try:
-            r = requests.post(f"{url}?key={GEMINI_API_KEY}",
-                              json=payload, timeout=180)
+            r = _api_call(API_URL_TPL, mdl, payload, timeout=180)
         except requests.exceptions.Timeout:
             print(f"    timeout, on essaie modele suivant")
             last_err = "timeout"
