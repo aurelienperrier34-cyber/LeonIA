@@ -207,6 +207,8 @@ def gen_image_gemini(prompt, dest_path, ref_images=None,
         "generationConfig": {
             "responseModalities": ["IMAGE"],
             "temperature": 0.5,
+            # 16:9 widescreen pour le livre magique (zone image haut 60%)
+            "imageConfig": {"aspectRatio": "16:9"},
         },
     }
 
