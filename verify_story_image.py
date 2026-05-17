@@ -187,7 +187,7 @@ You MUST reply with ONLY a JSON object (no markdown, no commentary), in this exa
                                                 "data": _b64(pp)}})
 
     payload = {
-        "contents": [{"parts": parts}],
+        "contents": [{"role": "user", "parts": parts}],
         "generationConfig": {
             "temperature": 0.1,
             "response_mime_type": "application/json",

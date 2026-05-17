@@ -203,7 +203,7 @@ def gen_image_gemini(prompt, dest_path, ref_images=None,
     parts.append({"text": full_text})
 
     payload = {
-        "contents": [{"parts": parts}],
+        "contents": [{"role": "user", "parts": parts}],
         "generationConfig": {
             "responseModalities": ["IMAGE"],
             "temperature": 0.5,
