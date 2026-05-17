@@ -275,19 +275,43 @@ ITEM_CANON = {
 }
 
 
-def get_canon_for_combo(hero, place, item, villain):
+def get_canon_for_combo(hero, place, item, villain, only_roles=None):
     """
-    Renvoie la description canonique concatenee des 4 elements d'une histoire.
+    Renvoie la description canonique concatenee des elements de l'histoire.
     A injecter au DEBUT de chaque prompt de page d'illustration pour que
-    Leonardo regenere systematiquement les memes personnages.
+    le generateur d'images regenere systematiquement les memes personnages.
+
+    only_roles : liste optionnelle de roles a inclure (ex: ['hero', 'item'])
+                 Si None, inclut les 4. Permet de filtrer page par page pour
+                 eviter que Gemini ajoute des perso non desires.
     """
     parts = []
-    if hero and hero in ITEM_CANON["hero"]:
-        parts.append(ITEM_CANON["hero"][hero]["canon"])
-    if place and place in ITEM_CANON["place"]:
-        parts.append(ITEM_CANON["place"][place]["canon"])
-    if item and item in ITEM_CANON["item"]:
-        parts.append(ITEM_CANON["item"][item]["canon"])
-    if villain and villain in ITEM_CANON["villain"]:
-        parts.append(ITEM_CANON["villain"][villain]["canon"])
+    role_to_val = {"hero": hero, "place": place, "item": item, "villain": villain}
+    for role, val in role_to_val.items():
+        if only_roles is not None and role not in only_roles:
+            continue
+        if val and val in ITEM_CANON.get(role, {}):
+            parts.append(ITEM_CANON[role][val]["canon"])
+    if not parts:
+        return ""
     return "CHARACTER REFERENCE (must match exactly): " + " ".join(parts) + " "
+
+
+def get_exclusion_instruction(hero, place, item, villain, included_roles):
+    """
+    Construit une instruction explicite pour exclure les personnages NON
+    presents sur cette page (evite que Gemini les invente).
+    """
+    excluded = []
+    role_to_val = {"hero": hero, "place": place, "item": item, "villain": villain}
+    for role, val in role_to_val.items():
+        if role in included_roles:
+            continue
+        if val and val in ITEM_CANON.get(role, {}):
+            name = ITEM_CANON[role][val].get("name", val)
+            excluded.append(f"{name} ({role})")
+    if not excluded:
+        return ""
+    return ("IMPORTANT: This specific scene must NOT include the following "
+            "characters/objects: " + ", ".join(excluded) + ". "
+            "Only show what is explicitly described in the scene prompt below. ")

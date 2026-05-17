@@ -99,7 +99,8 @@ def _api_call(url_tpl, model, payload, timeout=120):
         return requests.post(f"{url}?key={GEMINI_API_KEY}", json=payload, timeout=timeout)
 
 # On reutilise tout l'ecosysteme deja construit pour Leonardo
-from item_canon import ITEM_CANON, get_canon_for_combo, STORY_STYLE
+from item_canon import (ITEM_CANON, get_canon_for_combo,
+                        get_exclusion_instruction, STORY_STYLE)
 from generate_story_images import STORIES
 try:
     from verify_story_image import verify_image, auto_portraits
@@ -364,8 +365,6 @@ def main():
     else:
         sys.exit(f"Impossible de decomposer '{args.story}' en (hero,place,item,villain)")
 
-    canon_prefix = get_canon_for_combo(hero, place, item, villain)
-
     print(f"\n[canon] Decompose : hero={hero}, place={place}, item={item}, villain={villain}")
     if auto_refs:
         print(f"[refs]  Mode AUTO : detection par page selon mots-cles du prompt")
@@ -392,12 +391,8 @@ def main():
             skipped += 1
             continue
 
-        # STORY_STYLE + CANON textuel + page-specific
-        full_prompt = STORY_STYLE + canon_prefix + raw_prompt
-
-        # Determine les refs pour CETTE page
+        # Determine les refs (et donc les personnages a inclure) pour CETTE page
         if auto_refs:
-            # Toujours inclure le hero (presence quasi-systematique)
             page_roles = auto_detect_refs_for_page(
                 raw_prompt, hero, place, item, villain,
                 always_include=["hero"])
@@ -405,8 +400,13 @@ def main():
             page_roles = ref_roles_static
         ref_images = collect_ref_portraits(hero, place, item, villain, page_roles)
 
+        # Canon FILTRE sur les seuls roles presents + instruction d'exclusion
+        canon_prefix = get_canon_for_combo(hero, place, item, villain, only_roles=page_roles)
+        exclusion = get_exclusion_instruction(hero, place, item, villain, page_roles)
+        full_prompt = STORY_STYLE + canon_prefix + exclusion + raw_prompt
+
         print(f"\n[{idx}/{len(prompts)}] page{idx}.jpg")
-        print(f"  refs pour cette page : {list(ref_images.keys())}")
+        print(f"  refs : {list(ref_images.keys())} | excluded : {[r for r in ['hero','place','item','villain'] if r not in page_roles]}")
 
         attempt = 0
         page_ok = False
