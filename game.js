@@ -9188,7 +9188,19 @@ function openCreatorMode() {
   });
 }
 
-// === PHASE 1 : SELECTION === =================================
+// === PHASE 1 : SELECTION (v499 - livre interactif 5 pages) ====
+// Le picker est maintenant un VRAI LIVRE entre les mains de Leon.
+// 5 etapes : heros, lieu, objet, ennemi, niveau+CTA.
+// Page-flip 3D, swipe mobile, auto-advance apres selection.
+const PICK_STEPS = [
+  { key: 'hero',    title: '🦸 Choisis ton héros',         catIdx: 0 },
+  { key: 'place',   title: '🏰 Choisis le lieu',           catIdx: 1 },
+  { key: 'item',    title: "🪄 Choisis l'objet magique",   catIdx: 2 },
+  { key: 'villain', title: '👻 Choisis le défi',           catIdx: 3 },
+  { key: 'level',   title: "📚 Quel type d'histoire ?",   isLevel: true }
+];
+let pickBookState = { currentStep: 0, isFlipping: false, swipeWired: false };
+
 function initCreatorPick() {
   // Reset state (mais on garde le level choisi)
   creatorState.hero = null;
@@ -9198,6 +9210,8 @@ function initCreatorPick() {
   creatorState.story = null;
   creatorState.currentPage = 0;
   if (!creatorState.level) creatorState.level = 'courte';
+  pickBookState.currentStep = 0;
+  pickBookState.isFlipping = false;
   // Show pick, hide others
   document.getElementById('creator-pick').hidden = false;
   document.getElementById('creator-loading').hidden = true;
@@ -9205,93 +9219,210 @@ function initCreatorPick() {
   // Star count
   const sc = document.getElementById('creator-star-count');
   if (sc) sc.textContent = state.totalStars || 0;
-  // Build grid
-  renderCreatorGrid();
-  wireCreatorLevelBtns();
-  updateCreatorGoBtn();
+  // Build livre
+  renderPickBook();
+  attachPickSwipe();
   const err = document.getElementById('creator-error-msg');
   if (err) err.textContent = '';
 }
 
-function wireCreatorLevelBtns() {
-  document.querySelectorAll('#creator-level-btns .creator-level-btn').forEach(btn => {
+function renderPickBook() {
+  const pagesEl = document.getElementById('pick-book-pages');
+  if (!pagesEl) return;
+  pagesEl.innerHTML = '';
+  PICK_STEPS.forEach((step, idx) => {
+    const spread = document.createElement('div');
+    spread.className = 'pick-spread';
+    spread.dataset.step = step.key;
+    spread.dataset.stepIdx = String(idx);
+    if (idx !== pickBookState.currentStep) spread.hidden = true;
+
+    if (step.isLevel) {
+      spread.innerHTML = `
+        <h2 class="pick-cat-title">${step.title}</h2>
+        <div class="pick-items">
+          <button class="pick-item pick-level-item ${creatorState.level === 'courte' ? 'selected' : ''}" data-level="courte" type="button">
+            <span class="pick-item-emoji">⚡</span>
+            <span class="pick-item-label">Courte</span>
+            <span class="pick-level-time">3-5 min</span>
+          </button>
+          <button class="pick-item pick-level-item ${creatorState.level === 'soir' ? 'selected' : ''}" data-level="soir" type="button">
+            <span class="pick-item-emoji">🌙</span>
+            <span class="pick-item-label">Du soir</span>
+            <span class="pick-level-time">7-10 min</span>
+          </button>
+          <button class="pick-item pick-level-item ${creatorState.level === 'aventure' ? 'selected' : ''}" data-level="aventure" type="button">
+            <span class="pick-item-emoji">🗺️</span>
+            <span class="pick-item-label">Voyage</span>
+            <span class="pick-level-time">~20 min</span>
+          </button>
+        </div>
+        <p class="pick-summary" id="pick-summary"></p>
+        <button class="pick-go" id="creator-go-btn" type="button" onclick="generateCreatorStory()">📖 Écrire mon histoire</button>
+      `;
+    } else {
+      const cat = CREATOR_CATEGORIES[step.catIdx];
+      spread.innerHTML = `
+        <h2 class="pick-cat-title">${step.title}</h2>
+        <div class="pick-items">
+          ${cat.items.map(item => `
+            <button class="pick-item ${creatorState[step.key] === item.value ? 'selected' : ''}" data-cat="${step.key}" data-value="${item.value}" type="button">
+              <span class="pick-item-emoji">${item.emoji}</span>
+              <span class="pick-item-label">${item.label}</span>
+            </button>
+          `).join('')}
+        </div>
+      `;
+    }
+    pagesEl.appendChild(spread);
+  });
+
+  // Wire item clicks (click = vrai gesture iOS)
+  pagesEl.querySelectorAll('.pick-item[data-cat]').forEach(btn => {
+    btn.onclick = () => {
+      selectCreatorItem(btn.dataset.cat, btn.dataset.value, btn);
+      // Auto-advance vers la page suivante apres 380ms
+      setTimeout(() => {
+        if (pickBookState.currentStep < PICK_STEPS.length - 1 && !pickBookState.isFlipping) {
+          pickBookNextPage();
+        }
+      }, 380);
+    };
+  });
+  pagesEl.querySelectorAll('.pick-level-item').forEach(btn => {
     btn.onclick = () => {
       creatorState.level = btn.dataset.level;
-      document.querySelectorAll('#creator-level-btns .creator-level-btn')
-        .forEach(b => b.classList.toggle('selected', b === btn));
+      pagesEl.querySelectorAll('.pick-level-item').forEach(b =>
+        b.classList.toggle('selected', b === btn));
     };
-    // Reflect current state
-    btn.classList.toggle('selected', btn.dataset.level === creatorState.level);
   });
-}
 
-function surpriseMeCreator() {
-  // Choisit aleatoirement 1 item dans chaque categorie + niveau random
-  CREATOR_CATEGORIES.forEach(cat => {
-    const rndIdx = Math.floor(Math.random() * cat.items.length);
-    const rndVal = cat.items[rndIdx].value;
-    creatorState[cat.key] = rndVal;
-    // Update UI
-    const catDiv = document.getElementById('creator-cat-' + cat.key);
-    if (catDiv) {
-      catDiv.querySelectorAll('.creator-card').forEach(c => {
-        c.classList.toggle('selected', c.dataset.value === rndVal);
-      });
-    }
-  });
-  // Random level aussi
-  const levels = ['courte', 'soir', 'aventure'];
-  creatorState.level = levels[Math.floor(Math.random() * levels.length)];
-  document.querySelectorAll('#creator-level-btns .creator-level-btn')
-    .forEach(b => b.classList.toggle('selected', b.dataset.level === creatorState.level));
-  updateCreatorGoBtn();
-  const err = document.getElementById('creator-error-msg');
-  if (err) err.textContent = '';
-}
-
-function renderCreatorGrid() {
-  const grid = document.getElementById('creator-grid');
-  if (!grid) return;
-  grid.innerHTML = '';
-  CREATOR_CATEGORIES.forEach(cat => {
-    const catDiv = document.createElement('div');
-    catDiv.className = 'creator-cat';
-    catDiv.id = 'creator-cat-' + cat.key;
-    catDiv.innerHTML = '<h3 class="creator-cat-title">' + cat.title + '</h3>' +
-      '<div class="creator-cards">' +
-      cat.items.map(item =>
-        `<button class="creator-card" data-cat="${cat.key}" data-value="${item.value}" type="button">
-          <span class="creator-card-emoji">${item.emoji}</span>
-          <span class="creator-card-label">${item.label}</span>
-        </button>`
-      ).join('') +
-      '</div>';
-    grid.appendChild(catDiv);
-  });
-  // Wire clicks (onclick = vrai gesture iOS pour eventuel audio futur)
-  grid.querySelectorAll('.creator-card').forEach(btn => {
-    btn.onclick = () => selectCreatorItem(btn.dataset.cat, btn.dataset.value, btn);
-  });
+  // Si on est sur la page level, mettre a jour le recap
+  if (PICK_STEPS[pickBookState.currentStep].isLevel) updatePickSummary();
+  updatePickBookNav();
 }
 
 function selectCreatorItem(category, value, btnEl) {
   creatorState[category] = value;
-  // Toggle visual
-  const catDiv = document.getElementById('creator-cat-' + category);
-  if (catDiv) {
-    catDiv.querySelectorAll('.creator-card').forEach(c => c.classList.remove('selected'));
+  const stepEl = btnEl ? btnEl.closest('.pick-spread') : null;
+  if (stepEl) {
+    stepEl.querySelectorAll('.pick-item').forEach(c => c.classList.remove('selected'));
   }
   if (btnEl) btnEl.classList.add('selected');
-  updateCreatorGoBtn();
+  updatePickBookNav();
   const err = document.getElementById('creator-error-msg');
   if (err) err.textContent = '';
 }
 
-function updateCreatorGoBtn() {
-  const btn = document.getElementById('creator-go-btn');
-  if (!btn) return;
-  const ready = creatorState.hero && creatorState.place && creatorState.item && creatorState.villain;
-  btn.disabled = !ready;
+function pickBookNextPage() {
+  if (pickBookState.isFlipping) return;
+  if (pickBookState.currentStep >= PICK_STEPS.length - 1) return;
+  // Sur pages 1-4, exiger une selection avant d'avancer
+  const step = PICK_STEPS[pickBookState.currentStep];
+  if (!step.isLevel && !creatorState[step.key]) {
+    const err = document.getElementById('creator-error-msg');
+    if (err) err.textContent = '⚠️ Choisis d\'abord un élément !';
+    return;
+  }
+  flipPickPage('forward', pickBookState.currentStep + 1);
+}
+function pickBookPrevPage() {
+  if (pickBookState.isFlipping) return;
+  if (pickBookState.currentStep <= 0) return;
+  flipPickPage('backward', pickBookState.currentStep - 1);
+}
+
+function flipPickPage(direction, newIdx) {
+  pickBookState.isFlipping = true;
+  const flipEl = document.getElementById('pick-page-flip');
+  const spreads = document.querySelectorAll('.pick-spread');
+  if (!flipEl || !spreads.length) {
+    pickBookState.isFlipping = false;
+    return;
+  }
+  // Lance l'anim de feuille qui tourne
+  flipEl.className = 'pick-page-flip flipping-' + direction;
+  // A mi-anim (sous la feuille), on swap les spreads
+  setTimeout(() => {
+    spreads.forEach((s, i) => { s.hidden = (i !== newIdx); });
+    pickBookState.currentStep = newIdx;
+    if (PICK_STEPS[newIdx].isLevel) updatePickSummary();
+    updatePickBookNav();
+  }, 325);
+  // Fin d'anim : reset le flip overlay
+  setTimeout(() => {
+    flipEl.className = 'pick-page-flip';
+    pickBookState.isFlipping = false;
+  }, 680);
+}
+
+function updatePickBookNav() {
+  const prog = document.getElementById('pick-progress');
+  const prev = document.getElementById('pick-prev');
+  const next = document.getElementById('pick-next');
+  if (prog) prog.textContent = (pickBookState.currentStep + 1) + ' / ' + PICK_STEPS.length;
+  if (prev) prev.disabled = pickBookState.currentStep <= 0;
+  if (next) {
+    const isLast = pickBookState.currentStep >= PICK_STEPS.length - 1;
+    next.disabled = isLast;
+  }
+  // Bouton "Écrire" reflete completion
+  const goBtn = document.getElementById('creator-go-btn');
+  if (goBtn) {
+    const ready = creatorState.hero && creatorState.place && creatorState.item && creatorState.villain;
+    goBtn.disabled = !ready;
+  }
+}
+
+function updatePickSummary() {
+  const sum = document.getElementById('pick-summary');
+  if (!sum) return;
+  const labelOf = (key, val) => {
+    const cat = CREATOR_CATEGORIES.find(c => c.key === key);
+    const item = cat && cat.items.find(i => i.value === val);
+    return item ? (item.emoji + ' ' + item.label) : '— ?';
+  };
+  sum.innerHTML = `<em>Ton histoire :</em> ${labelOf('hero', creatorState.hero)} · ${labelOf('place', creatorState.place)} · ${labelOf('item', creatorState.item)} · ${labelOf('villain', creatorState.villain)}`;
+}
+
+function surpriseMeCreator() {
+  // Tire au sort tous les ingredients + niveau, puis bondit a la derniere page
+  CREATOR_CATEGORIES.forEach(cat => {
+    const rndIdx = Math.floor(Math.random() * cat.items.length);
+    creatorState[cat.key] = cat.items[rndIdx].value;
+  });
+  const levels = ['courte', 'soir', 'aventure'];
+  creatorState.level = levels[Math.floor(Math.random() * levels.length)];
+  pickBookState.currentStep = PICK_STEPS.length - 1;
+  pickBookState.isFlipping = false;
+  renderPickBook();
+  const err = document.getElementById('creator-error-msg');
+  if (err) err.textContent = '';
+}
+
+function attachPickSwipe() {
+  if (pickBookState.swipeWired) return;
+  const book = document.getElementById('pick-book');
+  if (!book) return;
+  let startX = 0, startY = 0, startT = 0;
+  book.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    startT = Date.now();
+  }, { passive: true });
+  book.addEventListener('touchend', e => {
+    if (Date.now() - startT > 600) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = e.changedTouches[0].clientY - startY;
+    if (Math.abs(dx) > 60 && Math.abs(dy) < 50) {
+      // Eviter le swipe sur bouton item (le clic prime)
+      const target = e.target;
+      if (target && target.closest('.pick-item, .pick-go, .pick-prev, .pick-next')) return;
+      if (dx < 0) pickBookNextPage(); else pickBookPrevPage();
+    }
+  }, { passive: true });
+  pickBookState.swipeWired = true;
 }
 
 // === PHASE 2 : LOADING + LOAD STORY === ======================
