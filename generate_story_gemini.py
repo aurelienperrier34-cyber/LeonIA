@@ -284,7 +284,7 @@ def gen_image_gemini(prompt, dest_path, ref_images=None,
             for retry_i, wait_s in enumerate([15, 30, 60], 1):
                 print(f"    wait {wait_s}s puis retry {retry_i}/3...")
                 time.sleep(wait_s)
-                r2 = _api_call(url_tpl, mdl, payload, timeout=180)
+                r2 = _api_call(API_URL_TPL, mdl, payload, timeout=180)
                 if r2.status_code == 429:
                     print(f"    encore 429 (retry {retry_i})")
                     continue
