@@ -164,6 +164,12 @@ def gen_image_gemini(prompt, dest_path, ref_images=None,
         if r.status_code == 404:
             last_err = f"404 {mdl}"
             continue
+        if r.status_code == 429:
+            # Quota depassee sur CE modele : tente le suivant (qui a peut-etre
+            # un free tier different, ex: gemini-2.0-flash-exp)
+            last_err = f"429 quota {mdl}"
+            print(f"    quota depasse sur {mdl}, on essaie le suivant...")
+            continue
         if r.status_code >= 400:
             print(f"    ERREUR {r.status_code}: {r.text[:400]}")
             return False
