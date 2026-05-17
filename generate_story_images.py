@@ -100,13 +100,13 @@ def upload_init_image(image_path):
 
 
 def gen_image_story(prompt, dest_path, model_key="flux-dev",
-                    char_ref_id=None, char_ref_strength="High",
+                    char_ref_ids=None, char_ref_strength="High",
                     extra_negative=""):
     """
     Genere une illustration de story.
-    Si char_ref_id est fourni, on l'utilise en Character Reference
-    (preprocessorId 133) pour verrouiller l'apparence du heros sur le
-    portrait canonique.
+    char_ref_ids : LISTE d'image_ids deja uploades sur Leonardo (portraits canon).
+                   - Pour Flux : utilise imagePrompts (soft guidance multi-ref)
+                   - Pour Phoenix : utilise controlnets Character Reference (1 ref)
     """
     print(f"  Leonardo {model_key} -> {dest_path.name}")
     full_neg = STORY_NEGATIVE + (" " + extra_negative if extra_negative else "")
@@ -120,15 +120,24 @@ def gen_image_story(prompt, dest_path, model_key="flux-dev",
         "guidance_scale": 7,
         "contrast": 3.5,
     }
-    if char_ref_id:
-        # Character Reference fort : lock l'apparence sur le portrait canon
-        payload["controlnets"] = [{
-            "initImageId": char_ref_id,
-            "initImageType": "UPLOADED",
-            "preprocessorId": 133,   # Character Reference
-            "strengthType": char_ref_strength,  # Low / Mid / High / Max
-        }]
-        print(f"   Character Reference: {char_ref_strength} strength")
+    if char_ref_ids:
+        # Normalise en liste (compat avec ancien arg single)
+        if isinstance(char_ref_ids, str):
+            char_ref_ids = [char_ref_ids]
+        is_flux = model_key.startswith("flux")
+        if is_flux:
+            # Flux Dev/Schnell : imagePrompts (soft image guidance, multi-ref OK)
+            payload["imagePrompts"] = char_ref_ids[:4]  # max 4 raisonnable
+            print(f"   imagePrompts (Flux soft guidance): {len(char_ref_ids[:4])} ref(s)")
+        else:
+            # Phoenix : Character Reference fort (1 ref seulement)
+            payload["controlnets"] = [{
+                "initImageId": char_ref_ids[0],
+                "initImageType": "UPLOADED",
+                "preprocessorId": 133,   # Character Reference (Phoenix)
+                "strengthType": char_ref_strength,
+            }]
+            print(f"   Character Reference (Phoenix): {char_ref_strength}")
     r = requests.post(f"{BASE_V1}/generations", json=payload, headers=HEADERS)
     if r.status_code >= 400:
         print(f"  ERREUR init : {r.status_code} {r.text[:300]}")
@@ -297,27 +306,33 @@ def main():
     out_dir = Path("assets/stories") / args.story
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    # v502 : si le portrait du heros existe, on l'upload une fois et on le
-    # passe en Character Reference pour TOUTES les pages -> apparence verrouillee
-    char_ref_id = None
-    if hero and not args.no_charref:
-        portrait_path = Path("assets/items") / f"hero_{hero}.jpg"
-        if portrait_path.exists():
-            print(f"\n[charref] Upload du portrait {portrait_path.name} vers Leonardo...")
-            char_ref_id = upload_init_image(portrait_path)
-            if char_ref_id:
-                print(f"[charref] Upload OK, imageId={char_ref_id} (sera utilise sur toutes les pages)")
+    # v502+v504 : upload les portraits canon (hero + villain + item + place)
+    # et les passe TOUS en reference soft (Flux imagePrompts) ou la seule premiere
+    # en Character Reference fort (Phoenix). Verrouille l'apparence sur le canon.
+    char_ref_ids = []
+    if not args.no_charref:
+        roles = [("hero", hero), ("villain", villain), ("item", item), ("place", place)]
+        for role, val in roles:
+            if not val:
+                continue
+            pp = Path("assets/items") / f"{role}_{val}.jpg"
+            if not pp.exists():
+                print(f"[charref] WARN portrait {pp} introuvable - skip")
+                continue
+            print(f"[charref] Upload {pp.name}...")
+            uid = upload_init_image(pp)
+            if uid:
+                char_ref_ids.append(uid)
+                print(f"[charref]   OK imageId={uid}")
             else:
-                print(f"[charref] WARN upload echoue, on continue sans Character Reference")
-        else:
-            print(f"\n[charref] WARN {portrait_path} introuvable, "
-                  f"genere d'abord avec: python generate_item_portraits.py --only {hero}")
-            print(f"[charref] On continue SANS Character Reference (coherence faible)")
+                print(f"[charref]   WARN upload echoue pour {role}/{val}")
+    if not char_ref_ids:
+        print("[charref] Aucun portrait charge -> generation sans reference visuelle (drift possible)")
 
     print(f"\nGeneration de {len(prompts)} illustrations pour '{args.story}'")
     print(f"Modele : {args.model}")
     print(f"Output : {out_dir}/")
-    print(f"Character Reference: {'ACTIVE (' + args.charref_strength + ')' if char_ref_id else 'INACTIVE'}\n")
+    print(f"Image References: {len(char_ref_ids)} portrait(s) canon en guidance\n")
 
     # Setup portraits canon a passer au verifier pour comparaison directe
     verify_portraits = None
@@ -354,7 +369,7 @@ def main():
                 if dest.exists():
                     dest.unlink()
             ok = gen_image_story(full_prompt, dest, model_key=args.model,
-                                 char_ref_id=char_ref_id,
+                                 char_ref_ids=char_ref_ids,
                                  char_ref_strength=args.charref_strength,
                                  extra_negative=extra_neg)
             if not ok:
