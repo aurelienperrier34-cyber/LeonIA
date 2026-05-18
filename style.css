@@ -8018,6 +8018,51 @@ body:has(#screen-creator.active) #global-star-corner {
   margin-bottom: clamp(4px, 1vw, 10px);
 }
 
+/* v534 : eventail des 3 portraits (style jeu de cartes magiques)
+   sur la page gauche AVANT selection */
+.pick-cat-trio {
+  position: relative;
+  width: clamp(140px, 20vw, 200px);
+  height: clamp(130px, 19vw, 190px);
+  margin-bottom: clamp(8px, 1.4vw, 14px);
+}
+.pick-cat-trio-img {
+  position: absolute;
+  width: 60%;
+  height: 80%;
+  top: 50%;
+  left: 50%;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2.5px solid #8b5a2b;
+  box-shadow: 0 6px 16px rgba(80, 40, 10, 0.45),
+              inset 0 0 8px rgba(255, 240, 200, 0.25);
+  background: rgba(255, 250, 235, 0.4);
+  transition: transform 0.3s ease;
+}
+/* Carte gauche penchee */
+.pick-cat-trio-0 {
+  transform: translate(-95%, -50%) rotate(-14deg);
+  z-index: 1;
+}
+/* Carte centrale droite et en avant */
+.pick-cat-trio-1 {
+  transform: translate(-50%, -55%) rotate(0deg);
+  z-index: 3;
+}
+/* Carte droite penchee */
+.pick-cat-trio-2 {
+  transform: translate(-5%, -50%) rotate(14deg);
+  z-index: 2;
+}
+/* Effet hover : eparpille les cartes */
+.pick-page-left:hover .pick-cat-trio-0 {
+  transform: translate(-105%, -50%) rotate(-18deg);
+}
+.pick-page-left:hover .pick-cat-trio-2 {
+  transform: translate(5%, -50%) rotate(18deg);
+}
+
 /* v531 : grand portrait du SELECTIONNE sur la page gauche */
 .pick-cat-bigportrait {
   margin-bottom: clamp(6px, 1.2vw, 12px);

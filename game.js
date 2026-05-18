@@ -9284,20 +9284,28 @@ function renderPickBook() {
       `;
     } else {
       const cat = CREATOR_CATEGORIES[step.catIdx];
-      // v531 : page gauche montre un grand portrait de l'item SELECTIONNE,
-      // ou un grand decor emoji par defaut si rien selectionne
+      // v534 : page gauche montre soit le grand portrait du SELECTIONNE,
+      // soit un EVENTAIL des 3 portraits (style jeu de cartes magiques)
       const selectedVal = creatorState[step.key];
       const selectedItem = selectedVal && cat.items.find(i => i.value === selectedVal);
       const leftPaneHtml = selectedItem
         ? `<div class="pick-cat-bigportrait">
-             <img class="pick-cat-bigportrait-img" src="assets/items/${step.key}_${selectedVal}.jpg?v=531" alt="${selectedItem.label}"
+             <img class="pick-cat-bigportrait-img" src="assets/items/${step.key}_${selectedVal}.jpg?v=534" alt="${selectedItem.label}"
                   onerror="this.style.display='none'; var em=this.nextElementSibling; if(em) em.style.display='block';">
              <div class="pick-cat-decor" style="display:none">${step.decor}</div>
            </div>
            <h2 class="pick-cat-title">${selectedItem.label}</h2>
            <p class="pick-cat-subtitle">${step.title}</p>`
-        : `<div class="pick-cat-decor">${step.decor}</div>
-           <h2 class="pick-cat-title">${step.title}</h2>`;
+        : `<div class="pick-cat-trio">
+             ${cat.items.map((item, fanIdx) => `
+               <img class="pick-cat-trio-img pick-cat-trio-${fanIdx}"
+                    src="assets/items/${step.key}_${item.value}.jpg?v=534"
+                    alt="${item.label}"
+                    onerror="this.style.opacity=0.3;">
+             `).join('')}
+           </div>
+           <h2 class="pick-cat-title">${step.title}</h2>
+           <p class="pick-cat-subtitle">${step.decor} Choisis-en un</p>`;
       spread.innerHTML = `
         <div class="pick-page pick-page-left">
           ${leftPaneHtml}
