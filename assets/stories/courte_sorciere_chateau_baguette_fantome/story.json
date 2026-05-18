@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et la baguette du vieil artisan",
+  "pages": [
+    {
+      "text": "Pimprenelle, petite sorcière à la longue tresse rousse, vivait au château de Belmondrie. C'était une demeure de conte de fées, avec trois hautes tours aux toits bleus et des murs couverts de lierre. Mais depuis quelques jours, le château semblait triste. La lueur magique qui dansait d'habitude aux fenêtres brisées avait presque disparu, remplacée par une pénombre inquiétante. <br><br>« Quelque chose ne va pas », murmura Pimprenelle en serrant sa propre baguette de bois, simple mais fidèle. « La magie de Belmondrie s'éteint. Il faut que je découvre pourquoi. »<br><br>Avec son chapeau pointu parsemé de lunes dorées, elle s'enfonça dans les couloirs silencieux du château, le cœur battant d'aventure et d'un peu d'appréhension.",
+      "image_prompt": "Pimprenelle, a 9-year-old witch girl with a long red curly side braid and freckles, stands before the fairy-tale castle of Belmondrie. She wears a deep purple pointed hat with golden crescent moons and a lavender robe. The castle has three tall towers with blue conical roofs and ivy on its crumbling stone walls. The windows, usually glowing warmly, are dark and dim. The atmosphere is crepuscular and mysterious. Pimprenelle looks determined, holding her simple wooden wand."
+    },
+    {
+      "text": "Sa quête la mena jusqu'à l'atelier poussiéreux de la plus haute tour. La pièce était glaciale. Dans un coin, une silhouette évanescente flottait doucement. C'était un petit fantôme translucide, vêtu d'un tablier d'artisan presque effacé. Il avait une longue barbe blanche et des yeux d'un gris pâle remplis d'une infinie tristesse.<br><br>Le fantôme tendait ses mains diaphanes vers les rares poussières de lumière qui dansaient encore dans l'air, les attrapant une à une. Chaque fois qu'il en capturait une, la pièce devenait un peu plus sombre. Il ne semblait pas méchant, juste… désespéré. Pimprenelle le baptisa en silence : <em>Maître Otho</em>.",
+      "image_prompt": "Inside a dusty, forgotten castle workshop filled with old tools and cobwebs, Pimprenelle cautiously peeks from behind a doorway. In the center of the room floats Maître Otho, a small, friendly-looking translucent ghost of an old craftsman with a long wispy beard and a gentle but sad expression. He has an ethereal blue-white glow and is trying to catch tiny motes of light floating in the air with his ghostly hands."
+    },
+    {
+      "text": "Pimprenelle s'avança doucement. « Monsieur le fantôme, pourquoi prenez-vous la lumière du château ? Elle lui manque, vous savez. »<br><br>Maître Otho sursauta et se tourna vers elle. Aucune parole ne sortit de sa bouche éthérée, mais une grande peine voila son regard. Il ne cherchait pas à lui faire peur. Au contraire, il semblait implorer son aide. D'un doigt tremblant, il pointa un vieux établi recouvert d'un grand drap blanc. Il essaya de soulever le tissu, mais sa main fantomatique le traversa sans effet. Frustré, il recommença, encore et encore, son aura vacillant de chagrin.<br><br>Pimprenelle comprit alors : il ne volait pas la lumière. <em>Il essayait de la rassembler</em>, pour avoir assez de force pour accomplir une dernière tâche.",
+      "image_prompt": "Close-up on the interaction between Pimprenelle and Maître Otho. The kind ghost, Maître Otho, looks desperate, his translucent face filled with sorrow. He is pointing a wavering, see-through finger towards an old workbench covered by a white sheet. Pimprenelle, standing nearby, looks at him not with fear, but with a dawning realization and deep compassion on her freckled face. The mood is intimate and poignant."
+    },
+    {
+      "text": "« Vous voulez me montrer ce qu'il y a là-dessous », dit Pimprenelle avec une infinie douceur. Elle leva sa propre baguette magique, celle au bout de cristal, et murmura une formule de son invention. Le drap se souleva dans un doux froufrou et alla se poser délicatement sur une chaise.<br><br>Sur le velours usé de l'établi reposait une baguette magnifique, presque terminée. Son bois couleur de miel était orné de gravures en spirale, mais il lui manquait l'essentiel : sa pointe. À côté, un petit dessin jauni montrait le plan final : la baguette devait être surmontée d'une étoile dorée à cinq branches. Maître Otho regarda l'objet inachevé, et une larme spectrale roula sur sa joue.",
+      "image_prompt": "Pimprenelle uses her simple wand, which emits a soft glow, to magically lift a white sheet off a workbench. Revealed on the velvet cloth is a beautifully carved, unfinished magical wand made of honey-brown wood. Next to it lies an old schematic drawing of the wand, showing it should have a five-pointed star tip. Maître Otho, the ghost, floats beside the bench, looking at the unfinished wand with profound sadness."
+    },
+    {
+      "text": "Le cœur de Pimprenelle se serra. Cet artisan était mort avant de finir son chef-d'œuvre. Sans hésiter, elle fouilla dans la petite bourse accrochée à sa ceinture et en sortit son porte-bonheur : une minuscule étoile dorée. Avec la plus grande précaution, elle la posa sur l'extrémité de la baguette.<br><br>Un déclic magique retentit. La baguette, <em>Étoile</em>, s'illumina, projetant des milliers d'étincelles argentées dans tout l'atelier. Maître Otho, baigné dans cette lumière pure, put enfin saisir l'objet. Il le soupesa une dernière fois, un sourire radieux éclairant son visage. Il s'inclina profondément devant Pimprenelle, puis se dissipa dans un dernier souffle de lumière, laissant la baguette Étoile entre les mains de la jeune sorcière. Au même instant, le château de Belmondrie retrouva tout son éclat, plus vif et joyeux que jamais.",
+      "image_prompt": "In the now brightly lit workshop, Pimprenelle holds up the completed magical wand, 'Étoile'. Its golden star tip is emitting a shower of brilliant silver sparkles that fill the room. The ghost of Maître Otho, now glowing brightly and transparently, smiles with pure joy and peace as he begins to fade away into light particles. The scene is deeply moving, magical, and luminous, filled with warmth and gratitude."
+    }
+  ],
+  "key": "courte_sorciere_chateau_baguette_fantome",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "chateau",
+  "item": "baguette",
+  "villain": "fantome"
+}

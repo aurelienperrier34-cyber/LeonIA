@@ -1,0 +1,31 @@
+{
+  "title": "Léa et la Mélodie Perdue de la Mer d'Aural",
+  "pages": [
+    {
+      "text": "Léa, la petite astronaute, n'en croyait pas ses yeux. Son vaisseau s'était posé doucement au bord d'un océan qui ne ressemblait à aucun autre. C'était la Mer d'Aural. Ses eaux, d'un turquoise profond, scintillaient de mille feux magiques, comme si des étoiles filantes s'étaient dissoutes à l'intérieur. De petits poissons d'argent la frôlaient sans un bruit.<br><br>C'était magnifique, mais terriblement silencieux. On avait raconté à Léa que cette mer chantait autrefois une douce mélopée. Aujourd'hui, un grand silence pesait sur les vagues. Une mission parfaite pour une exploratrice curieuse !",
+      "image_prompt": "Lea, an 8-year-old astronaut girl with curly brown hair in buns and freckles, stands in her white spacesuit at the edge of the Mer d'Aural. Her helmet is off. She has a friendly, curious expression of awe. The ocean is a magical, luminous deep turquoise and aquamarine, scattered with bioluminescent sparkles and reflecting faint starlight. The atmosphere is quiet wonder."
+    },
+    {
+      "text": "Avec son casque orné d'étoiles d'or, Léa s'enfonça dans l'océan lumineux. L'eau était douce et tiède, et elle pouvait respirer comme sur la terre ferme. En marchant sur le sable de cristal, elle aperçut une lueur différente, plus douce, blottie entre deux coraux couleur d'opale. Elle s'approcha.<br><br>C'était une petite guitare, entièrement faite d'un cristal pâle et translucide. Ses six cordes brillaient de reflets argentés et violets. Léa la prit délicatement dans ses mains. L'instrument était d'une beauté incroyable, mais il semblait... <em>endormi</em>. Froid. Et muet.",
+      "image_prompt": "Underwater scene. Lea, in her full spacesuit with the helmet on, discovers the crystal guitar. She is gently holding the small, translucent crystal guitar, which glows softly from within. The guitar was nestled in glowing, opal-colored coral. The deep turquoise water is filled with bioluminescent sparkles and gentle glints of light."
+    },
+    {
+      "text": "Au moment où ses doigts effleurèrent les cordes, une forme apparut devant elle, née du silence lui-même. C'était un petit fantôme translucide, flottant doucement dans l'eau. Il avait l'air d'un vieil artisan, avec une longue barbe vaporeuse et des yeux d'un gris très doux. Il portait même le contour évanescent d'un vieux tablier.<br><br>Le fantôme tendit une main spectrale vers la guitare. Il ne paraissait pas méchant, but son visage était empreint d'une immense tristesse. Léa, surprise, serra l'instrument contre elle. Voulait-il le lui prendre ? Était-ce lui, le voleur de chansons de la Mer d'Aural ?",
+      "image_prompt": "Lea, looking surprised but not scared, is holding the crystal guitar protectively. Facing her is Maitre Otho, a small, friendly-looking translucent ghost of an old craftsman with a long wispy beard and kind eyes. Otho is glowing with an ethereal blue-white light and has a sad, pleading expression, his ghostly hand gently reaching toward the guitar. The scene is magical and slightly tense."
+    },
+    {
+      "text": "Léa regarda plus attentivement le spectre. Non, il n'y avait aucune colère dans ses yeux, seulement un chagrin profond, aussi vaste que l'océan. Pour tester, elle gratta une corde de la guitare. Aucun son n'en sortit. Pas la moindre vibration. Un silence parfait. En voyant son geste, le fantôme laissa échapper une unique larme lumineuse qui glissa sur sa joue diaphane avant de se dissoudre dans l'eau.<br><br>Et Léa comprit. <em>Maître Otho</em>, comme il devait s'appeler, n'avait pas volé la musique. Il l'avait <em>perdue</em>. La guitare était silencieuse parce que son créateur, son musicien, avait le cœur brisé. La Guitare des Sept Silences ne portait pas une malédiction, mais le deuil de son maître.",
+      "image_prompt": "A close-up on Lea and Maitre Otho, focusing on their emotional connection. Lea is looking at the ghost with dawning comprehension and empathy, her finger still on a string of the silent crystal guitar. Maitre Otho looks heartbroken, a single, glowing tear rolling down his translucent cheek. The atmosphere is poignant and intimate."
+    },
+    {
+      "text": "Sans un mot, Léa fit quelque chose d'inattendu. Elle ne tenta pas de jouer. Doucement, avec un sourire plein d'empathie, elle tendit la guitare de cristal au vieil artisan fantôme. Maître Otho la regarda, surpris. Ses doigts éthérés se posèrent sur le manche de l'instrument qu'il avait lui-même créé.<br><br>Et là, une note pure, cristalline, s'éleva enfin. Puis une autre, et encore une autre. Un sourire timide naquit sur le visage de Maître Otho. La guitare se mit à rayonner d'une lumière éclatante, et une mélodie d'une douceur infinie se répandit, réveillant la Mer d'Aural. Les poissons d'argent se mirent à danser. Léa, sa mission accomplie, regarda la musique rendre ses couleurs au monde.",
+      "image_prompt": "A joyful, luminous scene. Maitre Otho, now smiling gently, holds the crystal guitar, which is glowing brightly. Shimmering light particles representing musical notes flow from the guitar into the turquoise water. Silver fish are dancing in the light. Lea stands nearby, helmet under her arm, watching the ghost play with a warm, happy smile on her face. The whole scene is filled with light, color, and magical music."
+    }
+  ],
+  "key": "courte_astronaute_ocean_guitare_fantome",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "ocean",
+  "item": "guitare",
+  "villain": "fantome"
+}

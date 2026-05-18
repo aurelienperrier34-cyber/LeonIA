@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Gardien des Étoiles",
+  "pages": [
+    {
+      "text": "Léa n'était pas une exploratrice comme les autres. À huit ans, avec ses couettes bouclées et ses taches de rousseur, elle voyageait entre les planètes comme d'autres vont à l'école. Un jour, son petit vaisseau rouge atterrit en douceur près d'un château de conte de fées : Belmondrie. Trois hautes tours pointues aux toits bleus se dressaient vers un ciel couleur lavande. Le lierre grimpait sur les vieux murs de pierre. Léa descendit, son casque décoré d'étoiles dorées sous le bras. Dans sa main, elle tenait <em>Étoile</em>, son précieux outil pour dessiner les cartes du ciel, une fine baguette de bois au bout de laquelle brillait un astre d'or.",
+      "image_prompt": "Wide shot of Lea, an 8-year-old astronaut girl with curly brown hair in buns and freckles, wearing her white spacesuit. She stands in a green field, holding her helmet. In the background, the fairy-tale stone castle of Belmondrie with its three tall pointed towers and blue roofs looms under a lavender sky. The mood is one of wonder and discovery. Soft, magical afternoon light."
+    },
+    {
+      "text": "Avec une curiosité pétillante, Léa poussa la lourde porte de bois. À l'intérieur, la poussière dansait dans des rayons de lumière magique qui filtraient par les vitres brisées. L'air sentait la pierre ancienne et le mystère. Soudain, un bruit ! Un petit <em>frou-frou</em> rapide dans l'ombre. Avant que Léa ne puisse réagir, une petite créature violette et duveteuse fila devant elle, lui arracha <em>Étoile</em> des mains, et disparut dans un couloir sombre.<br><br>« Hé ! Attends ! » cria Léa, plus surprise qu'en colère. Tout ce qu'elle avait vu était une touffe de fourrure couleur lavande et deux grands yeux jaunes qui avaient brillé un instant dans la pénombre.",
+      "image_prompt": "Inside a dusty, grand hall of the castle. Lea, the 8-year-old astronaut, is in the foreground, her hand outstretched in surprise. A small, cute, fluffy purple monster, Grobi, is a blur of motion, dashing away into a dark corridor. The monster is clutching Lea's magical wand, which emits silver sparkles. Warm magical glow comes from broken stained-glass windows. The scene is dynamic and surprising, not scary."
+    },
+    {
+      "text": "Sans hésiter, Léa se lança à la poursuite du petit voleur. Elle courut dans des couloirs en spirale, monta des escaliers qui semblaient ne mener nulle part et traversa des salles de bal où les fantômes de la fête semblaient s'être tus la veille. La petite créature était incroyablement agile, un simple écho de fourrure violette bondissant juste hors de portée.<br><br>« S'il te plaît, rends-moi ma baguette ! » appelait Léa. « Elle s'appelle <em>Étoile</em> et elle est très importante pour moi ! Pourquoi l'as-tu prise ? »<br><br>Pour seule réponse, elle entendit un petit couinement plaintif qui se perdait dans l'écho du château.",
+      "image_prompt": "Dynamic action scene inside the castle. Lea is running down a winding, crumbling stone staircase. She is determined, leaning into her run. Farther down the stairs, just rounding a corner, we see the fuzzy purple tail and back of Grobi, the small monster, disappearing from view. Light streams from arrow-slit windows, creating dramatic shadows."
+    },
+    {
+      "text": "La poursuite la mena tout en haut de la plus haute tour. La pièce était circulaire, sans toit, ouverte sur le ciel nocturne déjà constellé de diamants froids. Au centre, le petit monstre, Grobi, s'était arrêté. Il n'essayait plus de fuir. Il se tenait sur ses pattes arrière, tenant la baguette <em>Étoile</em> maladroitement, la pointant vers une zone sombre du ciel, un trou noir où manquait une lumière. De grosses larmes silencieuses, brillantes comme des éclats d'argent, roulaient de ses immenses yeux jaunes. Il n'était pas méchant. Il était juste terriblement, immensément triste.",
+      "image_prompt": "Close-up on Grobi, the small, cute purple fluffy monster. He is standing at the top of a castle tower, open to the starry night sky. He looks heartbroken, with very big, round yellow eyes full of shimmering silver tears. He is clumsily holding the magical wand, pointing it towards a dark patch in the sky where a star should be. The mood is deeply sad and poignant."
+    },
+    {
+      "text": "Le cœur de Léa se serra. Elle comprit tout. Lentement, elle s'approcha. « Tu veux la rallumer ? » murmura-t-elle doucement. Grobi hocha la tête, reniflant une larme de lumière. Léa posa sa main sur sa petite patte violette. « Je crois que je sais comment faire. Ensemble. »<br><br>Guidé par la main de Léa, Grobi pointa de nouveau la baguette. Léa lui chuchota les mots secrets des cartographes d'étoiles. De la pointe d'<em>Étoile</em>, un fin rayon de lumière dorée fusa vers le ciel. Là-haut, dans le noir, une petite lueur tremblota, puis grandit, et enfin, une nouvelle étoile se mit à briller. Grobi poussa un cri de joie et serra Léa dans ses bras duveteux. Il n'était plus le gardien d'une étoile perdue, mais l'ami d'une créatrice d'étoiles.",
+      "image_prompt": "Heartwarming scene. Lea and Grobi stand side-by-side at the top of the tower. Lea's hand is gently covering Grobi's small paw, and together they hold the glowing wand, pointing it towards the night sky. A thin beam of golden light shoots from the wand's star tip to a newly twinkling star above. Both Lea and Grobi are looking up with expressions of joy and wonder. The atmosphere is magical, warm, and full of friendship."
+    }
+  ],
+  "key": "courte_astronaute_chateau_baguette_monstre",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "chateau",
+  "item": "baguette",
+  "villain": "monstre"
+}

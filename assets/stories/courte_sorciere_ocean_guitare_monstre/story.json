@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et la Guitare des Sept Silences",
+  "pages": [
+    {
+      "text": "Pimprenelle, la petite sorcière aux cheveux de feu, voguait sur son coquillier magique. D'habitude, la Mer d'Aural chantait. C'était une musique douce, faite de mille petites choses : le frôlement d'un poisson d'argent, le murmure de l'écume, l'écho des étoiles sur l'eau. Mais ce soir, rien. Un silence étrange, lourd et profond, avait remplacé la mélodie. <br><br>Pimprenelle fronça ses sourcils parsemés de taches de rousseur. Son chapeau pointu orné de croissants de lune dorés pencha sur le côté, comme s'il s'interrogeait lui aussi. La mer était toujours aussi belle, turquoise et lumineuse, mais elle était devenue <em>muette</em>. C'était comme regarder un oiseau chanter sans entendre le moindre son.",
+      "image_prompt": "Pimprenelle, a 9-year-old witch girl with a long red curly braid and freckles, wearing a deep purple pointed hat with golden moons and a lavender robe. She is in a small magical boat made of a seashell, looking thoughtful and concerned. The ocean around her (Mer d'Aural) is a beautiful, luminous turquoise, but looks unnaturally still. Soft starlight reflects on the water. The atmosphere is whimsical yet mysterious. Pimprenelle is the only character present."
+    },
+    {
+      "text": "Inquiète, la jeune sorcière laissa traîner sa main dans l'eau. Les étincelles bioluminescentes qui dansaient d'ordinaire autour de ses doigts restaient ternes. Les poissons d'argent, d'habitude si gracieux, semblaient perdus et nageaient en cercles confus. La magie de la mer s'éteignait. <br><br>Pimprenelle tendit l'oreille. Dans le grand silence, elle perçut enfin quelque chose. Ce n'était pas un chant. Ce n'était pas une plainte. C'était un son minuscule, un hoquet triste et étouffé qui semblait venir du cœur même de l'océan.",
+      "image_prompt": "A close-up view of the magical water of the Mer d'Aural. The bioluminescent sparkles are dim. A few silver fish swim in confused, erratic patterns, their glints less bright than usual. A child's hand (Pimprenelle's, recognizable by the sleeve of her lavender robe) is trailing in the water, which doesn't sparkle around it. The mood is melancholic, as if magic is fading. Deep turquoise and aquamarine colors dominate."
+    },
+    {
+      "text": "Guidée par ce bruit étrange, Pimprenelle dirigea son coquillier vers un petit îlot de cristal flottant, qu'elle n'avait jamais vu auparavant. Assis au milieu, une petite créature tenait quelque chose contre son cœur. C'était Grobi, un monstre tout doux, avec une fourrure couleur lavande et deux grands yeux jaunes. Il n'avait pas l'air méchant du tout. Il avait l'air terriblement seul.<br><br>Dans ses pattes, il serrait la Guitare des Sept Silences, mais l'instrument de cristal était sombre, éteint. De grosses larmes silencieuses roulaient sur les joues de Grobi et tombaient dans la mer sans un bruit. Le hoquet triste, c'était lui.",
+      "image_prompt": "Pimprenelle, in her boat, looks with kindness and curiosity towards a small floating island made of crystal. On the island sits Grobi: a small, cute, fluffy lavender-purple monster with two short horns and very big, round yellow eyes filled with tears. He is clutching a translucent crystal guitar, which is dark and not glowing. The scene is gentle and sad, not frightening. The characters are separated by a small stretch of water."
+    },
+    {
+      "text": "Pimprenelle accosta doucement. « Que se passe-t-il ? » demanda-t-elle d'une voix douce. Grobi sursauta, serrant plus fort la guitare. « Voulais... musique », sanglota-t-il. « Jolie musique pour plus être seul. Mais... elle ne marche pas. »<br><br>Pimprenelle comprit tout. Le rebondissement n'était pas celui qu'elle croyait. « Oh, mais cette guitare ne <em>fait</em> pas de musique », expliqua-t-elle avec un sourire. « Elle l'<em>écoute</em>. C'est la Guitare des Sept Silences. Pour que la mer chante, il faut d'abord lui offrir le silence. » Grobi la regarda, ses grands yeux jaunes pleins d'incompréhension. En essayant de forcer la guitare à jouer, il avait, sans le vouloir, aspiré et emprisonné tous les silences qui composaient la musique de la mer.",
+      "image_prompt": "Pimprenelle is now sitting on the crystal island next to Grobi. She is not touching the guitar but is speaking to him with a gentle, reassuring smile. Grobi looks up at her, still clutching the dark crystal guitar, his big yellow eyes wide with surprise and a glimmer of hope. He has stopped crying. The background is the calm, silent Mer d'Aural. The two characters are close together."
+    },
+    {
+      "text": "Alors, Pimprenelle ne lui prit pas l'instrument. Elle posa simplement sa main sur la patte duveteuse de Grobi. « Écoutons ensemble », murmura-t-elle. « Écoutons le silence entre deux vagues. Écoutons le silence d'une étoile qui voyage. Écoutons le silence d'un rêve de poisson... »<br><br>Grobi ferma les yeux et écouta. Pour la première fois, il n'écoutait pas sa propre solitude, mais le monde autour de lui. Une à une, les cordes de la guitare se mirent à frémir d'une lumière douce, argentée, puis violette, puis dorée. L'instrument relâchait les silences, et la Mer d'Aural se remit à chanter. Grobi sourit, un vrai sourire amical cette fois. Il n'était plus seul. Il avait appris le plus grand secret de l'océan : la plus belle musique est faite de tout ce qu'on ne peut pas entendre.",
+      "image_prompt": "Pimprenelle and Grobi sit side-by-side peacefully on the crystal island, their eyes closed. Pimprenelle's hand gently rests on Grobi's fuzzy paw, which holds the crystal guitar. The guitar is now glowing brightly from within, its six strings shimmering with silver, violet, and gold light. The surrounding Mer d'Aural is vibrant and alive again, with countless bright bioluminescent sparkles dancing in the turquoise water. The atmosphere is magical, heartwarming, and full of light and friendship."
+    }
+  ],
+  "key": "courte_sorciere_ocean_guitare_monstre",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "ocean",
+  "item": "guitare",
+  "villain": "monstre"
+}

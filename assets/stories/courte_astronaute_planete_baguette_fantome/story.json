@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Sculpteur de Lumière",
+  "pages": [
+    {
+      "text": "Léa, la petite astronaute, posa son vaisseau sur une planète que nulle carte ne connaissait. C'était Véga-7. Le sol, d'un violet profond, était parsemé de petits cratères qui brillaient comme des lucioles couleur turquoise. Deux anneaux d'or fin, minces comme des fils, entouraient ce monde miniature. Une douce chaleur flottait dans l'air.<br><br>Léa sortit, son casque décoré d'étoiles dorées brillant sous la lumière des nébuleuses lointaines. Elle tenait à la main sa baguette magique, Étoile. <em>« Quel endroit merveilleux... »</em> murmura-t-elle, ses yeux pleins de curiosité.",
+      "image_prompt": "Astronaut girl Lea, with curly brown hair in buns and freckles, stands in her white spacesuit on the magical planet Vega-7. The planet's surface is purple and teal with tiny glowing craters. Two thin golden rings are visible in the sky. Lea holds her magic wand, Etoile, and has a friendly, curious expression. The mood is one of wonder and peaceful exploration."
+    },
+    {
+      "text": "En marchant sur la surface spongieuse, Léa remarqua quelque chose d'étrange. Certains des jolis cratères lumineux semblaient... fatigués. Leur lueur turquoise vacillait, devenait pâle. La planète entière semblait soupirer tristement. C'était comme si une grande joie s'éteignait peu à peu. Léa fronça les sourcils. Elle ne pouvait pas laisser cette beauté disparaître.<br><br>Elle s'approcha du plus grand cratère, dont la lumière était presque éteinte. « N'aie pas peur », dit-elle doucement à la planète. « Je vais t'aider. » Elle leva Étoile, sa baguette magique, dont la pointe dorée commença à scintiller d'une poussière d'argent.",
+      "image_prompt": "Close-up on Lea, looking concerned. She is kneeling beside a large, dimly glowing teal crater on the purple surface of Vega-7. She is raising her magical wand, Etoile, which has a golden star tip emitting silver sparkles. The mood is slightly somber but hopeful. Only Lea is present."
+    },
+    {
+      "text": "Au moment où la première étincelle d'Étoile toucha le bord du cratère, une forme apparut. C'était un petit fantôme translucide, flottant doucement au-dessus du sol. Il avait l'air d'un vieil artisan, avec une longue barbe blanche et des yeux d'un gris très pâle. Une lueur bleu-blanc l'entourait. Ce n'était pas un fantôme effrayant. Au contraire, il avait un sourire doux, mais terriblement triste.<br><br>Il leva ses mains éthérées vers Léa, non pas pour l'attaquer, mais comme pour dire : <em>« Arrête, s'il te plaît. »</em> Léa baissa sa baguette, surprise. « Qui êtes-vous ? » demanda-t-elle, plus curieuse qu'effrayée. Le fantôme ne répondit pas avec des mots, mais son regard suppliant en disait long.",
+      "image_prompt": "Astronaut girl Lea stands surprised, holding her lowered wand, Etoile. In front of her floats Maitre Otho, the small, friendly, translucent ghost of an old craftsman with a long wispy beard. He has a sad, pleading expression, with his ethereal hands raised gently towards Lea. They are on the surface of Vega-7, near a dim crater."
+    },
+    {
+      "text": "Léa observa attentivement le fantôme. Elle comprit qu'il n'était pas méchant. Il ne voulait pas éteindre la lumière, il essayait de la <em>protéger</em>. Le fantôme, que Léa décida d'appeler Maître Otho, fit un geste vers le cratère. Ses doigts de fumée essayèrent de ramasser la lueur mourante, de la modeler, de lui redonner sa forme. Mais la lumière passait à travers ses mains, comme de l'eau.<br><br>Soudain, Léa comprit tout. Maître Otho n'était pas un destructeur. Il était le créateur ! C'était lui, l'artisan des cratères lumineux de Véga-7. Mais depuis qu'il était devenu un fantôme, il ne pouvait plus toucher ses propres créations. Il était le gardien impuissant d'un jardin de lumière qui se mourait.",
+      "image_prompt": "Maitre Otho the ghost is shown trying to cup the faint teal light of a crater with his translucent hands, but the light passes right through him. He looks desperate and sad. Lea is standing nearby, watching him with a sudden look of understanding and empathy on her face, her helmet under her arm."
+    },
+    {
+      "text": "Les yeux de Léa s'emplirent de compassion. « Vous avez besoin d'aide », dit-elle. Maître Otho hocha lentement la tête, une larme de lumière roulant sur sa joue spectrale. Il se tourna vers Léa et lui montra sa baguette, Étoile. Puis, il guida les mains de la petite fille par des gestes lents et précis. Il ne lui montrait pas comment faire de la lumière, mais comment la <em>sculpter</em>.<br><br>Guidée par le maître fantôme, Léa plongea la pointe d'Étoile dans le cœur du cratère. Elle ne projeta pas d'étincelles, mais fit danser la lumière, la tordit en spirales, la polit comme un diamant. Le cratère s'embrasa d'un turquoise éclatant, plus vif qu'auparavant. Maître Otho sourit, un vrai sourire radieux. Léa lui sourit en retour. Elle n'avait pas seulement sauvé une planète ; elle s'était fait un ami pour l'éternité.",
+      "image_prompt": "Lea and Maitre Otho work together. Lea is concentrating, holding her wand Etoile, its star tip inside a crater which is now glowing brilliantly with sculpted turquoise light. The translucent ghost Maitre Otho floats beside her, his hands guiding her movements without touching, a joyful and relieved smile on his face. The scene is filled with bright, magical light and warmth."
+    }
+  ],
+  "key": "courte_astronaute_planete_baguette_fantome",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "planete",
+  "item": "baguette",
+  "villain": "fantome"
+}

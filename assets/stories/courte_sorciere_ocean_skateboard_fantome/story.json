@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et le Gardien des Étoiles Marines",
+  "pages": [
+    {
+      "text": "Pimprenelle adorait le crépuscule sur la Mer d'Aural. C'était son moment préféré. Juchée sur Fusee, sa planche à roulettes magique, elle glissait juste au-dessus des vagues. L'eau turquoise et aigue-marine scintillait de mille feux bioluminescents, comme si une poignée de diamants avait été jetée dans l'océan. Les roues de Fusee laissaient une traînée rose fluo sur la surface argentée.<br><br>Pimprenelle riait, le vent dans ses cheveux roux, se sentant la plus libre des petites sorcières. Sous elle, des poissons d'argent filaient comme des éclairs silencieux, et la lumière douce des étoiles lointaines se baignait dans l'écume. La mer était un tableau vivant, et Fusee était son pinceau.",
+      "image_prompt": "Young witch Pimprenelle, with curly red hair in a long braid and a purple pointed hat with golden moons, joyfully riding her magical skateboard 'Fusee' just above the surface of the Mer d'Aural. The skateboard has a deep blue deck with star patterns and neon-pink glowing wheels. The ocean is a luminous deep turquoise, filled with bioluminescent sparkles and glints of silver fish. The atmosphere is magical and serene at twilight."
+    },
+    {
+      "text": "Mais soudain, quelque chose changea. Le scintillement de la mer commença à faiblir, comme des bougies qu'on souffle une à une. Les poissons d'argent disparurent dans les profondeurs. Un silence étrange et un peu triste s'installa, et la mer vibrante devint terne, presque grise. Pimprenelle s'arrêta, en équilibre sur Fusee. L'air devint froid.<br><br>« Fusee, tu sens ça ? » murmura-t-elle. La planche magique cessa de briller aussi fort, comme si elle était triste elle aussi. La joie avait quitté la Mer d'Aural, laissant place à une inquiétante mélancolie. Pimprenelle fronça les sourcils. Il fallait comprendre ce qu'il se passait.",
+      "image_prompt": "Pimprenelle looks concerned, hovering on her magical skateboard over the Mer d'Aural. The once-luminous turquoise water is fading to a dull, dark grey. The bioluminescent sparkles are gone, and the scene feels melancholic and mysterious. Pimprenelle's expression is worried, her hand resting on her wooden wand with its crystal tip."
+    },
+    {
+      "text": "Guidée par une lueur de plus en plus faible, Pimprenelle s'aventura vers une crique rocheuse qu'elle n'avait jamais vue. L'obscurité y était plus profonde. C'est là qu'elle le vit. Une silhouette fantomatique, translucide et bleutée, flottait au-dessus de l'eau. C'était un vieil homme à la longue barbe vaporeuse, vêtu d'un tablier d'artisan presque effacé. Il semblait rassembler les dernières étincelles de lumière de la mer dans ses mains pâles.<br><br><em>Il vole la lumière !</em> pensa Pimprenelle, le cœur battant. Elle sentit une pointe de peur, mais surtout une grande détermination. Personne n'avait le droit d'éteindre sa mer.",
+      "image_prompt": "Hidden behind a large, glowing sea rock, Pimprenelle peeks out at the ghost of Maitre Otho. The small, friendly-looking ghost is translucent with an ethereal blue-white glow, floating sorrowfully over the dark water. He is cupping a faint ball of light in his hands, seemingly collecting the last sparkles from the sea. The atmosphere is quiet, tense, and mysterious. Pimprenelle is not visible."
+    },
+    {
+      "text": "Pimprenelle prit son courage à deux mains et s'avança sur Fusee. « Arrêtez ! Pourquoi volez-vous la lumière de la mer ? » lança-t-elle, sa voix plus assurée qu'elle ne le pensait.<br><br>Le fantôme se tourna, surpris. Ses yeux gris pâle étaient pleins de douceur, pas de méchanceté. « La voler ? Oh, non, ma petite ! J'essaie de la <em>sauver</em>. » Il expliqua qu'il était Maître Otho, autrefois un artisan d'étoiles. Au fond de la mer, une Graine d'Étoile Marine, le cœur lumineux de l'océan, s'était fissurée. Sa lumière s'échappait. « J'essaie de rassembler assez de sa propre lumière pour la réparer, mais... » Il ouvrit ses mains éthérées, et la petite boule de lumière qu'il tenait lui glissa entre les doigts. « ...mes mains de fantôme ne peuvent plus rien retenir. »",
+      "image_prompt": "A close-up interaction between Pimprenelle and Maitre Otho. The translucent ghost, Maitre Otho, looks kind and sad as he explains his plight, showing his ethereal hands as a faint light slips through them. Pimprenelle's expression, on her magical skateboard, is softening from suspicion to empathy and understanding. She is holding her wand but it is lowered."
+    },
+    {
+      "text": "Pimprenelle comprit tout. Il n'était pas un voleur, mais un gardien désespéré. « Je peux vous aider ! » s'exclama-t-elle. « Vous avez le savoir, et j'ai ma magie ! »<br><br>Ensemble, ils plongèrent dans les profondeurs silencieuses. Maître Otho la guida vers un grand cristal en forme d'étoile, parcouru d'une fine fissure sombre. Pimprenelle pointa sa baguette. Guidée par les instructions du vieil artisan, elle canalisa toute son énergie. Une douce lumière lavande jaillit de sa baguette et scella la fissure. Aussitôt, une onde lumineuse explosa, et la Mer d'Aural retrouva ses couleurs éclatantes. Maître Otho lui offrit un sourire radieux, un sourire de paix. Il la remercia d'un signe de tête avant de se dissoudre doucement dans la lumière retrouvée, son devoir accompli. Pimprenelle remonta à la surface, le cœur rempli d'une joie nouvelle, observant la mer briller plus fort que jamais.",
+      "image_prompt": "Underwater scene at the bottom of the Mer d'Aural. Pimprenelle, her face determined and kind, points her glowing wand at a large, crystalline star-seed on the seabed. A lavender light flows from her wand, sealing a crack in the crystal. The translucent ghost of Maitre Otho floats beside her, his hand gently guiding her arm. A brilliant pulse of turquoise light erupts from the star-seed, illuminating the entire ocean with vibrant colors and sparkles."
+    }
+  ],
+  "key": "courte_sorciere_ocean_skateboard_fantome",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "ocean",
+  "item": "skateboard",
+  "villain": "fantome"
+}

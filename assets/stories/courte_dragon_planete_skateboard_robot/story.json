@@ -1,0 +1,31 @@
+{
+  "title": "Brio et l'Étoile de Fer-Blanc",
+  "pages": [
+    {
+      "text": "Au cœur d'un cosmos silencieux, sur la petite planète Vega-7, vivait Brio. Brio n'était pas un dragon comme les autres. À peine plus grand qu'un chat, ses écailles brillaient d'un doux bleu pastel et ses yeux pétillaient d'une curiosité infinie. <br><br>Plus que tout au monde, Brio aimait sa planche à roulettes magique, <em>Fusée</em>. Chaque jour, il s'élançait depuis les cratères luminescents de Vega-7 pour danser entre les étoiles. Le sillage holographique de <em>Fusée</em> dessinait des rubans de lumière dans la nuit de velours, et Brio se sentait le plus heureux des dragonneaux.",
+      "image_prompt": "A tiny baby dragon, Brio, with soft sky-blue scales and big curious eyes, joyfully rides his magical skateboard, Fusee. The skateboard has a deep blue deck with star patterns and glowing pink wheels. They are soaring through starry space, with the small, magical planet Vega-7 (purple and teal surface, golden rings) visible in the background. Whimsical, joyful atmosphere."
+    },
+    {
+      "text": "Un soir, alors qu'il tentait une nouvelle figure — un triple looping autour d'un anneau doré de sa planète —, Brio remarqua quelque chose d'inhabituel. Loin, très loin, un petit objet métallique tournoyait sur lui-même, comme un jouet perdu dans un grenier immense. Une petite lumière jaune clignotait, faible et irrégulière. C'était un appel, ou peut-être un hoquet de lumière ?<br><br>Intrigué, Brio serra ses petites griffes sur le bord de <em>Fusée</em> et murmura : « Allons voir, ma belle ». La planche magique vira en douceur, glissant vers le mystérieux point lumineux.",
+      "image_prompt": "Brio, perched cautiously on his hovering skateboard Fusee, looks into the distance with a curious expression. Far away in the dark, starry space, a small, indistinct metallic object (Bipboup) is tumbling, with a faint yellow light blinking erratically. The scene is quiet, mysterious, and full of wonder. Vega-7 is a soft glow in the background."
+    },
+    {
+      "text": "En s'approchant, Brio découvrit un petit robot de fer-blanc, tout rond et riveté. Il avait de drôles d'antennes et un unique œil-écran bleu. Mais à l'instant où Brio voulut dire bonjour, <em>CLAC !</em> Deux pinces mécaniques s'abattirent sur <em>Fusée</em>, stoppant net sa course. Le robot, que Brio baptisa aussitôt Bipboup, se mit à émettre des sons étranges. Son œil-écran n'affichait pas un sourire, mais un symbole frénétique et incompréhensible. Il trifouillait les boulons lumineux de <em>Fusée</em> avec une énergie désespérée.<br><br>Le cœur de Brio se serra. Allait-il perdre sa planche magique pour toujours ?",
+      "image_prompt": "Close-up shot. The small tin-can robot, Bipboup, has his mechanical pincers firmly gripping the magical skateboard, Fusee. Brio is floating beside them, his expression one of surprise and concern, not anger. Bipboup's single blue screen-eye shows a frantic, complex symbol, and his antennas are blinking wildly. The skateboard's wheels have stopped glowing."
+    },
+    {
+      "text": "Brio aurait pu cracher une flammèche de colère. Mais il ne le fit pas. Il regarda attentivement le petit robot. Il vit alors que l'une de ses antennes était fêlée, et que l'ampoule à son extrémité clignotait à peine. Bipboup ne voulait pas voler <em>Fusée</em>. Non. Il essayait d'en aspirer l'énergie magique, comme un voyageur assoiffé boit à une source.<br><br>Brio comprit tout. Le robot n'était pas un voleur, il était perdu. Ses « bip-boup » n'étaient pas des menaces, mais des « au secours ». Doucement, le petit dragon posa une patte sur le dôme métallique de Bipboup, dans un geste d'amitié.",
+      "image_prompt": "A touching, gentle moment. Brio softly places his small blue paw on Bipboup's round metal head. Bipboup has stopped tinkering and his blue screen-eye now shows a single question mark (?). A soft stream of holographic light flows from the skateboard Fusee towards Bipboup's cracked antenna, which is beginning to glow a little brighter. The mood is one of empathy and connection."
+    },
+    {
+      "text": "Avec la permission de Brio, l'énergie de <em>Fusée</em> coula librement. En un instant, un <em>BIIIIIP</em> joyeux retentit ! L'antenne de Bipboup brillait de mille feux. Son œil-écran afficha un immense cœur reconnaissant. Le petit robot lâcha la planche et fit un salut militaire comique.<br><br>Puis, de son œil, il projeta une carte du ciel, un chemin de lumière vers une galaxie lointaine. Sa maison. D'un dernier petit « boup » amical, il s'élança dans l'espace, suivant sa route d'étoiles. Brio le regarda partir, un grand sourire sur son visage. Il n'avait pas seulement retrouvé son amie <em>Fusée</em> ; il s'était fait un nouvel ami et l'avait éclairé sur son chemin.",
+      "image_prompt": "Bipboup, now fully powered with his antennas glowing brightly, flies away into the starry cosmos, leaving a faint trail of light. A holographic star map is faintly projected from his eye, showing his path home. On his glowing skateboard Fusee, Brio watches him go, a gentle, happy smile on his friendly dragon face. The atmosphere is heartwarming, hopeful, and slightly bittersweet."
+    }
+  ],
+  "key": "courte_dragon_planete_skateboard_robot",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "planete",
+  "item": "skateboard",
+  "villain": "robot"
+}

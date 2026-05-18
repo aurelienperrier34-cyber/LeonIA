@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et le chagrin de Vega-7",
+  "pages": [
+    {
+      "text": "Pimprenelle, la petite sorcière à la natte de feu, atterrit en douceur sur Vega-7. La planète n'était pas plus grande qu'un jardin de géant. Sa surface mauve et turquoise scintillait, entourée de deux fins anneaux d'or liquide. Mais quelque chose n'allait pas. Les petits cratères, d'habitude si lumineux, ne brillaient que d'une lueur faible et tremblotante, comme des veilleuses fatiguées.<br><br>Pimprenelle serra sa baguette Étoile dans sa main. Un voile de tristesse semblait étouffer la planète. « On dirait qu'elle a un gros chagrin », murmura-t-elle à sa baguette. Curieuse et un peu inquiète, elle décida d'explorer ce mystère. Qui pouvait bien faire pleurer une planète entière ?",
+      "image_prompt": "Whimsical children's book illustration. Pimprenelle, a 9-year-old witch girl with a long red curly side braid, a deep purple pointed hat with golden moons, and a lavender robe with stars, stands on the surface of the small magical planet Vega-7. The planet is purple and teal with two thin golden rings in a starry space. The craters around her are glowing very faintly. Pimprenelle has a concerned but kind expression, holding her wooden wand. The mood is one of wonder and mystery."
+    },
+    {
+      "text": "Elle marcha sur la mousse douce de la planète, suivant une piste de froid et de silence. Au fond du plus grand cratère, là où la lumière aurait dû être la plus vive, flottait une forme vaporeuse. C'était un fantôme, mais pas un fantôme effrayant. Il était petit, translucide, et ressemblait à un vieil artisan avec une longue barbe de brume blanche. Il ne bougeait pas, ne parlait pas. De ses yeux gris pâle semblaient couler des larmes invisibles qui éteignaient les étoiles du sol.<br><br>Pimprenelle s'arrêta. L'air autour du spectre était lourd de mélancolie. Il semblait si perdu, si seul, qu'elle n'eut pas peur du tout. Elle sentit plutôt son cœur se pincer.",
+      "image_prompt": "In the center of a large, dimly lit crater on a magical planet, the small friendly ghost of an old craftsman, Maitre Otho, floats. He is translucent with an ethereal blue-white glow, a long wispy white beard, and a sad, gentle expression. In the foreground, partially visible, is the young witch Pimprenelle, observing him cautiously. The atmosphere is melancholic and quiet, with very low light."
+    },
+    {
+      "text": "Avec douceur, Pimprenelle s'approcha. « Monsieur ? Tout va bien ? »<br><br>Le fantôme sursauta, surpris. Sa voix était un murmure, comme le vent dans les feuilles mortes. « Qui êtes-vous, petit astre ? Je... je ne sais plus. Je suis Maître Otho. J'étais l'artisan des lumières, le gardien des cratères. C'est moi qui sculptais la joie en étincelles pour que Vega-7 rayonne. » Il baissa sa tête diaphane. « Mais j'ai oublié. J'ai oublié le geste, la couleur, la chaleur. Ma mémoire est une lanterne éteinte. Et sans ma lumière, la planète s'endort de tristesse. »",
+      "image_prompt": "A close-up, emotional scene. Pimprenelle, the young witch, looks up with deep empathy at Maitre Otho, the translucent craftsman ghost. Maitre Otho looks down at her, his form slightly shimmering, his kind grey eyes filled with sorrow. They are inside a crater, and the mood is intimate and gentle, a quiet conversation between two souls."
+    },
+    {
+      "text": "Pimprenelle comprit tout. Maître Otho n'était pas un méchant, c'était un artiste qui avait perdu son inspiration ! Une immense tendresse la remplit. Elle sortit sa propre baguette, <em>Étoile</em>. Son bois couleur de miel tourbillonait de gravures anciennes, et son embout en forme d'étoile d'or brillait doucement.<br><br>« Vous n'avez pas oublié, Maître Otho », dit-elle d'une voix claire. « Vous avez juste besoin d'une petite étincelle pour vous souvenir. »<br><br>Elle ne pointa pas sa baguette sur le fantôme. Au lieu de cela, elle s'agenouilla et toucha délicatement le bord du cratère éteint avec la pointe d'Étoile. Une seule, minuscule paillette d'argent jaillit.",
+      "image_prompt": "Pimprenelle kneels on the ground, holding her magical wand, Etoile. The wand is made of warm honey-brown wood with a five-pointed golden star tip. She is touching the edge of a dim crater with the wand's tip, which emits a bright burst of silver sparkles. In the background, Maitre Otho, the ghost, looks on with a surprised expression. The focus is on the wand's magical light and Pimprenelle's gentle action."
+    },
+    {
+      "text": "Cette unique étincelle fut suffisante. En la voyant, une lueur s'alluma dans les yeux de Maître Otho. Un souvenir. Il leva une main spectrale et, d'un geste retrouvé, il toucha le cœur du cratère. Une vague de lumière chaude et dorée explosa, puis une autre, et encore une autre ! Tous les cratères de Vega-7 se ranimèrent l'un après l'autre, pulsant d'une joie retrouvée.<br><br>Maître Otho n'était plus translucide et triste, mais rayonnant d'une douce lumière blanche. « Merci, petite sorcière », sa voix résonnait maintenant comme un carillon joyeux. « Tu ne m'as pas combattu, tu m'as rappelé à moi-même. »<br><br>Pimprenelle lui fit un grand sourire. En quittant Vega-7, elle vit la petite planète briller dans le cosmos, plus fort et plus belle que jamais.",
+      "image_prompt": "A vibrant and joyful scene. The entire surface of the planet Vega-7 is now glowing brightly, with its craters pulsing with warm, golden light. Maitre Otho, now fully radiant with a friendly blue-white light and a wide, gentle smile, floats happily. Pimprenelle stands before him, her wand lowered, smiling brightly back at him. The atmosphere is luminous, magical, and heartwarming."
+    }
+  ],
+  "key": "courte_sorciere_planete_baguette_fantome",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "planete",
+  "item": "baguette",
+  "villain": "fantome"
+}

@@ -1,0 +1,31 @@
+{
+  "title": "Brio et l'Artisan des Étoiles",
+  "pages": [
+    {
+      "text": "Sur la petite planète Vega-7, toute violette et turquoise, vivait un bébé dragon nommé Brio. Il n'était pas plus grand qu'un gros chat, avec des écailles d'un bleu pastel si doux qu'on aurait dit des morceaux de ciel. Ses yeux, deux grandes billes saphir, pétillaient de curiosité. Brio aimait par-dessus tout explorer les petits cratères lumineux qui parsemaient sa planète.<br><br>Un jour, au fond d'une crevasse qui brillait plus fort que les autres, il aperçut quelque chose. Un bâton de bois fin, couleur de miel, couvert de gravures en spirale. À son sommet, une étoile d'or à cinq branches scintillait. C'était <em>Etoile</em>. Brio la prit dans ses petites pattes et sentit une douce chaleur l'envahir.",
+      "image_prompt": "Brio, the tiny pastel-blue baby dragon, stands inside a glowing teal crater on the purple surface of planet Vega-7. He is looking with wide, curious sparkling blue eyes at the magical wand 'Etoile' that he has just found. The scene is magical and gentle, with a soft warm aura and starry space in the background. Close-up on Brio's friendly, round face."
+    },
+    {
+      "text": "Fou de joie, Brio agita la baguette. Une gerbe d'étincelles argentées jaillit en cascade ! C'était le plus beau des jouets. Il la leva bien haut, traçant un cercle dans l'air. Mais cette fois, une lumière différente apparut. Une lueur bleu-blanc, vaporeuse et tremblotante, qui grandit, grandit... jusqu'à former la silhouette d'un vieil homme.<br><br>Le personnage était translucide, avec une longue barbe de brume et des yeux d'un gris très pâle. Il flottait doucement au-dessus du sol. C'était Maître Otho. Il ne regardait pas Brio. Son regard était entièrement fixé sur <em>Etoile</em>, la baguette magique, avec une infinie tristesse.",
+      "image_prompt": "Brio, the small blue dragon, stands on the purple ground of Vega-7, holding the glowing wand 'Etoile'. In front of him, the translucent, ethereal blue-white ghost of Maître Otho is materializing. Otho has a gentle but deeply sad expression, his pale grey eyes fixed on the wand. The background is the starry space around the planet."
+    },
+    {
+      "text": "Maître Otho ne disait rien. Il s'approcha de Brio en glissant dans les airs, sa main fantomatique tendue vers la baguette. Il ne semblait pas menaçant, mais Brio serra son trésor contre lui. Pourquoi ce fantôme voulait-il son <em>Etoile</em> ? Était-ce un voleur de merveilles ?<br><br>Le petit dragon recula d'un pas. Le fantôme s'arrêta, son visage se tordant d'une peine muette. Il ne voulait pas faire peur à Brio, mais le désir de toucher la baguette était plus fort que tout. Un souffle froid, chargé de chagrin, entoura le petit dragon. Brio sentit un frisson, non pas de peur, mais d'une étrange compassion.",
+      "image_prompt": "The translucent ghost Maître Otho is floating closer to Brio, his ethereal hand outstretched towards the wand 'Etoile'. Brio, the little blue dragon, is clutching the wand protectively against his chest, looking confused and a little wary, not scared. The scene is filled with suspense and emotion, set against the magical purple and teal landscape of Vega-7."
+    },
+    {
+      "text": "Le cœur de Brio était bien plus grand que sa petite taille. Au lieu de s'enfuir, il fit quelque chose de très courageux. Il fit un pas en avant et tendit la baguette vers Maître Otho. « C'est pour ça que vous êtes triste ? » demanda-t-il d'une petite voix.<br><br>Les doigts éthérés du vieil homme effleurèrent le bois couleur de miel. Aussitôt, des images de poussière d'étoiles dansèrent dans l'air. On y voyait Maître Otho, mais vivant, dans un atelier cosmique, en train de sculpter la baguette. On le voyait l'utiliser pour dessiner des nébuleuses et peindre les anneaux dorés des planètes. Il n'était pas un voleur. Il était <em>l'Artisan des Étoiles</em>, et cette baguette était l'œuvre de sa vie, qu'il avait oubliée en devenant un esprit.",
+      "image_prompt": "A powerful, emotional scene. Brio the dragon holds the wand 'Etoile' out. Maître Otho's translucent fingers are touching it. Around them, shimmering, ethereal images made of stardust project into the air, showing the ghost as a living craftsman carving the very same wand in a cosmic workshop. The mood is revelatory and touching."
+    },
+    {
+      "text": "Brio comprit tout. Maître Otho ne pouvait plus tenir sa baguette, mais lui, Brio, le pouvait. « Ne soyez plus triste, » dit doucement le dragon. « Nous allons créer ensemble. »<br><br>Brio empoigna fermement <em>Etoile</em>. Les mains spectrales de l'artisan vinrent se poser délicatement sur ses petites pattes. Guidés par le génie oublié du fantôme et le cœur joyeux du dragon, ils pointèrent la baguette vers le ciel noir. Un fleuve de lumière argentée en sortit, dessinant au-dessus de Vega-7 une toute nouvelle constellation, scintillante et magnifique. Maître Otho n'était plus perdu. Il avait trouvé un ami, et Brio avait appris que la plus belle des magies, c'est celle que l'on partage.",
+      "image_prompt": "A heartwarming final scene. Brio the baby dragon is holding the wand 'Etoile', pointing it towards the sky. The translucent ghost of Maître Otho is floating beside him, his ethereal hands gently placed over Brio's paws on the wand. From the wand's tip, a beautiful stream of silver light is drawing a new, glowing constellation in the starry space above planet Vega-7. Both characters are smiling gently. The atmosphere is luminous, joyful, and full of wonder."
+    }
+  ],
+  "key": "courte_dragon_planete_baguette_fantome",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "planete",
+  "item": "baguette",
+  "villain": "fantome"
+}

@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et le Voleur d'Éclats",
+  "pages": [
+    {
+      "text": "Pimprenelle, petite sorcière au grand cœur, aimait par-dessus tout naviguer sur la Mer d'Aural. Ce n'était pas une mer ordinaire. Ses eaux, d'un turquoise profond, scintillaient de mille feux magiques, comme si des étoiles filantes s'y étaient endormies. Vêtue de sa robe lavande et de son chapeau pointu couleur de nuit, Pimprenelle laissait sa barque glisser sur les vagues douces. Sa longue natte rousse dansait dans la brise. De la pointe de sa baguette, <em>Étoile</em>, elle s'amusait à dessiner des arabesques lumineuses qui se mêlaient aux éclats argentés des poissons. C'était son royaume, un secret liquide et merveilleux, un tableau vivant qu'elle ne se lassait jamais de contempler.",
+      "image_prompt": "Young witch Pimprenelle, with red curly hair in a side braid and a purple pointed hat, sits in a small wooden boat. She is holding her wand 'Étoile'. The boat is on the magical Mer d'Aural, a luminous deep turquoise ocean filled with bioluminescent sparkles and silver fish glints. Her expression is kind and serene. The atmosphere is magical and peaceful."
+    },
+    {
+      "text": "Mais ce soir-là, quelque chose n'allait pas. La symphonie lumineuse de la mer perdait de son éclat. Des zones d'ombre apparaissaient, grandissant comme des taches d'encre. Inquiète, Pimprenelle se pencha par-dessus bord. Elle entendit alors un son curieux, un petit « bip-boup » métallique et rapide. Une minuscule silhouette filait sous la surface, aspirant les étincelles de la mer sur son passage ! Partout où elle passait, la magie semblait s'éteindre, laissant derrière elle un silence sombre et froid.<br><br>Le cœur de Pimprenelle se serra. Qui osait voler la lumière de sa mer chérie ?",
+      "image_prompt": "Pimprenelle stands in her boat, looking concerned. She points her star-tipped wand, Étoile, towards the water. The Mer d'Aural is now darker, with patches of blackness where the sparkles have vanished. In the distance, a small, blurry metallic figure (Bipboup) is visible under the water, leaving a trail of darkness behind it."
+    },
+    {
+      "text": "D'un coup de baguette magique, sa barque fila sur les eaux assombries, à la poursuite du petit voleur. Elle le rattrapa près d'un îlot de cristal flottant. C'était une créature étrange : un petit robot de fer-blanc, avec des antennes qui clignotaient et un unique œil bleu, un écran rond. Il tenait fermement dans ses pinces un bocal de verre rempli à ras bord des étincelles volées.<br><br>« Rends cette lumière à la mer ! » s'écria Pimprenelle. Pour toute réponse, le robot, Bipboup, leva son bocal comme un trophée. Son œil-écran afficha un grand sourire malicieux et il émit un joyeux « Bip-boup ! ». Il ne semblait pas comprendre le mal qu'il faisait. Il avait l'air si fier de sa collection.",
+      "image_prompt": "Pimprenelle, looking determined but not angry, stands on a floating crystal islet, facing the small robot Bipboup. Bipboup, a tin-can robot with glowing antennas, proudly holds up a glass jar filled with swirling, glowing sparkles. His single round blue screen-eye displays a mischievous digital smile. The sea around them is dark."
+    },
+    {
+      "text": "Pimprenelle sentit sa colère fondre. Ce petit être n'était pas méchant, il était… différent. Au lieu de lancer un sort de combat, elle abaissa sa baguette <em>Étoile</em> et murmura une formule de compréhension. Une douce lumière couleur de miel jaillit de la baguette et enveloppa le robot. Bipboup cessa de gigoter. De son œil bleu naquit une image, un hologramme flottant dans l'air. On y voyait un minuscule vaisseau spatial, écrasé au fond de la mer. À l'intérieur, une fleur de métal aux pétales tout recroquevillés attendait dans un pot. Pimprenelle comprit tout : Bipboup ne volait pas la lumière. Il la récoltait pour tenter de sauver sa petite fleur et sa maison étoilée.",
+      "image_prompt": "Pimprenelle and Bipboup are close together. Pimprenelle's expression is one of sudden understanding and empathy. Her wand, Étoile, emits a soft, warm light that shines on Bipboup. From the robot's blue screen-eye, a faint hologram is projected, showing a small, broken spaceship at the bottom of the ocean with a single, wilted mechanical flower inside."
+    },
+    {
+      "text": "« Oh, petit jardinier des étoiles… » souffla Pimprenelle, émue. « Il y a une meilleure façon de faire. » Elle prit doucement la pince de Bipboup et le guida vers son vaisseau endommagé. Là, au fond de l'eau, Pimprenelle chanta une vieille mélodie de création. L'étoile au bout de sa baguette se mit à briller intensément, puis se détacha pour flotter au-dessus de la fleur de métal, comme un soleil miniature et éternel. La fleur s'épanouit aussitôt dans une lueur dorée.<br><br>Fou de joie, Bipboup ouvrit son bocal. Toutes les étincelles retournèrent à la mer, qui se mit à briller plus fort que jamais. Sur l'écran de Bipboup, un cœur reconnaissant remplaça le sourire. La Mer d'Aural avait un nouveau gardien, et Pimprenelle, un merveilleux secret.",
+      "image_prompt": "Underwater scene inside a magical air bubble. Pimprenelle and Bipboup are next to the small, broken spaceship. A small, permanent, glowing star, created by Pimprenelle, floats inside the ship, illuminating it. The small mechanical flower is now in full, golden bloom. Bipboup looks at Pimprenelle with a large digital heart displayed on his screen-eye. Outside the bubble, the ocean is brilliantly lit with countless sparkles."
+    }
+  ],
+  "key": "courte_sorciere_ocean_baguette_robot",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "ocean",
+  "item": "baguette",
+  "villain": "robot"
+}

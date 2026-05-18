@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Voleur d'Étoiles Filantes",
+  "pages": [
+    {
+      "text": "Léa, l'astronaute aux cheveux bouclés, adorait explorer. Son casque décoré d'étoiles dorées scintillait dans le noir de l'espace. Aujourd'hui, elle avait une destination de rêve : Véga-7, une minuscule planète magique. À peine arrivée, elle sauta sur <em>Fusée</em>, son skateboard enchanté. La planche bleu nuit, zébrée d'un éclair d'or, glissa en silence sur le sol couleur lavande. Ses roues roses fluo laissaient une traînée de lumière, comme une comète apprivoisée. Partout, de petits cratères brillaient doucement, réchauffant l'air de leur aura turquoise.",
+      "image_prompt": "8-year-old astronaut girl Léa, with brown curly hair in two small buns and a white spacesuit, joyfully arriving on her magical skateboard on the planet Vega-7. The planet's surface is a mix of purple and teal with small glowing craters. The skateboard has a deep blue deck with star patterns and neon-pink glowing wheels. The mood is one of wonder and magical discovery."
+    },
+    {
+      "text": "Léa riait aux éclats. Glisser sur Véga-7 était plus doux que de flotter sur un nuage de sucre d'orge. Elle fit un virage serré autour d'un cratère lumineux, laissant une pluie d'étincelles holographiques. C'est alors qu'une petite tornade de fourrure violette fila juste à côté d'elle. <em>Zou !</em> En une fraction de seconde, Fusée disparut de sous ses pieds. Léa bascula et atterrit en douceur sur le sol moelleux. Surprise, elle cligna des yeux. Le voleur était déjà loin, une simple tache floue qui se cachait derrière une colline de cristal. Son skateboard magique avait disparu.",
+      "image_prompt": "Léa, the astronaut girl, sitting on the soft purple ground of Vega-7, looking surprised and concerned. Her helmet is slightly askew. In the distance, a blurry streak of purple fur disappears behind a glowing teal crater. Her magical skateboard is gone. The atmosphere is one of sudden surprise and loss."
+    },
+    {
+      "text": "Le cœur battant, Léa se releva. Elle n'allait pas abandonner son ami Fusée ! Elle suivit les petites empreintes laissées dans la poussière scintillante. Elles la menèrent jusqu'à un cratère plus profond, baigné d'une lumière turquoise. Et là, elle le vit. Le voleur n'était pas un monstre terrifiant. C'était une petite boule de poils violets, avec de grands yeux jaunes et tristes. Il ne s'amusait pas avec Fusée. Au contraire, il tapotait doucement l'une des roues, qui ne brillait presque plus. Un petit son plaintif, comme un miaulement de chaton perdu, sortait de sa bouche.",
+      "image_prompt": "Inside a glowing teal crater, the small, cute, fluffy purple monster Grobi is huddled over the magical skateboard. Grobi has huge, sad yellow eyes and two short horns, and is gently patting one of the skateboard's wheels, which is dim and flickering. The monster looks worried, not mischievous. The scene is intimate and touching."
+    },
+    {
+      "text": "Léa comprit tout d'un coup. Cette petite créature, qu'elle baptisa Grobi, n'avait pas voulu voler son skateboard. Il avait essayé de l'aider ! Une des roues de Fusée avait aspiré un peu trop de poussière cosmique des anneaux dorés de la planète, et cela étouffait sa magie. Grobi, qui se nourrissait justement de cette poussière, avait cru que la roue était malade et avait tenté de la « guérir » en la nettoyant.<br><br>Léa s'approcha doucement. « N'aie pas peur », murmura-t-elle. Elle sortit un chiffon doux de sa poche et montra à Grobi comment essuyer la roue délicatement. Le monstre la regarda faire, fasciné. Ensemble, ils polirent la roue qui se remit à briller de mille feux.",
+      "image_prompt": "Close-up shot of Léa and Grobi working together. Léa, smiling gently, is showing the small purple monster how to carefully clean the skateboard's neon-pink wheel with a cloth. Grobi watches her intently, his big yellow eyes filled with curiosity and trust. The wheel is beginning to glow brightly again. The mood is one of connection and gentle teaching."
+    },
+    {
+      "text": "Fusée vibra de joie, sa lumière rose et dorée pulsant comme un cœur heureux. Pour remercier son nouvel ami, Léa eut une idée merveilleuse. Elle tapota l'avant de la planche. Grobi hésita, puis grimpa timidement sur le skateboard. Léa poussa doucement du pied et ils s'élancèrent à travers le paysage magique de Véga-7. Le vent cosmique faisait onduler la fourrure de Grobi, qui poussait des petits cris de joie. Ils survolèrent les cratères lumineux, sous les anneaux d'or, devenus les meilleurs amis de cette galaxie. Car parfois, un ami se cache là où on ne l'attend pas, même au bout de l'univers.",
+      "image_prompt": "Léa and Grobi joyfully riding the magical skateboard together across the purple and teal landscape of Vega-7. Grobi, the small purple monster, is perched on the front of the board, his mouth open in a happy toothy smile. Léa stands behind him, steering. The skateboard leaves a trail of holographic light. The planet's two thin golden rings are visible in the starry sky above. The scene is full of happiness and friendship."
+    }
+  ],
+  "key": "courte_astronaute_planete_skateboard_monstre",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "planete",
+  "item": "skateboard",
+  "villain": "monstre"
+}

@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et le Voleur d'Étoiles",
+  "pages": [
+    {
+      "text": "Pimprenelle, avec sa longue tresse rousse et son chapeau pointu, aimait son château de Belmondrie plus que tout. C'était une demeure de pierres anciennes, où les courants d'air chantaient dans les couloirs et où les livres volaient doucement pour se ranger tout seuls.<br><br>Au cœur du château, sur un coussin de velours pourpre, reposait la baguette <em>Étoile</em>. Ce n'était pas une baguette ordinaire. C'était elle qui calmait la magie un peu folle de Belmondrie. Mais ce soir-là, un bruit métallique, un <em>CLANG</em> suivi d'un éclair, déchira le silence. Quand Pimprenelle arriva, le coussin était vide. <em>Étoile</em> avait disparu.",
+      "image_prompt": "Pimprenelle, a 9-year-old witch with a long red side braid and freckles, stands in the grand hall of Belmondrie castle, looking shocked. The hall is filled with floating books and magical artifacts. In the foreground, a purple velvet cushion lies empty on a pedestal. The mood is mysterious and whimsical. Warm, magical glow emanates from the room."
+    },
+    {
+      "text": "Le cœur battant, Pimprenelle se lança sur la piste du voleur. Elle n'eut pas à chercher longtemps. De minuscules taches d'huile, brillantes comme des larmes de métal, formaient un chemin sur les dalles de pierre. Une faible odeur de cuivre chaud flottait dans l'air.<br><br>La piste la mena jusqu'à un grand escalier en colimaçon qui grimpait vers les tours oubliées. Pimprenelle retint sa respiration. Un son étrange lui parvint : <em>bip-boup... bip...</em> Curieuse et prudente, elle passa la tête par une embrasure. Là, filant dans le couloir, une petite silhouette de fer-blanc tenait fermement la baguette <em>Étoile</em>, qui laissait derrière elle une traînée d'étincelles argentées.",
+      "image_prompt": "View from over the shoulder of Pimprenelle as she peeks through a stone archway in a dimly lit castle corridor. In the distance, the small tin-can robot Bipboup is seen from behind, scurrying away. He is holding the magical wand Etoile, which leaves a trail of silver sparkles. The scene is suspenseful and enchanting."
+    },
+    {
+      "text": "Pimprenelle le rattrapa tout en haut de la plus haute tour. La petite créature était coincée. C'était un robot de conserve, pas plus haut que son genou, avec deux antennes qui clignotaient faiblement. Il serrait <em>Étoile</em> dans ses pinces de métal, mais la baguette semblait paniquée. Elle crépitait, lançant des éclairs désordonnés.<br><br>Le robot ne paraissait pas méchant. Au contraire, il semblait effrayé. Ses antennes s'affaissaient comme des fleurs fanées et son unique œil-écran bleu affichait un petit visage tout triste. Il émit un son plaintif, un long <em>biiiiip</em> mélancolique.",
+      "image_prompt": "In a circular, dusty tower room with a large broken window showing a twilight sky, Pimprenelle confronts Bipboup. Pimprenelle, looking concerned, holds her own crystal-tipped wand. The small robot Bipboup is cornered against a wall, looking scared, its antennas drooping. It clutches the sputtering wand Etoile. The mood is tense but gentle."
+    },
+    {
+      "text": "Devant cette tristesse mécanique, la colère de Pimprenelle s'envola. Elle baissa sa propre baguette. Le petit robot, qu'elle décida d'appeler Bipboup, pointa une pince vers l'étoile dorée de la baguette magique. Puis, il tapota une petite trappe sombre sur sa poitrine ronde. <em>Clink. Clonk.</em> Un bruit creux, un bruit de vide.<br><br>Alors, Pimprenelle comprit. Bipboup n'était pas un voleur. Il était <em>vide</em>. Il n'avait plus d'énergie. Perdu, loin de son monde, il avait vu la lumière de la baguette comme un phare dans la nuit, espérant pouvoir s'en nourrir pour ne pas s'éteindre.",
+      "image_prompt": "A close-up on the small robot Bipboup. Its single blue screen-eye shows a sad face with a low-battery symbol. One of its pincer hands points to a small, open, empty compartment on its chest. In the soft-focus background, Pimprenelle's face is visible, her expression shifting to one of compassion and understanding. The lighting is warm and empathetic."
+    },
+    {
+      "text": "Un doux sourire illumina le visage de Pimprenelle. Elle ne gronda pas. Elle ne reprit pas la baguette. À la place, elle murmura une formule magique, une comptine douce comme une berceuse. De sa propre baguette jaillit une petite sphère de lumière pure, chaude et dansante comme un minuscule soleil.<br><br>Bipboup la regarda, pencha la tête. Lentement, la petite sphère flotta jusqu'à lui et se nicha dans le compartiment ouvert. Aussitôt, le robot s'illumina ! Ses antennes brillèrent d'un jaune joyeux et son œil-écran afficha un grand sourire. Bipboup était sauvé. Et Belmondrie venait de gagner le plus étonnant des gardiens, et Pimprenelle, le plus fidèle des amis.",
+      "image_prompt": "Pimprenelle and Bipboup in the tower room. Pimprenelle is smiling kindly, her own wand casting a gentle, warm light. Bipboup is fully lit up, its antennas glowing bright yellow and its blue screen-eye showing a happy, smiling emoji. The magical wand Etoile rests safely on a nearby stone ledge. The atmosphere is heartwarming, magical, and full of friendship."
+    }
+  ],
+  "key": "courte_sorciere_chateau_baguette_robot",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "chateau",
+  "item": "baguette",
+  "villain": "robot"
+}

@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Gardien des Étoiles Brisées",
+  "pages": [
+    {
+      "text": "Léa n'était pas une exploratrice comme les autres. À huit ans, au lieu de parcourir les forêts, elle voyageait entre les galaxies. Sa planche à roulettes magique, qu'elle appelait <em>Fusée</em>, glissait sur les rayons de lune et les ceintures d'astéroïdes. Un jour, une étrange mélodie, douce et triste comme une étoile filante perdue, l'attira vers une planète inconnue.<br><br>Devant elle se dressait le château de Belmondrie. Ses trois tours pointues semblaient vouloir gratter le ventre des nuages violets. Le lierre grimpait sur les vieilles pierres, mais une lueur dorée et chaleureuse s'échappait des fenêtres brisées, comme si le château respirait encore un secret magique. Poussée par la curiosité et le chant mélancolique, Léa descendit de Fusée et s'approcha à pas de velours.",
+      "image_prompt": "artwork of a young 8-year-old astronaut girl, Lea, with curly brown hair in two small buns and a white spacesuit, standing with her magical glowing skateboard. She is looking up in awe at a romantic, crumbling medieval castle named Belmondrie at twilight. The castle has three tall towers and a warm, magical glow emanates from its broken windows. The mood is one of wonder and gentle mystery."
+    },
+    {
+      "text": "L'intérieur de Belmondrie était silencieux, à l'exception de la petite complainte qui flottait dans l'air. Léa, son casque à la main, avançait dans un immense couloir où la poussière dansait dans les faisceaux de lumière des vitraux. Ses pas ne faisaient aucun bruit, comme absorbés par les épaisses tapisseries racontant des légendes de chevaliers et de dragons.<br><br>Le son la guida vers une double porte en bois massif, entrouverte. C'était de là que venait la tristesse. Pas une tristesse effrayante, non. Plutôt le chagrin d'un cœur qui a perdu quelque chose de précieux. Léa retint sa respiration et jeta un œil dans la pièce.",
+      "image_prompt": "artwork of the small astronaut girl, Lea, walking cautiously inside a vast, dusty hall of Belmondrie castle. A single, dramatic beam of colored light from a stained-glass window shines down, illuminating dust motes dancing in the air. Long shadows stretch across the stone floor. Lea is seen from behind, emphasizing the scale of the castle. The atmosphere is quiet, mysterious, and slightly suspenseful."
+    },
+    {
+      "text": "La grande salle de bal était en désordre. Et au milieu, assis par terre, se trouvait la source du son. C'était une petite créature toute ronde et violette, aussi douce qu'un pompon de fourrure. Deux petites cornes incurvées sur la tête, et de très grands yeux jaunes, si grands qu'ils semblaient contenir toute la nuit étoilée. Il ne semblait pas méchant du tout. Devant lui, des centaines de fragments de cristal scintillaient tristement.<br><br>La créature, que Léa baptisa aussitôt <em>Grobi</em>, releva la tête. Une grosse larme perla au coin de son œil et roula sur sa joue duveteuse. Il ne grogna pas. Il fit juste un petit bruit, un hoquet de chagrin, en voyant Léa dans l'embrasure de la porte.",
+      "image_prompt": "artwork of the meeting scene. In a grand, ruined ballroom, the small, cute, fluffy purple monster, Grobi, sits sadly on the floor surrounded by sparkling, broken crystal shards. He has very big, tearful yellow eyes. Standing in the arched doorway is Lea, the young astronaut, looking at him with a surprised but gentle and curious expression. The room is lit by the magical glow of the crystal pieces."
+    },
+    {
+      "text": "Léa s'approcha doucement. « Bonjour », murmura-t-elle. Grobi ne répondit pas, mais il désigna les débris d'un petit geste de sa patte potelée. Léa comprit alors. Ce n'étaient pas de simples morceaux de verre. C'était une boîte à musique faite de lumière d'étoile solidifiée. Grobi n'était pas un destructeur, c'était un gardien !<br><br>En jouant, il avait fait tomber le trésor du château et l'avait brisé. La petite mélodie qu'il fredonnait sans cesse, c'était le chant de la boîte, la seule chose qui lui restait. Il essayait de la chanter assez fort pour que les morceaux se souviennent et se rassemblent. C'était un gardien au cœur brisé, pleurant sur une mélodie oubliée.",
+      "image_prompt": "artwork, close-up shot of Lea kneeling down to the fluffy purple monster, Grobi. Lea's helmet is off, showing her freckled face and an expression of deep empathy. She is gently touching one of the broken crystal pieces of the music box. Grobi looks up at her, his big yellow eyes wide with a mix of sadness and dawning hope. The scene is intimate and emotional."
+    },
+    {
+      "text": "« Je crois que je peux t'aider », dit Léa avec un sourire. Elle posa sa planche <em>Fusée</em> au sol. Le skateboard s'illumina et projeta au plafond une carte du ciel, une nébuleuse aux couleurs de l'arc-en-ciel. « Écoute bien », dit-elle. En touchant les étoiles sur la projection, Léa recréa les notes de la mélodie, une par une.<br><br>Le visage de Grobi s'illumina. Il se mit à chanter avec Léa, sa petite voix se mêlant à la musique des étoiles. Et la magie opéra. Les fragments de cristal s'élevèrent dans les airs, dansèrent une valse lumineuse et s'assemblèrent. La boîte à musique était réparée ! Une musique céleste emplit le château, qui brilla de mille feux. Grobi, fou de joie, serra Léa dans ses bras. Ce jour-là, une astronaute et un petit monstre avaient réparé bien plus qu'une boîte à musique. Ils avaient créé une amitié.",
+      "image_prompt": "artwork of the final, joyous scene in the castle ballroom. The crystal music box is whole again, floating and emitting a brilliant light. Magical, glowing musical notes swirl through the air. Lea, her helmet off, and Grobi, the fluffy purple monster, are hugging joyfully. Lea's magical skateboard rests on the floor, its holographic shimmer projecting a beautiful nebula of colors onto the walls and ceiling."
+    }
+  ],
+  "key": "courte_astronaute_chateau_skateboard_monstre",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "chateau",
+  "item": "skateboard",
+  "villain": "monstre"
+}

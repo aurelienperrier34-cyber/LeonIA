@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Fantôme de Belmondrie",
+  "pages": [
+    {
+      "text": "Léa n'était pas une exploratrice comme les autres. À huit ans, son vaisseau spatial, le « Pissenlit », l'emmenait plus loin que les rêves. Un jour, à travers son hublot constellé de poussière d'étoiles, elle vit une merveille : un château de pierre grise avec trois hautes tours pointues. Le château de Belmondrie.<br><br>Il semblait l'attendre depuis mille ans sur sa colline verte, seul au milieu d'un monde silencieux. Oubliant toutes les cartes du ciel, Léa posa son vaisseau dans l'herbe douce. Son casque décoré d'étoiles dorées brillait sous un soleil de miel. Une nouvelle aventure chuchotait son nom.",
+      "image_prompt": "Children's book illustration. Léa, an 8-year-old astronaut girl with curly brown hair in buns and freckles, stands in her white spacesuit on a green hill. In the background, the fairy-tale stone castle of Belmondrie with its three tall towers stands majestically. The atmosphere is wondrous and peaceful, with a soft, warm light. Léa has a curious and friendly expression."
+    },
+    {
+      "text": "Avec des pas de cosmonaute flottant sur la Lune, Léa pénétra dans le château. Le lierre grimpait sur les murs écroulés et le silence était profond, mais pas effrayant. Une douce lueur dorée filtrait par les fenêtres brisées, l'invitant à entrer plus avant.<br><br>Au cœur de la plus haute tour, dans un rayon de lumière magique, reposait un objet extraordinaire. Une fine baguette de bois clair, aux gravures tourbillonnantes. À son extrémité, une étoile d'or à cinq branches scintillait doucement, comme si elle respirait. C'était <em>Étoile</em>, et Léa sentit qu'elle devait la toucher.",
+      "image_prompt": "Digital painting style. Inside a crumbling castle tower room. A single, powerful beam of magical golden light shines down from a broken window, illuminating a slim magical wand resting on a stone pedestal. The wand has swirling carvings and a five-pointed golden star tip emitting faint silver sparkles. The scene is quiet, mystical, and filled with anticipation. No characters are present."
+    },
+    {
+      "text": "Léa tendit la main, ses doigts gantés frôlant le bois chaud de la baguette. À l'instant où elle la toucha, un frisson parcourut l'air. Une silhouette apparut devant elle, flottant doucement. C'était un petit fantôme translucide, celui d'un vieil artisan avec une longue barbe vaporeuse et des yeux gris pleins de tristesse.<br><br>Le fantôme ne semblait pas méchant. Il ne criait pas. Il la regardait simplement, l'air si malheureux qu'on aurait dit qu'il portait toute la poussière du château sur ses épaules éthérées. Il leva une main spectrale, non pas pour menacer, mais comme pour dire : <em>« S'il te plaît. »</em>",
+      "image_prompt": "Key scene illustration. Léa, the 8-year-old astronaut, is reaching for the magical wand. The ghost of Maître Otho, small, friendly, and translucent with a long white beard and a sad expression, has just materialized between her and the wand. He glows with a gentle blue-white light. The mood is suspenseful but not scary, filled with mystery and melancholy."
+    },
+    {
+      "text": "Léa ne recula pas. Elle regarda le fantôme dans ses yeux pâles et demanda doucement : « Qui êtes-vous ? »<br><br>La voix du fantôme fut un murmure, comme le vent dans les vieilles pierres. « Je suis Maître Otho. Et ceci... », dit-il en montrant la baguette qu'elle tenait maintenant, « ...ceci est mon cœur et ma prison. » Il expliqua qu'il était l'artisan qui avait insufflé sa magie au château. Mais en créant son chef-d'œuvre, la baguette <em>Étoile</em>, son esprit s'y était retrouvé lié pour l'éternité. Il n'était pas le gardien du trésor, il <em>était</em> le trésor, incapable de trouver le repos.",
+      "image_prompt": "Emotional moment. Close-up on Léa and Maître Otho. Léa, holding the gently glowing wand, looks at the ghost with empathy and understanding. Maître Otho, the translucent craftsman ghost, points with a sad gesture towards his own glowing chest and then to the wand, his expression explaining his story. The background is soft and out of focus."
+    },
+    {
+      "text": "Léa examina la baguette <em>Étoile</em>. Elle n'était pas une magicienne, mais une exploratrice. Et les explorateurs résolvent les énigmes. Elle remarqua une toute petite encoche vide près du ruban rouge, comme une pièce manquante. Alors, elle eut une idée.<br><br>Délicatement, elle détacha une des étoiles dorées de son propre casque et la posa dans l'encoche. La baguette s'embrasa d'une lumière pure et éclatante ! Le château tout entier répondit, vibrant de joie. Maître Otho devint plus lumineux, son sourire libéré de sa tristesse. Il était enfin libre. « Merci, petite étoile venue des étoiles », souffla-t-il, son âme désormais gardienne joyeuse de Belmondrie. Léa repartit en laissant derrière elle un ami et un château rempli de lumière.",
+      "image_prompt": "Bright and magical final scene. Inside the castle hall, now filled with a brilliant, warm golden light. Léa, her helmet off, showing her curly hair in two buns, holds the wand aloft. The wand's tip explodes in a shower of golden and silver sparkles. Maître Otho's ghost is now bright, joyful, and more solid-looking. He smiles warmly at Léa, a hand over his heart in gratitude. The atmosphere is one of pure joy, magic, and friendship."
+    }
+  ],
+  "key": "courte_astronaute_chateau_baguette_fantome",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "chateau",
+  "item": "baguette",
+  "villain": "fantome"
+}

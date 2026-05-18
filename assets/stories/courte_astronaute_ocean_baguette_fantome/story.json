@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Gardien des Lumières Perdues",
+  "pages": [
+    {
+      "text": "Léa, la petite astronaute aux cheveux bouclés, flottait comme une bulle de savon au-dessus de la Mer d'Aural. Ce n'était pas un océan ordinaire. Non, celui-ci scintillait de mille feux turquoise et aigue-marine, parsemé de paillettes vivantes qui dansaient sous la lueur d'étoiles lointaines.<br><br>Dans sa main, Léa tenait précieusement <em>Étoile</em>, sa baguette magique, un fin bâton de bois couleur miel dont l'extrémité dorée laissait échapper une fine poussière d'argent. Elle était venue chercher des histoires, des secrets chuchotés par les vagues argentées et les poissons curieux.",
+      "image_prompt": "Lea, an 8-year-old astronaut girl with brown curly hair in two small buns and freckles, in her white spacesuit with red and blue patches, floats weightlessly. Her helmet is decorated with golden stars. She holds a slim wooden magic wand with a glowing star tip. Below her lies the Mer d'Aural, a magical deep turquoise and aquamarine ocean, sparkling with bioluminescence and reflecting faint starlight. The mood is wondrous and peaceful."
+    },
+    {
+      "text": "Mais ce soir-là, un silence étrange pesait sur la mer. Les petits poissons d'argent, d'habitude si vifs, se cachaient dans les profondeurs. La lumière magique de l'océan semblait... fatiguée. Une grande tache sombre, froide et vide, s'étendait au loin, comme une goutte d'encre dans un verre d'eau pure.<br><br>Léa fronça les sourcils sous son casque constellé. Quelque chose n'allait pas du tout. La Mer d'Aural, son amie lumineuse, avait perdu son éclat et son sourire.",
+      "image_prompt": "A wide, atmospheric view of the Mer d'Aural. The usually vibrant turquoise ocean has a large, dark, lifeless patch in the center. The bioluminescent sparkles are dim and sparse in that area. The silver fish are nowhere to be seen. The overall mood is mysterious and slightly melancholic. No characters are visible."
+    },
+    {
+      "text": "Avec courage, Léa se dirigea vers la zone d'ombre. L'air devint plus frais, le scintillement des vagues s'éteignit complètement. Et c'est là qu'elle le vit. Une silhouette fantomatique, translucide et bleutée, flottait juste au-dessus de l'eau. C'était un vieil homme à la longue barbe vaporeuse, vêtu d'un tablier d'artisan à peine visible. Il semblait pleurer sans larmes, et ses mains éthérées plongeaient encore et encore dans l'eau sombre, comme pour attraper quelque chose qui lui échappait toujours. C'était Maître Otho.",
+      "image_prompt": "Lea, the astronaut girl, floats cautiously near the dark patch of water. Her helmet light illuminates Maitre Otho, a small, friendly-looking translucent ghost of an old craftsman with a long wispy beard. The ghost glows with a gentle blue-white light and has a sad expression. He is reaching into the dark water, his form causing the water around him to dim. The scene is suspenseful but not scary."
+    },
+    {
+      "text": "Léa serra sa baguette <em>Étoile</em>, mais ne l'agita pas pour attaquer. La tristesse dans les yeux gris pâle du fantôme était trop profonde. « Que cherchez-vous ? » demanda-t-elle doucement.<br><br>Le fantôme sursauta. « Mon trésor... » murmura Maître Otho, sa voix comme le vent dans les feuilles mortes. « J'étais un sculpteur de soleils. J'ai laissé tomber ma plus belle création, un <em>Cœur d'Aurore</em>, dans cette mer. Je ne vole pas sa lumière... je la cherche. Mais ma grande tristesse l'éteint. » Il n'était pas un méchant. Il était un artiste qui avait perdu son chef-d'œuvre.",
+      "image_prompt": "A close-up shot focusing on Lea and Maitre Otho. Lea, her face showing empathy and understanding, holds her magic wand, which glows softly. Maitre Otho, the translucent ghost, looks at her, his expression filled with deep sorrow as he explains his plight. The light from the wand gently illuminates their faces, creating a moment of connection and intimacy."
+    },
+    {
+      "text": "Le cœur de Léa se serra. Elle comprit. Tendant sa baguette <em>Étoile</em>, elle ne visa pas le fantôme, mais l'eau. « Montre-nous le chemin », chuchota-t-elle. La baguette plongea son faisceau d'or dans les profondeurs, et une lueur répondit, faible mais tenace. Le Cœur d'Aurore ! Léa le guida jusqu'à la surface. Maître Otho le prit dans ses mains tremblantes. Aussitôt, la Mer d'Aural explosa de lumière, plus brillante que jamais. Le fantôme devint un être d'or et de blanc, un sourire radieux sur son visage. « Merci, petite étoile », dit-il, avant de s'élever dans le ciel et de devenir la plus scintillante des constellations. Léa, seule au-dessus de la mer guérie, lui fit un dernier signe de la main.",
+      "image_prompt": "The Mer d'Aural is brilliantly illuminated, a riot of turquoise and aquamarine light with sparkling fish. Above it, Lea the astronaut watches as Maitre Otho, now a radiant, warm golden-white spirit, holds a small, intensely bright object. He is smiling thankfully at Lea as he begins to ascend into the starry sky like a celestial lantern. The mood is magical, heartwarming, and triumphant."
+    }
+  ],
+  "key": "courte_astronaute_ocean_baguette_fantome",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "ocean",
+  "item": "baguette",
+  "villain": "fantome"
+}

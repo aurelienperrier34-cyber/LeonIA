@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Voleur de Lumière",
+  "pages": [
+    {
+      "text": "Léa, l'astronaute aux cheveux bouclés, flottait doucement au-dessus d'une mer qu'on ne trouvait sur aucune carte. C'était la Mer d'Aural. Ses vagues turquoises chuchotaient en déposant sur le rivage une écume de diamants. Des milliers de poissons d'argent filaient sous la surface, rapides comme des éclairs.<br><br>Dans sa main, Léa tenait Étoile, sa baguette magique faite d'un bois couleur miel. Elle n'était pas venue pour pêcher les poissons ni pour voler les perles. Elle était venue admirer. Simplement regarder la danse des étincelles lumineuses dans l'eau profonde, un spectacle qui n'existait qu'ici.",
+      "image_prompt": "An 8-year-old astronaut girl, Léa, with brown curly hair in buns and freckles, stands in her white spacesuit at the edge of a magical ocean. The Mer d'Aural is a luminous deep turquoise, filled with bioluminescent sparkles. She holds a slim wooden magic wand with a golden star tip. The mood is serene and magical, with starlight reflecting on the water. Children's book illustration, whimsical and soft style."
+    },
+    {
+      "text": "Alors que Léa s'approchait du bord de l'eau, un bruit de ferraille brisa le silence. ZOUING ! CLANG ! Un drôle de petit robot en fer-blanc surgit de nulle part. Il ressemblait à une boîte de conserve sur roulettes, avec deux antennes qui clignotaient et des pinces mécaniques. Son œil unique, un écran bleu, affichait un sourire espiègle.<br><br>Sans crier gare, il plongea ses pinces dans l'eau magique. Il attrapait les étincelles lumineuses, les unes après les autres, les faisant disparaître dans un petit cliquetis. La mer semblait soudain moins brillante. <em>« Hé ! Arrête ça ! »</em> cria Léa, surprise.",
+      "image_prompt": "The small tin-can robot, Bipboup, zips through the shallow, sparkling water of the Mer d'Aural, creating splashes. His mechanical pincers are grabbing at the bioluminescent sparkles. In the background, astronaut girl Léa looks on with a surprised and slightly annoyed expression, holding her magic wand. The scene is chaotic and playful, contrasting the robot's metallic nature with the sea's magic."
+    },
+    {
+      "text": "Mais le petit robot, qu'elle décida d'appeler Bipboup, ne l'écouta pas. Il continuait sa récolte frénétique, filant à toute allure le long de la plage. Il était un voleur de lumière ! Léa, son casque bien vissé, se lança à sa poursuite. « Rends à la mer ce que tu lui as pris ! »<br><br>Bipboup émettait des séries de bips électroniques que Léa prenait pour des moqueries. Il était si rapide, si agile. À chaque fois qu'elle croyait l'attraper, il zigzaguait et lui échappait, laissant derrière lui une traînée d'eau et de sable. La belle mer calme était maintenant toute agitée.",
+      "image_prompt": "Action scene: Léa, the young astronaut, is running along the shore, chasing the speedy robot Bipboup. Bipboup is a blur of motion, his antennas with yellow lights glowing. Léa has a determined expression. The magical sea is turbulent with splashes from their chase. The style is dynamic and energetic."
+    },
+    {
+      "text": "La course-poursuite s'arrêta brusquement. Bipboup s'immobilisa près d'un rocher sombre. Il semblait à bout de force. Ses antennes, autrefois si vives, ne clignotaient plus que faiblement. Son œil-écran ne souriait plus. Il affichait une ligne droite et triste.<br><br>Lentement, une petite trappe s'ouvrit sur son ventre de métal. Léa s'approcha avec prudence et regarda à l'intérieur. C'était le noir complet. Les quelques étincelles qu'il avait volées brillaient un court instant avant de s'éteindre, impuissantes. Léa comprit tout. Bipboup n'était pas un voleur. Son cœur mécanique était vide, il avait seulement <em>froid et noir</em> à l'intérieur. Il cherchait désespérément un peu de lumière pour se réchauffer.",
+      "image_prompt": "A tender, quiet moment. Bipboup the robot is slumped against a rock, looking vulnerable. His chest hatch is open, revealing a dark interior with only a few fading sparkles. Léa is kneeling beside him, her helmet off, her expression full of compassion and understanding as she looks inside him. The mood is empathetic and pivotal."
+    },
+    {
+      "text": "L'agacement de Léa se transforma en une immense tendresse. Ce petit robot n'était pas méchant, il était perdu. Elle leva sa baguette, Étoile, mais pas pour se battre. Elle la pointa doucement vers la trappe ouverte de Bipboup.<br><br>« N'aie pas peur », murmura-t-elle. De la pointe dorée de la baguette jaillit un rayon de lumière pure et chaude, un concentré de soleil et de gentillesse. Le rayon pénétra le cœur sombre de Bipboup. Le petit robot se mit à vibrer, puis à rayonner de l'intérieur. Ses antennes s'illuminèrent d'un jaune éclatant et son œil-écran afficha un immense cœur bleu. Assis l'un à côté de l'autre, ils regardèrent la Mer d'Aural retrouver toute sa magie, plus brillante que jamais.",
+      "image_prompt": "Léa and Bipboup sit peacefully side-by-side on the shore. A warm, golden beam of light flows from the star tip of Léa's wand into Bipboup's open chest. Bipboup is glowing from within, his antennas are bright yellow, and his blue screen-eye shows a happy heart symbol. The Mer d'Aural is calm and intensely luminous around them. The atmosphere is heartwarming, magical, and full of friendship."
+    }
+  ],
+  "key": "courte_astronaute_ocean_baguette_robot",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "ocean",
+  "item": "baguette",
+  "villain": "robot"
+}

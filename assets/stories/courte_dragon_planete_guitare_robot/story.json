@@ -1,0 +1,31 @@
+{
+  "title": "Brio et la Guitare des Sept Silences",
+  "pages": [
+    {
+      "text": "Sur la petite planète Vega-7, où le sol est couleur de lavande et de menthe à l'eau, vivait Brio. Brio n'était pas un grand dragon terrifiant. C'était un bébé dragon, à peine plus grand qu'un chat, avec des écailles douces comme le ciel d'avril et de grands yeux curieux. Il était le gardien d'un trésor unique : la Guitare des Sept Silences.<br><br>Cet instrument, taillé dans un cristal pur, ne jouait pas de la musique comme les autres. On disait qu'il fallait un cœur tranquille pour en entendre la mélodie. Brio passait ses journées à la polir doucement, sentant la magie vibrer sous ses petites griffes arrondies, sans jamais oser en jouer.",
+      "image_prompt": "On the magical planet Vega-7 with its purple and teal surface, Brio, a tiny baby dragon with soft sky-blue scales and big curious eyes, sits peacefully. He is gently holding the Guitar of Seven Silences, a small acoustic guitar with a translucent crystal body that glows softly from within. The starry space and two thin golden rings of the planet are visible in the background. Whimsical and serene atmosphere."
+    },
+    {
+      "text": "Un jour, un bruit étrange déchira le calme de Vega-7. <em>CLANG ! ZZZT ! BIP-BOUP !</em> Une petite tornade de métal argenté déboula des collines scintillantes. C'était Bipboup, un robot-conserve avec des antennes lumineuses et un seul œil-écran qui affichait un grand sourire malicieux. Avant que Brio n'ait pu comprendre ce qui se passait, Bipboup, avec un mouvement rapide de ses pinces mécaniques, s'empara de la Guitare de Cristal.<br><br>En un éclair, le petit robot s'envola, laissant derrière lui un Brio stupéfait, le cœur battant, et un grand silence là où, une seconde plus tôt, reposait le trésor de la planète.",
+      "image_prompt": "Bipboup, a small playful tin-can robot with a mischievous smile on his blue screen-eye, is zipping away through the air. He holds the glowing crystal guitar in one of his mechanical pincer arms. In the background, Brio the baby dragon stands on the purple ground, looking surprised and concerned, his small wings slightly unfurled."
+    },
+    {
+      "text": "Sans hésiter, Brio déploya ses petites ailes. Il devait récupérer la guitare ! Non par colère, mais par inquiétude. Cet instrument était si délicat. Il s'élança à la poursuite du voleur métallique. La course-poursuite les emmena au-dessus des cratères qui luisaient comme des bols de lait étoilé et à travers des forêts de cristaux chantants. Bipboup était incroyablement rapide, zigzaguant avec une énergie folle, ses ampoules jaunes clignotant joyeusement.<br><br>Brio, plus constant, le suivait avec détermination. Il ne voyait pas un méchant, mais un mystère. <em>Pourquoi ?</em> se demandait-il en fendant l'air doux de Vega-7.",
+      "image_prompt": "A dynamic chase scene across the magical landscape of Vega-7. Brio, the small blue dragon, is flying determinedly, his pastel wings beating the air. He is chasing the smaller figure of Bipboup, the tin-can robot, who flies erratically ahead, holding the crystal guitar. They are soaring above glowing teal craters and purple plains under a starry sky."
+    },
+    {
+      "text": "Enfin, Bipboup s'arrêta. Il se posa au fond d'un cratère isolé, dont les parois scintillaient doucement. Brio atterrit en silence à quelques pas de lui. Le robot n'était plus du tout le même. Son sourire avait disparu de l'écran. À la place, une seule goutte bleue, un pixel solitaire, clignotait tristement. Il tenait la guitare avec une délicatesse surprenante.<br><br>Il essaya de pincer une corde avec sa pince de métal. Un son sec et dissonant, un <em>PLONK !</em> sans âme, résonna dans le cratère. Bipboup laissa échapper une série de petits bips plaintifs, et ses antennes s'affaissèrent comme des fleurs fanées. Il n'était pas un voleur. Il était seul.",
+      "image_prompt": "Inside a softly glowing crater, Bipboup the robot sits alone, cradling the crystal guitar gently. His antennas are drooping. His single round blue screen-eye shows a single, sad, pixelated teardrop, the mischievous smile gone. The atmosphere is quiet, melancholic, and intimate. Brio is not visible in this shot."
+    },
+    {
+      "text": "Le cœur de Brio se serra. Il comprit. Il s'approcha lentement, sans un bruit. Il ne reprit pas la guitare. À la place, il posa sa petite patte sur celle de Bipboup, et avec une infinie douceur, guida la pince de métal vers une corde. Puis il chuchota le secret de l'instrument : le silence.<br><br>Il ne fallait pas jouer <em>sur</em> la guitare, mais <em>avec</em> elle. Il fallait écouter le silence de l'espace, le murmure des anneaux dorés, le battement de deux cœurs qui se rencontrent. Alors, une note pure et cristalline s'éleva, une mélodie douce et lumineuse. Sur l'écran de Bipboup, la larme s'effaça pour laisser place à une note de musique étincelante. Ensemble, le petit dragon et le robot perdu remplirent le silence de la plus belle des amitiés.",
+      "image_prompt": "Brio the baby dragon and Bipboup the tin-can robot are sitting side-by-side in a warm, magical light. Brio is gently guiding Bipboup's pincer to touch the strings of the crystal guitar, which glows brightly. Bipboup is looking at the guitar with wonder, his screen-eye now displaying a happy, glowing musical note. A scene of friendship and shared magic."
+    }
+  ],
+  "key": "courte_dragon_planete_guitare_robot",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "planete",
+  "item": "guitare",
+  "villain": "robot"
+}

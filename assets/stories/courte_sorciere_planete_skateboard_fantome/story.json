@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et l'Artisan des Étoiles",
+  "pages": [
+    {
+      "text": "Pimprenelle adorait les vendredis. C'était le jour des explorations cosmiques. Sur <em>Fusée</em>, son skateboard magique qui laissait derrière lui une traînée d'étincelles, elle filait entre les nébuleuses aux couleurs de sorbet. Ce jour-là, son grimoire de poche l'avait guidée vers un astre minuscule et secret : Véga-7. La petite planète sentait le sucre chaud et la lavande. Sa surface mauve et turquoise était parsemée de minuscules cratères luminescents, et deux anneaux d'or fin l'entouraient comme un cadeau. Pimprenelle sentit son cœur de petite sorcière s'emballer. Quel mystère pouvait bien cacher un si joli confetti d'univers ?",
+      "image_prompt": "Whimsical children's book illustration. Pimprenelle, a 9-year-old witch girl with curly red hair in a braid, a purple pointed hat, and a lavender robe, joyfully rides her magical skateboard 'Fusee' (deep blue with stars, glowing pink wheels) towards the small, enchanting planet Vega-7. The planet has a purple and teal surface, glowing craters, and two golden rings. The background is a dark, starry space with soft colorful nebulas. Style of Tomi Ungerer and Antoine de Saint-Exupery."
+    },
+    {
+      "text": "Après un atterrissage en douceur, Pimprenelle explora la surface spongieuse de la planète. Elle découvrit bientôt une petite porte de bois incrustée dans un rocher. À l'intérieur, c'était un atelier. Mais quel atelier ! Une poussière de diamant endormie recouvrait tout. Des comètes à moitié sculptées attendaient leur queue de lumière, des soleils de poche n'avaient pas leur couronne de feu. Une immense tristesse flottait dans l'air, si dense qu'on aurait pu la découper au couteau. C'est alors que, dans un coin, une forme se dessina. Une silhouette translucide, bleutée, qui semblait tissée de regrets et de clair de lune.",
+      "image_prompt": "Interior scene of a dusty, magical workshop on a planet. Pimprenelle stands in the foreground, looking around with curiosity and a hint of concern. The workshop is filled with unfinished celestial objects: half-carved stars, comets without tails. In the background, partially hidden in shadow, the faint, translucent, and sad ghost of Maître Otho is visible, glowing softly. The atmosphere is melancholic and mysterious, with beams of light cutting through the cosmic dust."
+    },
+    {
+      "text": "Pimprenelle n'eut pas peur. Elle s'approcha doucement. Le fantôme, qui portait le souvenir d'un tablier d'artisan, leva vers elle des yeux d'un gris pâle et doux.<br><br>« Je suis Maître Otho, » murmura-t-il d'une voix qui ressemblait au vent dans les étoiles. « Ou du moins, ce qu'il en reste. J'étais l'artisan de ce système, le sculpteur de météores, le peintre d'aurores boréales. Mais un jour, mon fil de vie s'est usé. Depuis, j'erre ici, incapable de toucher mes outils, incapable de terminer mon dernier chef-d'œuvre. » De sa main spectrale, il désigna une petite lune de roche brute, seule et inachevée sur un établi.",
+      "image_prompt": "A gentle, emotional close-up. Pimprenelle, with a kind and curious expression, stands face-to-face with the translucent ghost of Maître Otho. Maître Otho, shaped like an old craftsman with a wispy beard and sad eyes, has a gentle but deeply melancholic demeanor. His ghostly hand points towards a workbench in the background. The scene is softly lit by Otho's ethereal blue-white glow. Focus on the connection and dialogue between the two characters."
+    },
+    {
+      "text": "Le cœur de Pimprenelle se serra. Ce n'était pas un fantôme méchant, c'était un artiste qui avait perdu ses mains. Une idée germa dans son esprit, aussi vive qu'une étoile filante.<br><br>« Vous ne pouvez plus toucher les outils, Maître Otho, » dit-elle d'une voix claire. « Mais vous avez encore votre savoir. Et moi, j'ai ma magie. Apprenez-moi. Guidez-moi. Soyez mes yeux, et je serai vos mains ! »<br><br>Un éclat de surprise, puis d'espoir, illumina le visage du vieux fantôme. Il hocha la tête lentement. Pimprenelle sortit sa baguette en bois de saule. Sous la direction précise de Maître Otho, elle commença à enchanter la petite lune, faisant danser la poussière d'étoiles et polissant la roche par la seule force de sa volonté.",
+      "image_prompt": "A scene of magical collaboration. Pimprenelle, looking determined and focused, points her wooden wand (with a crystal tip) at a rough, small moon resting on a workbench. Magical lavender sparks fly from her wand. Floating beside her, the glowing ghost of Maître Otho gestures instructively, his expression a mix of awe and concentration. He is guiding her. The workshop is still dusty but now filled with a hopeful, magical light emanating from their work."
+    },
+    {
+      "text": "Ensemble, ils travaillèrent. La magie de Pimprenelle, jeune et pétillante, se mêla au savoir-faire ancestral de Maître Otho. Enfin, d'un dernier geste de sa baguette, Pimprenelle déposa sur la lune un baiser de lumière. L'astre s'éleva doucement, baignant l'atelier d'une lueur nacrée et apaisante. En se retournant, Pimprenelle vit que Maître Otho avait changé. Il n'était plus translucide et triste. Son corps éthéré avait gagné en consistance, sa lueur était chaude et dorée. Avec un émerveillement infini, il tendit la main et, pour la première fois depuis des siècles, il put toucher sa création. Il n'était plus un fantôme, mais le gardien éternel de Véga-7, avec une amie pour la vie.",
+      "image_prompt": "A heartwarming and luminous final scene. In the center of the workshop, a small, perfectly crafted moon floats, emitting a soft, pearlescent glow. Pimprenelle, smiling brightly, looks at Maître Otho. Maître Otho is no longer a sad, translucent ghost; he is now a brighter, more solid, and joyful spirit with a warm golden glow. He is gently touching the surface of the floating moon with his hand, his eyes filled with gratitude and wonder. The whole scene is bathed in the moon's gentle light, symbolizing friendship and creation."
+    }
+  ],
+  "key": "courte_sorciere_planete_skateboard_fantome",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "planete",
+  "item": "skateboard",
+  "villain": "fantome"
+}

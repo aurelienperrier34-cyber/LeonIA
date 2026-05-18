@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et le Visiteur des Etoiles",
+  "pages": [
+    {
+      "text": "Sur la petite planète Vega-7, tout n'était que douceur et magie. Le sol, d'une couleur entre le violet et le turquoise, scintillait de mille cratères lumineux. Dans ce royaume silencieux, Pimprenelle aimait plus que tout faire danser la poussière d'étoiles.<br><br>Du haut de ses neuf ans, avec sa longue natte rousse et son chapeau pointu brodé de lunes, elle était la gardienne de l'harmonie. Sa baguette magique, qu'elle appelait <em>Étoile</em>, était son plus fidèle instrument. Avec son embout en forme d'astre doré, elle pouvait dessiner dans le firmament des constellations qui n'existaient que pour un instant, juste pour le plaisir des yeux.",
+      "image_prompt": "Young witch girl Pimprenelle stands alone on the magical planet Vega-7. The planet's surface is purple and teal with tiny glowing craters. She has curly red hair in a long braid, a purple pointed hat, and a lavender robe. She holds her magical wand, Etoile, which has a glowing golden star tip. The background is a vast, starry space with two thin golden rings around the planet. The mood is peaceful and magical."
+    },
+    {
+      "text": "Mais ce soir-là, un bruit inconnu brisa le silence. Un <em>CLANG ! BIP ! BOUP !</em> métallique et désordonné. Un petit robot fait de bric et de broc, tout rond comme une boîte de conserve, venait d'atterrir. Il filait à toute allure sur la surface de Vega-7, ses pinces mécaniques attrapant les plus jolis cailloux lumineux qui pavaient les cratères.<br><br>Sur son unique œil-écran bleu, un sourire espiègle était dessiné. Il zigzaguait, ses antennes surmontées d'ampoules jaunes clignotant dans une joyeuse cacophonie. Il ne semblait se soucier de rien, et surtout pas de la délicate harmonie de la petite planète.",
+      "image_prompt": "The small tin-can robot Bipboup is causing chaos on the surface of Vega-7. His round silver body zips around, leaving a trail of dust. His mechanical pincer arms are grabbing small glowing rocks from the craters. His single round blue screen-eye displays a mischievous smiley face. His two flexible antennas with yellow light bulbs are glowing brightly. The scene is playful and chaotic. Pimprenelle is not visible."
+    },
+    {
+      "text": "« Holà ! Arrête tout de suite ! » s'écria Pimprenelle, contrariée. Ces lueurs n'étaient pas des jouets, elles étaient le cœur battant de sa planète. Elle brandit Étoile, bien décidée à raisonner cet étrange visiteur.<br><br>Elle lança une volute de lumière lavande pour lui barrer la route. Mais Bipboup l'esquiva d'une pirouette agile. Elle tenta un sort de ralentissement, qui se transforma en une pluie d'étincelles inoffensives contre sa carapace de métal. Le petit robot semblait prendre tout cela pour un jeu. Il répondait à chaque sort par un <em>BIP !</em> joyeux, son œil-écran souriant de plus belle.",
+      "image_prompt": "Pimprenelle and Bipboup face each other on the purple and teal surface of Vega-7. Pimprenelle, looking determined and slightly frustrated, points her wand Etoile, from which a swirl of lavender sparkles is shooting out. Bipboup the robot playfully dodges the magic, leaning to one side, his antennas wiggling. The mood is tense but whimsical, like a chase."
+    },
+    {
+      "text": "Pimprenelle en eut assez. Elle se concentra, ferma les yeux un instant et murmura une formule de quiétude. Une bulle de lumière douce et chaude enveloppa Bipboup, le figeant sur place, sans bruit et sans violence.<br><br>Elle s'approcha doucement. Le sourire espiègle sur l'écran bleu se mit à vaciller. Puis, il s'effaça. À sa place apparut une carte du ciel étoilé, avec un unique point qui clignotait au loin. Et juste à côté de ce point, une petite larme bleue se forma et glissa lentement sur l'écran. Pimprenelle comprit. Bipboup ne volait pas. Il ne jouait pas. <em>Il était perdu.</em>",
+      "image_prompt": "A close-up view of Bipboup the robot, who is gently encased in a translucent, glowing lavender bubble. He is motionless. Pimprenelle stands nearby, her expression shifting from anger to surprise and compassion as she looks at him. The robot's round blue screen-eye no longer shows a smile, but a star map with a single blinking dot and a small, digital teardrop rolling down."
+    },
+    {
+      "text": "Le cœur de Pimprenelle se serra. D'un geste doux de sa baguette, elle fit éclater la bulle. Le petit robot ne s'enfuit pas. Il resta là, ses antennes basses. Alors, Pimprenelle leva <em>Étoile</em> non pas vers lui, mais vers le ciel profond.<br><br>« Montre-moi », dit-elle simplement. Bipboup émit une série de bips, plus doux et plus mélodieux cette fois. À chaque note, la baguette de Pimprenelle captait la lumière des astres et la transformait en un puissant faisceau doré. Ensemble, ils envoyèrent un message de lumière vers le point clignotant. Au loin, une étoile brilla plus fort, comme un clin d'œil. Sur l'écran de Bipboup, un immense sourire reconnaissant avait remplacé la larme. Il venait de se faire une amie, à des milliards d'années-lumière de chez lui.",
+      "image_prompt": "Pimprenelle and Bipboup stand side-by-side on Vega-7, looking up at the vast starry cosmos. Pimprenelle is pointing her wand Etoile towards the sky. A brilliant, powerful beam of golden and silver light shoots from the wand's star tip into deep space. In the distance, one star shines significantly brighter than all the others. Bipboup's blue screen-eye now shows a wide, happy, grateful smile. The atmosphere is heartwarming, magical, and full of hope."
+    }
+  ],
+  "key": "courte_sorciere_planete_baguette_robot",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "planete",
+  "item": "baguette",
+  "villain": "robot"
+}

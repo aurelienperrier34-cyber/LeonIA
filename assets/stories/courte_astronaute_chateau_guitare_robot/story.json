@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Silence de Bipboup",
+  "pages": [
+    {
+      "text": "Léa n'était pas une exploratrice comme les autres. Au lieu de naviguer sur les mers, elle voguait entre les étoiles dans son petit vaisseau-bulle. Un jour, son vaisseau se posa en douceur dans un champ de fleurs qui chantaient au vent. Au loin, une silhouette étrange se découpait sur le ciel violet : un château de conte de fées, avec trois hautes tours pointues. C'était Belmondrie.<br><br>Avec ses cheveux bouclés coiffés en deux petits macarons et son casque décoré d'étoiles dorées sous le bras, Léa sentit la curiosité la chatouiller. Elle devait aller voir.",
+      "image_prompt": "Lea, an 8-year-old astronaut girl with curly brown hair in buns and a white space suit, stands in a field of fantastical, glowing alien flowers. She holds her star-decorated helmet under her arm, her expression filled with wonder. In the distance, under a twilight purple sky, stands the fairy-tale castle of Belmondrie with its three tall towers. Her small, bubble-like spaceship is parked behind her. Whimsical, magical atmosphere."
+    },
+    {
+      "text": "Les portes de Belmondrie étaient ouvertes. À l'intérieur, pas de toiles d'araignées ni de fantômes frileux. Une douce lueur dorée dansait sur les murs de pierre, comme si le château était content d'avoir de la visite. Au milieu de la grande salle du trône, posée sur un coussin de velours pourpre, une petite guitare l'attendait.<br><br>Elle était faite d'un cristal si pur qu'on voyait le jour à travers. Ses six cordes brillaient de reflets d'argent et d'or. C'était la <em>Guitare des sept silences</em>. Léa s'approcha et, délicatement, la prit dans ses mains. La guitare était fraîche et vibrait d'une musique silencieuse.",
+      "image_prompt": "Inside the grand hall of Belmondrie castle, sunbeams stream through a large, broken arched window, illuminating dust motes in the air. Lea, in her white space suit, is standing in the center, gently lifting the small, translucent crystal guitar which glows softly from within. The guitar rests on a velvet cushion on a stone pedestal. The mood is enchanted and peaceful."
+    },
+    {
+      "text": "À peine Léa eut-elle effleuré les cordes que des bruits de ferraille retentirent : <em>Cling ! Clang ! Roulaboula !</em> Un petit robot de conserve, tout rond et argenté, déboula dans la pièce. C'était Bipboup. Ses antennes à bulbes jaunes clignotaient frénétiquement et sur son œil-écran bleu, un sourire espiègle mais un peu paniqué s'affichait.<br><br>Sans un mot, car les robots de ce type sont souvent silencieux, il tendit ses pinces mécaniques et, hop !, il subtilisa la guitare des mains de Léa. Puis, il fila aussi vite qu'il était venu, laissant l'astronaute plus surprise qu'effrayée.",
+      "image_prompt": "Dynamic action scene. The small tin-can robot, Bipboup, with its single blue screen-eye showing a mischievous/panicked emoticon, is snatching the glowing crystal guitar with its mechanical pincers. Lea, looking surprised but not scared, has her hands outstretched where the guitar just was. Bipboup's yellow light-bulb antennas are flashing. The background is the magical castle hall."
+    },
+    {
+      "text": "Léa n'était pas du genre à se laisser faire. Elle suivit le bruit des roulettes de Bipboup jusqu'en haut d'une tour oubliée. Mais ce qu'elle découvrit la laissa sans voix. Le petit robot n'essayait pas de jouer de la guitare. Il était assis par terre, serrant l'instrument de cristal contre son corps de métal. Ses antennes lumineuses ne clignotaient plus, elles éclairaient faiblement, tristement.<br><br>Sur son œil-écran bleu, le sourire avait disparu. À la place, il y avait une grosse larme numérique qui semblait sur le point de déborder. Léa comprit tout d'un coup. Bipboup n'était pas un voleur. Il était <em>seul</em>. Il avait voulu la <em>Guitare des sept silences</em> parce que lui aussi, il était prisonnier du silence.",
+      "image_prompt": "In a small, dusty castle tower room, Bipboup the robot sits sadly on the floor, clutching the glowing crystal guitar. Its antennas are dimly lit, and its round blue screen-eye displays a single, large digital teardrop. Lea stands in the stone doorway, her expression shifting to one of compassion and understanding as she watches the sad little robot. The mood is quiet and poignant."
+    },
+    {
+      "text": "Doucement, Léa s'approcha et s'assit à côté de lui. Elle ne lui reprit pas la guitare. Au contraire, elle posa un doigt sur une corde et la fit chanter. Une note unique, pure et cristalline, emplit la petite pièce. Puis, elle montra le robot du doigt, puis sa propre bouche, et fit un petit son : « Boup ? ».<br><br>Les antennes de Bipboup frémirent. Il pointa une pince vers la guitare, puis vers sa propre bouche, qui ne pouvait émettre aucun son. Alors Léa comprit le jeu. Elle gratta un accord, puis un autre, inventant une mélodie pour répondre à la question silencieuse du robot. Sur l'écran de Bipboup, la larme s'effaça pour laisser place à un immense sourire. Ils n'avaient pas besoin de mots. La musique avait rempli le silence, et une nouvelle amitié venait de naître, quelque part entre les étoiles et les vieilles pierres.",
+      "image_prompt": "Heartwarming final scene. Lea and Bipboup are sitting side-by-side on the floor of the tower room. The crystal guitar rests between them, glowing brightly. Lea has one hand on the guitar's strings, while her other hand gently pats Bipboup's round metal head. Bipboup's blue screen-eye shows a wide, happy smile, and its antennas glow brightly with yellow light. The room is filled with a warm, magical glow emanating from the guitar. A moment of connection and friendship."
+    }
+  ],
+  "key": "courte_astronaute_chateau_guitare_robot",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "chateau",
+  "item": "guitare",
+  "villain": "robot"
+}

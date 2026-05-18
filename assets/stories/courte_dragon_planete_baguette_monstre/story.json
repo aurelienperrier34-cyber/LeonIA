@@ -1,0 +1,31 @@
+{
+  "title": "Brio et la Lumière Égarée",
+  "pages": [
+    {
+      "text": "Sur la petite planète Vega-7, tout était doux et coloré. Le sol ressemblait à un velours violet, parsemé de cratères qui scintillaient comme des turquoises. C'était là que vivait Brio, un tout petit dragon pas plus grand qu'un chat. Ses écailles étaient d'un bleu pastel si clair qu'on aurait dit un morceau de ciel. Brio avait un trésor : une fine baguette de bois nommée <em>Etoile</em>. Quand il l'agitait, son embout en forme d'étoile dorée laissait échapper une pluie de paillettes d'argent. C'était son jeu préféré, dessiner des constellations éphémères dans l'air tiède de sa planète.",
+      "image_prompt": "A tiny, adorable baby dragon (Brio) with soft sky-blue pastel scales and big curious eyes is happily waving a magical wand. The wand has a golden star tip emitting silver sparkles. He is on a small, magical planet (Vega-7) with a purple and teal surface and tiny glowing craters under a starry sky with two golden rings. The atmosphere is whimsical and peaceful."
+    },
+    {
+      "text": "Soudain, un bruit de feuilles froissées le fit sursauter. Une petite créature toute ronde et poilue, d'un violet lavande, surgit de derrière un rocher lumineux. Elle avait de grands yeux jaunes et un large sourire qui montrait des dents pas du tout effrayantes. Sans un mot, la créature bondit, attrapa <em>Etoile</em> avec une rapidité surprenante et détala à toutes petites jambes.<br><br>Brio resta figé, le cœur battant. Il n'était pas en colère, juste... étonné. Pourquoi ce petit monstre tout doux lui avait-il pris son plus beau trésor ? Il ne lui avait rien fait, pourtant.",
+      "image_prompt": "A small, cute, fluffy purple monster (Grobi) with big yellow eyes is snatching a magical wand from a surprised baby dragon (Brio). Brio looks startled but not scared. The scene is on the magical planet Vega-7, with its purple ground and glowing craters. The action is quick and mischievous, not malicious."
+    },
+    {
+      "text": "Brio secoua sa petite tête. Il devait comprendre. Déployant ses ailes, qui battaient l'air comme celles d'un colibri, il s'élança à la poursuite du voleur. « Attends ! Reviens ! » criait-il, mais sa voix était plus curieuse qu'autoritaire. La course les mena à travers les paysages étranges de Vega-7, sautant par-dessus des cratères qui chantaient une douce mélodie et slalomant entre des plantes qui s'illuminaient à leur passage. Grobi, la petite créature violette, courait devant, tenant la baguette <em>Etoile</em> comme un trophée précieux, sans jamais se retourner.",
+      "image_prompt": "A tiny blue dragon (Brio) is flying low with his small wings, chasing a small fluffy purple monster (Grobi) who is running across the magical landscape of Vega-7. Grobi is clutching the glowing magic wand. The chase looks more like a playful game than a serious pursuit, set against a backdrop of glowing plants and craters."
+    },
+    {
+      "text": "La poursuite s'acheva au fond d'un cratère sombre et silencieux. Brio atterrit doucement. Il s'attendait à trouver le petit monstre en train de préparer un mauvais tour. Mais ce qu'il vit lui serra le cœur. Accroupi dans un coin, Grobi n'utilisait pas la magie d'<em>Etoile</em> pour faire des bêtises. Il tenait la baguette au-dessus d'un minuscule livre, comme une lampe de chevet. La lumière des paillettes d'argent éclairait une page remplie de cartes célestes compliquées.<br><br>Grobi leva ses grands yeux jaunes vers Brio. Ils étaient remplis de larmes. Il ne souriait plus. Il semblait juste terriblement petit, et terriblement perdu.",
+      "image_prompt": "Inside a dark, quiet crater, the small fluffy purple monster (Grobi) is sitting on the ground. He is holding the magical wand (Etoile), using its sparkling golden star tip as a light to read a tiny, open book with maps of stars. Grobi looks up with a sad, tearful expression toward the entrance, where the small blue dragon (Brio) stands, looking surprised and full of compassion."
+    },
+    {
+      "text": "Brio comprit tout. Le petit monstre n'était pas un voleur, c'était un voyageur égaré. Doucement, il s'approcha et, au lieu de reprendre sa baguette, il souffla une petite flamme. Pas une flamme qui brûle, non, une lueur chaude et dorée, comme une veilleuse. Ensemble, sous la double lumière de la baguette et du souffle de dragon, la carte devint plus claire.<br><br>Alors, Brio eut une idée. Il montra le ciel à Grobi, puis la baguette. Grobi comprit. Il pointa <em>Etoile</em> vers les deux anneaux d'or de Vega-7 et, avec l'aide de Brio, ils envoyèrent un grand signal lumineux. Quelques instants plus tard, un faisceau de lumière descendit des étoiles, enveloppant une créature plus grande, identique à Grobi. Fou de joie, le petit monstre rendit la baguette à Brio avec une pirouette, et rejoignit sa famille. Brio, seul avec <em>Etoile</em>, n'avait jamais senti son cœur aussi chaud.",
+      "image_prompt": "The little blue dragon (Brio) and the fluffy purple monster (Grobi) stand side-by-side. Brio is breathing a soft, warm, golden glow. Grobi holds the magic wand up towards the sky, which emits a bright beam of light. A larger beam of light descends from the starry sky, containing the silhouette of a bigger, similar fluffy monster. The atmosphere is magical, heartwarming, and full of gentle light."
+    }
+  ],
+  "key": "courte_dragon_planete_baguette_monstre",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "planete",
+  "item": "baguette",
+  "villain": "monstre"
+}

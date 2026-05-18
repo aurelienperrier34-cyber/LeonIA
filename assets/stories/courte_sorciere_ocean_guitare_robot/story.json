@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et le musicien des étoiles",
+  "pages": [
+    {
+      "text": "Pimprenelle, la petite sorcière aux cheveux de feu, était assise sur une dune de sable d'argent. Devant elle, la Mer d'Aural aurait dû chanter. C'était une mer magique, dont les vagues turquoises chuchotaient d'habitude des secrets aux étoiles. Mais ce soir, un étrange silence pesait sur l'eau. Même les petits poissons lumineux semblaient avoir perdu leur éclat.<br><br>Dans ses mains, Pimprenelle tenait sa <em>Guitare des sept silences</em>. L'instrument, fait d'un cristal pâle, restait muet. Elle sentait la tristesse de la mer comme si c'était la sienne. Quelque chose, ou quelqu'un, avait volé la musique du monde.",
+      "image_prompt": "A 9-year-old witch girl, Pimprenelle, with curly red hair in a long braid, a purple pointed hat with moons, and a lavender robe, sits on a silver sand beach. She holds a small, translucent crystal acoustic guitar. She looks sadly at the magical, luminous turquoise ocean (Mer d'Aural) which is unusually calm and dark. The mood is quiet and melancholic."
+    },
+    {
+      "text": "Soudain, un bruit de casserole ! Un petit robot de conserve, tout rond et argenté, filait à la surface de l'eau. C'était Bipboup. Il zigzaguait entre les vagues en criant « Bip ! Boup ! Bip ! ». À chaque « Bip ! », une vaguelette perdait sa mousse. À chaque « Boup ! », un scintillement disparaissait. <br><br>On aurait dit qu'il s'amusait à attraper les sons avec ses pinces mécaniques pour les enfermer dans son ventre de métal. Il était si bruyant et si rapide ! Pimprenelle plissa les yeux. Ce petit robot était la cause de tout ce silence.",
+      "image_prompt": "A small, playful tin-can robot, Bipboup, zips across the surface of the magical turquoise ocean. His body is round and silver, with two flexible antennas ending in glowing yellow bulbs, and a single round blue screen-eye showing a mischievous smile. The water around him seems to lose its bioluminescent sparkle as he moves. The scene is dynamic and focused solely on Bipboup's disruptive activity."
+    },
+    {
+      "text": "Pimprenelle ne sortit pas sa baguette. Elle entra doucement dans l'eau tiède de la Mer d'Aural, la guitare de cristal flottant à ses côtés. « Bonjour ? » dit-elle d'une voix douce.<br><br>Bipboup s'arrêta net. Il pivota vers elle, son œil-écran bleu clignotant. Il ne semblait pas méchant, juste... agité. Il émit une série de bips rapides et désordonnés, puis il leva une de ses pinces vers le ciel noir piqué d'étoiles. Ensuite, il tapa sa poitrine métallique. Il avait l'air si désespéré.",
+      "image_prompt": "Pimprenelle stands waist-deep in the glowing turquoise Mer d'Aural, her expression kind and curious. She is facing the small robot Bipboup, who is floating in the water before her. Bipboup has stopped his chaotic movement and is pointing one of his mechanical pincer arms towards the starry night sky reflected on the water's surface. The mood is one of gentle confrontation and questioning."
+    },
+    {
+      "text": "Et Pimprenelle comprit. Bipboup n'était pas un voleur de sons. C'était un musicien sans instrument. Ses « bip » et ses « boup » n'étaient pas du bruit, c'étaient les notes d'une mélodie qu'il essayait de reconstruire. Une mélodie de très loin, de son étoile, qu'il avait perdue en tombant sur Terre.<br><br>Il était seul et sa musique lui manquait. Il ne volait pas les sons de la mer, il essayait de lui apprendre sa propre chanson, mais il ne savait pas comment faire. Il était un poète qui avait oublié ses mots.",
+      "image_prompt": "A close-up shot focusing on Pimprenelle's crystal guitar floating on the water. Bipboup's small metal pincer gently touches one of the six shimmering strings. As it makes contact, a single, soft, glowing musical note of violet light emerges from the string and floats upwards. The background is the blurry, sparkling turquoise of the sea. The focus is on the moment of connection and understanding."
+    },
+    {
+      "text": "Alors, Pimprenelle fit une chose merveilleuse. Elle ne joua pas une mélodie pour couvrir les bruits de Bipboup. Elle joua <em>le silence</em>. En caressant les cordes de sa guitare, elle tissa les pauses, les soupirs et les respirations qui manquaient entre les notes du petit robot. Et soudain, le chaos devint une musique sublime, une berceuse venue des étoiles.<br><br>La Mer d'Aural, libérée, se remit à chanter, ses vagues lumineuses dansant en harmonie avec la nouvelle chanson. Sur l'œil-écran de Bipboup, une larme bleue perla. Il n'était plus perdu. Il avait trouvé sa musique, et une amie pour l'accompagner.",
+      "image_prompt": "Pimprenelle sits on a glowing rock in the middle of the vibrant Mer d'Aural, her face serene as she plays the translucent crystal guitar. The small robot Bipboup floats happily beside her, his antennas glowing brightly, his blue screen-eye showing a joyful smile with a single tear. The entire sea is alive with bioluminescent light, silver fish glints, and soft, glowing musical notes drift through the air around them. The atmosphere is magical, peaceful, and deeply moving."
+    }
+  ],
+  "key": "courte_sorciere_ocean_guitare_robot",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "ocean",
+  "item": "guitare",
+  "villain": "robot"
+}

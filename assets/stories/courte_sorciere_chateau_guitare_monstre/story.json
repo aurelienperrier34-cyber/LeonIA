@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et la Guitare des Sept Silences",
+  "pages": [
+    {
+      "text": "Pimprenelle vivait à Belmondrie, un château de conte de fées aux murs croulants et aux tours pointues. C'était une jeune sorcière de neuf ans, avec des cheveux roux bouclés et un cœur aussi grand que son chapeau étoilé. Un soir, alors que sa baguette magique dessinait des arabesques d'argent dans l'air, elle entendit un son. Pas un grand bruit, non. Un tout petit sanglot étouffé, venu de la plus haute tour, celle que tout le monde avait oubliée.<br><br>Ce n'était pas un son qui faisait peur. C'était un son qui semblait terriblement seul. Intriguée, Pimprenelle posa sa baguette et décida d'aller voir. <em>Quelqu'un</em> ou <em>quelque chose</em> avait besoin d'aide.",
+      "image_prompt": "Pimprenelle, a 9-year-old witch girl with a long red curly braid, wearing a deep purple pointed hat and a lavender robe with star patterns, stands in a vast, cozy castle library. She holds her wooden wand, which glows faintly. Her expression is thoughtful and curious as she listens to a sound coming from off-screen. The room is filled with enchanted books and potion bottles, lit by a warm magical glow. Whimsical, fairy-tale illustration style."
+    },
+    {
+      "text": "L'escalier en colimaçon grinçait sous les pas de Pimprenelle. La poussière dansait dans les rayons de lune qui perçaient les vitraux brisés. Tout en haut, dans une chambre ronde et abandonnée, elle la vit. Posée sur un coussin de velours pourpre, la Guitare des Sept Silences attendait. Son corps de cristal translucide brillait doucement, capturant la lumière des étoiles dans ses cordes scintillantes. Elle était d'une beauté à couper le souffle, mais parfaitement muette.<br><br>Le petit son triste n'émanait pas de l'instrument. Il semblait flotter <em>autour</em> de lui, comme un parfum de solitude.",
+      "image_prompt": "A dusty, forgotten circular room at the top of a castle tower. Moonlight streams through a broken arched window, illuminating dust motes in the air. In the center of the room, on a velvet cushion placed on a stone pedestal, rests the Guitar of Seven Silences. The small acoustic guitar has a translucent crystal body that glows softly from within, its six strings shimmering with silver and violet reflections. The mood is mysterious, magical, and slightly melancholic. No characters are present."
+    },
+    {
+      "text": "Pimprenelle s'approcha doucement, tendant une main vers l'instrument magique. C'est alors qu'une petite créature violette et duveteuse bondit de derrière le piédestal. C'était Grobi. Il avait de grosses pattes, de courtes cornes et d'immenses yeux jaunes. Il tenta de pousser un grognement féroce, mais ce qui sortit de sa bouche ressembla plutôt à un hoquet surpris.<br><br>Il se planta devant la guitare, les bras écartés, le poil hérissé. Il ne semblait pas méchant. Non, dans ses grands yeux, Pimprenelle ne vit qu'une seule chose : une immense inquiétude.",
+      "image_prompt": "Pimprenelle, looking surprised but not scared, stands a few feet from the glowing crystal guitar. In front of the guitar, the small, cute purple fluffy monster Grobi stands defensively. Grobi has very big round yellow eyes filled with worry, two short curved horns, and a friendly-looking toothy mouth open in a failed growl. The scene is lit by the soft glow of the crystal guitar and moonlight from the window. The atmosphere is tense but not frightening."
+    },
+    {
+      "text": "Soudain, Pimprenelle comprit tout. Le son triste, c'était lui, Grobi. Le gardien silencieux d'un instrument silencieux. Il n'était pas un monstre, mais une petite boule de poils esseulée qui ne savait pas comment briser le mutisme de son trésor. Le nom de la guitare lui revint en tête : <em>la Guitare des Sept Silences</em>.<br><br>Ce n'était pas une guitare qui <em>créait</em> le silence, mais une guitare qui pouvait le <em>remplir</em>. Délicatement, Pimprenelle pinça une corde. Une seule note, claire et pure comme une goutte de rosée, s'éleva dans la pièce. Grobi cessa de trembler, ses grands yeux jaunes s'arrondissant de pure merveille.",
+      "image_prompt": "A close-up shot focusing on Pimprenelle's freckled hand gently plucking a single string of the crystal guitar. The string vibrates with a visible, magical light, emitting a musical note that looks like a particle of starlight. In the soft-focus background, Grobi the purple monster is visible, his huge yellow eyes wide with wonder and amazement, his previously worried expression completely gone. The mood is magical, gentle, and full of revelation."
+    },
+    {
+      "text": "Pimprenelle ne prit pas la guitare. Elle s'assit par terre, près de Grobi, et l'invita d'un geste. Ensemble, ils posèrent leurs doigts sur l'instrument. La jeune sorcière guida la petite patte poilue du monstre sur les cordes scintillantes. Leurs premières notes étaient maladroites, un peu fausses, mais si joyeuses !<br><br>La musique emplit la tour, chassant les sept silences : celui de la solitude, de l'oubli, de la peur, de l'incompréhension... Grobi avait trouvé une voix et, dans le château de Belmondrie, Pimprenelle venait de trouver un nouvel ami et une mélodie à partager.",
+      "image_prompt": "Pimprenelle and Grobi are sitting side-by-side on the floor of the castle tower room. Pimprenelle is smiling warmly as she helps guide Grobi's small, fuzzy paw across the strings of the glowing crystal guitar, which rests between them. Magical, luminous musical notes float up from the guitar and drift around them in the air. The scene is heartwarming, joyful, and filled with a sense of newfound friendship and shared happiness. The light is warm and golden."
+    }
+  ],
+  "key": "courte_sorciere_chateau_guitare_monstre",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "chateau",
+  "item": "guitare",
+  "villain": "monstre"
+}

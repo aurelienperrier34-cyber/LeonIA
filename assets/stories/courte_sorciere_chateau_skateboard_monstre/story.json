@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et le Voleur d'Étoiles",
+  "pages": [
+    {
+      "text": "Pimprenelle n'habitait pas une maison, mais un château. Pas n'importe lequel : le château de Belmondrie, avec ses trois tours pointues qui semblaient vouloir discuter avec la lune. Ses murs de pierre grise, couverts de lierre rêveur, cachaient des couloirs sans fin et des salles de bal poussiéreuses. C'était son royaume et son terrain de jeu.<br><br>Pour explorer ce labyrinthe de pierre, Pimprenelle avait une alliée secrète : <em>Fusee</em>, sa planche à roulettes magique. Sur son pont bleu nuit, un éclair doré scintillait en permanence. Avec Fusee sous les pieds, Pimprenelle ne marchait pas, elle glissait. Elle filait comme une comète silencieuse le long des tapisseries anciennes, son rire se mêlant au chuchotis du vent dans les fenêtres brisées.",
+      "image_prompt": "Pimprenelle, a 9-year-old witch with curly red hair in a side braid, wearing a purple pointed hat and lavender robe, joyfully rides her magical skateboard 'Fusee' down a grand, sun-dusted corridor of the Belmondrie castle. The skateboard has a deep blue deck with stars and a golden lightning bolt, and its neon-pink wheels leave a faint trail of light. The atmosphere is adventurous and whimsical."
+    },
+    {
+      "text": "Mais cette nuit-là, un son étrange perturba le calme de Belmondrie. Ce n'était pas le hululement de la chouette, ni le craquement des vieilles pierres. C'était un petit bruit triste, un sanglot étouffé qui semblait venir de tout en haut, de la tour Ouest, celle où personne n'allait jamais.<br><br>Le cœur de Pimprenelle battait un peu plus vite. Une ombre ? Un fantôme égaré ? Loin d'avoir peur, elle sentit une vague de curiosité la submerger. Elle serra le bois de sa baguette, dont le cristal opalin pulsa d'une douce lueur, et chuchota à sa planche : « Allons voir, <em>Fusee</em>. Une aventure nous attend là-haut. »",
+      "image_prompt": "Pimprenelle stands at the bottom of a dark, stone spiral staircase inside the Belmondrie castle. She holds her glowing wand, which illuminates her determined face and the first few steps. Her magical skateboard, Fusee, rests on the ground beside her, its wheels emitting a soft neon-pink glow. The scene is full of suspense and mystery, with deep shadows and a focused light source."
+    },
+    {
+      "text": "Au sommet de la tour, une petite porte de bois grinça sous sa poussée. Le grenier était baigné par le rayon solitaire de la lune, qui découpait un grand carré de lumière sur le plancher poussiéreux. Et au milieu de ce carré, une petite créature tremblait de tous ses poils. Ce n'était pas un monstre terrifiant. C'était une boule de fourrure violette, avec deux petites cornes recourbées et d'immenses yeux jaunes, remplis de larmes scintillantes.<br><br>La créature, pas plus haute que la botte de Pimprenelle, la vit et poussa un couinement de souris. Elle se recroquevilla sur elle-même, cachant quelque chose de précieux entre ses petites pattes griffues.",
+      "image_prompt": "Inside a dusty castle attic, bathed in a single beam of moonlight from a broken window. Pimprenelle, holding her glowing wand, stands cautiously in the doorway. In the center of the light stands Grobi, a small, cute, fluffy purple monster with big yellow eyes. Grobi looks scared, not menacing, and is clutching something to its chest. The mood is the moment of a surprising, not scary, discovery."
+    },
+    {
+      "text": "Pimprenelle baissa sa baguette. Son cœur fondit devant cette petite chose si fragile. Lentement, pour ne pas l'effrayer, elle s'agenouilla. « N'aie pas peur », murmura-t-elle. « Je ne te ferai pas de mal. »<br><br>La petite créature hésita, puis elle ouvrit doucement ses pattes. Dans le creux, brillait une petite étoile dorée, exactement comme celles qui ornaient la robe de Pimprenelle. La sorcière comprit tout. L'une de ses étoiles de tissu magique avait dû se détacher ! Le petit monstre n'était pas un voleur. C'était un <em>Grobi des Étoiles</em>, une créature attirée par la lumière perdue. Il avait simplement trouvé cette étoile tombée et, perdu dans l'immense château, il cherchait à la rendre.",
+      "image_prompt": "A close-up view focusing on the interaction. Grobi, the small purple monster, sits on the floor, timidly opening his fuzzy paws to reveal a small, glowing fabric star. Pimprenelle's hand is seen gently reaching towards him, her expression (seen from the side) is one of kindness and understanding. The scene is intimate and heartwarming."
+    },
+    {
+      "text": "« Oh, tu as retrouvé mon étoile ! » s'exclama Pimprenelle avec un sourire radieux. Elle prit délicatement l'étoile et la rangea dans sa poche. « Merci, petit Grobi. Tu es perdu, n'est-ce pas ? Laisse-moi te raccompagner. »<br><br>Elle installa la petite créature à l'avant de sa planche Fusee. « Accroche-toi ! » lança-t-elle. Et ils dévalèrent les escaliers en colimaçon, une cascade de lumière rose et dorée dans la nuit du château. Arrivés dans le jardin, sous le ciel immense, Grobi sauta à terre. Il fit une petite pirouette de remerciement, puis se transforma en une myriade d'étincelles qui montèrent rejoindre les étoiles. Ce soir-là, en regardant le ciel, Pimprenelle ne se sentit plus jamais seule dans son grand château.",
+      "image_prompt": "Pimprenelle and the cute monster Grobi are joyfully riding the magical skateboard 'Fusee' through the castle's moonlit garden. The skateboard leaves a trail of holographic shimmer and neon-pink light. Grobi is at the front, looking up at the sky with delight, while Pimprenelle steers from behind with a big smile. The castle towers are visible in the background against a starry night sky. The mood is magical, liberating, and full of joy."
+    }
+  ],
+  "key": "courte_sorciere_chateau_skateboard_monstre",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "chateau",
+  "item": "skateboard",
+  "villain": "monstre"
+}

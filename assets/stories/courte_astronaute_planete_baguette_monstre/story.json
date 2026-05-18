@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le chagrin de Vega-7",
+  "pages": [
+    {
+      "text": "Léa, la petite astronaute, posa son vaisseau sur une planète qu'elle n'avait jamais vue. Elle s'appelait Vega-7. C'était un monde magique, tout violet et turquoise, avec des cratères qui scintillaient comme des lucioles. Deux anneaux d'or fin tournaient doucement autour d'elle. Léa sourit dans son casque. Elle sentait une douce chaleur l'envelopper.<br><br>Avec sa fidèle baguette, <em>Étoile</em>, bien rangée à sa ceinture, elle était prête pour l'exploration. « Bonjour, Vega-7, » murmura-t-elle, ses yeux pétillant de curiosité. « Quels secrets vas-tu me raconter ? »",
+      "image_prompt": "An 8-year-old astronaut girl, Lea, with brown curly hair in two small buns and freckles, stands on a magical planet. She wears a white space suit with red and blue patches and a helmet decorated with golden stars. She has a friendly, curious expression. The planet, Vega-7, has a purple and teal surface with tiny glowing craters and is surrounded by two thin golden rings. The mood is wondrous and peaceful. Lea is present."
+    },
+    {
+      "text": "Léa fit quelques pas sur le sol moelleux. Mais quelque chose n'allait pas. Les petits cratères lumineux semblaient... plus faibles. Moins joyeux. La planète, d'habitude si chaude, paraissait frissonner. Soudain, Léa entendit un bruit. Un son très doux, un peu triste, comme un sanglot étouffé. D'où venait-il ?<br><br>Intriguée, elle tendit l'oreille et suivit la petite plainte qui semblait venir de derrière un grand rocher de cristal rose. Elle avança sur la pointe de ses bottes spatiales, le cœur battant un peu plus vite.",
+      "image_prompt": "The magical planet Vega-7 is shown, but its glowing craters are slightly dimmed, and the colors are a bit muted. A large pink crystal rock is in the foreground. The atmosphere is mysterious and slightly melancholic. No characters are visible, creating a sense of suspense."
+    },
+    {
+      "text": "Derrière le rocher, une petite créature était recroquevillée. C'était une boule de fourrure violette, avec deux petites cornes et d'immenses yeux jaunes. C'était Grobi. Mais il n'avait pas l'air méchant du tout. Au contraire, ses grands yeux étaient remplis de larmes scintillantes qui roulaient sur ses joues duveteuses. Il serrait quelque chose contre lui, si fort que ses petits bras tremblaient.<br><br>Léa le regarda, immobile. Il n'était pas effrayant. Il était juste... terriblement triste. Le petit monstre renifla bruyamment, sans même remarquer la présence de la jeune astronaute.",
+      "image_prompt": "Behind a large pink crystal rock, a small, cute, fluffy purple monster, Grobi, is curled up. He has two short horns and very big, round yellow eyes filled with sparkling tears. He is clutching something to his chest. The scene is intimate and sad, not scary. Grobi is present."
+    },
+    {
+      "text": "Doucement, Léa s'approcha. « Bonjour, » dit-elle d'une voix aussi douce que possible. « Pourquoi pleures-tu ? » Grobi sursauta, mais en voyant le visage gentil de Léa, il ne s'enfuit pas. Lentement, il ouvrit ses pattes. Dans sa paume, il y avait un petit fragment doré. Un morceau cassé... de l'un des anneaux de la planète !<br><br>Léa comprit tout. Grobi n'était pas un monstre qui volait la lumière. En jouant, il avait accidentellement brisé un morceau de l'anneau magique. Et depuis, la planète entière perdait son éclat. Grobi était juste un petit être maladroit qui avait fait une grosse bêtise et ne savait pas comment la réparer.",
+      "image_prompt": "Lea, the astronaut girl, is kneeling gently in front of Grobi, the small purple monster. She has a kind and understanding expression. Grobi is looking up at her, still sad but less scared, opening his paws to show her a small, broken piece of a golden ring. The lighting is soft and focused on the interaction between them. Lea and Grobi are present."
+    },
+    {
+      "text": "« Ne t'inquiète pas, » dit Léa avec un sourire rassurant. « Tout le monde fait des erreurs. » Elle sortit sa baguette, <em>Étoile</em>. La pointe en forme d'astre se mit à briller. « On va réparer ça, tous les deux. » Léa toucha le fragment doré avec sa baguette. Des étincelles d'argent l'enveloppèrent. Aidé par Grobi qui le tenait délicatement, le morceau s'éleva dans les airs, comme un oiseau d'or. Il vola, vola, jusqu'à retrouver sa place dans le grand anneau céleste, qui redevint parfait en un éclair.<br><br>Aussitôt, Vega-7 retrouva ses couleurs éclatantes et sa douce chaleur. Soulagé et fou de joie, Grobi fit à Léa le plus grand, le plus doux, le plus merveilleux des câlins tout poilus.",
+      "image_prompt": "Lea is standing, holding her magic wand 'Etoile' which is glowing with silver sparkles. The broken piece of the ring is floating upwards towards the sky, magically mending one of the planet's two golden rings. Grobi, the fluffy monster, is looking up at the sky with a joyful and relieved expression. The planet Vega-7 is now brightly lit, with its purple and teal surface and glowing craters shining vibrantly. The mood is joyful, magical, and heartwarming. Lea and Grobi are present."
+    }
+  ],
+  "key": "courte_astronaute_planete_baguette_monstre",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "planete",
+  "item": "baguette",
+  "villain": "monstre"
+}

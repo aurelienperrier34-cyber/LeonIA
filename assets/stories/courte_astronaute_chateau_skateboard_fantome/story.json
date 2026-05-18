@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Gardien des Étoiles Perdues",
+  "pages": [
+    {
+      "text": "Léa n'était pas une astronaute comme les autres. À huit ans, elle ne voyageait pas dans une grosse fusée qui fait beaucoup de bruit. Non, elle filait entre les planètes sur sa planche à roulettes magique, qu'elle appelait <em>Fusée</em>. Un jour, au détour d'une nébuleuse couleur barbe à papa, elle aperçut une chose incroyable : un château de pierre flottant sur un astéroïde. C'était Belmondrie. Ses trois hautes tours pointues semblaient des doigts de géant cherchant à chatouiller les étoiles. Le château paraissait abandonné, envahi de lierre, mais une douce lueur dorée brillait à travers une fenêtre cassée, comme un secret qui attendait d'être découvert.",
+      "image_prompt": "Whimsical children's book illustration. Léa, an 8-year-old astronaut girl with brown curly hair in two buns and freckles, rides her magical skateboard towards the camera. The skateboard has a deep blue deck with stars and a golden lightning bolt, and neon-pink glowing wheels. In the background, the fairytale castle of Belmondrie floats on an asteroid against a starry purple and blue nebula. Léa has a curious and excited expression."
+    },
+    {
+      "text": "Avec une agilité de chat, Léa fit atterrir <em>Fusée</em> dans la cour silencieuse du château. Un parfum de vieilles pierres et de pluie d'étoiles flottait dans l'air. Elle s'approcha de la fenêtre d'où venait la lumière. À l'intérieur, ce n'était pas une salle de bal, mais un immense atelier en désordre. Des jouets cassés, des horloges arrêtées, des automates silencieux et des instruments de musique muets s'entassaient sous une épaisse couche de poussière. C'était le royaume des objets oubliés.<br><br>Soudain, un fredonnement triste et léger, à peine plus fort qu'un souffle, parvint à ses oreilles. La mélodie semblait venir du cœur même de la pièce.",
+      "image_prompt": "Atmospheric interior scene. View from outside looking in through a large, broken stone arch window of castle Belmondrie. Inside, a vast, dusty workshop is filled with piles of beautiful but broken old objects: wooden toys, clocks, automatons. A warm, magical glow emanates from the center of the room. Léa, seen from the back, is peeking through the window, her helmet decorated with stars visible. The mood is mysterious and a little sad."
+    },
+    {
+      "text": "Léa se glissa à l'intérieur. Le fredonnement s'intensifia, vibrant de solitude. Une silhouette apparut alors, flottant au milieu des trésors brisés. C'était un petit fantôme translucide, avec une longue barbe blanche et des yeux d'un gris très doux. Il portait le contour estompé d'un tablier d'artisan. Il essaya de saisir un oiseau en bois dont l'aile était cassée, mais sa main spectrale le traversa.<br><br>« N'approche pas ! » murmura-t-il d'une voix qui ressemblait au vent dans les feuilles. « Ce sont... mes regrets. » Léa ne bougea pas. Elle n'avait pas peur. Elle voyait bien que ce n'était pas un gardien méchant, mais un fantôme terriblement triste.",
+      "image_prompt": "In the dusty workshop, Léa stands facing Maître Otho, the small, friendly, translucent ghost. Maître Otho is floating, his form glowing with a gentle blue-white light, his expression sad and protective. He is trying to hold a small, broken wooden bird, his ghostly hand passing through it. Léa, her helmet on, looks at him not with fear, but with empathy and curiosity. The warm glow in the room now seems to come from the ghost himself."
+    },
+    {
+      "text": "« Vous ne pouvez plus les réparer », dit doucement Léa. Le fantôme, qui s'appelait Maître Otho, baissa la tête. Sa lumière bleutée vacilla. Il lui raconta son histoire. Autrefois, il était l'artisan et l'inventeur de Belmondrie, créant des merveilles pour la joie de tous. Mais un jour, une vague de tristesse, un <em>Grand Oubli</em>, avait tout brisé sur son passage, le transformant lui-même en un souvenir incapable de toucher le monde réel.<br><br>Son plus grand chagrin était une immense boîte à musique conçue pour projeter des constellations au plafond. « Je voulais juste... voir les étoiles danser une dernière fois », sanglota le fantôme.",
+      "image_prompt": "A heartfelt moment between Léa and Maître Otho. Léa has taken her helmet off, showing her curly hair buns and freckled face. She looks at the sorrowful ghost with deep understanding. Maître Otho, his ethereal form flickering sadly, gestures with one hand towards a large, intricate, but broken music box in the corner of the workshop. The focus is on the emotional connection between the two characters."
+    },
+    {
+      "text": "Une idée pétilla dans l'esprit de Léa. Elle ne pouvait pas réparer les rouages de la boîte à musique, mais elle avait ses propres étoiles ! Elle posa son casque à terre et sauta sur <em>Fusée</em>. La planche s'illumina, et Léa s'élança dans le grand atelier. Les roues roses fluo et les éclairs dorés de sa planche projetèrent des milliers de petites lumières dansantes sur les murs et la voûte. C'était une comète en liberté, un ballet d'étoiles filantes rien que pour Maître Otho.<br><br>Le fantôme, stupéfait, leva les yeux. Son atelier n'était plus un cimetière de souvenirs, mais une galaxie de joie. Il sourit, d'un sourire si lumineux que tout son être se mit à briller d'une lueur chaude et apaisée. « Merci, petite étoile », murmura-t-il en s'estompant doucement, enfin en paix.",
+      "image_prompt": "Dynamic and joyful wide shot. Léa joyfully rides her magical skateboard 'Fusée' in large, sweeping circles inside the castle's grand workshop. The skateboard leaves a holographic trail of light, and its glowing pink wheels and golden bolts project vibrant, moving stars onto the high vaulted ceilings and walls. In the center of the room, the ghost Maître Otho floats, looking up in awe with a bright, happy smile, his entire form radiating a warm, peaceful golden light."
+    }
+  ],
+  "key": "courte_astronaute_chateau_skateboard_fantome",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "chateau",
+  "item": "skateboard",
+  "villain": "fantome"
+}

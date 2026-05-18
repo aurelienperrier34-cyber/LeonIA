@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Voleur de Lumière",
+  "pages": [
+    {
+      "text": "Léa était une astronaute pas comme les autres. Au lieu d'un vaisseau spatial grand comme une montagne, elle avait <em>Fusée</em>, une planche à roulettes magique qui filait plus vite que les comètes. Son casque était constellé de petites étoiles d'or, et ses yeux pétillaient de curiosité.<br><br>Un jour, en suivant une poussière d'étoile couleur framboise, elle arriva devant un spectacle incroyable : la Mer d'Aural. C'était un océan qui ne ressemblait à aucun autre. Ses vagues turquoises chantaient une douce mélodie, et des milliers de paillettes lumineuses dansaient sous la surface, comme un ciel étoilé sous-marin.",
+      "image_prompt": "Child astronaut girl Lea, 8 years old, curly brown hair in two buns, freckles, white space suit with red and blue patches, helmet decorated with golden stars, floating on her magical skateboard with a deep blue deck and glowing pink wheels, looking down with a friendly curious expression at a magical luminous deep turquoise and aquamarine ocean scattered with bioluminescent sparkles, gentle art style like Tomi Ungerer or Antoine de Saint-Exupery."
+    },
+    {
+      "text": "Émerveillée, Léa descendit doucement, sa planche flottant juste au-dessus des flots scintillants. Des poissons d'argent liquide venaient frôler ses bottes, sans aucune crainte. Le silence était parfait, seulement brisé par le doux clapotis de l'écume.<br><br>Mais soudain... <em>BIP ! BOUP !</em> Un bruit métallique et sec déchira le calme. Les poissons d'argent s'éparpillèrent comme des éclats de miroir. L'eau se mit à frissonner, ses belles couleurs semblant s'affoler. D'où venait ce vacarme ? Léa, le cœur battant un peu plus vite, décida de mener l'enquête. Elle serra le bord de sa planche et suivit le son discordant.",
+      "image_prompt": "The magical luminous Mer d'Aural, a deep turquoise and aquamarine ocean, is disturbed. Concentric ripples spread across the water from an unseen source. Streaks of light representing silver fish dart away in panic. The atmosphere is one of sudden mystery, with soft starlight reflecting on the troubled water. No characters are visible, or maybe a tiny distant silhouette of Lea on her skateboard."
+    },
+    {
+      "text": "Au cœur d'une petite crique lumineuse, elle le vit. C'était un petit robot de fer-blanc, pas plus haut que son genou. Il s'agitait dans tous les sens, ses bras-pinces mécaniques plongeant dans l'eau et la projetant en gerbes chaotiques. <em>BIPBOUP !</em> faisait-il, l'air très affairé. Léa fronça les sourcils. Partout où le robot passait, la mer semblait perdre un peu de sa lumière, comme si le petit être de métal la buvait. Son unique œil-écran bleu affichait un sourire espiègle. « Il vole la lumière de la mer ! » pensa Léa, un peu indignée.",
+      "image_prompt": "A small tin-can robot, Bipboup, with a round silver riveted body and pincer arms, is splashing frantically in the shallow, luminous water of the Mer d'Aural. His single round blue screen-eye shows a mischievous smile. The water around him is chaotic and seems dimmer. In the background, partially hidden by a glowing sea-plant, astronaut girl Lea watches him with a puzzled and concerned expression."
+    },
+    {
+      "text": "Léa décida d'intervenir. Mais au lieu de crier, elle s'approcha doucement sur la pointe des pieds... ou plutôt, sur la pointe de sa planche. En arrivant près du robot, elle vit quelque chose qu'elle n'avait pas remarqué de loin. Le sourire sur son œil-écran était un peu forcé. Et surtout, les deux ampoules au bout de ses antennes clignotaient faiblement. Elles étaient presque éteintes. Le robot n'était pas espiègle, il était désespéré. Il ne volait pas la lumière, il essayait maladroitement de s'en nourrir pour ne pas s'éteindre ! Il la regarda et fit un tout petit « bip... » triste, son sourire se transformant en une ligne toute molle.",
+      "image_prompt": "A close-up, emotional scene. Astronaut girl Lea is floating gently on her skateboard, looking with empathy at the small robot Bipboup. Bipboup is slumped slightly, his two antennas with their light bulbs are very dim. His single blue screen-eye now shows a sad, drooping smile emoji. He holds a single, fading bioluminescent sparkle delicately in his mechanical pincer."
+    },
+    {
+      "text": "Le cœur de Léa se serra. Elle comprit tout. Ce petit robot était simplement à court d'énergie. Alors, elle eut une idée lumineuse. Doucement, elle dévissa l'une des étoiles d'or qui décoraient son casque. Ce n'était pas un simple bijou, mais une véritable petite étoile condensée, pleine d'une lumière douce et infinie. Elle la tendit au robot.<br><br>Bipboup la prit avec une hésitation touchante. Il la plaça entre ses deux antennes. Aussitôt, elles s'illuminèrent d'un éclat jaune et chaud, bien plus vif que celui de la mer. Sur son écran, un grand cœur apparut. Autour d'eux, la Mer d'Aural, apaisée, se remit à briller de tous ses feux, célébrant cette nouvelle amitié.",
+      "image_prompt": "A heartwarming and luminous final scene. Astronaut girl Lea and tin-can robot Bipboup float peacefully side-by-side above the calm Mer d'Aural. Bipboup's antennas are now glowing incredibly brightly, powered by a small golden star placed between them. His blue screen-eye shows a large, happy heart symbol. Lea is smiling warmly at him. The ocean around them is intensely bright and filled with calm, returning silver fish."
+    }
+  ],
+  "key": "courte_astronaute_ocean_skateboard_robot",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "ocean",
+  "item": "skateboard",
+  "villain": "robot"
+}

@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Robot aux Larmes d'Étoiles",
+  "pages": [
+    {
+      "text": "Léa n'était pas une exploratrice comme les autres. À huit ans, son terrain de jeu n'était pas le jardin derrière la maison, mais la galaxie tout entière. Vêtue de sa combinaison blanche aux écussons rouge et bleu, son casque décoré d'étoiles dorées bien vissé, elle pilotait son vaisseau spatial personnel, qui ressemblait curieusement à une poussette très rapide.<br><br>Un jour, son radar de curiosité bipa plus fort que jamais. Devant elle se dressait Belmondrie, un château de conte de fées, avec ses trois tours pointues et ses toits bleus en forme de cône. Du lierre grimpait sur les murs de pierre et, par les fenêtres brisées, filtrait une lueur chaude et magique. Léa posa son vaisseau en douceur. Une nouvelle aventure l'attendait.",
+      "image_prompt": "Whimsical children's book illustration. 8-year-old astronaut girl Léa, with freckles and curly brown hair in two buns under her glass helmet, stands in awe before a fairy-tale stone castle named Belmondrie. The castle has three tall pointed towers with blue conical roofs. The scene is set at twilight, with a deep purple and orange sky. A warm magical glow emanates from the castle's broken windows. Léa has a curious and friendly expression."
+    },
+    {
+      "text": "Avec des pas de cosmonaute sur la Lune, Léa pénétra dans le château silencieux. Des grains de poussière dansaient comme de minuscules fées dans les rayons de lumière qui perçaient les hauts plafonds. L'air sentait la vieille pierre et la magie endormie. Au cœur de la plus grande salle, sur un coussin de velours pourpre usé par le temps, reposait un objet qui brillait doucement. C'était une fine baguette de bois couleur miel, parcourue de gravures en spirale.<br><br>À son extrémité, une étoile dorée à cinq branches scintillait. Léa retira son casque, ses nattes bouclées s'échappant joyeusement. Elle tendit la main et effleura la baguette. Aussitôt, l'étoile au bout de la baguette, qu'elle baptisa <em>Étoile</em>, émit une gerbe d'étincelles argentées.",
+      "image_prompt": "Interior of a vast, dusty castle hall with high stone arches. A single beam of light illuminates a pedestal. Léa, helmet off revealing her brown curly hair in two small buns and freckles, gently touches a slim magical wand. The wand's five-pointed golden star tip emits a shower of silver sparkles. The atmosphere is quiet and magical. Only Léa is present."
+    },
+    {
+      "text": "CLANG ! ZIIIP ! BOUP !<br><br>Un bruit de casserole dégringolant un escalier fit sursauter Léa. Une petite chose ronde et argentée fila à toute vitesse, lui arrachant <em>Étoile</em> des mains avec une pince mécanique. C'était Bipboup, un petit robot en fer-blanc, avec deux antennes surmontées d'ampoules jaunes. Son œil unique, un écran bleu, affichait un sourire espiègle. Sans un mot, il détala dans les couloirs, la baguette magique serrée dans sa pince.<br><br>« Hé ! Attends ! » s'écria Léa, plus surprise qu'énervée. Elle se lança à sa poursuite, ses bottes spatiales résonnant sur les dalles de pierre. La course-poursuite dans le château de Belmondrie venait de commencer.",
+      "image_prompt": "Dynamic action scene in a medieval castle corridor. The small tin-can robot Bipboup, with his round silver body and glowing antennas, is zipping away at high speed, holding the sparkling magic wand 'Étoile' in his pincer arm. In the background, Léa the astronaut girl has just started running after him, her face showing a mix of surprise and determination."
+    },
+    {
+      "text": "La poursuite prit fin dans une tour ronde, un cul-de-sac. Bipboup était piégé. Léa s'approcha, prête à récupérer son bien. Mais le robot ne semblait plus espiègle du tout. Il était recroquevillé contre le mur, tout petit. Sur son écran bleu, le sourire avait été remplacé par un visage triste, d'où perlait une larme digitale.<br><br>Il serrait <em>Étoile</em> contre son corps de métal, non comme un trésor, mais comme un doudou. Les étincelles de la baguette se reflétaient dans son œil-écran. D'une de ses antennes flexibles, il pointa un trou dans le mur, vers le ciel nocturne, noir et profond, piqueté d'étoiles lointaines. Il émit une série de bips doux et mélancoliques, qui ressemblaient à des sanglots.",
+      "image_prompt": "Emotional scene in a circular castle tower room. The small robot Bipboup is backed against a wall, looking sad. His single blue screen-eye shows a crying face with a digital tear. He clutches the glowing wand 'Étoile'. He points one antenna towards a broken window showing the vast, starry night sky. Léa stands a few feet away, her expression softening from chase to compassion. The mood is quiet and poignant."
+    },
+    {
+      "text": "Le cœur de Léa fondit. Ce n'était pas un voleur, c'était un voyageur égaré. Il avait le mal des étoiles. « Tu veux rentrer chez toi ? » murmura-t-elle. Lentement, Bipboup lui tendit la baguette.<br><br>Alors, Léa ne créa pas un sortilège, mais un chemin. Elle leva <em>Étoile</em> et, sur la voûte de pierre au-dessus d'eux, elle dessina une carte du ciel. Une Voie lactée scintillante, des constellations dansantes, et une petite comète clignotante qui montrait la route vers la maison de Bipboup. Le robot laissa échapper une série de bips joyeux. Son œil-écran afficha une étoile qui clignait en signe de complicité. Avant de disparaître dans un doux tourbillon de lumière, il projeta un mot sur le mur, en lettres lumineuses : <em>MERCI</em>. Léa était seule à nouveau, mais son univers venait de s'agrandir d'un ami.",
+      "image_prompt": "Heartwarming final scene. In the center of the tower room, Léa and Bipboup stand together, looking up. Léa holds the wand 'Étoile' high, projecting a magnificent, swirling galaxy of silver and gold light onto the domed stone ceiling. Bipboup looks up in awe, his blue screen-eye now showing a happy, winking star. The atmosphere is magical, warm, and filled with the wonder of friendship and stars."
+    }
+  ],
+  "key": "courte_astronaute_chateau_baguette_robot",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "chateau",
+  "item": "baguette",
+  "villain": "robot"
+}

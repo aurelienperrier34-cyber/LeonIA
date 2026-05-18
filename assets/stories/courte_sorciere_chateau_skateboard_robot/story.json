@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et le Voleur Scintillant",
+  "pages": [
+    {
+      "text": "Au sommet de la plus haute tour du château de Belmondrie, dans une chambre ronde remplie de grimoires et de fioles pétillantes, vivait Pimprenelle. Chaque matin, après avoir coiffé sa longue tresse rousse, elle enfourchait <em>Fusee</em>, son skateboard magique, pour une course folle sur les remparts moussus. Mais ce matin-là, la place de Fusee était vide. À sa place, de minuscules empreintes métalliques et un peu huileuses formaient une piste étrange sur les vieilles pierres. Qui avait osé s'emparer de son skateboard bleu nuit, constellé d'étoiles et doté de roues rose fluo ?<br><br>Pimprenelle fronça ses sourcils parsemés de taches de rousseur. Ce n'était pas une simple bêtise, c'était un mystère à résoudre.",
+      "image_prompt": "Interior of a round castle tower room, cozy and magical. Pimprenelle, a 9-year-old witch girl with a long red braid, freckles, and a purple witch hat, stands looking at an empty spot on the floor with a worried expression. The room is filled with books, potions, and a large window showing a beautiful landscape. Tiny metallic footprints are visible on the stone floor."
+    },
+    {
+      "text": "Sans perdre un instant, Pimprenelle attrapa sa baguette en bois de saule et suivit la curieuse piste. Les empreintes la menèrent hors de sa tour, descendirent un escalier en colimaçon à une vitesse folle, et se faufilèrent par une fenêtre brisée recouverte de lierre. Dehors, la piste s'enfonçait dans le Bois des Murmures, une forêt où les arbres se racontent des secrets et où les champignons luisent d'une douce lueur.<br><br>Pimprenelle n'avait pas peur. Elle était une sorcière, après tout ! Et Fusee était bien plus qu'un simple objet ; c'était un ami. Le cristal au bout de sa baguette commença à pulser d'une lumière chaude, la guidant à travers les ombres dansantes.",
+      "image_prompt": "Pimprenelle is walking determinedly through an enchanted forest. She holds her wooden wand, which has a glowing crystal tip. She is following a trail of small, mechanical footprints on the mossy ground. The forest is magical, with glowing mushrooms and shafts of light piercing the canopy. The atmosphere is mysterious but not scary."
+    },
+    {
+      "text": "Au cœur d'une clairière baignée de soleil, elle le vit. Un petit robot de fer-blanc, tout rond et riveté, avec deux antennes flexibles surmontées d'ampoules jaunes. C'était lui, le voleur ! Il se tenait en équilibre précaire sur <em>Fusee</em>, qui tournait sur elle-même sans s'arrêter, projetant des étincelles holographiques dans tous les sens. Le petit robot, que nous appellerons Bipboup, agitait ses bras en pince et laissait échapper une série de bips et de clics désespérés.<br><br>Sur son unique œil-écran bleu, un visage clignotant semblait au bord des larmes électroniques. Il n'avait pas l'air méchant, juste terriblement maladroit et frustré.",
+      "image_prompt": "In a sunlit forest clearing, a small, playful tin-can robot (Bipboup) is comically failing to ride a magical skateboard (Fusee). The skateboard is spinning on the ground, emitting neon-pink and holographic sparks. The robot looks frustrated, its pincer arms gesturing wildly. From behind a large tree, Pimprenelle peeks out, her expression one of surprise rather than anger."
+    },
+    {
+      "text": "Doucement, Pimprenelle sortit de sa cachette. « Bonjour, » dit-elle d'une voix douce. « Pourquoi as-tu pris mon skateboard ? Il s'appelle <em>Fusee</em>. »<br><br>Bipboup sursauta et fit un bond en arrière. Il émit une cascade de bips rapides, puis son œil-écran devint noir avant de projeter une image tremblotante dans l'air. L'image montrait une planète minuscule et lointaine, plongée dans la nuit, où un phare solitaire était brisé. Le petit robot pointa une de ses pinces vers l'éclair doré dessiné sur Fusee, puis vers le ciel, très haut. Pimprenelle comprit. Bipboup n'était pas un voleur. C'était un voyageur perdu. Il avait cru que l'éclair de Fusee était une antenne assez puissante pour envoyer un message de détresse.",
+      "image_prompt": "Pimprenelle kneels on the mossy ground to be at the same level as the small robot, Bipboup. Her expression is full of compassion and understanding. Bipboup is projecting a faint, holographic image from its single blue screen-eye, showing a small, dark planet with a broken lighthouse. The magical skateboard lies on the ground between them."
+    },
+    {
+      "text": "Le cœur de Pimprenelle se serra. « Oh, pauvre petit Bipboup... Tu veux juste rentrer chez toi. » Soudain, son visage s'illumina. « J'ai une idée ! » Elle posa la pointe de sa baguette sur l'éclair doré de Fusee et dit au robot : « Tends tes antennes très haut ! Mettons nos magies ensemble. »<br><br>Une incroyable gerbe de lumière lavande et dorée jaillit du skateboard, guidée par la baguette de Pimprenelle. Le faisceau monta, monta, jusqu'à éclater dans le ciel en une constellation nouvelle, un message d'étoiles scintillantes. Quelques instants plus tard, très loin dans le velours de la nuit, une minuscule étoile clignota trois fois en réponse. Bipboup laissa échapper un trille de bips joyeux et se mit à danser. Il n'était plus perdu. Il avait une amie.",
+      "image_prompt": "At dusk, on a hill overlooking the Belmondrie castle, Pimprenelle and Bipboup work together. Pimprenelle's wand touches the lightning bolt on the skateboard, which is on the ground. Bipboup stands beside it with its antennas raised high. A brilliant beam of sparkling, magical light shoots from the skateboard into the starry night sky. Bipboup's screen-eye shows a wide, happy smile."
+    }
+  ],
+  "key": "courte_sorciere_chateau_skateboard_robot",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "chateau",
+  "item": "skateboard",
+  "villain": "robot"
+}

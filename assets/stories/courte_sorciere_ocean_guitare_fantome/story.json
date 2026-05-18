@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et la Guitare des Sept Silences",
+  "pages": [
+    {
+      "text": "Pimprenelle, petite sorcière aux cheveux de feu, naviguait sur son bateau en coquille de noix. Sous elle, la Mer d'Aural scintillait de mille feux turquoise et aigue-marine. D'habitude. Car depuis quelque temps, la mer semblait avoir perdu son éclat. Ses étincelles bioluminescentes étaient plus rares, ses poissons d'argent moins vifs.<br><br>Pimprenelle tenait sa baguette en bois de saule, songeant à une vieille légende. L'histoire d'une guitare de cristal capable, disait-on, d'apaiser toutes les peines. <em>La Guitare des sept silences</em>. Si elle pouvait la trouver, peut-être pourrait-elle rendre à la mer sa lumière perdue.",
+      "image_prompt": "A 9-year-old witch girl, Pimprenelle, with curly red hair in a long side braid and a deep purple pointed hat with golden moons, stands in a small boat made from a nutshell. She is sailing on the magical Mer d'Aural, a luminous deep turquoise and aquamarine ocean with faint bioluminescent sparkles. She holds a wooden wand, her kind expression is thoughtful and determined. The mood is magical but with a hint of melancholy."
+    },
+    {
+      "text": "Guidée par le reflet d'une étoile solitaire, Pimprenelle accosta sur un îlot qui n'était sur aucune carte. Il était entièrement fait de cristal de sel, qui chantait doucement sous la brise marine. Au centre, posée sur un socle de corail blanc, reposait la guitare. Elle était encore plus belle qu'en rêve : son corps translucide captait la lumière, et ses six cordes frémissaient de reflets argentés et violets.<br><br>Avec des gestes infiniment doux, Pimprenelle la saisit. Ses doigts coururent sur les cordes. Elle gratta un accord... et rien. Un silence pur. Pas le moindre son, pas la plus petite vibration. La guitare était muette comme une pierre.",
+      "image_prompt": "Pimprenelle, the young witch, stands on a tiny, glistening island made of white salt crystal. She is holding a small, beautiful acoustic guitar with a translucent pale crystal body and shimmering strings. Her expression is one of wonder mixed with puzzlement, as she has just tried to play it and no sound came out. The guitar is not glowing. The magical turquoise sea is in the background."
+    },
+    {
+      "text": "C'est alors qu'une forme bleutée et vaporeuse apparut devant elle. C'était un petit fantôme translucide, à l'allure d'un vieil artisan. Il avait une longue barbe blanche et un doux sourire triste. C'était Maître Otho.<br><br>« Il ne faut pas », murmura-t-il d'une voix qui ressemblait au froissement de la soie. « Laissez-la reposer. Son silence protège un grand chagrin. » Il tendit ses mains éthérées pour reprendre l'instrument, mais elles passèrent au travers, comme de la fumée. Il n'était pas menaçant, seulement infiniment mélancolique. Pimprenelle sentit que le mystère de la guitare et la tristesse de ce fantôme étaient liés.",
+      "image_prompt": "Pimprenelle, holding the silent crystal guitar, looks up, startled but not scared. Before her floats the friendly, translucent ghost of Maître Otho, an old craftsman with a long wispy white beard and kind, pale grey eyes. He has an ethereal blue-white glow. One of his ghostly hands is raised gently, as if pleading for her to stop. The scene is on the salt crystal island at dusk."
+    },
+    {
+      "text": "Pimprenelle ne s'enfuit pas. Elle s'assit en tailleur sur le sol de cristal et regarda le fantôme avec douceur. « Quel chagrin ? » demanda-t-elle.<br><br>Le cœur de Maître Otho, s'il en avait eu un, se serra. Il raconta. C'était lui, le luthier qui avait fabriqué cette merveille. Il l'avait créée pour la personne qu'il aimait le plus au monde, dont le rire était la plus belle des musiques. Mais cette personne était partie pour un très long voyage, et ne reviendrait pas. Alors, pour ne plus souffrir en entendant ces mélodies joyeuses, il avait utilisé sa magie pour enfermer le son de la guitare dans <em>sept couches de silence</em>. Mais son chagrin était si grand qu'il avait déteint sur la mer, voilant sa lumière.",
+      "image_prompt": "Pimprenelle, a kind young witch with freckles, sits cross-legged on the crystal island floor, listening with empathy. The translucent ghost of Maître Otho floats before her, his form wispy and sad as he gestures toward the crystal guitar resting between them. His ghostly expression is one of deep sorrow as he tells his story. The mood is quiet, gentle, and poignant under a starlit sky."
+    },
+    {
+      "text": "Pimprenelle comprit. Pour guérir la mer, il fallait d'abord apaiser le cœur du luthier. Elle ne tenta pas de jouer un air joyeux. « La musique peut aussi être un souvenir », dit-elle à voix basse. « Un souvenir doux, même s'il est un peu triste. »<br><br>Délicatement, elle pinça une seule corde. Une note unique, pure et cristalline, s'éleva dans l'air. Elle n'était ni gaie ni sombre, mais pleine d'une tendre mélancolie. Le premier silence était brisé. La guitare se mit à luire d'une douce lueur intérieure. Une larme perla sur la joue de Maître Otho, et en tombant, elle brilla comme une étoile avant de se fondre dans la mer, qui, aussitôt, scintilla un peu plus fort. Ce n'était qu'un début, mais la musique et la lumière commençaient, ensemble, à revenir.",
+      "image_prompt": "A close-up view focusing on Pimprenelle's small hand with freckles and Maître Otho's ethereal, translucent hand, both hovering near the crystal guitar. Pimprenelle has just plucked a single string, which is vibrating and emitting a soft, golden light. The guitar itself has begun to glow softly from within. A single, luminous tear falls from the corner of Maître Otho's ghostly eye. In the background, the surface of the turquoise sea is visibly sparkling more brightly."
+    }
+  ],
+  "key": "courte_sorciere_ocean_guitare_fantome",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "ocean",
+  "item": "guitare",
+  "villain": "fantome"
+}

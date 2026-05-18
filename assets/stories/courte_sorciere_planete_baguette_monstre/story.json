@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et la Tristesse de l'Étoile",
+  "pages": [
+    {
+      "text": "Pimprenelle, jeune sorcière aux cheveux roux bouclés, aimait sa planète plus que tout au monde. Vega-7 était sa maison : une petite bille de velours violet et turquoise, ceinturée de deux anneaux dorés, fins comme des cheveux d'ange. Chaque jour, avec sa baguette magique nommée <em>Étoile</em>, un trésor de bois miel au bout étoilé, elle s'amusait à dessiner des constellations éphémères dans le ciel juste pour le plaisir de les voir scintiller.<br><br>Mais ce soir-là, un bruit étrange gronda à la surface de la planète. Un son grave et gourmand, comme un estomac qui gargouille après un long sommeil. Un son qui ne ressemblait à aucune des douces mélodies de Vega-7.",
+      "image_prompt": "A whimsical scene on the magical planet Vega-7. Pimprenelle, a 9-year-old witch girl with a long red curly braid, freckles, a deep purple pointed hat with golden crescent moons, and a lavender robe, is happily practicing with her wand, 'Etoile'. The wand is made of honey-brown wood with a glowing golden star tip emitting silver sparkles. The planet's surface is purple and teal with tiny glowing craters. The mood is peaceful, magical, and serene. Pimprenelle is the only character present."
+    },
+    {
+      "text": "Intriguée, Pimprenelle enfila son chapeau pointu, prit <em>Étoile</em> bien en main et flotta doucement vers la source du bruit. Elle se cacha derrière un grand rocher de cristal. Là, près du plus grand cratère lumineux, se tenait une petite créature. Une boule de poils violets, avec de grands yeux jaunes et deux petites cornes recourbées. La créature se penchait sur le cratère et... <em>slurp</em> ! La lumière douce du cratère diminua aussitôt, devenant faible et triste.<br><br>Le cœur de Pimprenelle se serra. Ce monstre dévorait la lumière de sa planète ! Il fallait l'arrêter avant que Vega-7 ne soit plongée dans une nuit éternelle.",
+      "image_prompt": "Pimprenelle peeks from behind a large teal crystal rock, her expression a mix of worry and determination. In the distance, the small, cute, fluffy purple monster Grobi is sitting by a glowing crater. Grobi has large round yellow eyes and a fuzzy body. The crater's light appears dimmer around him. The scene is set on the purple and teal surface of Vega-7 under a starry sky. The mood is tense and mysterious."
+    },
+    {
+      "text": "Le cœur battant, Pimprenelle s'avança. « Arrêtez ! » cria-t-elle d'une voix qui se voulait plus assurée qu'elle ne l'était. « Vous faites du mal à ma planète ! »<br><br>La petite créature sursauta et se retourna. Ses grands yeux jaunes n'étaient pas méchants. Ils étaient remplis de larmes scintillantes qui coulaient sur sa fourrure. Il n'aspirait pas la lumière ; il pleurait dedans ! Un petit son lui échappa, non pas un grognement féroce, mais un hoquet de tristesse. <em>Pimprenelle réalisa alors que ce n'était pas un monstre, mais juste quelqu'un qui avait beaucoup, beaucoup de peine.</em>",
+      "image_prompt": "An emotional close-up moment between Pimprenelle and Grobi. Pimprenelle stands before Grobi, her wand lowered, her expression softened from anger to surprise and empathy. Grobi, the small fluffy purple monster, looks up at her with huge, sad yellow eyes filled with sparkling tears. He is not scary at all, just incredibly sad. They are on the surface of Vega-7, with a dimly glowing crater nearby."
+    },
+    {
+      "text": "Pimprenelle s'agenouilla doucement. « Pourquoi pleures-tu ? » demanda-t-elle d'une voix douce. Le monstre, qui s'appelait Grobi, renifla. Il ne pouvait pas parler sa langue, mais il leva une petite patte poilue vers le ciel profond. Il montrait une nébuleuse lointaine, un tourbillon de gaz et de poussière d'étoiles aux couleurs de l'arc-en-ciel.<br><br>Pimprenelle comprit tout. Grobi n'était pas un mangeur de planètes. C'était un mangeur... de poussière d'étoiles ! Il s'était perdu. La lumière de Vega-7, si douce et chaude, était la seule chose qui ressemblait un peu à sa maison, et sa tristesse l'absorbait sans le vouloir, comme une éponge boit de l'eau.",
+      "image_prompt": "Pimprenelle kneels on the purple ground of Vega-7, looking with kindness and understanding at Grobi. Grobi sits sadly but hopefully, pointing a small fuzzy claw towards a magnificent, colorful nebula shining in the distant starry space. The two thin golden rings of Vega-7 frame the scene in the sky. The mood is one of dawning understanding and hope."
+    },
+    {
+      "text": "Un sourire illumina le visage de Pimprenelle. Elle avait la solution ! Elle leva sa baguette <em>Étoile</em>, non pas pour chasser Grobi, mais pour l'aider. « Je ne peux pas te donner ma planète, mais je peux te montrer le chemin », murmura-t-elle. De la pointe de sa baguette jaillit non pas un éclair, mais un fin ruban de lumière argentée. Le ruban s'étira dans l'espace, formant un chemin scintillant jusqu'à la nébuleuse de Grobi.<br><br>Le petit monstre la regarda avec une immense gratitude, laissa échapper un couinement joyeux, et se mit à sautiller sur le chemin de lumière. En partant, toute la lueur qu'il avait absorbée malgré lui s'échappa de sa fourrure et retourna aux cratères de Vega-7, les faisant briller plus fort que jamais.",
+      "image_prompt": "Pimprenelle stands triumphantly and kindly on Vega-7, her magical wand 'Etoile' raised high. A beautiful, sparkling trail of silver light flows from the wand's star tip, creating a path across the starry sky towards a distant, colorful nebula. The small purple monster, Grobi, is happily hopping along this light path, turning back to give a joyful look. The craters on Vega-7 below are glowing brilliantly, brighter than before. The mood is magical, heartwarming, and triumphant."
+    }
+  ],
+  "key": "courte_sorciere_planete_baguette_monstre",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "planete",
+  "item": "baguette",
+  "villain": "monstre"
+}

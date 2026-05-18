@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Voleur d'Étoile",
+  "pages": [
+    {
+      "text": "Léa, la petite astronaute aux cheveux bouclés, posa son vaisseau sur la planète Vega-7. Partout autour d'elle, le sol était d'un violet profond, parsemé de petits cratères qui brillaient d'une douce lueur turquoise. C'était un monde magique, silencieux, entouré de deux fins anneaux dorés qui dansaient dans l'espace. Dans sa main, Léa tenait <em>Étoile</em>, sa baguette magique. Ce n'était pas une baguette ordinaire. Faite d'un bois couleur de miel, elle avait été sculptée par sa grand-mère, une collectionneuse d'astres lointains. À son sommet, une étoile d'or pur scintillait, prête à guider Léa vers les merveilles cachées de l'univers.",
+      "image_prompt": "Astronaut girl Lea, with curly brown hair in two buns and freckles, stands on the purple and teal surface of planet Vega-7. She is wearing her white space suit, helmet off, and holding a slim wooden magical wand, 'Etoile', which has a glowing golden star tip. The background shows tiny glowing craters, two thin golden rings around the planet, and a starry space. Her expression is full of wonder and curiosity. Style of Tomi Ungerer and Antoine de Saint-Exupery."
+    },
+    {
+      "text": "Léa s'agenouilla pour admirer un champ de fleurs de cristal. Quand le vent léger de Vega-7 les effleurait, elles produisaient une mélodie cristalline. Émerveillée, elle posa un instant sa précieuse baguette <em>Étoile</em> sur le sol pour toucher délicatement un pétale sonore. <br><br>Soudain, ZIIIP ! Une petite forme métallique fila comme l'éclair. C'était Bipboup, un petit robot de fer-blanc, qui venait de chiper sa baguette ! Il s'enfuit en laissant derrière lui une traînée de bips joyeux et désordonnés. Léa resta bouche bée. Son guide, son amie, son <em>Étoile</em>... avait disparu.",
+      "image_prompt": "Dynamic scene. The small tin-can robot, Bipboup, with a round silver body and a mischievous smile on its single blue screen-eye, is zipping away. He holds the glowing magical wand 'Etoile' in his pincer arm. In the foreground, the astronaut girl Lea is on her knees, reaching out with a shocked and worried expression. The whimsical landscape of Vega-7 features glowing crystal flowers. The mood is surprising but not scary."
+    },
+    {
+      "text": "Le cœur battant, Léa se lança à la poursuite du petit voleur. Mais Bipboup ne semblait pas vraiment vouloir se cacher. Il laissait derrière lui un chemin de lumières clignotantes et de bips joyeux, comme s'il l'invitait à un grand jeu de cache-cache. Léa sauta par-dessus des ruisseaux de lumière liquide et traversa des canyons aux couleurs de l'aube. « Rends-moi mon <em>Étoile</em>, s'il te plaît ! » cria-t-elle, un peu essoufflée. « Elle est très importante pour moi ! »<br><br>Pour toute réponse, le petit robot fit une pirouette, agitant la baguette qui dessina dans l'air une magnifique arabesque d'étincelles argentées.",
+      "image_prompt": "Astronaut girl Lea is running with determination across the magical landscape of Vega-7. In the distance, perched on a purple rock, the small robot Bipboup playfully waves the magical wand 'Etoile', leaving a trail of silver sparkles in the air. The scene depicts a playful chase through a beautiful, alien world with glowing canyons and a soft aura."
+    },
+    {
+      "text": "La piste la mena finalement à l'entrée d'une grotte sombre et silencieuse. Prudemment, Léa y pénétra. À l'intérieur, elle découvrit Bipboup. Il ne jouait plus. Il était assis à côté d'un autre robot, plus grand, qui lui ressemblait comme deux gouttes de métal, mais ce dernier était gris, immobile et éteint. Avec une infinie douceur, Bipboup tapotait le robot silencieux avec la pointe étoilée de la baguette. Son grand œil-écran bleu n'affichait plus un sourire malicieux, mais une petite ligne triste. Il émit une série de bips si mélancoliques que Léa comprit tout d'un coup. Il n'avait pas volé <em>Étoile</em> par méchanceté. Il espérait que sa magie pourrait réveiller son ami.",
+      "image_prompt": "Inside a dim, quiet cave on Vega-7. The small robot Bipboup sits next to a larger, identical but colorless and powered-down robot. Bipboup is gently touching the silent robot with the glowing star tip of the magical wand 'Etoile'. His single blue screen-eye shows a sad face. Astronaut girl Lea stands at the cave entrance, her expression shifting from pursuit to sudden understanding and empathy. The scene is poignant and softly lit by the wand."
+    },
+    {
+      "text": "Le cœur de Léa se serra. Elle s'approcha doucement. « Tu as besoin d'aide », murmura-t-elle. Elle reprit sa baguette et expliqua à Bipboup que sa magie servait à trouver les étoiles perdues, pas à réparer les robots. Mais elle avait une autre idée. Avec les outils de sa ceinture d'astronaute, elle ouvrit un petit panneau sur le flanc du robot endormi. La batterie était simplement débranchée !<br><br>Elle la rebrancha. Un déclic. L'œil du grand robot s'alluma, affichant un large sourire. Les deux robots se mirent à biper joyeusement et se firent un câlin avec leurs bras-pinces. Bipboup rendit <em>Étoile</em> à Léa, puis, pour la remercier, les deux amis la guidèrent jusqu'à un cratère secret, rempli de la plus pure et brillante des poussières d'étoiles.",
+      "image_prompt": "A heartwarming final scene. Astronaut girl Lea is smiling as Bipboup hands her back the magical wand 'Etoile'. Next to them, the newly awakened larger robot and Bipboup are beeping happily, their blue screen-eyes showing joyful faces. The larger robot is offering Lea a handful of sparkling stardust from a glowing crater. The cave is now filled with a warm, magical light, emphasizing friendship and shared joy."
+    }
+  ],
+  "key": "courte_astronaute_planete_baguette_robot",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "planete",
+  "item": "baguette",
+  "villain": "robot"
+}

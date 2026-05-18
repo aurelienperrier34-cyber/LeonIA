@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et le voleur de lumière",
+  "pages": [
+    {
+      "text": "Pimprenelle, du haut de ses neuf ans, n'était pas une sorcière comme les autres. Sa plus grande joie n'était pas de concocter des potions bouillonnantes, mais de filer sur les flots. Sa planche à roulettes, qu'elle avait baptisée <em>Fusée</em>, n'avait pas besoin de bitume. Elle glissait sur l'air, juste au-dessus de la Mer d'Aural.<br><br>Cet océan magique était un spectacle permanent. Ses eaux turquoise et aigue-marine scintillaient de mille feux bioluminescents, pareilles à une nuit étoilée liquide. Pimprenelle, sa longue tresse rousse volant au vent, aimait y dessiner des arabesques silencieuses, saluant les poissons d'argent qui frôlaient la surface dans un éclat fugace.",
+      "image_prompt": "Whimsical children's book illustration. Pimprenelle, a 9-year-old witch with curly red hair in a long braid and a purple pointed hat, joyfully rides her magical skateboard just above the water. The skateboard has a deep blue deck with stars and a lightning bolt. The ocean is a luminous turquoise Mer d'Aural, filled with glowing sparkles. The mood is magical and serene. Pimprenelle is the only character."
+    },
+    {
+      "text": "Ce soir-là, pourtant, quelque chose clochait. Un son étrange et dissonant venait troubler le doux clapotis des vagues : une série de « bip-boup » métalliques et désaccordés. À la surface de l'eau, de vilaines ondulations brisaient le miroir parfait du ciel. Les poissons d'argent, d'ordinaire si curieux, avaient disparu dans les profondeurs.<br><br>Pimprenelle arrêta net sa <em>Fusée</em>. Son expression joyeuse s'était muée en une interrogation perplexe. Le vent semblait retenir son souffle. D'où venait ce vacarme qui faisait grimacer la mer ? Poussée par sa curiosité, elle serra le manche de sa baguette et se dirigea vers la source du bruit.",
+      "image_prompt": "Pimprenelle, looking concerned and curious, has stopped her magical skateboard mid-air over the Mer d'Aural. Below her, the usually calm, sparkling water is disturbed by chaotic ripples. The atmosphere is mysterious and slightly tense. Pimprenelle is alone, peering into the distance."
+    },
+    {
+      "text": "Elle le découvrit bientôt, agité et bruyant. C'était une petite créature de métal, un robot-boîte de conserve monté sur une roue unique. Il tournait sur lui-même frénétiquement, ses deux bras en pince mécanique plongeant dans l'eau. Pimprenelle plissa les yeux. Le petit robot, Bipboup, semblait voler les étincelles lumineuses de la mer ! Il les attrapait une par une et les fourrait dans une petite trappe sur son ventre rond.<br><br>« Un voleur de lumière ! » songea Pimprenelle, indignée. Voilà pourquoi la mer semblait si triste et terne à cet endroit. Ce petit vandale mécanique éteignait la magie de l'océan !",
+      "image_prompt": "Pimprenelle, on her skateboard, cautiously observes from a distance. In the water, Bipboup, a small tin-can robot, is splashing erratically. His mechanical pincer arms are grabbing at the bioluminescent sparkles in the sea. His single round blue screen-eye shows a frantic, mischievous pattern. The water around him is visibly dimmer."
+    },
+    {
+      "text": "Prête à défendre son océan adoré, Pimprenelle s'approcha, sa baguette pointée. « Arrêtez tout de suite votre manège ! » allait-elle crier. Mais en s'approchant, elle remarqua un détail crucial. Les deux ampoules jaunes au bout des antennes du robot vacillaient. L'une d'elles était presque éteinte, ne produisant plus qu'un halo blafard. Ses « bip-boup » n'étaient pas espiègles, ils sonnaient comme des appels à l'aide.<br><br>Le robot s'arrêta, la remarquant enfin. Son œil-écran unique cessa de sourire. À la place, une petite courbe triste et tremblante s'afficha. Bipboup n'était pas un voleur. Il était perdu, et il s'éteignait.",
+      "image_prompt": "A close-up illustration focusing on the emotional turning point. Pimprenelle is in the foreground, her angry expression softening into one of sudden realization and compassion. Bipboup is in front of her, looking small and vulnerable. One of his yellow antenna light bulbs is very dim. His blue screen-eye displays a sad, drooping line."
+    },
+    {
+      "text": "Le cœur de Pimprenelle se serra. Elle baissa sa baguette. D'un geste doux, elle s'approcha et, au lieu de lancer un sort, elle tapota délicatement l'ampoule fatiguée avec la pointe de cristal de sa baguette. Une lumière chaude et dorée s'écoula du bois, enveloppant le petit robot. Ses deux antennes se rallumèrent d'un jaune vif et joyeux.<br><br>Bipboup émit une série de bips harmonieux. Son œil-écran afficha un grand cœur reconnaissant. Aussitôt, il ouvrit sa trappe et toutes les étincelles volées retournèrent à la mer, qui se mit à briller de plus belle. Pimprenelle sourit et, sur sa <em>Fusée</em>, guida son nouvel ami métallique vers le rivage, laissant derrière eux un océan apaisé et plus lumineux que jamais.",
+      "image_prompt": "A heartwarming scene. Pimprenelle is gently touching Bipboup's antenna with her glowing wand. A warm, golden light connects the wand to the robot. Bipboup's antenna lights are now shining brightly, and his blue screen-eye shows a large, happy heart symbol. They float together above the calm Mer d'Aural, which is intensely sparkly, with silver fish swimming joyfully around them."
+    }
+  ],
+  "key": "courte_sorciere_ocean_skateboard_robot",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "ocean",
+  "item": "skateboard",
+  "villain": "robot"
+}

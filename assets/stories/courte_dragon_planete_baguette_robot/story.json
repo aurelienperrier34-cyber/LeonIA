@@ -1,0 +1,31 @@
+{
+  "title": "Brio et le visiteur étoilé",
+  "pages": [
+    {
+      "text": "Sur la petite planète Vega-7, toute de pourpre et de turquoise, vivait un bébé dragon nommé Brio. Brio n'était pas plus grand qu'un chat. Ses écailles étaient d'un bleu pastel si doux qu'on aurait dit un morceau de ciel. Avec ses grands yeux curieux et ses petites ailes rondes, il passait ses journées à explorer les cratères qui brillaient comme des bonbons. <br><br>Son plus grand trésor était Étoile, une fine baguette magique en bois couleur de miel. Brio aimait dessiner dans l'air de la nuit avec sa pointe dorée, créant des constellations d'étincelles argentées qui dansaient un instant avant de disparaître. Sur Vega-7, tout était calme, chaud et merveilleusement paisible.",
+      "image_prompt": "Brio, the tiny pastel-blue baby dragon, is sitting happily on the purple ground of planet Vega-7. He is waving his magical wand, Etoile, which leaves a trail of silver sparkles in the air, forming a small constellation. The background shows a starry space, the planet's two thin golden rings, and tiny glowing teal craters. The mood is magical and serene. Illustration style of Tomi Ungerer and Antoine de Saint-Exupéry."
+    },
+    {
+      "text": "Un jour, un bruit étrange brisa le silence : <em>CLANG ! BZZZT ! BOP !</em> Une petite créature de métal venait de s'écraser doucement. C'était Bipboup, un robot de la taille d'une boîte de conserve. Il se mit à courir partout, ses antennes flexibles surmontées d'ampoules jaunes clignotant furieusement. Il semblait agité, perdu, et faisait un vacarme terrible. <br><br>Caché derrière un grand cristal violet, Brio l'observait, le cœur battant un peu vite. Ce visiteur était si bruyant ! Il bousculait les champignons lumineux et laissait de petites marques sur le sol si doux de la planète. Que cherchait-il avec tant d'empressement ?",
+      "image_prompt": "Bipboup, the small tin-can robot with a round silver riveted body, stands amidst the magical landscape of Vega-7. His single round blue screen-eye shows a mischievous, anxious expression. One of his pincer arms is raised as if examining a glowing teal mushroom. The scene is slightly chaotic but not scary. In the far background, Brio's tiny head is peeking from behind a large purple crystal rock."
+    },
+    {
+      "text": "Soudain, Bipboup s'arrêta. Son œil-écran bleu s'était fixé sur la baguette Étoile, que Brio avait posée près de lui. La pointe dorée scintillait doucement. Le robot sembla fasciné. D'un coup sec, <em>CLAC !</em>, son bras à pinces s'allongea et s'empara de la baguette. <br><br>Brio laissa échapper une petite bouffée de fumée triste. Son jouet, son trésor magique ! Une vague de chagrin et un peu de peur lui serrèrent le cœur. Il regarda le petit voleur de métal, se demandant avec angoisse ce qu'il allait faire de sa précieuse Étoile.",
+      "image_prompt": "Close-up on the action. Bipboup the robot's mechanical pincer arm has just snatched the magical wand, Etoile, from the purple ground. The wand's five-pointed golden star tip sparkles faintly. In the background, tiny baby dragon Brio is visible, his big blue eyes wide with shock and sadness, a tiny puff of smoke coming from his snout. The mood is tense and dramatic."
+    },
+    {
+      "text": "Brio était sur le point de pleurer de grosses larmes de dragon, mais il regarda plus attentivement. Bipboup n'essayait pas de s'enfuir. Il tenait la baguette en l'air, mais rien ne se passait. Sur son écran bleu, le sourire malicieux avait disparu, remplacé par une larme pixelisée qui clignotait. Les ampoules de ses antennes perdaient de leur éclat, s'éteignant presque. Les sons qu'il émettait n'étaient plus des bruits agaçants, mais une sorte de petite mélodie plaintive. <em>Bip... boup... bzzzt...</em><br><br>Alors, Brio comprit. Bipboup n'était pas méchant. Il était juste... fatigué. Très, très fatigué.",
+      "image_prompt": "Bipboup the robot is sitting down on the purple ground, looking dejected. He holds the magical wand, Etoile, but it is not glowing. The yellow light bulbs on his antennas are very dim. His single round blue screen-eye displays a large, sad, pixelated teardrop. The overall mood is melancholic and sympathetic. Brio is not in the image, to focus entirely on Bipboup's sadness."
+    },
+    {
+      "text": "Le petit cœur de Brio se gonfla de pitié. Il trottina jusqu'à Bipboup et frotta doucement son museau chaud contre le corps froid du robot. Puis, il reprit délicatement sa baguette. Mais au lieu de la garder, il la pointa vers l'un des anneaux dorés qui dansaient autour de Vega-7. Un fil de lumière pure et dorée descendit de l'anneau, glissa le long d'Étoile et vint baigner Bipboup d'une lueur douce. <em>WHOOSH !</em><br><br>Les ampoules du robot brillèrent de mille feux ! Sur son écran, un grand cœur joyeux remplaça la larme. Avec sa pince, il tapota tendrement le nez de Brio. Sous le ciel étoilé, un petit dragon et un petit robot étaient devenus amis pour la vie.",
+      "image_prompt": "Brio the baby dragon and Bipboup the robot are side-by-side. Brio is holding the wand Etoile, pointing it towards the sky. A beautiful, soft beam of golden light connects one of the planet's rings to the wand, and then flows into Bipboup's chest. Bipboup's antennas are glowing brightly, and his screen-eye shows a joyful heart symbol. They are looking at each other with friendship. The scene is heartwarming and full of soft, magical light."
+    }
+  ],
+  "key": "courte_dragon_planete_baguette_robot",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "planete",
+  "item": "baguette",
+  "villain": "robot"
+}

@@ -1,0 +1,31 @@
+{
+  "title": "Léa et la lumière de Vega-7",
+  "pages": [
+    {
+      "text": "Léa était une astronaute pas comme les autres. Du haut de ses huit ans, elle ne voyageait pas dans de gros vaisseaux bruyants, mais sur <em>Fusée</em>, son skateboard magique. Un jour, en surfant sur la Voie Lactée, elle aperçut une planète minuscule qui brillait comme un bonbon. « Oh, celle-là, je ne la connais pas ! » s'exclama-t-elle. Elle fit un virage serré, laissant une traînée de poussière d'étoiles, et mit le cap sur la planète qu'elle baptisa sur-le-champ : Vega-7. Son casque à étoiles dorées scintillait de curiosité.",
+      "image_prompt": "8-year-old astronaut girl Léa, with curly brown hair in buns and freckles, joyfully riding her magical skateboard 'Fusée' through deep space. The skateboard has a deep blue deck with star patterns and neon-pink glowing wheels. She is heading towards a small, distant, glowing planet, Vega-7. Whimsical, adventurous mood."
+    },
+    {
+      "text": "Atterrir sur Vega-7 fut d'une douceur incroyable. Le sol, d'un mélange de violet et de turquoise, semblait respirer une douce chaleur. Partout, de petits cratères luminescents palpitaient comme des cœurs de lumière. « C'est la plus jolie planète de tout l'univers ! » murmura Léa, émerveillée.<br><br>Mais soudain, l'un des cratères près d'elle s'éteignit. Puis un autre, un peu plus loin. Un petit bruit métallique, un <em>clic-clac</em> pressé, se faisait entendre dans le silence. Quelqu'un ou quelque chose semblait... voler la lumière de la planète.",
+      "image_prompt": "Léa stands on the magical surface of planet Vega-7. The ground is a mix of purple and teal, covered in tiny, glowing craters. Léa has a surprised and curious expression as she looks at one crater that has just gone dark. The atmosphere is mysterious and magical. No other character is visible yet."
+    },
+    {
+      "text": "Sans avoir peur, Léa remonta sur Fusée et glissa en silence vers la source du bruit. Derrière un rocher de cristal rose, elle le vit. C'était une petite créature de métal, un robot-boîte de conserve qui s'affairait avec une drôle de frénésie. Il ne volait pas la lumière pour la détruire ! Avec ses pinces délicates, il la recueillait dans un bocal. Son unique œil, un écran bleu, affichait un sourire un peu triste, un peu coquin. Il s'appelait Bipboup, mais ça, Léa ne le savait pas encore.",
+      "image_prompt": "From behind a large pink crystal, Léa peeks curiously at a small tin-can robot, Bipboup. Bipboup is sitting next to a glowing crater, carefully using his pincer arms to scoop light into a small glass jar. His single blue screen-eye shows a mischievous but sad smile. The scene is intimate and intriguing."
+    },
+    {
+      "text": "Léa s'approcha doucement. « Bonjour ? » dit-elle de sa voix la plus gentille. Le petit robot sursauta et fit tomber son bocal, qui roula sans se casser. La lumière s'en échappa et retourna dans son cratère. Bipboup émit un son désolé : <em>bip-boup-tristounet</em>. C'est alors que Léa remarqua. L'une des deux antennes du robot était coiffée d'une ampoule éteinte et fissurée. Il pointa une pince vers son antenne cassée, puis vers le ciel noir et infini. Léa comprit : il ne volait pas la lumière. Il était perdu, et il en avait besoin pour réparer sa radio et appeler chez lui.",
+      "image_prompt": "A heartwarming scene where Léa is kneeling in front of the small robot Bipboup. Bipboup looks up at her, his blue screen-eye showing a hopeful expression. He is pointing one pincer to his broken antenna, which has a cracked light bulb, and the other pincer towards the starry sky. Léa looks at him with empathy and understanding."
+    },
+    {
+      "text": "Le cœur de Léa se serra. Elle eut alors une idée lumineuse. Les étoiles sur son casque n'étaient pas que des décorations. C'étaient de véritables petites étoiles magiques, qui ne s'éteignaient jamais. Avec une infinie précaution, elle en détacha une, une belle étoile dorée, et la fixa sur l'antenne abîmée de Bipboup. L'étoile s'alluma d'un coup, d'une lueur chaude et puissante !<br><br>Bipboup laissa échapper une cascade de <em>bip-boup-joyeux</em>. Il se mit à clignoter frénétiquement vers le ciel. Quelques instants plus tard, un point lumineux apparut au loin et se rapprocha : son vaisseau ! Avant de partir, Bipboup serra fort la main de Léa dans sa pince. Il n'y avait pas de plus beau merci dans toute la galaxie.",
+      "image_prompt": "Léa stands on the purple and teal surface of Vega-7, waving goodbye with a happy smile. The small robot Bipboup is at the entrance of his tiny, firefly-like spaceship, waving back with a pincer. The new golden star on his antenna is shining brightly, casting a warm glow. The mood is magical, heartwarming, and slightly melancholic."
+    }
+  ],
+  "key": "courte_astronaute_planete_skateboard_robot",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "planete",
+  "item": "skateboard",
+  "villain": "robot"
+}

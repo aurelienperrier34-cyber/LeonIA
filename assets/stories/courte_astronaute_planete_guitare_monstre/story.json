@@ -1,0 +1,31 @@
+{
+  "title": "Léa et la Guitare du Silence",
+  "pages": [
+    {
+      "text": "Léa était une exploratrice d'étoiles. Pas n'importe quelle exploratrice : elle cherchait les sons perdus et les silences oubliés de l'univers. Son petit vaisseau, le « Cherche-Rêves », venait de se poser en douceur sur Véga-7, une planète si petite qu'on aurait pu en faire le tour en une journée de marche. Le sol était un tapis de velours violet et turquoise, piqué de cratères qui scintillaient comme des lucioles. Léa sortit, son casque décoré d'étoiles dorées brillant sous la lueur de deux fins anneaux d'or qui encerclaient ce monde de poche.<br><br>Elle respira l'air doux et chaud. La légende disait que Véga-7 gardait un trésor, une mélodie née du silence le plus pur.",
+      "image_prompt": "Léa, the 8-year-old astronaut girl with curly hair buns and freckles, in her white spacesuit and star-decorated helmet, stands on the magical planet Vega-7. The planet's surface is purple and teal with tiny glowing craters. Two thin golden rings are visible in the starry sky above. Léa has a curious and wondrous expression. The atmosphere is soft and magical. Style of Tomi Ungerer and Antoine de Saint-Exupéry."
+    },
+    {
+      "text": "Au fond d'un cratère qui luisait plus fort que les autres, elle la vit. La <em>Guitare des sept silences</em>. Son corps était taillé dans un cristal si pâle qu'il semblait fait de lumière gelée. Ses six cordes frémissaient de reflets d'argent et d'or. Léa tendit la main, le cœur battant. Elle sentait le silence profond qui émanait de l'instrument, un silence plein de promesses.<br><br>Mais au moment où ses doigts allaient l'effleurer, une petite boule de fourrure violette jaillit d'un rocher ! La créature, avec ses deux petites cornes et ses immenses yeux jaunes, attrapa la guitare et détala comme un éclair lavande. Léa resta figée, plus surprise qu'en colère.",
+      "image_prompt": "In a glowing crater on planet Vega-7, the small cute fluffy purple monster Grobi is snatching the crystal Guitar of Seven Silences, just out of reach of Léa the astronaut girl. Grobi has a panicked look in his big yellow eyes as he runs away. The crystal guitar glows softly. Léa looks surprised but not angry. Whimsical children's book illustration style."
+    },
+    {
+      "text": "Léa décida de suivre la créature. Elle ne courut pas, elle marcha à pas lents pour ne pas l'effrayer. L'étrange petit monstre, qu'elle baptisa mentalement Grobi, trottinait devant elle, serrant la guitare de cristal contre son ventre tout rond. De temps en temps, il s'arrêtait, se retournait et la fixait de ses grands yeux inquiets, comme pour s'assurer qu'elle était toujours là.<br><br>Grobi ne ressemblait pas à un voleur. Il avait l'air... perdu. Léa sentit une pointe de tristesse pour lui. Pourquoi avait-il si désespérément besoin de cet instrument silencieux ? Le chemin les mena vers une colline percée d'une ouverture sombre, qui scintillait de l'intérieur.",
+      "image_prompt": "Léa the astronaut girl carefully follows the small fluffy purple monster Grobi across the whimsical landscape of Vega-7. Grobi is in the distance, looking back over his shoulder at Léa with a worried expression, clutching the crystal guitar. The scene is full of strange purple plants and soft light. Gentle chase scene, poetic, soft colors."
+    },
+    {
+      "text": "Léa le suivit jusqu'à l'entrée d'une grotte de cristal. À l'intérieur, Grobi s'était blotti dans un coin. Il ne fuyait plus. Il tenait la guitare sur ses genoux et, de ses petites pattes poilues, il grattait les cordes. Mais aucun son ne sortait. Rien. Juste le silence, plus lourd que jamais. Grobi baissa la tête, et Léa vit une grosse larme rouler de son œil jaune et s'écraser sur sa fourrure violette.<br><br>Alors, elle comprit. Ce n'était pas un vol, mais un chagrin. Grobi ne voulait pas voler la guitare. Il voulait simplement qu'elle lui chante une chanson. Il se sentait seul, et espérait que la musique lui tiendrait compagnie.",
+      "image_prompt": "Inside a cave of shimmering crystals, the small fluffy purple monster Grobi is huddled in a corner, looking sad. His big yellow eyes are tearful as he holds the crystal guitar, trying to strum its strings. Léa is peeking into the cave entrance from the side, her expression filled with empathy and understanding. The scene is intimate and emotional, lit by the gentle glow of the crystals."
+    },
+    {
+      "text": "Doucement, sans un bruit, Léa entra dans la grotte et s'assit non loin de lui. Elle ne dit rien. Elle ne fit aucun geste pour reprendre l'instrument. Elle lui offrit simplement un sourire et le silence attentif d'une amie. Grobi la regarda, surpris. Il sentit qu'il n'était plus seul à écouter le silence. Rassuré, il posa de nouveau ses pattes sur les cordes et gratta délicatement.<br><br>Et cette fois, un son s'éleva. Une note, puis deux, puis toute une mélodie douce et cristalline, qui illumina la grotte d'une lueur dorée. La <em>Guitare des sept silences</em> ne demandait pas un maître, elle demandait un public. Un cœur pour l'écouter. Ce soir-là, sur Véga-7, une musique merveilleuse naquit de la rencontre entre une petite fille et un monstre qui ne voulait plus être seul.",
+      "image_prompt": "Léa the astronaut girl and Grobi the fluffy purple monster are sitting side-by-side peacefully inside the crystal cave. Grobi is gently strumming the crystal guitar, which is now glowing brightly and emitting visible musical notes made of light. Both Léa and Grobi have happy, serene expressions as they listen to the beautiful music together. The atmosphere is warm, magical, and full of friendship. Heartwarming and luminous style."
+    }
+  ],
+  "key": "courte_astronaute_planete_guitare_monstre",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "planete",
+  "item": "guitare",
+  "villain": "monstre"
+}

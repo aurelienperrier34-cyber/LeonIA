@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Sculpteur d'Étoiles",
+  "pages": [
+    {
+      "text": "Léa, l'astronaute de huit ans, n'avait pas peur du silence de l'espace. Au contraire, elle l'adorait. Mais ce qu'elle préférait par-dessus tout, c'était de surfer sur les galaxies avec sa planche magique, <em>Fusée</em>. Ce jour-là, Fusée l'avait conduite vers un lieu secret, un océan cosmique appelé la Mer d'Aural. L'eau était d'un turquoise si profond qu'elle semblait contenir toutes les étoiles du monde. Des étincelles bioluminescentes dansaient sous la coque de sa planche, et de doux poissons d'argent frôlaient la surface dans un murmure de lumière. Léa, le casque décoré d'étoiles dorées posé sur ses boucles brunes, sourit. Une nouvelle aventure commençait.",
+      "image_prompt": "Lea, an 8-year-old astronaut girl with brown curly hair in two buns and freckles, is joyfully riding her magical skateboard 'Fusee' just above a magical ocean. Her helmet has golden stars. The skateboard has a deep blue deck with stars and a golden lightning bolt, and its neon-pink wheels glow. The ocean, the Mer d'Aural, is a deep turquoise and aquamarine, filled with bioluminescent sparkles and gentle glints of silver fish. Lea has a friendly, curious expression of pure wonder. Soft starlight reflects on the water's surface."
+    },
+    {
+      "text": "Elle glissait, légère comme un souffle, sur cette mer de rêves. Mais soudain, Léa remarqua quelque chose d'étrange. Les poissons d'argent, d'habitude si vifs, semblaient... fatigués. Leurs éclats étaient moins vifs, leurs mouvements plus lents.<br><br>L'océan tout entier, si lumineux quelques instants plus tôt, paraissait perdre sa couleur, comme si une ombre invisible buvait sa lumière. Une douce tristesse flottait dans l'air, un frisson qui n'avait rien à voir avec le froid. Poussée par sa curiosité, Léa décida de suivre cette vague de mélancolie. <em>Fusée</em>, sentant l'inquiétude de sa jeune pilote, la guida en silence vers le cœur du mystère.",
+      "image_prompt": "A close-up, atmospheric view of the Mer d'Aural's water. The scene is beautiful but tinged with sadness. The usually bright bioluminescent sparkles are visibly dimming. The silver fish are faint and almost transparent, losing their vibrant glint. The overall lighting is subdued, suggesting the magic is fading. There are no characters in this scene, only the melancholic beauty of the dying light in the water."
+    },
+    {
+      "text": "Au centre de la mer, un îlot de roche sombre perçait la surface. Et sur cet îlot, une silhouette diaphane était assise. C'était un petit fantôme translucide, qui ressemblait à un vieil artisan. Il avait une longue barbe vaporeuse et un regard d'un gris très doux. C'était Maître Otho. Dans ses mains éthérées, il tenait une petite étoile, mais elle était terne et sans vie. Il la tournait et la retournait, essayant de lui redonner son éclat, en vain. Lorsqu'il leva les yeux et vit Léa, il ne sembla ni fâché ni menaçant. Juste infiniment surpris, et un peu seul.",
+      "image_prompt": "On a small dark islet in the middle of the luminous Mer d'Aural, Maitre Otho, a small friendly translucent ghost craftsman, sits sadly. He has kind pale grey eyes and a long wispy beard, glowing with a gentle blue-white light. He is looking down at a dull, non-glowing star he holds in his ethereal hands. A short distance away, Lea hovers on her skateboard, observing him with a curious and gentle expression, her helmet on. The mood is quiet and melancholic."
+    },
+    {
+      "text": "« Que se passe-t-il ? » demanda doucement Léa, en faisant descendre sa planche près du rocher. La voix de Maître Otho fut comme un murmure de vent. « Je n'y arrive plus », expliqua-t-il. « Je suis le Sculpteur d'Étoiles Filantes. Quand les étoiles tombent du ciel dans la mer, je les recueille. Avec mes mains, je leur donne la forme de ces petits poissons d'argent qui illuminent les profondeurs. »<br><br>Il montra ses mains tremblantes. « Mais aujourd'hui, mes mains sont froides. Elles ont perdu leur magie. Je ne peux plus réchauffer la lumière des étoiles. La mer s'éteint... et c'est de ma faute. » Une larme spectrale roula sur sa joue et disparut avant de toucher le sol.",
+      "image_prompt": "A touching close-up interaction between Lea and Maitre Otho. Maitre Otho, the translucent ghost, looks desperate and sad as he shows his trembling, ethereal hands to Lea. Lea is now standing close to him, her helmet's visor is up, showing her face full of empathy and concern. She is listening intently, her curious expression replaced by one of deep compassion. The focus is on their faces and the emotional connection between them."
+    },
+    {
+      "text": "Léa regarda le fantôme triste, puis sa planche, <em>Fusée</em>, qui vibrait d'une énergie joyeuse sous ses pieds. Une idée pétilla dans son esprit. « Vous n'êtes pas seul ! » s'écria-t-elle. D'un coup de talon, elle s'élança sur l'eau. <em>Fusée</em> plongea son nez dans la mer, ramassant des éclats de lumière stellaire. L'énergie des roues roses et de l'éclair doré réchauffa la poussière d'étoile, la transformant en une pâte lumineuse et vibrante. Léa l'apporta à Maître Otho. Au contact de cette nouvelle chaleur, les mains du vieil esprit retrouvèrent leur pouvoir. Ensemble, ils sculptèrent des poissons si brillants, si joyeux, que la Mer d'Aural se mit à chanter. Maître Otho avait retrouvé son sourire, et Léa, une amie pour l'éternité.",
+      "image_prompt": "A vibrant and joyful scene of collaboration. Lea zips across the Mer d'Aural on her magical skateboard 'Fusee', leaving a trail of holographic shimmer and neon-pink light on the water. Maitre Otho, now glowing brightly and smiling warmly, is using his revived hands to sculpt a brilliantly glowing silver fish. The entire Mer d'Aural is now intensely luminous, sparkling with renewed energy and filled with countless bright silver fish. The atmosphere is one of pure magic, friendship, and happiness."
+    }
+  ],
+  "key": "courte_astronaute_ocean_skateboard_fantome",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "ocean",
+  "item": "skateboard",
+  "villain": "fantome"
+}

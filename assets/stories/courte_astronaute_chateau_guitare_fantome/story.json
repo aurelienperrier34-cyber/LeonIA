@@ -1,0 +1,31 @@
+{
+  "title": "Léa et la Guitare des Sept Silences",
+  "pages": [
+    {
+      "text": "Léa était une astronaute pas comme les autres. Au lieu de compter les étoiles, elle leur rendait visite. Son petit vaisseau, rond comme une sauterelle d'argent, se posa sans un bruit sur une lune couleur lavande. Au loin, une silhouette se découpait sur le ciel de velours : le château de Belmondrie. Avec ses trois tours pointues et ses murs couverts de lierre, il semblait l'appeler. Une douce lueur dorée filtrait par ses fenêtres brisées, comme une promesse de merveilleux.<br><br>Léa, sa curiosité piquée au vif, sortit de sa capsule, son casque décoré d'étoiles dorées brillant dans la pénombre.",
+      "image_prompt": "Léa, an 8-year-old astronaut girl with curly hair in buns inside her glass helmet, stands in her white and red spacesuit on a purple-hued alien moon. In the distance, the fairy-tale stone castle of Belmondrie with its three tall towers glows with a warm, magical light against a dark, starry sky. The mood is one of wonder and gentle mystery. Whimsical, storybook illustration style."
+    },
+    {
+      "text": "L'intérieur du château était encore plus étrange. Pas de toiles d'araignées, pas de courant d'air glacial. Juste un silence profond, un silence si épais qu'on aurait pu le découper en tranches. Au centre de la plus grande salle, posée sur un coussin de velours pourpre usé par le temps, se trouvait une guitare. Mais quelle guitare ! Elle était faite d'un cristal si pur qu'on voyait à travers. Ses six cordes scintillaient de reflets argentés, violets et dorés.<br><br>C'était la <em>Guitare des Sept Silences</em>. Léa le sut sans savoir pourquoi. Une douce lumière émanait de l'instrument, pulsant comme un cœur timide. Fascinée, elle tendit une main gantée.",
+      "image_prompt": "Inside the grand hall of a medieval castle. In the center, a small acoustic guitar made of translucent crystal rests on a dusty purple velvet cushion. The guitar glows softly from within, its strings catching shimmering reflections. The gloved hand of Léa, the astronaut girl, is seen reaching towards the guitar. The atmosphere is silent, magical, and full of anticipation."
+    },
+    {
+      "text": "Au moment où le bout de son doigt effleura le cristal, une forme vaporeuse jaillit de la guitare. C'était un petit fantôme translucide, qui ressemblait à un vieil artisan. Il avait une longue barbe blanche et des yeux d'un gris pâle emplis d'une immense tristesse. « N'y touche pas, mon enfant », souffla-t-il, sa voix à peine plus forte qu'un murmure. « Elle ne doit jamais jouer. Je suis Maître Otho, le gardien de son silence. »<br><br>Léa ne recula pas. Elle n'avait pas peur. Dans le regard du fantôme, il n'y avait aucune méchanceté. Elle retira sa main et demanda doucement : « Pourquoi, Maître Otho ? Pourquoi une si belle guitare devrait-elle se taire ? »",
+      "image_prompt": "Léa, the 8-year-old astronaut, stands looking with curiosity at Maitre Otho, a small, friendly, translucent ghost craftsman with a long white beard. The ghost floats between Léa and the glowing crystal guitar, holding up a gentle hand. His expression is sad and pleading, not scary. The scene is lit by the guitar's soft glow in the castle hall."
+    },
+    {
+      "text": "Le fantôme soupira, un son pareil au vent dans les feuilles mortes. « Parce que je l'ai créée », dit-il. « J'étais luthier. J'ai passé ma vie à fabriquer cette guitare, l'œuvre de mon existence. Elle devait chanter la plus belle mélodie de l'univers. »<br><br>Il marqua une pause, son corps éthéré vacillant de chagrin. « Le jour où je l'ai terminée, où j'ai posé la dernière corde, je me suis rendu compte... que j'étais devenu complètement sourd. Mon désespoir m'a enchaîné à cet endroit, et j'ai imposé à ma guitare le silence qui m'habitait. Les <em>sept silences</em>... ce sont les sept notes de la gamme que je n'entendrai jamais. »",
+      "image_prompt": "A poignant scene. Léa, her helmet now off revealing her curly hair and freckles, looks with compassion and understanding at the ghost of Maitre Otho. She holds her starry helmet under her arm. The ghost looks down, his ethereal form wavering with sadness, his hands clasped. The crystal guitar sits between them, glowing faintly."
+    },
+    {
+      "text": "Léa sentit son cœur se serrer. Elle comprit tout. « Vous ne pouvez pas l'entendre avec vos oreilles », dit-elle avec une infinie douceur. « Mais peut-être que vous pouvez l'entendre autrement. »<br><br>Délicatement, elle prit la guitare de cristal. Elle s'approcha de Maître Otho et guida sa main translucide pour qu'elle se pose sur le corps de l'instrument. Puis, elle pinça une corde. Il n'y eut pas de son, mais une explosion de lumière. Une vague de couleur pure, chaude et vibrante, emplit la salle. Maître Otho ne l'entendit pas, mais il la <em>sentit</em>. Un sourire de paix illumina son visage alors qu'il se dissolvait doucement, non pas en disparaissant, mais en devenant lui-même lumière.",
+      "image_prompt": "Léa, with a gentle expression, plays the crystal guitar. Waves of vibrant, colorful light (silver, violet, gold) radiate from the instrument, illuminating the castle hall. The ghost of Maitre Otho has his translucent hand on the body of the guitar, a blissful, peaceful smile on his face as he begins to dissolve into glowing particles of light. The mood is emotional, beautiful, and luminous."
+    }
+  ],
+  "key": "courte_astronaute_chateau_guitare_fantome",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "chateau",
+  "item": "guitare",
+  "villain": "fantome"
+}

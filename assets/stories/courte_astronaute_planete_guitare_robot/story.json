@@ -1,0 +1,31 @@
+{
+  "title": "Léa et la Guitare des Sept Silences",
+  "pages": [
+    {
+      "text": "Léa n'était pas une astronaute comme les autres. À huit ans, avec ses couettes frisées et son casque décoré d'étoiles d'or, elle ne cherchait ni de nouvelles terres ni des trésors scintillants. Sa mission, à bord de son petit vaisseau « Le Murmure », était de collectionner les sons de l'univers.<br><br>Ce jour-là, elle atterrit sur Véga-7, une minuscule planète magique. Le sol était un tapis pourpre et turquoise, parsemé de cratères qui luisaient doucement. Deux fins anneaux dorés entouraient ce monde paisible, baigné d'une douce aura chaude. Léa respira. L'air était rempli d'un silence si plein, si doux, qu'il ressemblait à une mélodie.",
+      "image_prompt": "8-year-old astronaut girl Léa, with brown curly hair in two buns and freckles, stands in awe on the surface of a magical planet. The planet's surface is purple and teal with tiny glowing craters. Léa wears a white spacesuit with red and blue patches and a helmet decorated with golden stars. The atmosphere is whimsical and peaceful, set in a starry space with two thin golden rings around the planet."
+    },
+    {
+      "text": "En explorant un cratère qui brillait plus fort que les autres, Léa trouva un objet extraordinaire. C'était une petite guitare, entièrement faite d'un cristal pâle et translucide. Ses six cordes miroitaient, capturant des reflets d'argent, de violet et d'or. Une lueur douce émanait de l'intérieur de l'instrument, comme un cœur endormi.<br><br>Léa la prit délicatement. La guitare était fraîche et lisse. Poussée par la curiosité, elle gratta les cordes. Mais aucun son ne sortit. Pas la moindre note, pas la plus petite vibration. Juste un silence, encore plus profond, plus pur que celui de la planète. C'était la <em>Guitare des Sept Silences</em>.",
+      "image_prompt": "Close-up shot of Léa's hands gently holding a small acoustic guitar made of translucent crystal. The guitar glows softly from within, its six shimmering strings catching silver, violet, and golden reflections. Léa is wearing her white astronaut gloves. The background is the blurry purple and teal surface of planet Vega-7."
+    },
+    {
+      "text": "Soudain, un bruit de ferraille brisa l'harmonie. Bip ! Boup ! Clang ! Un petit robot en fer-blanc, rond comme une conserve, déboula d' derrière un rocher. Deux antennes flexibles, coiffées d'ampoules jaunes clignotantes, s'agitaient sur sa tête. Son unique œil, un écran bleu, affichait une ligne brisée qui tremblait.<br><br>Le robot, Bipboup, fonça vers Léa, ses bras en pince mécanique tendus vers la guitare. Il ne paraissait pas méchant, mais terriblement agité, presque paniqué. Il voulait l'instrument, et il faisait un vacarme assourdissant, une cacophonie de bips et de cliquetis qui semblait faire souffrir la planète silencieuse.",
+      "image_prompt": "Léa, looking surprised but not scared, holds the crystal guitar protectively. A small, playful-looking tin-can robot, Bipboup, is trying to grab the guitar with his mechanical pincer arms. Bipboup has a round silver body, and his two antennas are flashing with yellow light. His single round blue screen-eye shows a frantic, jagged line. The scene is full of sudden action."
+    },
+    {
+      "text": "Léa serra la guitare contre elle, mais au lieu de la peur, elle sentit une immense pitié. Elle regarda attentivement Bipboup. Ses bips désordonnés n'étaient pas des cris de guerre, mais un appel à l'aide. Son œil-écran grésillait, comme une télévision mal réglée. Léa comprit.<br><br>Ce petit robot était une boîte à musique cassée. Il était plein de mélodies qu'il ne pouvait plus jouer, un orchestre magnifique condamné à un bruit chaotique. Il ne voulait pas <em>voler</em> la guitare. Il voulait son silence. Le seul remède à sa tempête intérieure. Doucement, Léa s'agenouilla et lui tendit la guitare de cristal, non pour la donner, mais comme une promesse de paix.",
+      "image_prompt": "Léa is kneeling on the purple ground, gently holding the crystal guitar out towards Bipboup. The robot has stopped its frantic movement, its pincers are open and still. Its single blue screen-eye now displays a single, large, static teardrop icon. The mood is tender and empathetic."
+    },
+    {
+      "text": "Avec une infinie précaution, Léa guida l'une des pinces de Bipboup et la posa sur une corde de la guitare. Au lieu d'un son, une onde de silence se propagea. Ce n'était pas un silence vide, mais un silence coloré, plein de tranquillité et de lumière. Il enveloppa le petit robot comme une couverture chaude.<br><br>Les lumières de Bipboup cessèrent de clignoter. Le bruit s'arrêta. Sur son écran, la ligne brisée s'effaça pour laisser place à un cercle bleu, calme et parfait. Il avait trouvé son remède. Léa sourit. Elle et son nouvel ami restèrent assis, côte à côte, à écouter la plus belle des musiques : celle d'un <em>silence partagé</em>, le trésor le plus précieux de Véga-7.",
+      "image_prompt": "Léa and Bipboup are sitting peacefully side-by-side on the purple ground of Vega-7. Bipboup's metal pincer is gently touching a string of the crystal guitar, which Léa holds on her lap. The guitar is glowing with a warm, soft light. In the starry sky above, the planet's two golden rings are visible. The overall mood is heartwarming, serene, and magical."
+    }
+  ],
+  "key": "courte_astronaute_planete_guitare_robot",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "planete",
+  "item": "guitare",
+  "villain": "robot"
+}

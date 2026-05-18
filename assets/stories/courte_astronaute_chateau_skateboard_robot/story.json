@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Gardien des Étoiles Perdues",
+  "pages": [
+    {
+      "text": "Léa n'était pas une exploratrice comme les autres. À huit ans, son casque d'astronaute décoré d'étoiles dorées ne quittait jamais ses boucles brunes, et son terrain de jeu était l'univers tout entier. Sa fidèle monture n'était pas un vélo, mais une planche à roulettes magique nommée <em>Fusée</em>. Son corps bleu nuit, zébré d'éclairs d'or, glissait sur les chemins de poussière de lune et les rivières de la Voie Lactée. <br><br>Un soir, alors que les roues de Fusée laissaient une traînée rose fluo derrière elle, Léa aperçut une silhouette étrange à l'horizon. Ce n'était ni une planète, ni une nébuleuse. C'était un château de conte de fées, avec trois hautes tours pointues coiffées de toits bleus. Belmondrie, chuchota une vieille étoile filante en passant.",
+      "image_prompt": "Wide shot. 8-year-old astronaut girl Léa, with her distinct suit and helmet, joyfully rides her magical glowing skateboard 'Fusée' across a dreamy, cosmic landscape. In the far distance, the silhouette of the fairy-tale castle Belmondrie with its three pointed towers is visible against a twilight sky full of soft purples and deep blues. The mood is adventurous and full of wonder."
+    },
+    {
+      "text": "Intriguée, Léa dirigea Fusée vers le château. De près, Belmondrie était encore plus impressionnant. Des murs de pierre grise, mangés par le lierre, semblaient soupirer des histoires anciennes. La plupart des fenêtres étaient brisées, mais d'étranges lueurs chaudes et dorées dansaient à l'intérieur, comme si le château respirait une lumière magique. Léa descendit de sa planche, le silence n'étant rompu que par le crépitement holographique de Fusée.<br><br>Soudain, un bruit. Un petit bruit métallique et répétitif venu du cœur du château. <em>Clic-clac... bip... boup. Clic... bipboup.</em> C'était un son curieux, pas effrayant du tout. Plutôt comme une petite machine un peu pressée, et peut-être un peu perdue.",
+      "image_prompt": "Medium shot. Léa is standing at the massive, arched entrance of the crumbling Belmondrie castle. She looks up with a curious expression. Her magical skateboard is parked beside her on the cobblestones, its neon-pink wheels casting a faint glow. A warm, magical light spills from a broken window high above. The atmosphere is mysterious and enchanting, not scary."
+    },
+    {
+      "text": "Léa entra sur la pointe de ses bottes spatiales. La grande salle était pleine de poussière et de toiles d'araignées scintillantes. Au centre, un petit robot de la taille d'une boîte de conserve s'agitait dans tous les sens. Son corps rond et argenté était monté sur de petites roulettes. Deux antennes, surmontées d'ampoules jaunes, clignotaient frénétiquement. Avec ses bras en pince, il attrapait tout ce qui brillait – des éclats de vitraux, de vieilles cuillères en argent, des boutons de porte en laiton – et les entassait dans un coin. Son unique œil, un écran bleu, affichait un sourire espiègle et saccadé. <em>Bipboup !</em> fit-il en filant devant Léa, manquant de la faire tomber.",
+      "image_prompt": "Action shot inside the castle's grand hall. The small tin-can robot, Bipboup, is a blur of motion in the center of the room, his pincer arms full of shiny trinkets. Dust motes dance in shafts of light from the high windows. Léa stands near the entrance, looking surprised and puzzled by the robot's chaotic activity. The mood is dynamic and intriguing."
+    },
+    {
+      "text": "« Hé, mais qu'est-ce que tu fabriques ? » lança Léa, plus amusée qu'énervée. Le petit robot s'arrêta net. Il fit volte-face, et le sourire sur son écran vacilla, se transformant en une simple ligne tremblotante. <em>Biiiiip...</em> Le son était long, triste. Bipboup laissa tomber un morceau de verre coloré. L'une de ses antennes clignota puis s'éteignit. D'une de ses pinces, il pointa lentement vers le haut.<br><br>Léa leva les yeux. Au-dessus d'eux, le plafond était un dôme immense et sombre, mais on devinait qu'il avait été peint pour ressembler à un ciel étoilé. En son centre, un grand projecteur en cristal était brisé. Léa comprit. Bipboup ne volait pas, il ne faisait pas de bêtises. Il essayait de réparer les étoiles perdues de son château.",
+      "image_prompt": "Emotional close-up. Bipboup the robot sits amidst his pile of shiny objects. He looks small and forlorn. One of his light-bulb antennas is dark. His single blue screen-eye shows a sad, flickering horizontal line. He is pointing one pincer up towards the dark, broken dome in the ceiling. In the background, Léa's face shows a moment of sudden realization and empathy."
+    },
+    {
+      "text": "Un doux sourire illumina le visage de Léa. « Je crois que je peux t'aider pour ça », murmura-t-elle. Elle détacha délicatement les étoiles dorées de son casque. Puis, elle posa sa planche à roulettes <em>Fusée</em> au centre de la pièce. En tapotant une séquence sur le côté, elle activa une fonction secrète. Un faisceau de lumière holographique jaillit de la planche, attrapa le reflet des étoiles que tenait Léa, et projeta sur le dôme sombre une galaxie entière, tourbillonnante et magnifique.<br><br>Bipboup resta immobile, son œil-écran passant d'une ligne triste à un cercle parfait, grand et lumineux de pur émerveillement. Son antenne éteinte se ralluma, brillant plus fort que jamais. Léa s'assit à côté de lui, et ensemble, dans le silence retrouvé, ils regardèrent danser leur nouvelle constellation.",
+      "image_prompt": "Heartwarming final scene. The vast castle hall is filled with a magical light show, as a beautiful, swirling galaxy is projected onto the ceiling dome from Léa's skateboard 'Fusée'. Léa and Bipboup are sitting side-by-side on the floor, looking up in awe. Bipboup's blue screen-eye is now a wide, bright, happy circle, and both his antennae are glowing brightly. The mood is magical, peaceful, and full of shared joy."
+    }
+  ],
+  "key": "courte_astronaute_chateau_skateboard_robot",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "chateau",
+  "item": "skateboard",
+  "villain": "robot"
+}

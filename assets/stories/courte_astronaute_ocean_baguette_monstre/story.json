@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Chagrin d'Étoiles",
+  "pages": [
+    {
+      "text": "Léa, l'astronaute aux cheveux bouclés, n'avait jamais rien vu de si beau. Après un long voyage à travers le silence de l'espace, son petit vaisseau s'était posé sur une rive de sable fin. Devant elle s'étendait la Mer d'Aural. Ce n'était pas une mer ordinaire. Ses vagues, d'un turquoise profond, chantaient une douce mélodie et transportaient des milliers de petites étincelles lumineuses, comme si le ciel nocturne y avait plongé pour prendre un bain.<br><br>Des poissons d'argent liquide filaient sous la surface, laissant des traînées de lumière. Léa tenait dans sa main sa fidèle baguette, <em>Étoile</em>, dont la pointe dorée brillait en harmonie avec la magie du lieu. Elle avait une mission : cartographier cette merveille et s'assurer que sa lumière ne s'éteigne jamais.",
+      "image_prompt": "8-year-old astronaut girl Léa, with curly brown hair in two buns and freckles, stands in her white spacesuit on a soft sandy shore. She looks with wonder at the Mer d'Aural, a magical, deep turquoise ocean filled with bioluminescent sparkles. She holds a slim wooden wand with a glowing golden star tip. The atmosphere is serene and magical, with faint starlight reflecting on the water. Style of Tomi Ungerer and Antoine de Saint-Exupery."
+    },
+    {
+      "text": "Soudain, une ombre passa sur la mer. La mélodie des vagues se fit plus triste, presque un murmure. Léa remarqua que les poissons d'argent avaient disparu et que les étincelles se faisaient plus rares, comme des bougies que l'on souffle une à une. Inquiète, elle scruta l'horizon. C'est là qu'elle l'aperçut.<br><br>Sur un rocher plat, une petite créature violette et toute poilue semblait gober la lumière de l'eau. Avec ses petites pattes, elle attrapait les étincelles et les portait à sa bouche. Autour d'elle, la mer devenait sombre et terne. Léa fronça les sourcils. Ce petit monstre était en train de dévorer la beauté de la Mer d'Aural !",
+      "image_prompt": "The scene shows the Mer d'Aural looking slightly dimmer. In the middle ground, on a flat, dark rock, sits Grobi, a small, cute, fluffy purple monster with big yellow eyes. He is cupping his paws and seemingly eating the bioluminescent sparkles from the water, which is dark around him. In the foreground, Léa the astronaut girl looks on from a distance, her expression filled with concern and suspicion. The mood is becoming tense."
+    },
+    {
+      "text": "Le cœur de Léa battait fort. Elle ne pouvait pas laisser cette créature éteindre une mer si précieuse. D'un pas décidé, elle s'approcha du rocher. « Arrêtez ! » cria-t-elle, sa voix résonnant sur l'eau silencieuse. La petite chose sursauta, laissant tomber une poignée de lumière qui s'évanouit avant de toucher l'eau.<br><br>Léa leva sa baguette <em>Étoile</em>, dont la pointe se mit à crépiter d'une lumière argentée, prête à défendre la mer. Mais en voyant la réaction du monstre, elle hésita. La créature, qu'elle baptisa Grobi, ne semblait pas méchante du tout. Il tremblait, ses immenses yeux jaunes remplis de peur, et il serrait son petit ventre rond comme s'il avait mal.",
+      "image_prompt": "A close-up interaction. Léa, with a determined but not angry face, points her glowing wand 'Étoile' towards Grobi. The wand emits silver sparkles. Grobi, the small fluffy purple monster, looks utterly terrified. His huge yellow eyes are wide with fear, and he is clutching his round fuzzy stomach with both paws, cowering on the rock. The scene is tense but highlights Grobi's vulnerability, not malice."
+    },
+    {
+      "text": "Grobi laissa échapper un tout petit couinement, un son si triste qu'il fendit le cœur de Léa. Il ne la regardait plus, elle ni sa baguette menaçante. D'une patte tremblante, le petit monstre pointa son ventre, puis leva lentement cette même patte vers le ciel noir, au-dessus de leurs têtes, là où scintillaient des milliers d'étoiles lointaines.<br><br>Et Léa comprit. <em>Il ne mangeait pas la lumière.</em> Il avait faim, mais pas de la lumière de la mer. Les étincelles de l'eau lui rappelaient simplement les étoiles de son monde, sa maison qui lui manquait tant. Grobi n'était pas un voleur. C'était une petite créature perdue, qui essayait de goûter à un souvenir.",
+      "image_prompt": "A moment of realization and compassion. Léa has lowered her wand, her expression softening into understanding. She is looking at Grobi with empathy. Grobi is no longer scared, but looks sad and homesick. He is pointing one small fuzzy paw up towards the vast, star-filled night sky above the sea. His other paw rests on his tummy. The atmosphere is quiet, emotional, and poignant."
+    },
+    {
+      "text": "Les larmes montèrent aux yeux de Léa. Elle rangea sa baguette, puis la ressortit doucement, mais cette fois, pour une toute autre raison. « Je ne peux pas te ramener chez toi, petit Grobi, » murmura-t-elle, « mais je peux te montrer le chemin. »<br><br>Elle leva <em>Étoile</em> vers le ciel. Un faisceau de lumière dorée, pur et chaud, jaillit de la pointe de la baguette, dessinant dans le noir une carte céleste scintillante, un chemin d'étoiles menant vers une constellation lointaine. Grobi poussa un cri de joie. Il flotta doucement vers Léa, frotta sa tête poilue contre sa main en guise de merci, puis s'élança dans le ciel en suivant la route lumineuse. Derrière lui, la Mer d'Aural se remit à briller, ses étincelles dansant avec plus d'éclat que jamais, comme pour célébrer cet adieu.",
+      "image_prompt": "An uplifting and magical final scene. Léa stands on the shore of the brilliantly sparkling Mer d'Aural, holding her wand 'Étoile' high. The wand projects a beautiful, glowing golden pathway of stars into the night sky. Far up along this path, the small silhouette of Grobi is floating away, waving a tiny goodbye. Léa watches him go with a gentle, happy smile. The whole scene is luminous, hopeful, and emotionally warm."
+    }
+  ],
+  "key": "courte_astronaute_ocean_baguette_monstre",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "ocean",
+  "item": "baguette",
+  "villain": "monstre"
+}

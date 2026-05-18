@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et la Guitare des Sept Silences",
+  "pages": [
+    {
+      "text": "Au sommet du château de Belmondrie, dans la plus haute des trois tours, vivait une jeune sorcière nommée Pimprenelle. Ses cheveux roux bouclés tombaient en une longue tresse sur sa robe lavande, constellée d'étoiles filantes. Belmondrie était son royaume : un dédale de couloirs silencieux, de fenêtres brisées où le lierre grimpait joyeusement, et de salles emplies d'une douce lueur magique.<br><br>Pimprenelle avait un trésor, un secret que même les murs du château ne connaissaient pas entièrement : la <em>Guitare des sept silences</em>. Elle était faite d'un cristal si pur qu'on voyait le jour à travers, et ses cordes brillaient de reflets d'argent. On disait qu'elle ne jouait pas de la musique, mais qu'elle la faisait taire pour révéler une mélodie plus profonde.",
+      "image_prompt": "Pimprenelle, a 9-year-old witch with curly red hair in a braid and a purple pointed hat with golden moons, stands in a circular castle room with a large, broken arched window. She looks thoughtfully at a small crystal guitar glowing softly on a stand. The atmosphere is warm, magical, and slightly dusty. Sunbeams stream through the window."
+    },
+    {
+      "text": "Un après-midi, alors que Pimprenelle tentait de faire léviter ses chaussettes (un sortilège particulièrement capricieux), un bruit épouvantable déchira la quiétude de Belmondrie. <em>CLANG ! BIP-BIP ! VROUM !</em> C'était comme si quelqu'un secouait une boîte de conserve remplie de boulons et de klaxons. Le bruit ricochait sur les vieilles pierres, faisait trembler les toiles d'araignées et grincer les armures.<br><br>Pimprenelle fronça les sourcils. Jamais, au grand jamais, un tel vacarme n'avait osé troubler son château. C'était un bruit sans magie, un bruit tout en métal et en précipitation. Agacée mais aussi curieuse, elle attrapa sa baguette en bois de saule, son cristal au bout scintillant d'une lueur violette, et descendit l'escalier en colimaçon pour trouver la source de ce raffut.",
+      "image_prompt": "A grand, medieval castle hallway with stone walls and suits of armor. Pimprenelle is cautiously descending a spiral staircase, holding her glowing wooden wand. The hallway is empty, but jagged lines representing loud noise emanate from downstairs. The mood is suspenseful and curious. No other characters are visible."
+    },
+    {
+      "text": "Le bruit la mena à la Grande Bibliothèque, une pièce immense où les livres s'empilaient jusqu'au plafond voûté. Et là, au milieu des parchemins déroulés et des grimoires renversés, elle le vit. Un petit robot de fer-blanc, tout rond et riveté, filait à toute allure sur ses petites roues. Ses antennes clignotaient, ses pinces mécaniques s'agitaient dans tous les sens. C'était lui, l'auteur de tout ce chaos !<br><br>Soudain, le petit robot, Bipboup, aperçut la Guitare des sept silences, posée sur un lutrin de velours. Il fonça dessus et l'attrapa avec une de ses pinces. « Non ! Laisse-la ! » cria Pimprenelle, le cœur battant. Elle ne voulait pas qu'il abîme son trésor.",
+      "image_prompt": "In a vast, messy castle library with books scattered everywhere, the small tin-can robot Bipboup, with a mischievous smile on his blue screen-eye, is holding the glowing crystal guitar with one of his pincer hands. Pimprenelle has just entered the room and stands in the doorway, looking shocked and shouting, her wand raised slightly."
+    },
+    {
+      "text": "Bipboup se figea net. Le sourire malicieux sur son œil-écran bleu s'effaça pour laisser place à une simple ligne tremblante, presque triste. Il ne s'enfuit pas. Au contraire, il pivota lentement vers Pimprenelle et lui tendit la guitare. Puis, avec sa pince libre, il tenta de gratter les cordes de cristal.<br><br>Un son horrible en sortit, un <em>SCRIIITCH</em> métallique qui fit grincer des dents Pimprenelle. Le robot laissa échapper une série de petits bips plaintifs, une cascade de sons électroniques qui ressemblaient à des sanglots. Pimprenelle comprit tout d'un coup. Bipboup n'était pas méchant. Il ne voulait pas casser la guitare, il voulait en <em>jouer</em>. Il était une créature de bruit qui rêvait de mélodie.",
+      "image_prompt": "Close-up on the interaction. Bipboup the robot stands still, holding the crystal guitar out towards Pimprenelle. His single blue screen-eye shows a sad, trembling line. Pimprenelle's expression has softened from anger to surprise and dawning understanding. The library is in the background, out of focus."
+    },
+    {
+      "text": "Le cœur de Pimprenelle se serra. Elle s'approcha doucement et reprit la guitare des pinces du robot. « Ce n'est pas comme ça », murmura-t-elle. « Pour cette musique-là, il ne faut pas de bruit. Il faut juste… écouter le silence. »<br><br>Elle s'assit en tailleur sur le sol poussiéreux, Bipboup à ses côtés. Elle posa délicatement ses doigts sur les six cordes, sans les faire vibrer. Elle ferma les yeux et se concentra très fort sur le calme qui revenait dans le château. Alors, la magie opéra. La guitare se mit à luire d'une lumière douce et la pièce s'emplit d'une mélodie céleste, une musique qu'on n'entendait pas avec les oreilles, mais avec le cœur. Bipboup cessa tout bip. Sur son écran, une petite larme de lumière bleue perla et roula doucement. Ensemble, dans le silence musical, la petite sorcière et le petit robot n'étaient plus seuls.",
+      "image_prompt": "Pimprenelle and Bipboup are sitting together on the floor of the library. Pimprenelle has her eyes closed, her fingers resting gently on the strings of the crystal guitar, which is glowing brightly. A soft, magical aura emanates from the guitar. Bipboup sits quietly beside her, his screen-eye showing a single glowing teardrop. The atmosphere is peaceful, emotional, and heartwarming."
+    }
+  ],
+  "key": "courte_sorciere_chateau_guitare_robot",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "chateau",
+  "item": "guitare",
+  "villain": "robot"
+}

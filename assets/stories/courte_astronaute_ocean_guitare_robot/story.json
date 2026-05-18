@@ -1,0 +1,31 @@
+{
+  "title": "Léa et le Chant des Étoiles Perdues",
+  "pages": [
+    {
+      "text": "Léa, l'astronaute aux cheveux bouclés, atterrit en douceur. Pas sur une lune de fromage, ni sur une planète de caramel. Elle posa sa fusée sur la rive de la Mer d'Aural.<br><br>Ce n'était pas une mer ordinaire. Son eau était d'un turquoise si profond qu'on aurait dit un ciel liquide, parsemé de milliers d'étincelles vivantes. Des poissons d'argent glissaient comme des éclats de lumière. Léa retira son casque décoré d'étoiles dorées. Elle était venue chercher un trésor, une légende, une musique née du silence.",
+      "image_prompt": "8-year-old astronaut girl Lea with brown curly hair in two buns and freckles, wearing a white space suit with red and blue patches. She stands on the shore of a magical luminous ocean, her helmet off. The deep turquoise and aquamarine water is scattered with bioluminescent sparkles and reflects faint starlight. Lea has a curious and wondrous expression on her face. Whimsical children's book illustration style, akin to Antoine de Saint-Exupery."
+    },
+    {
+      "text": "En suivant le scintillement des étoiles reflétées sur l'eau, Léa la découvrit. Posée sur un rocher de corail laiteux, la <em>Guitare des sept silences</em> l'attendait. Son corps était fait d'un cristal si pur qu'il semblait contenir une aurore boréale. Ses six cordes frémissaient de reflets argentés, violets et dorés.<br><br>Léa la prit dans ses mains. L'instrument était frais et vibrait d'une douce lueur. Elle pinça une corde. <em>Rien.</em> Un autre essai. <em>Toujours rien.</em> Pas le moindre son, juste un silence profond, presque magique.",
+      "image_prompt": "Close-up shot of Lea's hands gently holding a small acoustic guitar made of translucent pale crystal. The guitar is glowing softly from within, and its six shimmering strings catch silver, violet, and golden reflections. The background is the blurry, sparkling turquoise water of the Mer d'Aural. The mood is magical and quiet."
+    },
+    {
+      "text": "Soudain, un bruit métallique retentit. <em>BIP-BOUP-CLANG !</em> Un petit robot de fer-blanc, pas plus haut que son genou, surgit de derrière un rocher. Ses antennes à bulbes jaunes clignotaient frénétiquement. D'un geste vif, ses pinces mécaniques agrippèrent la guitare de cristal !<br><br>« Hé ! Rends-moi ça ! » s'écria Léa. Mais Bipboup, son unique œil-écran affichant un sourire espiègle, s'enfuit à toute vitesse, laissant derrière lui une traînée de bulles et de <em>bip-boup</em> agaçants. La poursuite commença sur les rives scintillantes.",
+      "image_prompt": "The small, playful tin-can robot Bipboup is zipping away, holding the glowing crystal guitar in his mechanical pincer arms. Bipboup's single round blue screen-eye shows a mischievous digital smile, and his antennas with yellow light bulbs are glowing. Astronaut girl Lea is lunging towards him with a frustrated expression, just out of reach. The scene is dynamic and full of movement, with splashes of water and light. Children's book illustration style."
+    },
+    {
+      "text": "Léa suivit le petit robot jusqu'à l'entrée d'une grotte sombre. À bout de souffle, elle s'arrêta pour l'épier. Bipboup n'était plus espiègle. Assis en boule, il serrait la guitare contre son torse rond et riveté. Il ne tentait pas de la jouer, mais de l'<em>écouter</em>.<br><br>Et les <em>bip-boup</em> que Léa entendait maintenant n'étaient plus joyeux. Ils étaient lents, décousus, comme un cœur mécanique qui bat la chamade puis s'essouffle. Sur son œil-écran, le sourire avait été remplacé par une simple ligne tremblante et triste. Léa comprit : Bipboup n'était pas un voleur. Il était seul, et sa propre musique était cassée.",
+      "image_prompt": "Inside a dim, rocky grotto, the small robot Bipboup sits curled up, hugging the crystal guitar against his round, riveted chest. His antennas are drooping, and his blue screen-eye displays a single, sad, trembling line. In the foreground, astronaut girl Lea peeks from behind a rock, her expression shifting from anger to sudden realization and compassion. The guitar casts a soft, lonely glow on the scene."
+    },
+    {
+      "text": "Doucement, Léa s'approcha. Elle ne gronda pas le petit robot. Elle s'assit à côté de lui et posa une main sur la guitare silencieuse. « Tu as perdu ta chanson ? » murmura-t-elle. Bipboup fit un petit <em>bip</em> de tristesse. Alors, Léa se mit à fredonner. Une mélodie simple, douce comme une berceuse d'étoiles.<br><br>Le robot vibra. La guitare entre eux se mit à luire plus fort. Et soudain, un son pur et cristallin s'éleva, se mêlant au fredonnement de Léa et aux <em>bips</em> de Bipboup, qui devenaient réguliers, harmonieux. La Guitare des sept silences n'avait pas besoin d'un musicien. Elle avait besoin de deux cœurs, même un mécanique, pour partager un silence et le transformer en la plus belle des chansons.",
+      "image_prompt": "Astronaut girl Lea and the small robot Bipboup are sitting side-by-side. Lea has a warm smile and her hand is resting on the crystal guitar, which Bipboup holds in his lap. The guitar is glowing brightly, emitting soft, luminous musical notes that float around them like fireflies. Bipboup's blue screen-eye now shows a happy, gentle smiling curve. The atmosphere is heartwarming, peaceful, and magical, illuminated by the guitar's song."
+    }
+  ],
+  "key": "courte_astronaute_ocean_guitare_robot",
+  "level": "courte",
+  "hero": "astronaute",
+  "place": "ocean",
+  "item": "guitare",
+  "villain": "robot"
+}

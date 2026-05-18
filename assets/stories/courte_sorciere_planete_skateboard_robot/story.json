@@ -1,0 +1,31 @@
+{
+  "title": "Pimprenelle et le Voleur d'Éclat",
+  "pages": [
+    {
+      "text": "Pimprenelle avait des cheveux comme des tourbillons de confiture de fraise et des taches de rousseur semées comme des graines de pavot sur son nez. C'était une jeune sorcière, mais pas de celles qui ricanent dans les livres moisis. Pimprenelle était une exploratrice.<br><br>Son plus grand trésor était <em>Fusée</em>, un skateboard magique qui filait plus vite que les comètes. Ensemble, ils dansaient entre les constellations. Un jour, en bordure de la Voie Lactée, elle aperçut une petite planète qui pulsait d'une douce lueur. C'était Vega-7, une bille de lavande et de turquoise cerclée de deux anneaux d'or. \"Une nouvelle aventure, Fusée !\" s'écria-t-elle, et son skate la propulsa vers l'inconnu.",
+      "image_prompt": "Pimprenelle, a 9-year-old witch girl with a long red curly braid, freckles, a purple pointed hat with golden moons, and a lavender robe with star patterns, joyfully rides her magical skateboard 'Fusee'. The skateboard has a deep blue deck with star and lightning bolt patterns and glowing neon-pink wheels. She is flying through starry space towards the small, beautiful planet Vega-7, which has a purple and teal surface and two golden rings."
+    },
+    {
+      "text": "En atterrissant sur Vega-7, Pimprenelle sentit un sable doux et tiède sous ses bottines. La planète était encore plus belle de près. Des cratères minuscules scintillaient comme des veilleuses, projetant des ombres dansantes sur des rochers mauves. Pourtant... quelque chose n'allait pas.<br><br>Un étrange silence habitait les lieux. D'habitude, les planètes magiques fredonnent une petite chanson. Mais Vega-7 semblait avoir perdu sa voix. Pimprenelle remarqua que certains cratères étaient sombres, éteints. La lueur chaude et rassurante de la planète faiblissait, comme une bougie dans un courant d'air.",
+      "image_prompt": "Pimprenelle stands on the surface of the magical planet Vega-7, looking worried. The planet's surface is purple and teal, but some of the small glowing craters are dark and lifeless. Her magical skateboard 'Fusee' rests on the ground beside her. The atmosphere is mysterious and a little sad. Pimprenelle is present."
+    },
+    {
+      "text": "Intriguée, Pimprenelle décida de suivre la piste des cratères éteints. Elle laissa <em>Fusée</em> derrière elle et marcha à pas de loup. Le chemin la mena vers une petite vallée cachée. Et là, elle le vit. Une créature de métal, pas plus haute que son genou, s'affairait près d'un cratère encore lumineux. C'était une sorte de petit robot-conserve, avec des antennes clignotantes et des pinces mécaniques.<br><br>Avec un petit \"Bip-boup !\", il débrancha délicatement le cœur brillant du cratère, une gemme lumineuse, et le glissa dans un sac. Il était en train de voler la lumière de la planète ! Pimprenelle fronça les sourcils. Ce petit voleur allait voir de quel bois magique elle se chauffait.",
+      "image_prompt": "Hidden behind a large purple crystal rock, Pimprenelle peeks out with a determined expression. In the foreground, the small tin-can robot Bipboup is carefully removing a glowing crystal from a crater with its pincer arms. Bipboup has a round riveted body, two antennas with lit bulbs, and a single blue screen-eye showing a mischievous smile. Pimprenelle and Bipboup are present."
+    },
+    {
+      "text": "\"Hé, toi ! Arrête tout de suite !\" cria Pimprenelle en sortant de sa cachette, sa baguette de bois à la main. Le petit robot sursauta, laissant tomber son sac. Il fit volte-face, et son unique œil-écran bleu se fixa sur elle. Pimprenelle s'attendait à une bataille, à des lasers, à un combat...<br><br>Mais au lieu de cela, Bipboup projeta une image tremblotante dans les airs. C'était un hologramme. On y voyait un petit vaisseau spatial, écrasé sur un astéroïde lointain, toutes lumières éteintes. Puis l'image zooma sur le torse de Bipboup, où une minuscule lumière rouge clignotait désespérément. <em>Batterie faible</em>. Pimprenelle comprit tout. Il ne volait pas la lumière par méchanceté. Il essayait juste de rentrer chez lui.",
+      "image_prompt": "A close-up shot focusing on Pimprenelle and Bipboup. Pimprenelle holds her wooden wand with a crystal tip, but her angry expression is softening into surprise and compassion. Bipboup stands before her, its blue screen-eye projecting a small, sad hologram of a crashed spaceship. A small red light is blinking on Bipboup's chest. The mood is tense but shifting towards understanding. Pimprenelle and Bipboup are present."
+    },
+    {
+      "text": "Le cœur de Pimprenelle se serra. Elle baissa sa baguette. \"Oh, petit Bipboup... Tu es perdu,\" murmura-t-elle. Elle s'approcha doucement et, au lieu de lui jeter un sort, elle toucha délicatement l'une de ses antennes avec la pointe de sa baguette.<br><br>Elle ferma les yeux et se concentra. Elle puisa dans la magie douce des étoiles, pas dans celle de la planète, et la canalisa en un filet d'énergie pure et scintillante. La baguette s'illumina, et le corps de Bipboup se mit à ronronner. Ses ampoules se mirent à briller d'un jaune éclatant, et son œil-écran afficha un grand sourire. Plein d'une nouvelle énergie, Bipboup sortit les gemmes de son sac et les replaça une à une. Vega-7 se remit à briller, plus fort qu'avant. Ensemble, ils envoyèrent un signal de détresse qui fendit la nuit étoilée, et une nouvelle amitié naquit, lumineuse comme une supernova.",
+      "image_prompt": "Pimprenelle and Bipboup are standing close together on the surface of Vega-7. Pimprenelle has a kind expression as she gently touches Bipboup's antenna with her glowing wand. A stream of gentle light flows from the wand to the robot. Bipboup is fully lit up, its antennas glowing brightly, and its screen-eye shows a happy smiley face. In the background, the planet's craters are all glowing brilliantly again under a starry sky. Pimprenelle and Bipboup are present."
+    }
+  ],
+  "key": "courte_sorciere_planete_skateboard_robot",
+  "level": "courte",
+  "hero": "sorciere",
+  "place": "planete",
+  "item": "skateboard",
+  "villain": "robot"
+}
