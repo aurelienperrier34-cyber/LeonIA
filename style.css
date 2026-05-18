@@ -8063,6 +8063,24 @@ body:has(#screen-creator.active) #global-star-corner {
   transform: translate(5%, -50%) rotate(18deg);
 }
 
+/* v537 : fallback emoji pour le fan niveau si images pas encore generees */
+.pick-cat-trio-fallback {
+  position: absolute;
+  width: 60%;
+  height: 80%;
+  top: 50%;
+  left: 50%;
+  font-size: clamp(2rem, 4vw, 3rem);
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 2.5px dashed rgba(139, 90, 43, 0.5);
+  background: rgba(255, 250, 235, 0.5);
+}
+.pick-cat-trio-fallback.pick-cat-trio-0 { transform: translate(-95%, -50%) rotate(-14deg); z-index: 1; }
+.pick-cat-trio-fallback.pick-cat-trio-1 { transform: translate(-50%, -55%) rotate(0deg); z-index: 3; }
+.pick-cat-trio-fallback.pick-cat-trio-2 { transform: translate(-5%, -50%) rotate(14deg); z-index: 2; }
+
 /* v531 : grand portrait du SELECTIONNE sur la page gauche */
 .pick-cat-bigportrait {
   margin-bottom: clamp(6px, 1.2vw, 12px);
