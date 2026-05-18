@@ -7890,21 +7890,18 @@ body:has(#screen-creator.active) #global-star-corner {
   overflow: hidden;
 }
 
-/* v549 : vignette restauree, plus grande, pour couvrir le watermark Gemini
-   peu importe la taille viewport (FS comme fenetre) */
+/* v550 : vignette sur TOUT le picker (pas de box visible), concentree
+   au bas-droite pour masquer le watermark Gemini. Fondu doux sans bords. */
 .creator-phase-pick::after {
   content: '';
   position: absolute;
-  bottom: 0;
-  right: 0;
-  width: clamp(180px, 22vw, 320px);
-  height: clamp(140px, 18vw, 240px);
-  background: radial-gradient(ellipse at bottom right,
+  inset: 0;
+  background: radial-gradient(circle at 100% 100%,
     rgba(20, 10, 30, 0.95) 0%,
-    rgba(30, 18, 50, 0.85) 25%,
-    rgba(43, 24, 84, 0.5) 55%,
-    rgba(43, 24, 84, 0.15) 80%,
-    transparent 100%);
+    rgba(30, 18, 50, 0.7) 4%,
+    rgba(40, 22, 70, 0.4) 9%,
+    rgba(43, 24, 84, 0.15) 15%,
+    transparent 22%);
   z-index: 2;
   pointer-events: none;
 }
