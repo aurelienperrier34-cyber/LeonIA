@@ -9284,16 +9284,29 @@ function renderPickBook() {
       `;
     } else {
       const cat = CREATOR_CATEGORIES[step.catIdx];
+      // v531 : page gauche montre un grand portrait de l'item SELECTIONNE,
+      // ou un grand decor emoji par defaut si rien selectionne
+      const selectedVal = creatorState[step.key];
+      const selectedItem = selectedVal && cat.items.find(i => i.value === selectedVal);
+      const leftPaneHtml = selectedItem
+        ? `<div class="pick-cat-bigportrait">
+             <img class="pick-cat-bigportrait-img" src="assets/items/${step.key}_${selectedVal}.jpg?v=531" alt="${selectedItem.label}"
+                  onerror="this.style.display='none'; var em=this.nextElementSibling; if(em) em.style.display='block';">
+             <div class="pick-cat-decor" style="display:none">${step.decor}</div>
+           </div>
+           <h2 class="pick-cat-title">${selectedItem.label}</h2>
+           <p class="pick-cat-subtitle">${step.title}</p>`
+        : `<div class="pick-cat-decor">${step.decor}</div>
+           <h2 class="pick-cat-title">${step.title}</h2>`;
       spread.innerHTML = `
         <div class="pick-page pick-page-left">
-          <div class="pick-cat-decor">${step.decor}</div>
-          <h2 class="pick-cat-title">${step.title}</h2>
+          ${leftPaneHtml}
         </div>
         <div class="pick-page pick-page-right">
           <div class="pick-items">
             ${cat.items.map(item => `
               <button class="pick-item ${creatorState[step.key] === item.value ? 'selected' : ''}" data-cat="${step.key}" data-value="${item.value}" type="button">
-                <img class="pick-item-img" src="assets/items/${step.key}_${item.value}.jpg?v=502" alt="" loading="lazy"
+                <img class="pick-item-img" src="assets/items/${step.key}_${item.value}.jpg?v=531" alt="" loading="lazy"
                      onerror="this.style.display='none'; var em=this.nextElementSibling; if(em) em.style.display='inline-block';">
                 <span class="pick-item-emoji" style="display:none">${item.emoji}</span>
                 <span class="pick-item-label">${item.label}</span>
@@ -9406,12 +9419,28 @@ function updatePickBookNav() {
 function updatePickSummary() {
   const sum = document.getElementById('pick-summary');
   if (!sum) return;
-  const labelOf = (key, val) => {
-    const cat = CREATOR_CATEGORIES.find(c => c.key === key);
+  // v531 : on affiche les vrais portraits (assets/items/<cat>_<value>.jpg)
+  // avec fallback emoji si l'image n'existe pas encore
+  const cardOf = (catKey, val) => {
+    if (!val) return '<div class="pick-summary-card empty">?</div>';
+    const cat = CREATOR_CATEGORIES.find(c => c.key === catKey);
     const item = cat && cat.items.find(i => i.value === val);
-    return item ? (item.emoji + ' ' + item.label) : '— ?';
+    if (!item) return '<div class="pick-summary-card empty">?</div>';
+    return `
+      <div class="pick-summary-card" title="${item.label}">
+        <img class="pick-summary-img" src="assets/items/${catKey}_${val}.jpg?v=531" alt="${item.label}"
+             onerror="this.style.display='none'; var em=this.nextElementSibling; if(em) em.style.display='inline-block';">
+        <span class="pick-summary-emoji" style="display:none">${item.emoji}</span>
+        <span class="pick-summary-label">${item.label}</span>
+      </div>`;
   };
-  sum.innerHTML = `<em>Ton histoire :</em> ${labelOf('hero', creatorState.hero)} · ${labelOf('place', creatorState.place)} · ${labelOf('item', creatorState.item)} · ${labelOf('villain', creatorState.villain)}`;
+  sum.innerHTML = `<em>Ton histoire</em>
+    <div class="pick-summary-cards">
+      ${cardOf('hero', creatorState.hero)}
+      ${cardOf('place', creatorState.place)}
+      ${cardOf('item', creatorState.item)}
+      ${cardOf('villain', creatorState.villain)}
+    </div>`;
 }
 
 function surpriseMeCreator() {
