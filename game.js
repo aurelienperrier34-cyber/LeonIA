@@ -9532,22 +9532,45 @@ async function generateCreatorStory() {
     }
   }
 
-  // 3) DEV fallback : 1ere story dispo (Brio) en attendant que toutes soient generees
+  // v531 : plus de DEV fallback Brio (qui prete a confusion). Si la story
+  // n'existe pas (pas encore generee par le pipeline), on montre un placeholder
+  // qui explique a l'enfant que l'histoire est en preparation.
   if (!story) {
-    const keys = Object.keys(CREATOR_STORIES);
-    if (keys.length > 0) {
-      story = CREATOR_STORIES[keys[0]];
-      assetsFolder = combo;
-      console.log('[creator] DEV fallback : ' + keys[0]);
-    }
+    console.log('[creator] story introuvable : ' + fullKey + ' -> placeholder');
+    story = _buildNotYetGeneratedStory();
+    assetsFolder = null;
   }
 
   setTimeout(() => {
-    creatorState.story = story || _buildPlaceholderStory();
+    creatorState.story = story;
     creatorState.assetsFolder = assetsFolder;
     creatorState.currentPage = 0;
     showCreatorBook();
   }, 800);
+}
+
+function _buildNotYetGeneratedStory() {
+  const h = creatorState.hero, p = creatorState.place;
+  const i = creatorState.item, v = creatorState.villain;
+  const labelOf = (cat, val) => {
+    const c = CREATOR_CATEGORIES.find(x => x.key === cat);
+    const it = c && c.items.find(x => x.value === val);
+    return it ? it.label.toLowerCase() : val;
+  };
+  return {
+    title: 'Cette histoire arrive bientôt !',
+    pages: [{
+      text: `Léon est en train de tisser une nouvelle histoire ` +
+            `avec <strong>${labelOf('hero', h)}</strong>, ` +
+            `<strong>${labelOf('place', p)}</strong>, ` +
+            `<strong>${labelOf('item', i)}</strong> et ` +
+            `<strong>${labelOf('villain', v)}</strong>.<br><br>` +
+            `Reviens dans quelques heures, elle sera prête !<br><br>` +
+            `<em>(En attendant, essaye une autre combinaison ou clique sur ` +
+            `🎲 Surprends-moi pour découvrir une histoire déjà créée.)</em>`,
+      image: ''
+    }]
+  };
 }
 
 function _buildPlaceholderStory() {
