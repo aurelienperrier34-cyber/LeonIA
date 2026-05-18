@@ -8143,6 +8143,8 @@ body:has(#screen-creator.active) #global-star-corner {
   position: relative;
   z-index: 2;
   width: 100%;
+  /* v542 : marge top/bottom pour ne pas coller au cadre du livre */
+  padding: clamp(6px, 1vw, 12px) 0;
 }
 
 .pick-item {
@@ -8238,6 +8240,7 @@ body:has(#screen-creator.active) #global-star-corner {
 /* v539 : bouton "Ecrire mon histoire" redesigne (livre magique CTA) */
 .pick-go {
   margin-top: clamp(8px, 1.4vw, 14px);
+  margin-bottom: clamp(8px, 1.4vw, 14px);  /* v542 : marge bas pour respirer */
   background: linear-gradient(135deg, #f5c374 0%, #d4a14e 50%, #a87431 100%);
   color: #20100a;
   border: 2.5px solid #5a3a1a;
@@ -8266,7 +8269,8 @@ body:has(#screen-creator.active) #global-star-corner {
 .pick-go-icon {
   width: clamp(28px, 3.5vw, 40px);
   height: clamp(28px, 3.5vw, 40px);
-  object-fit: contain;
+  object-fit: cover;
+  border-radius: 10px;  /* v542 : meme arrondi que les autres icones du picker */
   filter: drop-shadow(0 2px 4px rgba(80, 40, 10, 0.4));
   flex-shrink: 0;
 }
