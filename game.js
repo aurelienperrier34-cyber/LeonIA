@@ -9273,6 +9273,21 @@ function renderPickBook() {
         { value: 'soir',     emoji: '🌙', label: 'Du soir' },
         { value: 'aventure', emoji: '🗺️', label: 'Voyage' },
       ];
+      const LEVEL_META = {
+        courte:   { emoji: '⚡', label: 'Courte',  time: '3-5 min' },
+        soir:     { emoji: '🌙', label: 'Du soir', time: '7-10 min' },
+        aventure: { emoji: '🗺️', label: 'Voyage',  time: '~20 min' },
+      };
+      const levelBtnHtml = (val) => {
+        const m = LEVEL_META[val];
+        return `
+          <button class="pick-item pick-level-item ${creatorState.level === val ? 'selected' : ''}" data-level="${val}" type="button">
+            <img class="pick-item-img" src="assets/picker/level_${val}.png?v=537" alt="" loading="lazy"
+                 onerror="this.style.display='none'; var em=this.nextElementSibling; if(em) em.style.display='inline-block';">
+            <span class="pick-item-emoji" style="display:none">${m.emoji}</span>
+            <span class="pick-item-label">${m.label} <span class="pick-level-time">(${m.time})</span></span>
+          </button>`;
+      };
       spread.innerHTML = `
         <div class="pick-page pick-page-left">
           <div class="pick-cat-trio pick-cat-trio-levels">
@@ -9289,18 +9304,9 @@ function renderPickBook() {
         </div>
         <div class="pick-page pick-page-right">
           <div class="pick-items">
-            <button class="pick-item pick-level-item ${creatorState.level === 'courte' ? 'selected' : ''}" data-level="courte" type="button">
-              <span class="pick-item-emoji">⚡</span>
-              <span class="pick-item-label">Courte <span class="pick-level-time">(3-5 min)</span></span>
-            </button>
-            <button class="pick-item pick-level-item ${creatorState.level === 'soir' ? 'selected' : ''}" data-level="soir" type="button">
-              <span class="pick-item-emoji">🌙</span>
-              <span class="pick-item-label">Du soir <span class="pick-level-time">(7-10 min)</span></span>
-            </button>
-            <button class="pick-item pick-level-item ${creatorState.level === 'aventure' ? 'selected' : ''}" data-level="aventure" type="button">
-              <span class="pick-item-emoji">🗺️</span>
-              <span class="pick-item-label">Voyage <span class="pick-level-time">(~20 min)</span></span>
-            </button>
+            ${levelBtnHtml('courte')}
+            ${levelBtnHtml('soir')}
+            ${levelBtnHtml('aventure')}
           </div>
           <button class="pick-go" id="creator-go-btn" type="button" onclick="generateCreatorStory()">📖 Écrire mon histoire</button>
         </div>
