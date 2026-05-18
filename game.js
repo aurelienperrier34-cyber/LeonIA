@@ -9312,8 +9312,7 @@ function renderPickBook() {
                     onerror="this.style.opacity=0.3;">
              `).join('')}
            </div>
-           <h2 class="pick-cat-title">${step.title}</h2>
-           <p class="pick-cat-subtitle">${step.decor} Choisis-en un</p>`;
+           <h2 class="pick-cat-title">${step.title}</h2>`;
       spread.innerHTML = `
         <div class="pick-page pick-page-left">
           ${leftPaneHtml}
