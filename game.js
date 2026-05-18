@@ -9266,9 +9266,24 @@ function renderPickBook() {
     if (idx !== pickBookState.currentStep) spread.hidden = true;
 
     if (step.isLevel) {
+      // v537 : eventail des 3 illustrations de niveau (courte/soir/aventure)
+      // avec onerror fallback sur le gros emoji si pas encore generees
+      const LEVELS = [
+        { value: 'courte',   emoji: '⚡', label: 'Courte' },
+        { value: 'soir',     emoji: '🌙', label: 'Du soir' },
+        { value: 'aventure', emoji: '🗺️', label: 'Voyage' },
+      ];
       spread.innerHTML = `
         <div class="pick-page pick-page-left">
-          <div class="pick-cat-decor">${step.decor}</div>
+          <div class="pick-cat-trio pick-cat-trio-levels">
+            ${LEVELS.map((lvl, fi) => `
+              <img class="pick-cat-trio-img pick-cat-trio-${fi}"
+                   src="assets/picker/level_${lvl.value}.png?v=537"
+                   alt="${lvl.label}"
+                   onerror="this.style.display='none'; var sib=this.nextElementSibling; if(sib) sib.style.display='flex';">
+              <div class="pick-cat-trio-fallback pick-cat-trio-${fi}" style="display:none">${lvl.emoji}</div>
+            `).join('')}
+          </div>
           <h2 class="pick-cat-title">${step.title}</h2>
           <p class="pick-summary" id="pick-summary"></p>
         </div>
