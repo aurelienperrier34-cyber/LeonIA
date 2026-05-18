@@ -74,12 +74,14 @@ DECORS = {
         "compass and tiny adventure icons (a sailboat, a mountain, a star) "
         "scattered around, warm sepia and emerald tones, evocative of long journey."
     ),
-    # Icone pour le bouton "Ecrire mon histoire"
+    # Icone pour le bouton "Ecrire mon histoire" - meme style epure que les
+    # autres icones du picker (sujet seul centre, beaucoup de vide autour)
     "write_btn": (
-        "A magical golden quill pen mid-flight writing on a glowing open "
-        "parchment scroll, with bright golden sparkles trailing the quill tip, "
-        "calligraphic flourishes, warm amber and gold tones, magical aura. "
-        "The icon should feel inviting and exciting, like a 'start your adventure' button."
+        "A SINGLE small magical golden quill pen hovering vertically at the "
+        "exact center of the frame, with a few bright golden sparkles trailing "
+        "the tip. The quill is the ONLY subject, occupying the center 50% of "
+        "the frame, surrounded by empty parchment background. NO open scroll, "
+        "NO book, NO other elements. Warm amber and gold tones, magical aura."
     ),
 }
 
