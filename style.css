@@ -7898,7 +7898,17 @@ body:has(#screen-creator.active) #global-star-corner {
   margin-bottom: 0;
   z-index: 5;
 }
-.creator-phase-pick .creator-back,
+/* v544 : restore le look "verre clair" du bouton Carte (cohérent avec le reste du jeu) */
+.creator-phase-pick .creator-back {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.creator-phase-pick .creator-back:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
 .creator-phase-pick .creator-stars-pill {
   background: rgba(20,10,30,0.7);
   backdrop-filter: blur(8px);
@@ -7908,7 +7918,8 @@ body:has(#screen-creator.active) #global-star-corner {
 /* === Bouton Surprends-moi flottant === */
 .pick-surprise {
   position: absolute;
-  top: clamp(60px, 8vh, 84px);
+  /* v544 : descend plus bas pour ne pas coller a la pastille etoile */
+  top: clamp(78px, 11vh, 110px);
   right: clamp(12px, 2vw, 20px);
   background: rgba(20,10,30,0.85);
   color: #FFE166;
@@ -8564,7 +8575,7 @@ body:has(#screen-creator.active) #global-star-corner {
     padding-top: max(clamp(8px, 1.5vw, 18px), env(safe-area-inset-top));
   }
   .pick-surprise {
-    top: max(clamp(60px, 8vh, 84px), calc(env(safe-area-inset-top) + 56px));
+    top: max(clamp(78px, 11vh, 110px), calc(env(safe-area-inset-top) + 70px));
     right: max(clamp(12px, 2vw, 20px), env(safe-area-inset-right));
   }
 }
