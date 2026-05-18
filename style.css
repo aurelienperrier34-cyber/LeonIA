@@ -7890,22 +7890,8 @@ body:has(#screen-creator.active) #global-star-corner {
   overflow: hidden;
 }
 
-/* v547 : vignette en bas-droite qui masque le watermark Gemini de l'image */
-.creator-phase-pick::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: clamp(110px, 14vw, 180px);
-  height: clamp(80px, 10vw, 130px);
-  background: radial-gradient(ellipse at bottom right,
-    rgba(20, 10, 30, 0.9) 0%,
-    rgba(43, 24, 84, 0.7) 30%,
-    rgba(43, 24, 84, 0.3) 60%,
-    transparent 90%);
-  z-index: 2;
-  pointer-events: none;
-}
+/* v548 : la vignette est retiree car on crop le watermark directement
+   dans l'image (script crop_watermark.py) */
 
 .creator-phase-pick .creator-topbar {
   position: absolute;
