@@ -611,6 +611,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (typeof applyAvatarAccessoriesEverywhere === 'function') {
         requestAnimationFrame(() => applyAvatarAccessoriesEverywhere());
       }
+      // v535 : si on resume sur 'creator', il faut explicitement initialiser
+      // le picker (sinon le livre reste vide, on voit que Leon).
+      if (resumeTarget === 'creator' && typeof openCreatorMode === 'function') {
+        // openCreatorMode appelle deja goToScreen('creator') mais c est
+        // idempotent. Il enchaine ensuite sur le polling rAF qui declenche
+        // initCreatorPick une fois le screen visible.
+        openCreatorMode();
+      }
     }, 0);
   }
 
