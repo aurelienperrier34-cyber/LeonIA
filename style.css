@@ -8168,16 +8168,15 @@ body:has(#screen-creator.active) #global-star-corner {
   text-align: left;
 }
 .pick-item:hover, .pick-item:active {
-  transform: translateY(-3px);
   background: rgba(255,253,245,0.95);
   border-color: #d4a14e;
-  box-shadow: 0 8px 18px rgba(212,161,78,0.35);
+  box-shadow: 0 6px 14px rgba(212,161,78,0.3);
 }
 .pick-item.selected {
   background: linear-gradient(135deg, #fff8e1 0%, #f5d98a 100%);
   border-color: #c8881a;
-  box-shadow: 0 0 0 3px #d4a14e, 0 10px 22px rgba(212,161,78,0.55);
-  transform: scale(1.04);
+  box-shadow: 0 0 0 3px #d4a14e, 0 8px 18px rgba(212,161,78,0.5);
+  /* v540 : plus de scale (debordait du cadre du livre). Le cadre dore + coche + ombre suffisent */
 }
 .pick-item.selected::after {
   content: '✓';
@@ -8273,14 +8272,14 @@ body:has(#screen-creator.active) #global-star-corner {
 }
 .pick-go-text { line-height: 1.1; }
 .pick-go:hover:not(:disabled) {
-  transform: translateY(-3px) scale(1.04);
+  transform: translateY(-2px);
   box-shadow: 0 14px 32px rgba(168, 116, 49, 0.65),
               inset 0 2px 6px rgba(255, 240, 200, 0.5),
               inset 0 -2px 6px rgba(80, 40, 10, 0.25);
-  animation: none;  /* stop pulse au hover, transition smooth */
+  animation: none;
 }
 .pick-go:active:not(:disabled) {
-  transform: translateY(-1px) scale(1.02);
+  transform: translateY(0);
 }
 .pick-go:disabled {
   opacity: 0.4;
