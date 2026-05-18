@@ -8137,21 +8137,22 @@ body:has(#screen-creator.active) #global-star-corner {
 .pick-items {
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1.4vw, 14px);
+  gap: clamp(6px, 1vw, 10px);
   justify-content: center;
   align-items: stretch;
   position: relative;
   z-index: 2;
   width: 100%;
-  /* v542 : marge top/bottom pour ne pas coller au cadre du livre */
-  padding: clamp(6px, 1vw, 12px) 0;
+  /* v543 : padding leger pour laisser place au box-shadow + scale du selected */
+  padding: clamp(8px, 1.3vw, 14px) 0;
 }
 
 .pick-item {
   background: rgba(255,250,235,0.78);
   border: 2.5px solid rgba(139, 90, 43, 0.35);
   border-radius: 12px;
-  padding: clamp(7px, 1.2vw, 12px) clamp(11px, 1.6vw, 16px);
+  /* v543 : padding y plus serre */
+  padding: clamp(6px, 1vw, 10px) clamp(11px, 1.6vw, 16px);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -8160,10 +8161,11 @@ body:has(#screen-creator.active) #global-star-corner {
   cursor: pointer;
   font-family: 'Cormorant Garamond', 'Baloo 2', serif;
   font-weight: 600;
-  /* v541 : 94% au lieu de 100% pour laisser la marge au scale(1.04) sans deborder */
+  /* v541 : 94% pour laisser marge au scale(1.04) horizontal */
   width: 94%;
   margin: 0 auto;
-  min-height: clamp(48px, 6.5vh, 64px);
+  /* v543 : min-height reduit pour faire tenir 3 items + go button sur la page */
+  min-height: clamp(40px, 5.5vh, 54px);
   position: relative;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
@@ -8239,16 +8241,16 @@ body:has(#screen-creator.active) #global-star-corner {
 
 /* v539 : bouton "Ecrire mon histoire" redesigne (livre magique CTA) */
 .pick-go {
-  margin-top: clamp(8px, 1.4vw, 14px);
-  margin-bottom: clamp(8px, 1.4vw, 14px);  /* v542 : marge bas pour respirer */
+  /* v543 : marges reduites + padding tight pour tenir dans la page */
+  margin-top: clamp(4px, 0.8vw, 8px);
+  margin-bottom: clamp(4px, 0.8vw, 8px);
   background: linear-gradient(135deg, #f5c374 0%, #d4a14e 50%, #a87431 100%);
   color: #20100a;
   border: 2.5px solid #5a3a1a;
   border-radius: 999px;  /* pill */
-  /* v541 : padding plus serre pour laisser place au hover translate+scale eventuel */
-  padding: clamp(6px, 1.1vw, 11px) clamp(14px, 2vw, 22px);
+  padding: clamp(5px, 0.9vw, 9px) clamp(12px, 1.8vw, 20px);
   font-family: 'Cinzel', serif;
-  font-size: clamp(0.85rem, 1.25vw, 1.05rem);
+  font-size: clamp(0.8rem, 1.15vw, 1rem);
   font-weight: 700;
   cursor: pointer;
   letter-spacing: 0.05em;
@@ -8267,10 +8269,10 @@ body:has(#screen-creator.active) #global-star-corner {
   overflow: visible;
 }
 .pick-go-icon {
-  width: clamp(28px, 3.5vw, 40px);
-  height: clamp(28px, 3.5vw, 40px);
+  width: clamp(22px, 2.8vw, 32px);  /* v543 : plus petite, bouton compact */
+  height: clamp(22px, 2.8vw, 32px);
   object-fit: cover;
-  border-radius: 10px;  /* v542 : meme arrondi que les autres icones du picker */
+  border-radius: 8px;
   filter: drop-shadow(0 2px 4px rgba(80, 40, 10, 0.4));
   flex-shrink: 0;
 }
