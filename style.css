@@ -7898,15 +7898,23 @@ body:has(#screen-creator.active) #global-star-corner {
   margin-bottom: 0;
   z-index: 5;
 }
-/* v544 : restore le look "verre clair" du bouton Carte (cohérent avec le reste du jeu) */
+/* v546 : bouton Carte jaune (meme style que btn-back-map-global du jeu) */
 .creator-phase-pick .creator-back {
-  background: rgba(255, 255, 255, 0.18);
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 225, 102, 0.92);
+  color: #2a1d52;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  font-family: 'Baloo 2', 'Nunito', sans-serif;
+  font-weight: 800;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+  transition: background 0.18s, transform 0.15s;
 }
-/* v545 : titre picker en serif elegant (Cinzel) - coherent avec le livre */
+.creator-phase-pick .creator-back:hover {
+  background: rgba(255, 225, 102, 1);
+  transform: translateY(-1px) scale(1.04);
+}
+/* v545+v546 : titre picker en Cinzel serif elegant TOUT en majuscules */
 .creator-phase-pick .creator-title {
   font-family: 'Cinzel', 'Cormorant Garamond', serif;
   font-weight: 600;
@@ -7918,17 +7926,14 @@ body:has(#screen-creator.active) #global-star-corner {
   text-transform: none;
 }
 .creator-phase-pick .creator-title-author {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-weight: 500;
-  font-size: 0.78em;
-  letter-spacing: 0.04em;
-  color: #f5d98a;
-  opacity: 0.95;
-  margin-left: 0.25em;
-}
-.creator-phase-pick .creator-back:hover {
-  background: rgba(255, 255, 255, 0.28);
+  /* v546 : meme typo que le reste du titre (au lieu de Cormorant italique) */
+  font-family: inherit;
+  font-style: normal;
+  font-weight: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  margin-left: 0.4em;
 }
 .creator-phase-pick .creator-stars-pill {
   background: rgba(20,10,30,0.7);
