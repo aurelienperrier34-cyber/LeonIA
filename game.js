@@ -9455,7 +9455,8 @@ function attachPickSwipe() {
 }
 
 // === PHASE 2 : LOADING + LOAD STORY === ======================
-function generateCreatorStory() {
+// v529 : refacto async pour fetch les story.json generees par le pipeline overnight
+async function generateCreatorStory() {
   if (!creatorState.hero || !creatorState.place || !creatorState.item || !creatorState.villain) {
     const err = document.getElementById('creator-error-msg');
     if (err) err.textContent = '⚠️ Choisis un élément dans chaque catégorie !';
@@ -9464,29 +9465,57 @@ function generateCreatorStory() {
   // Show loading, hide pick
   document.getElementById('creator-pick').hidden = true;
   document.getElementById('creator-loading').hidden = false;
-  // Lookup story : cle = level_hero_place_item_villain
   const lvl = creatorState.level || 'courte';
   const combo = creatorState.hero + '_' + creatorState.place + '_' + creatorState.item + '_' + creatorState.villain;
   const fullKey = lvl + '_' + combo;
-  let story = CREATOR_STORIES[fullKey];
-  if (!story) {
+
+  let story = null;
+  let assetsFolder = null;  // dossier ou trouver pageN.jpg et pageN.mp3
+
+  // 1) Hardcoded CREATOR_STORIES (Brio historique, images deja en place)
+  if (CREATOR_STORIES[fullKey]) {
+    story = CREATOR_STORIES[fullKey];
+    assetsFolder = combo;  // Brio est dans assets/stories/<combo>/ sans prefixe niveau
+  } else {
     for (const k of Object.keys(CREATOR_STORIES)) {
-      if (k.endsWith('_' + combo)) { story = CREATOR_STORIES[k]; break; }
+      if (k.endsWith('_' + combo)) { story = CREATOR_STORIES[k]; assetsFolder = combo; break; }
     }
   }
-  // v497 : DEV - tant que les 81 histoires ne sont pas generees, on retombe
-  // sur la PREMIERE histoire disponible (Brio) plutot que sur le placeholder
-  // generique. Permet de tester le visuel/flow sans avoir a picker le combo
-  // exact. A retirer quand toutes les histoires seront en base.
+
+  // 2) Try fetch story.json (nouvelles stories generees par le pipeline)
+  if (!story) {
+    try {
+      const resp = await fetch('assets/stories/' + fullKey + '/story.json');
+      if (resp.ok) {
+        const data = await resp.json();
+        story = {
+          title: data.title || 'Mon histoire',
+          pages: (data.pages || []).map((pg, i) => ({
+            text: pg.text || '',
+            image: 'assets/stories/' + fullKey + '/page' + (i + 1) + '.jpg'
+          }))
+        };
+        assetsFolder = fullKey;
+        console.log('[creator] charge story.json : ' + fullKey);
+      }
+    } catch (e) {
+      console.warn('[creator] fetch story.json echoue :', e);
+    }
+  }
+
+  // 3) DEV fallback : 1ere story dispo (Brio) en attendant que toutes soient generees
   if (!story) {
     const keys = Object.keys(CREATOR_STORIES);
     if (keys.length > 0) {
       story = CREATOR_STORIES[keys[0]];
+      assetsFolder = combo;
       console.log('[creator] DEV fallback : ' + keys[0]);
     }
   }
+
   setTimeout(() => {
     creatorState.story = story || _buildPlaceholderStory();
+    creatorState.assetsFolder = assetsFolder;
     creatorState.currentPage = 0;
     showCreatorBook();
   }, 800);
@@ -9509,14 +9538,109 @@ function _buildPlaceholderStory() {
 }
 
 // === PHASE 3 : LIVRE 3D === ==================================
+// Etat audio : autoplay toggle persiste pendant la session
+const bookAudioState = { autoplay: false, eventsWired: false };
+
 function showCreatorBook() {
   document.getElementById('creator-loading').hidden = true;
   document.getElementById('creator-book').hidden = false;
   // Title (visible sur chaque page, en overlay sur l image)
   const titleEl = document.getElementById('book-title');
   if (titleEl) titleEl.textContent = creatorState.story.title || 'Mon histoire';
+  // Init audio events (une seule fois)
+  wireBookAudioEvents();
   // Show first page (instant = pas d animation initiale)
   showBookPage(0, true);
+}
+
+function wireBookAudioEvents() {
+  if (bookAudioState.eventsWired) return;
+  const audio = document.getElementById('book-audio');
+  if (!audio) return;
+  audio.addEventListener('play',  () => setAudioButtonState('playing'));
+  audio.addEventListener('pause', () => setAudioButtonState('ready'));
+  audio.addEventListener('ended', () => {
+    setAudioButtonState('ready');
+    // Si autoplay : avance automatiquement a la page suivante
+    if (bookAudioState.autoplay) {
+      const pages = (creatorState.story && creatorState.story.pages) || [];
+      if (creatorState.currentPage < pages.length - 1) {
+        setTimeout(() => bookNextPage(), 800);
+      }
+    }
+  });
+  audio.addEventListener('error', () => setAudioButtonState('unavailable'));
+  bookAudioState.eventsWired = true;
+}
+
+function loadBookAudioForPage(idx) {
+  const audio = document.getElementById('book-audio');
+  if (!audio) return;
+  const folder = creatorState.assetsFolder;
+  if (!folder) { setAudioButtonState('unavailable'); return; }
+  const url = 'assets/stories/' + folder + '/page' + (idx + 1) + '.mp3';
+  audio.pause();
+  // On teste la presence via HEAD (rapide) - sinon onerror gere le fallback
+  audio.src = url;
+  audio.currentTime = 0;
+  setAudioButtonState('loading');
+  audio.load();
+  audio.addEventListener('canplay', function _ready() {
+    audio.removeEventListener('canplay', _ready);
+    setAudioButtonState('ready');
+    if (bookAudioState.autoplay) {
+      audio.play().catch(e => console.warn('autoplay denied:', e.message));
+    }
+  }, { once: true });
+}
+
+function setAudioButtonState(state) {
+  const btn = document.getElementById('book-audio-toggle');
+  const icon = btn ? btn.querySelector('.book-audio-icon') : null;
+  if (!btn || !icon) return;
+  btn.disabled = false;
+  btn.classList.remove('playing', 'unavailable', 'loading');
+  if (state === 'unavailable') {
+    btn.disabled = true;
+    btn.classList.add('unavailable');
+    icon.textContent = '▶';
+    btn.title = 'Audio non disponible pour cette page';
+  } else if (state === 'loading') {
+    btn.classList.add('loading');
+    icon.textContent = '⋯';
+    btn.title = 'Chargement audio...';
+  } else if (state === 'playing') {
+    btn.classList.add('playing');
+    icon.textContent = '⏸';
+    btn.title = 'Pause';
+  } else {  // ready
+    icon.textContent = '▶';
+    btn.title = 'Écouter cette page';
+  }
+}
+
+function toggleBookAudio() {
+  const audio = document.getElementById('book-audio');
+  if (!audio || !audio.src) return;
+  if (audio.paused) {
+    audio.play().catch(e => console.warn('play failed:', e.message));
+  } else {
+    audio.pause();
+  }
+}
+
+function toggleBookAutoplay() {
+  bookAudioState.autoplay = !bookAudioState.autoplay;
+  const btn = document.getElementById('book-autoplay-toggle');
+  if (btn) {
+    btn.classList.toggle('active', bookAudioState.autoplay);
+    btn.title = 'Lecture auto : ' + (bookAudioState.autoplay ? 'ON' : 'OFF');
+  }
+  // Si on active autoplay et que l'audio est pret mais en pause, on lance
+  const audio = document.getElementById('book-audio');
+  if (bookAudioState.autoplay && audio && audio.paused && audio.src) {
+    audio.play().catch(()=>{});
+  }
 }
 
 // v494 : plus de renderBookPages (plus de pile de pages DOM). On change juste
@@ -9544,6 +9668,8 @@ function showBookPage(idx, instant) {
     // Texte
     textEl.innerHTML = '<p>' + (page.text || '') + '</p>';
     updateBookNav();
+    // v529 : charge l audio de cette page (autoplay si toggle ON)
+    loadBookAudioForPage(idx);
   };
 
   if (instant) {
@@ -9594,9 +9720,14 @@ function updateBookNav() {
 }
 
 function closeCreatorBook() {
+  // v529 : stop audio en cours avant de fermer
+  const audio = document.getElementById('book-audio');
+  if (audio) { audio.pause(); audio.src = ''; }
   goToScreen('map');
 }
 function restartCreatorPick() {
+  const audio = document.getElementById('book-audio');
+  if (audio) { audio.pause(); audio.src = ''; }
   initCreatorPick();
 }
 
