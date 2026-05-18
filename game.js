@@ -9308,7 +9308,12 @@ function renderPickBook() {
             ${levelBtnHtml('soir')}
             ${levelBtnHtml('aventure')}
           </div>
-          <button class="pick-go" id="creator-go-btn" type="button" onclick="generateCreatorStory()">📖 Écrire mon histoire</button>
+          <button class="pick-go" id="creator-go-btn" type="button" onclick="generateCreatorStory()">
+            <img class="pick-go-icon" src="assets/picker/write_btn.png?v=539" alt=""
+                 onerror="this.style.display='none'; var em=this.nextElementSibling; if(em) em.style.display='inline';">
+            <span class="pick-go-emoji" style="display:none">📖</span>
+            <span class="pick-go-text">Écrire mon histoire</span>
+          </button>
         </div>
       `;
     } else {
