@@ -7906,6 +7906,27 @@ body:has(#screen-creator.active) #global-star-corner {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
+/* v545 : titre picker en serif elegant (Cinzel) - coherent avec le livre */
+.creator-phase-pick .creator-title {
+  font-family: 'Cinzel', 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: clamp(1.15rem, 2.4vw, 1.7rem);
+  letter-spacing: 0.06em;
+  color: #FFE9A8;
+  text-shadow: 0 3px 10px rgba(0,0,0,0.7),
+               0 0 24px rgba(255, 215, 100, 0.25);
+  text-transform: none;
+}
+.creator-phase-pick .creator-title-author {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 0.78em;
+  letter-spacing: 0.04em;
+  color: #f5d98a;
+  opacity: 0.95;
+  margin-left: 0.25em;
+}
 .creator-phase-pick .creator-back:hover {
   background: rgba(255, 255, 255, 0.28);
 }
