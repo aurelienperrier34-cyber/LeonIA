@@ -7890,8 +7890,24 @@ body:has(#screen-creator.active) #global-star-corner {
   overflow: hidden;
 }
 
-/* v548 : la vignette est retiree car on crop le watermark directement
-   dans l'image (script crop_watermark.py) */
+/* v549 : vignette restauree, plus grande, pour couvrir le watermark Gemini
+   peu importe la taille viewport (FS comme fenetre) */
+.creator-phase-pick::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: clamp(180px, 22vw, 320px);
+  height: clamp(140px, 18vw, 240px);
+  background: radial-gradient(ellipse at bottom right,
+    rgba(20, 10, 30, 0.95) 0%,
+    rgba(30, 18, 50, 0.85) 25%,
+    rgba(43, 24, 84, 0.5) 55%,
+    rgba(43, 24, 84, 0.15) 80%,
+    transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
 
 .creator-phase-pick .creator-topbar {
   position: absolute;
