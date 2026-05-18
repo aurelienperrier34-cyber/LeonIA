@@ -74,6 +74,13 @@ DECORS = {
         "compass and tiny adventure icons (a sailboat, a mountain, a star) "
         "scattered around, warm sepia and emerald tones, evocative of long journey."
     ),
+    # Icone pour le bouton "Ecrire mon histoire"
+    "write_btn": (
+        "A magical golden quill pen mid-flight writing on a glowing open "
+        "parchment scroll, with bright golden sparkles trailing the quill tip, "
+        "calligraphic flourishes, warm amber and gold tones, magical aura. "
+        "The icon should feel inviting and exciting, like a 'start your adventure' button."
+    ),
 }
 
 
@@ -130,7 +137,9 @@ def main():
     todo = [(lvl, p) for lvl, p in DECORS.items()
             if not args.only or args.only == lvl]
     for lvl, prompt in todo:
-        dest = out / f"level_{lvl}.png"
+        # le 'write_btn' n'est pas un niveau d'histoire, naming different
+        filename = f"{lvl}.png" if lvl == "write_btn" else f"level_{lvl}.png"
+        dest = out / filename
         if dest.exists() and not args.force:
             print(f"[{lvl}] existe deja (--force pour regenerer)")
             continue
