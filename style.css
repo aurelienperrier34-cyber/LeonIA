@@ -7754,6 +7754,20 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   font-size: 1rem;
   color: #FFE166;
 }
+/* v580 : hint replay sous l'en-tete de la collection */
+.cards-replay-hint {
+  margin: 0 6px 12px;
+  padding: 8px 14px;
+  background: rgba(255, 225, 102, 0.14);
+  border: 1.5px solid rgba(255, 225, 102, 0.45);
+  border-radius: 12px;
+  color: #FFE166;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-align: center;
+  line-height: 1.3;
+}
 /* ============================================================
    v568 : CARTES COLLECTION premium - trading cards avec flip 3D
    ============================================================ */
@@ -7855,17 +7869,19 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   text-align: center;
 }
 .cc-back-name {
-  /* v578 : letter-spacing RETIRE - il creait un espace de fin a droite qui,
-     combine au rotateY(180deg) du verso (miroir), decalait le titre vers la
-     droite. Sans letter-spacing -> parfaitement centre. */
+  /* v580 : centrage robuste - flex center du parent + text-align + on neutralise
+     tout heritage text-align:left de l'atelier. */
   font-family: 'Cinzel', serif;
   font-weight: 700;
   font-size: clamp(0.62rem, 1vw, 0.82rem);
   color: #5a3a1a;
   letter-spacing: 0;
   line-height: 1.15;
-  text-align: center;
+  text-align: center !important;
   width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  display: block;
 }
 .cc-back-desc {
   font-family: 'Cormorant Garamond', serif;

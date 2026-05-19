@@ -7959,6 +7959,11 @@ function renderAtelierModal() {
     header.innerHTML = '<h3 class="cards-title">🎴 Ma collection</h3>' +
                        '<p class="cards-count">' + ownedCount + ' / ' + allCards.length + ' cartes</p>';
     tCards.appendChild(header);
+    // v580 : hint replay -> on peut tout debloquer en rejouant
+    const hint = document.createElement('p');
+    hint.className = 'cards-replay-hint';
+    hint.innerHTML = '🔄 Rejoue les chapitres et réussis les quiz pour gagner plus d\'étoiles et tout débloquer !';
+    tCards.appendChild(hint);
     // Grille de cartes
     const grid = document.createElement('div');
     grid.className = 'cards-grid';
