@@ -4214,11 +4214,8 @@ body.novel-mode #screen-c5s5 .game-overlay {
    ou mapWidth = 100dvh * 1672/941 (ratio de la map). Si le viewport est
    plus etroit que la map, la formule donne un nombre negatif → la bande
    est de largeur 0 (pas affichee), comportement attendu en portrait.
-   v565 : DESACTIVE (media query qui ne matche jamais). La map est en
-   plein ecran full-bleed sur TOUS les ecrans (desktop ET mobile), via la
-   regle de base .full-map-pixar (width:100vw, height:100dvh, cover).
-   Le flou Netflix avait ete abandonne. Bloc garde pour reference. */
-@media (max-width: 0px) {
+   Note : `(hover: none)` pour exclure ordi tactile (qui a souris en plus). */
+@media (max-width: 900px), (pointer: coarse) {
   #screen-map.active {
     position: relative;
     overflow: hidden;
