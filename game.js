@@ -2037,7 +2037,7 @@ function goToScreen(screenIdentifier, force) {
       state.starsAwardedC3 = true;
     } else {
       const bonus = awardReplayBonus(3);
-      if (bonus > 0) document.getElementById('stars-earned-c3').textContent = `+1 ⭐ bonus replay !`;
+      if (bonus > 0) document.getElementById('stars-earned-c3').textContent = `+${bonus} ⭐ bonus replay !`;
       else document.getElementById('stars-earned-c3').textContent = `Bravo !`;
     }
     if (!state.chaptersCompleted.includes(3)) {
@@ -2117,7 +2117,7 @@ function goToScreen(screenIdentifier, force) {
       state.starsAwardedC4 = true;
     } else {
       const bonus = awardReplayBonus(4);
-      if (bonus > 0) document.getElementById('stars-earned-c4').textContent = `+1 ⭐ bonus replay !`;
+      if (bonus > 0) document.getElementById('stars-earned-c4').textContent = `+${bonus} ⭐ bonus replay !`;
       else document.getElementById('stars-earned-c4').textContent = `Bravo !`;
     }
     if (!state.chaptersCompleted.includes(4)) {
@@ -2220,7 +2220,7 @@ function goToScreen(screenIdentifier, force) {
       state.starsAwardedC5 = true;
     } else {
       const bonus = awardReplayBonus(5);
-      if (bonus > 0) document.getElementById('stars-earned-c5').textContent = `+1 ⭐ bonus replay !`;
+      if (bonus > 0) document.getElementById('stars-earned-c5').textContent = `+${bonus} ⭐ bonus replay !`;
       else document.getElementById('stars-earned-c5').textContent = `Bravo !`;
     }
     if (!state.chaptersCompleted.includes(5)) {
@@ -2255,7 +2255,7 @@ function goToScreen(screenIdentifier, force) {
       state.starsAwardedC2 = true;
     } else {
       const bonus = awardReplayBonus(2);
-      if (bonus > 0) document.getElementById('stars-earned-c2').textContent = `+1 ⭐ bonus replay !`;
+      if (bonus > 0) document.getElementById('stars-earned-c2').textContent = `+${bonus} ⭐ bonus replay !`;
       else document.getElementById('stars-earned-c2').textContent = `Bravo !`;
     }
     if (!state.chaptersCompleted.includes(2)) {
@@ -2320,7 +2320,7 @@ function goToScreen(screenIdentifier, force) {
       state.starsAwarded = true;
     } else {
       const bonus = awardReplayBonus(1);
-      if (bonus > 0) document.getElementById('stars-earned').textContent = `+1 ⭐ bonus replay !`;
+      if (bonus > 0) document.getElementById('stars-earned').textContent = `+${bonus} ⭐ bonus replay !`;
       else document.getElementById('stars-earned').textContent = `Bravo !`;
     }
     if (!state.chaptersCompleted.includes(1)) {
@@ -2716,12 +2716,23 @@ function addStars(amount) {
 // Bonus replay : +1 etoile la premiere fois qu'on rejoue un chapitre.
 // Renvoie le nombre de bonus accordes (0 ou 1).
 function awardReplayBonus(chapterNum) {
-  if (!state.replayBonusGiven) state.replayBonusGiven = {};
-  if (state.replayBonusGiven[chapterNum]) return 0;
-  state.replayBonusGiven[chapterNum] = true;
-  addStars(1);
-  saveState();
-  return 1;
+  // v579 : replay REPETABLE, gain = score du quiz du chapitre rejoue
+  // (pedagogique : il faut bien repondre pour gagner). Chapitre 5 sans quiz
+  // = bonus fixe de 2. Plus de cap "une seule fois" -> la collection complete
+  // devient atteignable en re-jouant et maitrisant les quiz.
+  const scoreByChapter = {
+    1: state.vfScore   || 0,
+    2: state.vfScoreC2 || 0,
+    3: state.vfScoreC3 || 0,
+    4: state.vfScoreC4 || 0,
+    5: 2,
+  };
+  const bonus = scoreByChapter[chapterNum] || 0;
+  if (bonus > 0) {
+    addStars(bonus);
+    saveState();
+  }
+  return bonus;
 }
 
 // Screen 5: Tap mini-game
