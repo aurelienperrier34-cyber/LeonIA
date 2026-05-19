@@ -7724,6 +7724,44 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   color: white;
   letter-spacing: 0.04em;
 }
+
+/* v557 : visual floute pour cartes verrouillees + emoji 🔒 overlay */
+.collect-card-locked-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 4px;
+}
+.collect-card-locked-visual .collect-card-img {
+  filter: blur(7px) saturate(0.5) brightness(0.7);
+  opacity: 0.85;
+}
+.collect-card-locked-visual .collect-card-emoji {
+  filter: blur(5px) saturate(0.5) brightness(0.7);
+  opacity: 0.6;
+}
+.collect-card-locked-visual::after {
+  content: '🔒';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  text-shadow: 0 0 20px rgba(0,0,0,0.85), 0 2px 6px rgba(0,0,0,0.7);
+  z-index: 2;
+  pointer-events: none;
+}
+.collect-card-locked-name {
+  font-family: 'Cinzel', 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 1.3vw, 1rem);
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.04em;
+  text-align: center;
+  margin: 4px 0;
+}
 .collect-card-hint {
   font-weight: 700;
   font-size: 0.65rem;
