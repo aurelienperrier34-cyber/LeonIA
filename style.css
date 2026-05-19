@@ -4502,6 +4502,17 @@ body.calib-map-mode .full-map-pixar::before {
   box-shadow: 0 0 0 3px rgba(155,93,229,0.25), 0 6px 16px rgba(155,93,229,0.3);
 }
 .atelier-item-emoji { font-size: 2.4rem; line-height: 1; margin-bottom: 6px; }
+/* v574 : image carte dans la boutique */
+.atelier-item-img {
+  width: clamp(56px, 9vw, 80px);
+  height: clamp(56px, 9vw, 80px);
+  object-fit: cover;
+  border-radius: 12px;
+  margin: 0 auto 6px;
+  display: block;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+  border: 2px solid rgba(139,90,43,0.3);
+}
 .atelier-item-name  { font-weight: 700; font-size: 0.9rem; color: #333; margin-bottom: 2px; }
 .atelier-item-desc  { font-size: 0.75rem; color: #777; line-height: 1.3; min-height: 2.2em; }
 .atelier-item-cost  {
@@ -7894,19 +7905,19 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   0%, 100% { box-shadow: 0 0 18px rgba(255,225,102,0.45), 0 8px 22px rgba(155,93,229,0.45); }
   50%      { box-shadow: 0 0 38px rgba(255,225,102,0.9), 0 8px 22px rgba(155,93,229,0.65); }
 }
-/* Overlay holographique subtil */
+/* Overlay holographique subtil (v574b : sans mix-blend-mode qui cassait
+   le flip 3D - on reste en opacity simple) */
 .collect-card.legendary .cc-front::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(125deg, transparent 30%, rgba(255,255,255,0.25) 45%, rgba(180,230,255,0.2) 50%, transparent 65%);
-  mix-blend-mode: screen;
+  background: linear-gradient(125deg, transparent 30%, rgba(255,255,255,0.3) 45%, rgba(180,230,255,0.25) 50%, transparent 65%);
   pointer-events: none;
   animation: cc-holo 4s ease-in-out infinite;
 }
 @keyframes cc-holo {
-  0%, 100% { transform: translateX(-60%); opacity: 0.5; }
-  50%      { transform: translateX(60%); opacity: 0.9; }
+  0%, 100% { transform: translateX(-60%); opacity: 0.35; }
+  50%      { transform: translateX(60%); opacity: 0.7; }
 }
 
 /* === Carte VERROUILLEE (v574 : structure flip comme owned) === */
