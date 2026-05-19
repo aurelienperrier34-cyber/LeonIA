@@ -7837,6 +7837,9 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   box-shadow: 0 3px 8px rgba(0,0,0,0.4);
   white-space: nowrap;
   z-index: 2;
+  /* v576 : reste sur le recto, ne transparait pas en miroir au verso */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 /* VERSO : parchemin description */
 .cc-back {
@@ -7852,14 +7855,15 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   text-align: center;
 }
 .cc-back-name {
-  /* v574 : reduit + wrap pour les noms longs (L'exploratrice, Léon Maître de l'IA) */
+  /* v576 : reduit + wrap + centre pour les noms longs */
   font-family: 'Cinzel', serif;
   font-weight: 700;
   font-size: clamp(0.62rem, 1vw, 0.82rem);
   color: #5a3a1a;
   letter-spacing: 0.02em;
   line-height: 1.15;
-  max-width: 100%;
+  width: 100%;
+  text-align: center;
 }
 .cc-back-desc {
   font-family: 'Cormorant Garamond', serif;
