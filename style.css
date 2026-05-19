@@ -4214,9 +4214,10 @@ body.novel-mode #screen-c5s5 .game-overlay {
    ou mapWidth = 100dvh * 1672/941 (ratio de la map). Si le viewport est
    plus etroit que la map, la formule donne un nombre negatif → la bande
    est de largeur 0 (pas affichee), comportement attendu en portrait.
-   v563 : applique a TOUS les ecrans (desktop inclus) pour eliminer la
-   bande lavande sur ecrans larges. */
-@media (min-width: 1px) {
+   Note : `(hover: none)` pour exclure ordi tactile (qui a souris en plus).
+   v564 : RE-restreint au mobile/tactile (desktop = map plein ecran full-bleed,
+   le v563 avait casse ca par erreur). */
+@media (max-width: 900px), (pointer: coarse) {
   #screen-map.active {
     position: relative;
     overflow: hidden;
