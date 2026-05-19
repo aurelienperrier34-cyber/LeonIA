@@ -8748,7 +8748,8 @@ body:has(#screen-creator.active) #global-star-corner {
 .book-title-overlay {
   position: absolute;
   top: 0; left: 0; right: 0;
-  padding: clamp(14px, 2.5vw, 26px) clamp(60px, 8vw, 100px) clamp(10px, 1.5vw, 16px);
+  /* v553 : padding lateral plus large pour ne pas empieter sur les boutons */
+  padding: clamp(14px, 2.5vw, 26px) clamp(110px, 14vw, 180px) clamp(10px, 1.5vw, 16px);
   z-index: 10;
   text-align: center;
   pointer-events: none;
@@ -8950,6 +8951,8 @@ body:has(#screen-creator.active) #global-star-corner {
   letter-spacing: 0.04em;
 }
 
+/* v553 : bouton restart plus compact (juste icone + "Nouvelle"), positionne
+   en haut-gauche mais moins large pour ne pas empieter sur le titre */
 .creator-restart {
   position: absolute;
   top: clamp(10px, 1.5vw, 18px);
@@ -8958,17 +8961,22 @@ body:has(#screen-creator.active) #global-star-corner {
   color: #fff;
   border: 1.5px solid rgba(255,255,255,0.35);
   border-radius: 999px;
-  padding: clamp(7px, 1vw, 10px) clamp(14px, 1.8vw, 20px);
+  padding: clamp(6px, 0.9vw, 9px) clamp(10px, 1.4vw, 16px);
   font-family: 'Baloo 2', cursive;
   font-weight: 700;
-  font-size: clamp(0.78rem, 1.1vw, 0.92rem);
+  font-size: clamp(0.75rem, 1vw, 0.88rem);
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 30;
 }
 .creator-restart:hover { background: rgba(0,0,0,0.75); }
+/* v553 : sur PC large on affiche le texte complet, sur mobile juste l'icone */
+@media (max-width: 700px) {
+  .creator-restart-text { display: none; }
+}
 
 
 
