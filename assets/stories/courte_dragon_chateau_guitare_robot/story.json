@@ -1,0 +1,31 @@
+{
+  "title": "Brio et la Mélodie Retrouvée",
+  "pages": [
+    {
+      "text": "Au cœur du château de Belmondrie, où les tours pointues caressaient les nuages, vivait Brio. Ce n'était pas un dragon comme les autres. Grand comme un chat, Brio avait des écailles d'un bleu pastel si doux qu'on aurait dit des morceaux de ciel. Ses petites ailes ne le portaient pas encore très haut, mais ses grands yeux curieux voyaient tout.<br><br>Pourtant, le château était silencieux. Terriblement silencieux. Dans la grande salle du trône, sur un coussin de velours usé, reposait la <em>Guitare des Sept Silences</em>. Une légende disait que ses cordes de cristal ne vibraient que pour une musique oubliée, une mélodie capable de réveiller les cœurs et les pierres.",
+      "image_prompt": "In a vast, sun-dappled and dusty castle hall, the tiny baby dragon Brio, with soft sky-blue scales and big curious eyes, looks wistfully at a small crystal guitar resting on a velvet cushion. The guitar glows faintly. The mood is quiet, melancholic, and magical. Characters present: Brio."
+    },
+    {
+      "text": "Un matin, ce silence millénaire fut brisé. <em>CLANG ! BIPBOUP ! ZRRRING !</em> Un bruit de ferraille et de ressorts en colère dévala les escaliers de pierre. Brio, le cœur battant comme un petit tambour, se cacha derrière une armure rouillée. Il vit alors une créature qu'il n'avait jamais imaginée : un petit robot de conserve, tout rond et argenté, qui roulait et se cognait partout. Ses bras en pinces mécaniques fouillaient les recoins sombres, et ses antennes surmontées d'ampoules jaunes clignotaient frénétiquement. Son œil, un unique écran bleu, affichait un sourire un peu trop large, presque grimaçant.",
+      "image_prompt": "The small blue dragon Brio peeks cautiously from behind an old suit of armor. In the middle of the stone corridor, the small tin-can robot Bipboup is making a mess, his pincer arms rummaging through a pile of old books. His antennas are glowing yellow. The scene is chaotic and full of suspense. Characters present: Brio, Bipboup."
+    },
+    {
+      "text": "La course folle du robot s'arrêta net devant la salle du trône. Bipboup avait trouvé. Avec un <em>CLIC !</em> métallique, ses pinces se refermèrent sur la Guitare des Sept Silences. Il tenta d'en jouer. Mais au lieu d'une mélodie, un son horrible, strident, un grincement à faire frissonner les fantômes, s'éleva dans le château.<br><br>Brio sentit une bouffée de tristesse et de colère. Ce n'était pas un jeu ! C'était une torture pour la belle guitare de cristal. Le petit dragon sortit de sa cachette, un filet de fumée azurée s'échappant de ses narines.",
+      "image_prompt": "Bipboup the robot holds the delicate, glowing crystal guitar with his clumsy metal pincers, creating a terrible, discordant sound visualised by sharp, jagged lines. In the foreground, the baby dragon Brio looks on with an expression of shock and sadness, small puffs of smoke rising from his nostrils. Characters present: Brio, Bipboup."
+    },
+    {
+      "text": "Alors que Brio s'apprêtait à gronder l'intrus, il remarqua un détail. Le sourire sur l'écran de Bipboup avait disparu. À la place, il y avait une simple note de musique, seule et triste, qui clignotait faiblement. Le robot n'était pas méchant. Il était... désaccordé. Perdu.<br><br>Doucement, Brio s'approcha. Il posa sa petite patte griffue sur celle de Bipboup et la guida vers une corde. Puis, avec une infinie délicatesse, il effleura lui-même la corde voisine. Une note pure, cristalline et douce comme une goutte de pluie, résonna enfin. <em>Ding.</em> Bipboup s'immobilisa, ses antennes vibrant doucement.",
+      "image_prompt": "A close-up shot focusing on the moment of connection. Brio's small, soft blue dragon claw is gently touching one of Bipboup's metal pincers, guiding it towards the glowing guitar strings. Bipboup is perfectly still, and his single round blue screen-eye now displays a single, lonely musical note. The mood is quiet, tense, and full of nascent understanding. Characters present: Brio, Bipboup."
+    },
+    {
+      "text": "Brio comprit. Le robot ne voulait pas briser la guitare, il voulait qu'elle le répare. Il lui manquait sa propre musique. Alors, le petit dragon se mit à jouer, lentement, une mélodie simple et lumineuse. À chaque note, l'ampoule des antennes de Bipboup brillait d'une lueur plus chaude. La note de musique sur son écran fut bientôt rejointe par une autre, puis une autre, jusqu'à former une partition joyeuse.<br><br>Le robot se mit à émettre de petits bips harmonieux, en rythme avec la guitare. Pour la première fois, Belmondrie n'était plus silencieuse. Elle était remplie d'une musique nouvelle, une amitié tissée de cordes de cristal et de circuits heureux.",
+      "image_prompt": "Brio the dragon and Bipboup the robot are sitting together on the castle floor, side by side. Brio is happily strumming the crystal guitar, which glows with a warm, golden light. Bipboup's screen-eye shows a cheerful smiling face composed of musical notes, and his whole body seems to glow from within. Magical musical notes float in the air around them, filling the room. The atmosphere is joyful, warm, and magical. Characters present: Brio, Bipboup."
+    }
+  ],
+  "key": "courte_dragon_chateau_guitare_robot",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "chateau",
+  "item": "guitare",
+  "villain": "robot"
+}

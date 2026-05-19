@@ -1,0 +1,31 @@
+{
+  "title": "Brio et la Guitare des Sept Silences",
+  "pages": [
+    {
+      "text": "Brio était un dragon minuscule, pas plus grand qu’un chaton dodu. Ses écailles étaient d’un bleu pastel si doux qu’on aurait dit des morceaux de ciel d’été. Avec ses grands yeux curieux et ses petites ailes qui frétillaient de joie, il passait ses journées à explorer les rivages de la Mer d’Aural.<br><br>Cette mer n’était pas comme les autres. Ses eaux turquoise scintillaient de mille feux magiques, et des poissons d’argent y traçaient des arabesques lumineuses. Brio aimait sentir la douce écume caresser ses pattes et regarder les étoiles lointaines se refléter à la surface. C’était son royaume, un monde de calme et de merveille.",
+      "image_prompt": "A tiny baby dragon, Brio, with soft sky-blue pastel scales and big curious blue eyes, playing happily on the shore of a magical ocean. The ocean, the Mer d'Aural, is a luminous deep turquoise, scattered with bioluminescent sparkles and glints of silver fish. The atmosphere is gentle and wondrous, under a faint starlight."
+    },
+    {
+      "text": "Ce soir-là, un éclat inhabituel attira son regard. Échoué sur le sable humide, un objet brillait d'une lueur cristalline. C'était une petite guitare, entièrement faite d'un cristal translucide. Ses six cordes frémissaient, capturant des reflets violets, dorés et argentés. Brio, fasciné, s'approcha.<br><br>Il posa délicatement sa patte sur les cordes, espérant entendre une mélodie. Mais rien. Pas un son. Il gratta plus fort. Un silence profond, presque triste, fut sa seule réponse. La <em>Guitare des Sept Silences</em>, comme il l'appela, semblait porter en elle une immense mélancolie.",
+      "image_prompt": "Close-up shot of the tiny dragon Brio, looking curious and slightly puzzled, touching the strings of a beautiful crystal guitar lying on the wet sand. The guitar's translucent body glows softly from within, its strings shimmering with violet and golden reflections. The magical sea is in the background."
+    },
+    {
+      "text": "Soudain, une forme éthérée se dessina dans l’air. C'était un petit fantôme translucide, à l'allure d'un vieil artisan. Il avait de gentils yeux gris pâle et une longue barbe blanche qui flottait comme de la brume. C’était Maître Otho. Sans un mot, avec un sourire d'une infinie douceur, il tendit ses mains diaphanes et prit la guitare que Brio tenait encore.<br><br>Brio ne ressentit aucune peur, seulement une grande surprise. Le fantôme ne semblait pas méchant. Pourtant, en le voyant s'éloigner avec son trésor silencieux, le petit dragon sentit une pointe de tristesse. Pourquoi lui avait-il pris la guitare ?",
+      "image_prompt": "Maitre Otho, a small friendly translucent ghost with a wispy white beard and an old craftsman's apron, is gently taking the crystal guitar from Brio. Brio looks up at him, surprised but not scared. The scene is ethereal, with a soft blue-white glow around the ghost."
+    },
+    {
+      "text": "La curiosité fut plus forte que tout. Brio suivit discrètement Maître Otho, qui s'était assis sur un rocher noir surplombant la mer scintillante. Le fantôme ne jouait pas. Il se contentait de contempler la guitare, et une aura de chagrin l'enveloppait. Brio s'approcha doucement.<br><br>« C'est la mienne », murmura Otho d'une voix qui ressemblait au vent dans les coquillages. « Je l'ai fabriquée, il y a bien longtemps. Mais j'ai oublié la musique. J'ai oublié la mélodie qui la faisait chanter. Voilà pourquoi on l'appelle la <em>Guitare des Sept Silences</em>… car j'ai perdu les sept notes de ma plus belle chanson. »",
+      "image_prompt": "Maitre Otho, the ghost, sits melancholically on a dark rock overlooking the luminous Mer d'Aural. He holds the crystal guitar in his lap, staring at it with deep sadness. The small dragon Brio is cautiously approaching him from behind, his expression filled with empathy. The mood is quiet and poignant."
+    },
+    {
+      "text": "Brio comprit la peine du vieil artisan. Il ne connaissait pas de grande mélodie oubliée, mais il connaissait la joie. Il ferma les yeux et se mit à fredonner. Un tout petit air, simple et léger, une comptine de bébé dragon, douce comme du miel.<br><br>Alors, un miracle se produisit. Une corde de la guitare vibra doucement, émettant une unique note, pure et cristalline, qui brilla dans la nuit. Une larme de lumière perla sur la joue spectrale de Maître Otho. Il n'avait pas besoin de retrouver son ancienne chanson. Une nouvelle pouvait naître. Il sourit à Brio, et ensemble, ils écoutèrent le premier son d'une nouvelle musique, promesse d'un millier d'autres à venir.",
+      "image_prompt": "Brio and Maitre Otho sit together on the rock. Brio is small, humming with his eyes closed. In Maitre Otho's ghostly hands, the crystal guitar emits a single, bright point of light from one of its strings. Otho looks down at it with a gentle, hopeful smile, a single tear of light on his cheek. The atmosphere is tender, magical, and full of hope."
+    }
+  ],
+  "key": "courte_dragon_ocean_guitare_fantome",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "ocean",
+  "item": "guitare",
+  "villain": "fantome"
+}

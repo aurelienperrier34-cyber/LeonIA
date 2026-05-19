@@ -1,0 +1,31 @@
+{
+  "title": "Brio et l'Artisan Fantôme",
+  "pages": [
+    {
+      "text": "Brio, le petit dragon, était à peine plus grand qu'un chat. Ses écailles brillaient d’un bleu pastel, si douces qu’on aurait dit un morceau de ciel tombé dans l'herbe du château de Belmondrie. Belmondrie était sa maison : une vieille demeure aux trois tours pointues, vêtue de lierre. Brio aimait explorer ses couloirs silencieux et ses salles oubliées.<br><br>Un jour, un courant d’air malicieux fit grincer une porte qu’il n’avait jamais vue. Derrière, un escalier en colimaçon s’enfonçait dans une obscurité douce et intrigante. Poussé par sa curiosité insatiable, le petit dragon s’y aventura, son cœur de moineau battant la chamade.",
+      "image_prompt": "Brio, the tiny baby dragon with soft sky-blue pastel scales and big curious blue eyes, peeks into a newly discovered dark doorway in a stone corridor of the Belmondrie castle. A warm, magical glow emanates from within the doorway. The atmosphere is curious and slightly mysterious, not scary. Soft lighting, fairytale architecture."
+    },
+    {
+      "text": "L'escalier menait à un atelier secret, comme figé dans le temps. Une fine couche de poussière d'étoiles recouvrait les outils et les établis. Au centre de la pièce, posée sur un coussin de velours pourpre, une baguette magique attendait. Elle était faite d'un bois clair couleur de miel, gravé de tourbillons élégants. À son sommet, une étoile d'or à cinq branches scintillait doucement, laissant échapper une pluie de paillettes argentées. C'était <em>Étoile</em>.<br><br>Brio s'approcha, ses grands yeux ronds de fascination. Il n'avait jamais rien vu d'aussi beau. Il renifla délicatement le petit ruban rouge noué près du manche.",
+      "image_prompt": "Inside a dusty, forgotten craftsman's workshop, Brio, the tiny pastel-blue dragon, stands on his hind legs. He looks with wide, curious eyes at the magical wand 'Etoile' resting on a velvet cushion on a wooden workbench. The wand's golden star tip emits soft, silver sparkles, illuminating Brio's gentle face. Sunbeams stream through a broken window, filled with dust motes."
+    },
+    {
+      "text": "Avec une infinie précaution, Brio posa sa patte sur la baguette. Aussitôt, une forme vaporeuse et bleutée se matérialisa devant lui. C'était Maître Otho, un fantôme translucide à l'allure d'un vieil artisan. Une longue barbe blanche flottait sous son menton et son regard gris pâle était rempli d'une immense tristesse. Il ne paraissait pas méchant, seulement… perdu.<br><br>D'une main éthérée, il tendit le bras vers la baguette. « Mon… <em>Étoile</em>… », murmura-t-il d'une voix qui ressemblait au bruissement des feuilles d'automne. Brio, surpris, serra la baguette contre lui. Il n'avait pas peur, mais son petit cœur de dragon était tout embrouillé.",
+      "image_prompt": "The small friendly ghost, Maître Otho, translucent and glowing with a soft blue-white light, floats in the workshop. He has a long wispy white beard and a kind but very sad expression. He reaches a see-through hand towards Brio, the baby dragon, who is holding the sparkling wand 'Etoile'. Brio looks startled and confused, clutching the wand, not frightened. The scene is emotionally tense but not scary."
+    },
+    {
+      "text": "Brio leva les yeux vers le fantôme. Dans son regard évanescent, il ne vit aucune colère, mais un chagrin profond, le regret d'une chose précieuse égarée pour toujours. Le cœur de Brio, aussi tendre que ses écailles, comprit soudain. Ce fantôme ne voulait pas voler la baguette, il en avait besoin. Alors, le petit dragon fit une chose très courageuse. Il avança d'un pas et tendit <em>Étoile</em> à Maître Otho.<br><br>Les doigts translucides du fantôme traversèrent le bois, mais en effleurant l'étoile d'or, une lumière chaude et dorée inonda la pièce. Des images fugaces dansèrent dans l'air : on y voyait Otho, bien vivant, sculptant la baguette avec un sourire heureux.",
+      "image_prompt": "Brio, the small blue dragon, gently offers the magical wand 'Etoile' to the ghost Maître Otho. The ghost's translucent fingers are passing through the wand's handle, but the golden star at the tip glows brightly where they meet. The ghost's sad expression softens into one of wonder and relief. The room is filled with a warm, magical golden light emanating from the wand."
+    },
+    {
+      "text": "« Je l'ai fabriquée », souffla Maître Otho, une larme de lumière roulant sur sa joue spectrale. « C'était mon dernier chef-d'œuvre. Mes mains se souvenaient de la joie de créer, et mon âme ne pouvait trouver le repos. » Brio eut alors une idée, une idée brillante comme le bout de la baguette. Il ne la lâcha pas. Au lieu de cela, il la leva bien haut.<br><br>« Alors, créons ensemble ! » pépiat-il joyeusement. Depuis ce jour, Brio et Maître Otho devinrent les artistes secrets de Belmondrie. Le dragon tenait la baguette, et le fantôme guidait sa patte de son savoir-faire ancestral, dessinant dans l'air des sculptures de lumière et des feux d'artifice silencieux. Le vieux château n'avait jamais été aussi vivant.",
+      "image_prompt": "Brio the baby dragon and Maître Otho the ghost are working together joyfully in the workshop. Brio holds the wand 'Etoile', which is creating a swirling cascade of silver and gold sparkles in the air. The translucent ghost floats beside him, one ethereal hand gently placed over Brio's paw on the wand, guiding the movement with a happy, peaceful smile. The workshop is now clean and filled with beautiful, magical light creations."
+    }
+  ],
+  "key": "courte_dragon_chateau_baguette_fantome",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "chateau",
+  "item": "baguette",
+  "villain": "fantome"
+}

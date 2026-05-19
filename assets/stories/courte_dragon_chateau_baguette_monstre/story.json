@@ -1,0 +1,31 @@
+{
+  "title": "Brio et le Secret de la Tour Oubliée",
+  "pages": [
+    {
+      "text": "Brio était un tout petit dragon, pas plus grand qu'un gros chat. Ses écailles étaient d'un bleu pastel si doux qu'on aurait dit des morceaux de ciel. Il vivait au château de Belmondrie, une merveille de pierres anciennes et de toits pointus. Brio aimait explorer ses couloirs secrets, sa baguette magique, <em>Étoile</em>, toujours avec lui. C'était une fine branche de bois couleur miel, avec une étoile d'or au bout.<br><br>Un jour, une plainte monta de la plus haute tour, celle que tout le monde avait oubliée. Ce n'était pas un cri effrayant, mais un son solitaire, comme une mélodie perdue. Curieux, Brio décida d'aller voir.",
+      "image_prompt": "Brio, the tiny baby dragon with soft sky-blue scales and big curious blue eyes, stands in a grand, sunlit hall of Belmondrie castle. He is holding the magical wand Étoile, looking up thoughtfully towards a high tower window. The atmosphere is warm, adventurous, and full of wonder. Medieval architecture surrounds him."
+    },
+    {
+      "text": "Le petit dragon commença l'ascension. L'escalier de pierre tournait en colimaçon dans une pénombre poussiéreuse. À chaque marche, le son devenait plus clair, plus triste. C'était un chagrin si profond qu'il donnait froid. Brio serra fort sa baguette <em>Étoile</em> contre lui. La petite étoile d'or se mit à scintiller doucement, projetant une lumière argentée sur les murs couverts de lierre.<br><br>Il n'avait pas peur. Il sentait que ce son, aussi mélancolique soit-il, ne venait pas d'une créature méchante. C'était l'appel de quelque chose ou de quelqu'un qui se sentait terriblement seul.",
+      "image_prompt": "Brio the baby dragon is cautiously climbing a dark, spiral stone staircase inside the castle tower. He holds the glowing wand, Étoile, which casts a soft, silvery light on the dusty, ivy-covered stone walls. His expression is determined yet gentle. The mood is mysterious and suspenseful, but not frightening."
+    },
+    {
+      "text": "Tout en haut, dans la salle circulaire de la tour, Brio le vit. Recroquevillée dans un coin, une petite créature de fourrure violette tremblait. C'était Grobi. Il n'avait rien d'un monstre terrifiant. Ses grands yeux jaunes étaient remplis de larmes qui, en tombant, se transformaient en flaques de brume scintillante. C'est de lui que venait cette complainte infinie.<br><br>Grobi leva la tête et aperçut Brio, immobile sur le seuil. Il ne gronda pas. Il renifla juste un bon coup, le cœur gros, et un nouveau nuage de brume s'échappa de ses narines.",
+      "image_prompt": "In a dusty, circular tower room with a broken window showing the night sky, the small, cute purple fluffy monster Grobi is curled up and crying. Brio the baby dragon stands in the doorway, holding his glowing wand Étoile. Brio looks surprised and compassionate, not scared. The scene is lit by the wand's gentle glow and moonlight. The atmosphere is sad and poignant."
+    },
+    {
+      "text": "Brio s'approcha doucement, à pas de velours. Il ne sentait aucune menace, seulement une immense tristesse. Il tendit sa baguette <em>Étoile</em>, non pas pour attaquer, mais pour comprendre. La douce lumière de l'étoile d'or éclaira ce que Grobi serrait dans ses pattes poilues : une petite boîte à musique, toute cassée.<br><br>Le pauvre Grobi essayait de tourner la manivelle, mais l'objet ne produisait qu'une note fausse et déchirante. Voilà le secret de la tour ! Grobi n'était pas un monstre, il était simplement perdu. Et sa musique brisée était son seul espoir d'appeler sa famille.",
+      "image_prompt": "A close-up view focusing on the interaction between Brio and Grobi. Brio is gently pointing his glowing wand, Étoile, towards a broken music box clutched by the fluffy purple monster, Grobi. Grobi looks up at Brio with huge, hopeful yellow eyes. The wand's light is warm and comforting, illuminating the details of the broken toy. The mood is one of dawning understanding and tenderness."
+    },
+    {
+      "text": "Le cœur de Brio se serra. Il avait compris. Avec une infinie douceur, il toucha la boîte à musique du bout de sa baguette magique. Une pluie d'étincelles argentées jaillit de l'étoile d'or et enveloppa le jouet abîmé.<br><br>Soudain, une mélodie cristalline et joyeuse s'éleva dans la pièce. La brume de chagrin se dissipa, remplacée par une lumière chaude. Grobi poussa un petit cri de joie et serra la patte de Brio dans un câlin reconnaissant. La musique s'envola par la fenêtre brisée, un phare sonore dans la nuit. Grobi n'était plus seul. Il avait un ami, et sa chanson pouvait enfin voyager pour retrouver les siens.",
+      "image_prompt": "Brio and Grobi are sitting together in the now brightly lit tower room. The repaired music box is glowing, and magical, sparkling musical notes float around them. The fluffy purple monster Grobi is happily hugging the baby dragon Brio's leg. Both characters have joyful expressions. The scene is heartwarming, magical, and full of light and friendship."
+    }
+  ],
+  "key": "courte_dragon_chateau_baguette_monstre",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "chateau",
+  "item": "baguette",
+  "villain": "monstre"
+}

@@ -1,0 +1,31 @@
+{
+  "title": "Brio et le Gardien des Lumières",
+  "pages": [
+    {
+      "text": "Brio était un minuscule dragon, pas plus grand qu'un chaton. Ses écailles étaient d'un bleu pastel si doux qu'on aurait dit un morceau de ciel tombé dans une barbe à papa. Il avait de grands yeux curieux et des ailes trop petites pour voler très haut, mais parfaites pour danser avec le vent.<br><br>Son trésor, c'était sa planche magique, <em>Fusée</em>. Elle glissait sur l'eau comme une étoile filante. Chaque soir, Brio s'élançait sur la Mer d'Aural, un océan de turquoise liquide où scintillaient des milliers de lucioles aquatiques. Le clapotis des vagues était sa musique, et les reflets d'argent des poissons, ses compagnons de ballet.",
+      "image_prompt": "A tiny baby dragon, Brio, with soft sky-blue pastel scales and big curious blue eyes, joyfully rides a magical skateboard just above the water's surface. The skateboard has a deep blue deck with star patterns and neon-pink glowing wheels. The ocean is a luminous deep turquoise, filled with bioluminescent sparkles and gentle silver fish glints. The mood is wondrous and joyful. Whimsical children's book illustration style."
+    },
+    {
+      "text": "Ce soir-là, pourtant, quelque chose était différent. Une petite zone de la mer était étrangement sombre, comme si une ombre avait bu toute sa lumière. Intrigué, Brio dirigea <em>Fusée</em> vers cette obscurité. Au centre, sur un rocher flottant, se tenait une petite créature. C'était une boule de poils violets, avec de très grands yeux jaunes qui semblaient contenir toute la tristesse du monde.<br><br>La créature, recroquevillée sur elle-même, attrapait une à une les étincelles de la mer et les serrait contre son cœur. Elle en avait déjà amassé une sphère si brillante qu'elle en était presque aveuglante.",
+      "image_prompt": "From a distance, Brio on his glowing skateboard looks towards a small floating rock in the middle of the sea. On the rock sits Grobi, a small, cute, fluffy lavender-purple monster with big round yellow eyes, looking sad. He is cupping a large, intensely glowing ball of sparkles, and the water immediately around his rock is noticeably dark and devoid of light. The surrounding ocean is sparkling brightly. The atmosphere is mysterious and slightly melancholic."
+    },
+    {
+      "text": "Brio s'approcha doucement, sa planche flottant en silence. « Bonjour ? » dit-il d'une petite voix. La créature sursauta. Elle serra plus fort encore son globe de lumière, comme un trésor qu'on voudrait lui voler. Un petit grognement, plus effrayé que méchant, s'échappa de sa gorge poilue.<br><br>« Pourquoi prends-tu toute la lumière ? » demanda Brio, sans une once de reproche, juste de la pure curiosité. « La mer est si triste sans ses étoiles. » Le petit monstre ne répondit pas, mais ses grands yeux jaunes se remplirent de larmes scintillantes.",
+      "image_prompt": "A close-up interaction. Brio, the tiny blue dragon, hovers near the rock on his magical skateboard, his expression gentle and questioning. On the rock, Grobi, the small fluffy purple monster, clutches his sphere of light defensively, his big yellow eyes wide with worry and sadness. He looks vulnerable, not aggressive. The focus is on their contrasting emotions."
+    },
+    {
+      "text": "Avec une infinie précaution, la créature violette entrouvrit ses pattes. La lumière éblouissante s'adoucit, révélant ce qu'elle protégeait si farouchement. Ce n'était pas un joyau, ni de l'or. C'était un minuscule coquillage sombre, fêlé, silencieux. Le petit monstre essayait de le réparer, de combler ses fissures avec la lumière volée à l'océan, espérant lui rendre sa magie perdue.<br><br>Brio comprit tout d'un coup. Cette créature n'était pas une voleuse. C'était un <em>gardien</em>. Un gardien qui essayait de soigner un souvenir brisé.",
+      "image_prompt": "An intimate, gentle close-up. Grobi's small, fuzzy purple paws are slightly open, revealing a tiny, dark, cracked seashell nestled within the glowing sphere of captured sparkles. Brio is looking down at the shell with an expression of sudden, deep understanding and empathy. The focus is on the delicate shell and the two characters' connection. The mood is tender and emotional."
+    },
+    {
+      "text": "« La lumière ne peut pas recoller les sons », murmura Brio. Il se posa sur le rocher à côté du petit monstre, qu'il décida d'appeler Grobi. Doucement, Brio se pencha et souffla une buée tiède et dorée sur le coquillage. Ce n'était pas un feu de dragon, mais un souffle de vie, chaud comme un secret d'été.<br><br>Une note de musique, fragile et pure, s'éleva du coquillage. Puis une autre. Une mélodie cristalline se mit à jouer. Les yeux de Grobi s'écarquillèrent de bonheur. Il ouvrit ses pattes et rendit toutes les étincelles à la mer, qui se mit à briller de mille feux. Assis côte à côte, le petit dragon et le monstre guéri écoutèrent la musique du coquillage, devenus amis sous un ciel enfin complet.",
+      "image_prompt": "Brio and Grobi are sitting side-by-side on the small rock. Brio, the blue dragon, is gently breathing a soft, warm, golden mist onto the tiny seashell held in Grobi's purple, fuzzy paws. Faint musical notes are visualized as soft, glowing wisps floating up from the shell. The surrounding ocean is now incredibly bright and sparkling. Both characters have expressions of peace, wonder, and shared joy. A heartwarming and magical final scene."
+    }
+  ],
+  "key": "courte_dragon_ocean_skateboard_monstre",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "ocean",
+  "item": "skateboard",
+  "villain": "monstre"
+}

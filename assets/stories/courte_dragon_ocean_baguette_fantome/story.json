@@ -1,0 +1,31 @@
+{
+  "title": "Brio et l'Artisan des Étoiles",
+  "pages": [
+    {
+      "text": "Brio était un tout petit dragon, pas plus grand qu’un gros chat. Ses écailles pastel, d’un bleu céleste très doux, brillaient gentiment au soleil. Avec ses grands yeux curieux et ses petites ailes encore fragiles, il aimait par-dessus tout explorer les rivages de la Mer d’Aural.<br><br>Ce matin-là, parmi les coquillages polis par les vagues, il découvrit un bâton pas comme les autres. C’était une fine baguette de bois couleur miel, couverte de gravures en spirale. À son extrémité, une étoile dorée à cinq branches scintillait. Brio la baptisa aussitôt <em>Étoile</em>. Il la prit délicatement dans sa patte, et une pluie de petites étincelles argentées jaillit dans l'air salé.",
+      "image_prompt": "A tiny baby dragon, Brio, the size of a large cat, with soft sky-blue pastel scales and big curious blue eyes, sits on a sandy shore. He is holding a slim magical wand of warm honey-brown wood (Étoile), its five-pointed golden star tip emitting a gentle shower of silver sparkles. The background is the magical Mer d'Aural, a luminous turquoise and aquamarine ocean with gentle waves. The mood is wondrous and peaceful."
+    },
+    {
+      "text": "Amusé, Brio agita la baguette au-dessus de l'eau. Chaque fois que la pointe d'Étoile touchait presque la surface, les scintillements de la mer semblaient danser vers elle. Mais soudain, une forme étrange s'éleva des profondeurs. C'était une silhouette translucide, un fantôme bleuté qui ressemblait à un vieil artisan. Il avait une longue barbe vaporeuse et des yeux gris pleins de tristesse. Le fantôme tendait ses mains éthérées vers les éclats de lumière de la mer, comme s'il voulait les attraper. Et là où il passait, l'eau devenait terne, perdant un peu de son éclat magique. Brio serra la baguette contre lui, le cœur battant.",
+      "image_prompt": "The tiny blue dragon Brio stands at the water's edge, looking startled but curious. From the luminous turquoise Mer d'Aural rises Maitre Otho, a small, friendly-looking translucent ghost of an old craftsman with a long wispy white beard and sad pale grey eyes. Otho is reaching his ethereal hands towards the bioluminescent sparkles in the water, and the sea around him seems slightly dimmer. The scene has an atmosphere of magical suspense."
+    },
+    {
+      "text": "« Arrêtez ! » cria Brio, sa petite voix tremblant un peu. « Vous volez la lumière de la mer ! »<br><br>Le petit dragon, se sentant courageux, s'avança sur le sable humide. Il brandit <em>Étoile</em> devant lui, comme une épée de lumière. La baguette réagit, son étoile dorée brillant plus fort, projetant un halo protecteur. Le fantôme, qui se faisait appeler Maître Otho, ne parut ni fâché, ni menaçant. Au contraire, son visage devint encore plus mélancolique. Il regarda la baguette avec une infinie nostalgie, puis leva une main transparente vers Brio, non pour l'attaquer, mais comme pour supplier. Un murmure s'échappa de ses lèvres pâles, un son doux comme le ressac.",
+      "image_prompt": "Brio the small blue dragon stands bravely on the wet sand, holding the magical wand Étoile defensively. The wand's golden star tip is glowing brightly. Facing him is the translucent ghost, Maitre Otho, who looks not angry but deeply sad and nostalgic. Otho is reaching a transparent hand gently towards Brio and the wand, his expression pleading. The background is the Mer d'Aural, partially dimmed. The mood is a mix of tension and melancholy."
+    },
+    {
+      "text": "« Je ne vole rien, petit gardien », dit la voix de Maître Otho, douce comme une brise du soir. « Je cherche seulement ce que j'ai perdu. »<br><br>Il expliqua qu'il était autrefois un artisan céleste. Son travail ? Fabriquer les étoiles de mer qui illuminent les fonds marins. Il les créait avec des outils magiques, des baguettes exactement comme celle que Brio tenait. Mais un jour, une grande vague emporta son atelier, et tous ses précieux instruments, ses <em>étoiles</em>, se brisèrent en mille éclats de lumière au fond de l'océan. Depuis, il errait, essayant désespérément de rassembler les fragments de ses créations perdues. Il ne volait pas la lumière ; il tentait de réparer son cœur brisé.",
+      "image_prompt": "Close-up on the interaction between Brio and Maitre Otho. Brio is listening intently, his defensive posture softening into curiosity and empathy. Maitre Otho, the gentle ghost, is explaining his story with a sad, ethereal gesture towards the sparkling water. His translucent form glows softly. The magical wand, Étoile, held by Brio, is still glowing but less defensively. The atmosphere is intimate, poignant, and revelatory."
+    },
+    {
+      "text": "Brio comprit. Son cœur de petit dragon se serra pour le vieil artisan fantôme. Cette baguette n'était pas un jouet. C'était un outil, un espoir. Sans hésiter, il tendit <em>Étoile</em> à Maître Otho. <br><br>Le fantôme la prit avec une gratitude infinie. Au contact du bois familier, sa silhouette devint plus nette, plus lumineuse. Il se tourna vers la mer et plongea doucement la baguette dans l'eau. Au lieu de s'éteindre, les milliers de scintillements se rassemblèrent, tourbillonnèrent et se transformèrent en de magnifiques étoiles de mer bioluminescentes. Elles se mirent à nager joyeusement, rendant la Mer d'Aural plus éclatante que jamais. Maître Otho sourit enfin, un vrai sourire radieux. « Merci, petit Brio », murmura-t-il avant de s'évanouir en une douce lumière. Brio resta seul sur la plage, regardant danser les nouvelles étoiles sous les vagues.",
+      "image_prompt": "The tiny blue dragon Brio sits alone on the shore, a gentle and happy expression on his face. He is watching the Mer d'Aural, which is now exceptionally brilliant and luminous. The water is filled with dozens of newly formed, glowing bioluminescent starfish swimming gracefully beneath the surface. The ghost is gone. The sky is turning a soft twilight purple, reflecting on the magical water. The mood is peaceful, resolved, and deeply magical."
+    }
+  ],
+  "key": "courte_dragon_ocean_baguette_fantome",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "ocean",
+  "item": "baguette",
+  "villain": "fantome"
+}

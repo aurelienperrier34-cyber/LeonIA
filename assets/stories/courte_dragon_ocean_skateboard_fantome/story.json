@@ -1,0 +1,31 @@
+{
+  "title": "Brio et l'Artisan des Étoiles",
+  "pages": [
+    {
+      "text": "Brio était un dragon minuscule, pas plus grand qu’un chaton potelé. Ses écailles brillaient d'un bleu pastel si doux qu'on aurait dit un morceau de ciel tombé sur la plage. Avec ses grands yeux curieux et ses petites ailes qui frétillaient de joie, il passait ses journées au bord de la Mer d'Aural.<br><br>Cette mer-là n'était pas une mer ordinaire. Ses vagues turquoises chuchotaient des secrets en déposant une écume pailletée sur le sable perlé. Brio aimait plus que tout y faire glisser sa planche magique, <em>Fusée</em>. Avec sa lueur holographique et ses roues d'un rose fluo, Fusée n'attendait qu'un signal pour s'élancer sur l'eau comme une étoile filante.",
+      "image_prompt": "A tiny baby dragon, Brio, the size of a large cat, with soft sky-blue pastel scales and big curious blue eyes. He stands on a pearlescent beach next to his magical skateboard, Fusée, which has a deep blue deck with star patterns and glowing neon-pink wheels. In the background, the magical Mer d'Aural is a luminous turquoise ocean scattered with bioluminescent sparkles. The atmosphere is gentle and magical, like a soft twilight."
+    },
+    {
+      "text": "Ce soir-là, alors que les premières étoiles s'allumaient, Brio lança Fusée sur la frange de l'eau. La planche glissa sans un bruit, laissant derrière elle une traînée de lumière. Mais soudain, Brio freina. Un peu plus loin, dans l'eau peu profonde, une silhouette étrange scintillait.<br><br>Elle était pâle, presque transparente, et semblait essayer d'attraper les poissons d'argent qui filaient entre ses doigts. La silhouette levait ses mains pleines d'eau scintillante, regardait les gouttes de lumière lui échapper, puis recommençait, encore et encore. Un geste infiniment triste, comme une chanson sans fin.",
+      "image_prompt": "From a low angle on the beach, we see Brio looking out at the sea. In the shallow, sparkling turquoise water stands a translucent, ghostly figure of an old man, Maître Otho. He is trying to cup the luminous water and the silver fish glints in his hands, which slip through his ethereal form. The mood is mysterious and slightly melancholic, with the setting sun casting long, soft shadows."
+    },
+    {
+      "text": "Le cœur de Brio n'était pas fait pour la peur, mais pour la curiosité. Il poussa doucement Fusée sur les vagues et s'approcha. « Bonjour ? » dit-il d'une petite voix. La silhouette se tourna. Ce n'était pas un monstre, mais le fantôme d'un vieil homme au regard bon, avec une longue barbe de brume.<br><br>« Oh, bonjour, petit être, » murmura le fantôme. « Je suis Maître Otho. Jadis, j'étais un artisan. Le meilleur. Je créais des planches magiques, des coursiers de rêves. Mais j'ai perdu la plus belle d'entre elles, et avec elle, le souvenir de son secret. Je suis condamné à la chercher sans jamais la retrouver. »",
+      "image_prompt": "Brio, on his glowing skateboard Fusée which hovers just above the water, is face to face with Maître Otho. The small dragon looks up with a gentle, curious expression. Maître Otho, a friendly and translucent ghost with a kind face and wispy white beard, floats in the water and looks down at Brio, his expression one of deep sadness and gentleness."
+    },
+    {
+      "text": "Un secret ? Brio pencha la tête. Il regarda le visage triste de Maître Otho, puis baissa les yeux vers sa propre planche. Fusée brillait doucement entre ses pattes. Il y avait les étoiles blanches, la lueur holographique... et puis, au centre, un magnifique éclair doré qui semblait contenir toute la vitesse du monde.<br><br>Brio souleva sa planche avec précaution. « Maître Otho... » commença-t-il timidement. « Est-ce que le secret que vous cherchez... ressemble à <em>ceci</em> ? »<br><br>Le fantôme écarquilla les yeux. Sa main éthérée s'approcha de l'éclair doré, sans oser le toucher. Une lumière de pure merveille s'alluma dans son regard. C'était lui. Le chef-d'œuvre. Le souvenir retrouvé.",
+      "image_prompt": "A close-up shot focusing on the interaction. Brio proudly holds up his magical skateboard, Fusée, for the ghost to see. The golden lightning bolt pattern on the board glows with a warm, intense light. Maître Otho, the translucent ghost, leans in very close, his face illuminated by the board's glow, his eyes wide with wonder, joy, and recognition. His ethereal hand is just centimeters away from the board, almost touching the pattern."
+    },
+    {
+      "text": "« Fusée... » souffla Maître Otho, un sourire radieux transfigurant son visage de spectre. « Elle n'était pas perdue. Elle t'attendait, toi. Un chef-d'œuvre n'est rien sans l'artiste qui saura le faire danser. »<br><br>En disant ces mots, le corps de Maître Otho se mit à briller d'une lumière intense et douce. Il ne s'effaçait pas, il se transformait. Il éclata en des milliers de particules de lumière bleue et dorée qui s'envolèrent et plongèrent dans la Mer d'Aural, la rendant plus scintillante que jamais.<br><br>Brio resta seul, mais son cœur était plein. Il posa Fusée sur l'eau et s'élança. Il glissa sur la mer, laissant une traînée de bonheur, sentant dans chaque vaguelette et chaque éclat de lumière la présence joyeuse de l'Artisan des Étoiles.",
+      "image_prompt": "Brio, alone but looking joyful and serene, rides his magical skateboard Fusée across the surface of the Mer d'Aural. He leaves a glowing trail of pink and gold sparks behind him. The ocean is incredibly vibrant, filled with an extraordinary amount of bioluminescent sparkles, reflecting the starlight from the deep night sky. The scene is luminous, peaceful, and full of wonder, conveying a sense of happy closure."
+    }
+  ],
+  "key": "courte_dragon_ocean_skateboard_fantome",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "ocean",
+  "item": "skateboard",
+  "villain": "fantome"
+}

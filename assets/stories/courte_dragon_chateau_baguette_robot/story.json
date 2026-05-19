@@ -1,0 +1,31 @@
+{
+  "title": "Brio et l'Ami de Fer-Blanc",
+  "pages": [
+    {
+      "text": "Au cœur du château de Belmondrie, avec ses tours pointues qui rêvaient au ciel, vivait un tout petit dragon. Il s'appelait Brio. Ses écailles étaient de la couleur du ciel de l'aube, et ses grands yeux bleus pétillaient de curiosité. Brio n'était pas plus grand qu'un chaton et ses ailes, encore fragiles, lui servaient surtout à dévaler les grands escaliers de pierre. Un jour, en explorant une salle oubliée, il sentit un courant d'air magique derrière une tapisserie poussiéreuse. Il tira le lourd tissu et découvrit, nichée dans le mur, une fine baguette de bois clair. C'était <em>Etoile</em>. À sa pointe brillait un astre d'or qui semblait lui murmurer des secrets d'étincelles.",
+      "image_prompt": "Brio, a tiny baby dragon with soft sky-blue pastel scales, is in a dusty, sunlit room of a fairy-tale stone castle. He is curiously looking at a slim magical wand of warm honey-brown wood (Etoile) that he just found in a secret alcove behind a large, faded tapestry. The wand's five-pointed golden star tip emits gentle silver sparkles. Atmosphere: magical discovery, warm and gentle lighting."
+    },
+    {
+      "text": "Brio, fou de joie, sortit dans la cour du château. Il agita la baguette Etoile, et un nuage de paillettes argentées fit éclore un parterre de roses bleues. C'était merveilleux ! Mais tout à coup, un bruit étrange retentit : <em>CLING-CLANG-BZZZT !</em> Un petit robot de fer-blanc, rond comme une conserve, venait de surgir de derrière une armure. Ses deux antennes clignotaient et son œil-écran unique affichait un grand sourire espiègle. Fasciné par la magie, il s'élança.<br><br>Avant que Brio ait pu réagir, le robot, avec un « BIP ! » enjoué, attrapa la baguette Etoile de sa pince de métal et fila comme l'éclair.",
+      "image_prompt": "In the castle courtyard, Brio the tiny blue dragon looks surprised as Bipboup, a small playful tin-can robot with a single round blue screen-eye showing a mischievous smile, playfully snatches the glowing magic wand (Etoile) from him. Bipboup's antennas are glowing yellow. Sparkles are frozen in the air around them. Atmosphere: playful disruption, surprise, bright daylight."
+    },
+    {
+      "text": "« Rends-la-moi ! » s'écria Brio, plus surpris qu'en colère. Il se lança à la poursuite du petit robot, qui zigzaguait à travers les couloirs immenses de Belmondrie. Bipboup tenait la baguette Etoile à l'envers, et la magie s'échappait dans tous les sens ! Un portrait de roi se mit à chanter une chanson de marin, un tapis s'envola et fit des loopings. C'était un chaos joyeux et coloré. Brio volait et trottinait, le cœur battant, en essayant d'éviter une pluie de bonbons qui tombait du plafond. « Attends, Bipboup ! C'est dangereux ! » criait le petit dragon, mais le robot ne l'entendait pas, répétant son refrain métallique : <em>« Bip-boup-bip-bip ! »</em>",
+      "image_prompt": "A dynamic chase scene inside the castle's grand hall. Bipboup the robot is in the foreground, running away and clumsily holding the sparkling wand (Etoile), which is accidentally making a nearby suit of armor dance a funny jig. In the background, the small blue dragon Brio is chasing him with a worried expression. The scene is filled with chaotic, harmless magic. Atmosphere: comical, energetic, and slightly chaotic."
+    },
+    {
+      "text": "La course folle s'acheva tout en haut de la plus haute tour, sous les toits d'ardoise bleue. Acculé, Bipboup s'arrêta enfin. Il se tourna lentement vers Brio. Mais sur son œil-écran, le sourire espiègle avait disparu, remplacé par un dessin de visage triste et fissuré. Une de ses antennes, dont l'ampoule jaune clignotait faiblement, pendait sur le côté. Le petit robot leva la baguette magique, non pas vers Brio, mais vers sa propre tête, essayant maladroitement d'atteindre l'antenne cassée. Un son tout petit, presque un sanglot de métal, s'échappa de lui : <em>« Bip... boup... cassé... »</em>. Il n'avait jamais voulu voler la baguette. Il voulait juste de l'aide.",
+      "image_prompt": "At the top of a castle tower, against a backdrop of the sky seen through a broken window, Bipboup the robot stands sadly, no longer running. His single blue screen-eye shows a sad, cracked face. One of his antennas with a yellow light bulb is flickering dimly. He holds the wand (Etoile) and tries to point it at his own head. Brio the dragon stands a few feet away, his chase forgotten, his face filled with a dawning look of understanding and empathy. Atmosphere: poignant, quiet, a moment of realization."
+    },
+    {
+      "text": "Le cœur de Brio fondit. Il comprit tout. Le petit robot n'était pas un méchant, c'était un ami qui avait mal. Doucement, le dragon s'approcha et posa sa petite patte sur le bras de Bipboup en signe de paix. Puis, avec une infinie précaution, il reprit la baguette Etoile. Il la pointa non pas avec colère, mais avec douceur, vers la petite ampoule qui faiblissait. La pointe en étoile de la baguette toucha le verre. Une seule, magnifique étincelle dorée jaillit.<br><br>L'antenne de Bipboup s'illumina d'une lumière vive et chaude ! Sur son œil-écran, un grand cœur joyeux remplaça le visage triste. « BIP-BOUP-MERCI ! » siffla le robot. Depuis ce jour, dans le château de Belmondrie, on peut voir un petit dragon bleu et un petit robot de fer-blanc partager la plus belle des magies : celle de l'amitié.",
+      "image_prompt": "Brio the small blue dragon and Bipboup the tin-can robot are side-by-side at the top of the tower. Brio is gently touching Bipboup's antenna with the star-tipped wand (Etoile), causing a beautiful golden spark to erupt. Bipboup's antenna light is now shining brightly, and his blue screen-eye shows a large, happy heart symbol. They are looking at each other with friendship under the warm glow of the magic. Atmosphere: heartwarming, magical resolution, deep friendship."
+    }
+  ],
+  "key": "courte_dragon_chateau_baguette_robot",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "chateau",
+  "item": "baguette",
+  "villain": "robot"
+}

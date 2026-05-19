@@ -1,0 +1,31 @@
+{
+  "title": "Brio et le Voleur de Lumière",
+  "pages": [
+    {
+      "text": "Brio était un tout petit dragon, pas plus grand qu’un chaton. Ses écailles brillaient d’un bleu pastel si doux qu’on aurait dit un morceau de ciel tombé dans l’océan. Chaque soir, quand les étoiles s’allumaient, Brio sortait sa planche magique, la <em>Fusée</em>. Avec son pont bleu nuit et ses roues d’un rose fluo, la Fusée glissait sur la Mer d’Aural comme un murmure. Brio aimait cette danse silencieuse sur l’eau turquoise, au milieu des poissons d’argent et des étincelles lumineuses qui flottaient comme de la poussière de lune. Il filait, le vent tiède sur son visage rond, ses petits ailerons frémissant de bonheur. C’était son moment préféré, un secret entre lui, sa planche et la mer scintillante.",
+      "image_prompt": "Brio, a tiny baby dragon with soft sky-blue scales and big curious eyes, joyfully rides his magical skateboard 'Fusee' over the luminous turquoise Mer d'Aural. The skateboard has a deep blue deck with star patterns and glowing neon-pink wheels. The water is filled with bioluminescent sparkles and glints of silver fish. Whimsical and serene atmosphere."
+    },
+    {
+      "text": "Soudain, un bruit étrange brisa le silence : <em>Bip-boup-clic-clac !</em> Une petite chose en fer-blanc surgit des vagues. C'était un robot, rond comme une conserve, avec deux antennes dont les ampoules jaunes clignotaient. D’un geste vif, ses pinces mécaniques attrapèrent la Fusée juste sous les pattes de Brio ! Le petit dragon bascula et atterrit avec un « plouf » sur un rocher couvert de mousse.<br><br>Le robot, qu’il baptisa Bipboup, ne se retourna même pas. Sur son unique œil-écran bleu, un sourire malicieux s’afficha. Puis, il fila à toute vitesse vers l’horizon, emportant la précieuse Fusée. Brio resta là, le cœur battant, regardant sa planche et sa lumière rose disparaître dans la pénombre.",
+      "image_prompt": "The small tin-can robot Bipboup, with a mischievous smile on its single blue screen-eye, zips away across the water holding the magical skateboard 'Fusee'. In the background, the tiny dragon Brio sits on a small rock, looking surprised and slightly dismayed, water splashing around him. The skateboard's pink wheels leave a faint trail of light."
+    },
+    {
+      "text": "Le chagrin laissa vite place à la détermination. Personne ne volait sa Fusée ! Brio plongea dans l’eau fraîche. Il n’était pas aussi rapide que sa planche, mais il était courageux. Heureusement, les roues magiques laissaient une traînée rose phosphorescente à la surface de la mer. C'était un fil de lumière à suivre, un espoir dans l'obscurité grandissante.<br><br>Le sillage le mena loin des zones familières et scintillantes de la Mer d’Aural. Il nagea vers des grottes sombres et des rochers aux formes menaçantes, là où la lumière des étoiles peinait à percer. L'eau devenait plus froide. Brio frissonna, mais il continua, les yeux fixés sur la lueur rose qui faiblissait au loin.",
+      "image_prompt": "Brio, the small blue dragon, swims determinedly through a darker, more mysterious part of the Mer d'Aural. He is following a faint, fading pink trail of light left by the skateboard. The scene is slightly suspenseful, with tall, shadowy sea rocks looming in the background. Only Brio is clearly visible, his expression resolute."
+    },
+    {
+      "text": "Le ruban de lumière le conduisit à l’entrée d’une caverne sous-marine. À l’intérieur, tout était sombre, sauf la lueur de la Fusée. Bipboup était là. Mais il ne jouait pas avec la planche. Le petit robot était recroquevillé dessus, immobile. La lumière de ses propres antennes était faible, clignotant pitoyablement. <em>Bip… Boup…</em> fit-il d’une voix presque inaudible.<br><br>Il leva son œil-écran vers Brio. Le sourire malicieux avait disparu. À la place, une petite icône de batterie vide clignotait tristement. Brio comprit tout d’un coup. Bipboup n’était pas un voleur. C’était un voyageur perdu qui n’avait plus d’énergie. Il avait juste besoin de <em>lumière</em>.",
+      "image_prompt": "Inside a dim sea cave, Bipboup the robot is huddled over the 'Fusee' skateboard. The skateboard's pink wheels cast the only significant light in the scene. Bipboup's own yellow antenna lights are flickering very weakly. He looks up at Brio, who has just entered the cave. Bipboup's blue screen-eye shows a sad, glitching low-battery icon."
+    },
+    {
+      "text": "Sans un mot, Brio poussa doucement la Fusée vers le petit robot. Bipboup posa timidement une de ses pinces sur une roue rose. Aussitôt, la lumière sembla l’aspirer. Ses antennes s’illuminèrent d’un jaune vif et éclatant ! Un <em>BIP-BOUP !</em> joyeux retentit dans la grotte. Sur son écran, la batterie triste fut remplacée par un grand cœur qui battait.<br><br>Pour remercier Brio, Bipboup lui montra un courant secret qui faisait filer la Fusée plus vite que le vent. Ils sortirent de la grotte ensemble, Bipboup perché sur l’épaule de Brio. Ils glissèrent sur la mer redevenue calme, deux petites lumières amies dans le grand bleu, l’une en écaille de ciel, l’autre en métal étoilé.",
+      "image_prompt": "Brio the dragon and Bipboup the robot are joyfully leaving the cave together on the magical skateboard 'Fusee'. Bipboup is perched on Brio's shoulder, its antennas glowing brightly, its screen-eye showing a happy heart symbol. They glide over the calm, luminous Mer d'Aural as the first light of dawn appears on the horizon, creating a warm, hopeful glow. A story of friendship and understanding."
+    }
+  ],
+  "key": "courte_dragon_ocean_skateboard_robot",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "ocean",
+  "item": "skateboard",
+  "villain": "robot"
+}

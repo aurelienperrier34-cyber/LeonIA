@@ -1,0 +1,31 @@
+{
+  "title": "Brio et l'Étoile Égarée",
+  "pages": [
+    {
+      "text": "Brio était un tout petit dragon, pas plus grand qu’un chaton. Ses écailles douces avaient la couleur du ciel au petit matin, un bleu pastel et tendre. Ses grands yeux curieux pétillaient comme des saphirs. Bien qu’il eût de petites ailes et de minuscules cornes arrondies, son expression était si douce qu’aucun animal ne le craignait.<br><br>Il vivait au bord de la Mer d’Aural, un océan magique où l’eau turquoise scintillait de mille feux. Un soir, alors que la lune dessinait des rubans d’argent sur les vagues, Brio découvrit sur le sable un bâton de bois clair, poli par le sel. Ce n’était pas une branche ordinaire. Des spirales y étaient gravées et, à son extrémité, une étoile d’or brillait doucement. C’était une baguette magique. Brio la nomma <em>Étoile</em>.",
+      "image_prompt": "A tiny baby dragon, Brio, with soft sky-blue pastel scales and big curious blue eyes, sits on a sandy beach at night. He is gently holding a newly discovered slim wooden magic wand with a five-pointed golden star tip. Behind him, the magical Mer d'Aural glows with deep turquoise and aquamarine light, filled with bioluminescent sparkles. The atmosphere is peaceful and full of wonder. Characters present: Brio."
+    },
+    {
+      "text": "Prudemment, Brio agita la baguette. Une pluie d’étincelles argentées jaillit de l’étoile d’or et se mit à danser avec les poissons lumineux qui nageaient sous la surface. C’était merveilleux ! Brio riait de bonheur. <br><br>Mais soudain, la lumière de la mer commença à faiblir. Les scintillements s'éteignaient les uns après les autres, comme des bougies soufflées par un vent invisible. Inquiet, Brio scruta l’horizon. Au loin, une petite forme sombre semblait… aspirer l’éclat de l’eau. Là où elle passait, la mer devenait sombre et terne. Le cœur de Brio se serra. Quelqu’un volait la magie de sa mer !",
+      "image_prompt": "The luminous Mer d'Aural is visibly dimming. In the middle distance, a small, fuzzy, dark purple silhouette of Grobi is seen floating in the water. The area around the silhouette is dark and devoid of light, while the foreground water still has a faint turquoise glow. The mood is mysterious and slightly ominous. The focus is on the spreading darkness in the magical ocean. Characters present: Grobi (as a distant silhouette)."
+    },
+    {
+      "text": "Le courage gonfla la poitrine de Brio. Il devait protéger sa maison ! Serrant <em>Étoile</em> dans sa patte, il s’envola au-dessus des vagues sombres. Plus il s’approchait, moins la créature semblait effrayante. Ce n’était pas un monstre terrifiant, mais une petite boule de fourrure violette, avec de grands yeux jaunes tout ronds. La créature ne grognait pas. Elle pleurait. De grosses larmes lumineuses coulaient sur ses joues et tombaient dans l’eau, où elles s’éteignaient aussitôt. Elle semblait terriblement triste.",
+      "image_prompt": "Brio the baby dragon flies closer to Grobi, a small, cute, fluffy purple monster with two short horns and very big, round, sad yellow eyes. Grobi is sitting on a rock amidst the now dark water. Glowing tears are streaming down Grobi's fuzzy face. Brio holds his magic wand but looks concerned, not aggressive. The scene is lit by the moonlight and Grobi's glowing tears. The mood is one of suspense turning into empathy. Characters present: Brio, Grobi."
+    },
+    {
+      "text": "Brio se posa doucement sur le rocher. Le petit monstre sursauta, le regardant avec crainte. Brio ne leva pas sa baguette. Il inclina simplement la tête, ses yeux bleus remplis de question. Alors, le petit être, qui s’appelait Grobi, leva une patte potelée vers le ciel noir, parsemé d’étoiles. Puis il la posa sur son cœur qui battait vite. Enfin, il puisa une dernière lueur dans l'eau et la porta à sa bouche, comme pour en goûter le souvenir.<br><br>Brio comprit tout. Grobi ne volait pas la lumière de la mer par méchanceté. Il était une créature des étoiles, tombée du ciel. Il était perdu, et la lumière de l'océan lui rappelait sa maison lointaine. Il avait le mal du pays.",
+      "image_prompt": "Brio and Grobi are sitting close together on a rock in the middle of the sea. Brio is looking at Grobi with deep understanding, his magic wand lowered. Grobi, looking sad but hopeful, is pointing one fuzzy paw up towards the starry night sky. The atmosphere is quiet, intimate, and full of revelation. The light is soft, coming from the moon and the faint glow of the wand's tip. Characters present: Brio, Grobi."
+    },
+    {
+      "text": "Une immense tendresse envahit le petit dragon. Il regarda sa baguette, <em>Étoile</em>, et son embout en forme d’astre. C’était la solution ! Doucement, Brio pointa la baguette non pas vers Grobi, mais vers le ciel. Un fil de lumière pure, douce et argentée, s’éleva de la baguette, tissant un chemin scintillant depuis la mer jusqu’aux étoiles.<br><br>Grobi poussa un petit cri de joie. Il serra affectueusement la patte de Brio, puis bondit sur l’échelle de lumière. Il grimpa, grimpa, devenant de plus en plus petit, jusqu’à n’être plus qu’un point lumineux qui rejoignit la constellation du Dragon. En bas, la Mer d’Aural, reconnaissante, se mit à briller plus fort que jamais, illuminée par la magie d’un ami retrouvé.",
+      "image_prompt": "On the shore, Brio the baby dragon stands looking up at the night sky. He is holding the magic wand high, and a beautiful, shimmering beam of silver and gold starlight shoots up from its tip, creating a ladder to the stars. Far up along this beam, Grobi is visible as a small, joyful shape ascending into the cosmos to become a new star. The Mer d'Aural below is brilliantly illuminated with vibrant turquoise and aquamarine light. The mood is magical, hopeful, and emotionally resonant. Characters present: Brio, Grobi (as a tiny ascending shape)."
+    }
+  ],
+  "key": "courte_dragon_ocean_baguette_monstre",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "ocean",
+  "item": "baguette",
+  "villain": "monstre"
+}

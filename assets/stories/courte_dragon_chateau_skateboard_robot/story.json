@@ -1,0 +1,31 @@
+{
+  "title": "Brio et le visiteur de métal",
+  "pages": [
+    {
+      "text": "Au cœur du château de Belmondrie, là où les pierres murmuraient des histoires de chevaliers, vivait un tout petit dragon. Il s’appelait Brio. Ses écailles étaient bleu pastel, comme un ciel de matin. Ses yeux, deux grands saphirs pétillants de curiosité. Brio n'était pas plus grand qu'un chaton et ses ailes, encore trop petites pour voler, frémissaient à chaque nouvelle découverte.<br><br>Ce jour-là, blotti dans un rayon de soleil qui perçait la fenêtre de la grande bibliothèque, Brio somnolait sur un grimoire poussiéreux. Le silence était parfait, doux comme du velours. Soudain, un bruit étrange le fit sursauter. Un grincement métallique, un <em>clic-clic-clic</em> rapide et agaçant qui ne ressemblait à rien de connu à Belmondrie.",
+      "image_prompt": "Brio, the tiny baby dragon with soft sky-blue scales and big curious blue eyes, is in a large, dusty library of Belmondrie castle. Sunbeams stream through a broken arched window, illuminating dust motes. Brio is looking up from a large ancient book, his head tilted with curiosity, listening to a sound coming from off-screen. The atmosphere is warm, quiet and magical."
+    },
+    {
+      "text": "Intrigué, Brio se laissa glisser de son livre et suivit le son à pas feutrés. Le bruit venait du grand couloir où il laissait toujours son trésor le plus précieux : Fusée, sa planche à roulettes magique. Et là, penchée sur sa planche, une petite créature de métal s'affairait. C'était Bipboup, un robot de la taille d'une boîte de conserve, avec des antennes jaunes qui clignotaient. De ses pinces mécaniques, il essayait de dévisser l'une des roues rose fluo de Fusée !<br><br>Brio sentit une petite fumée de colère monter dans ses narines. C'était <em>sa</em> Fusée ! Personne n'avait le droit d'y toucher. Le petit robot, lui, ne semblait pas le voir, trop concentré sur son méfait. Son œil-écran bleu affichait un sourire malicieux.",
+      "image_prompt": "In a dimly lit stone corridor of the castle, Brio peeks from behind a large medieval tapestry. He sees Bipboup, the small tin-can robot, tinkering with the magical skateboard, Fusee, which is lying on the floor. Bipboup's mechanical pincer arm is reaching for one of the neon-pink glowing wheels. Bipboup's single blue screen-eye shows a focused, mischievous smile. The scene is tense and shadowy."
+    },
+    {
+      "text": "« Pfffrrr ! »<br><br>Un petit nuage de fumée grise, sentant le soufre et la surprise, s'échappa du nez de Brio. Surpris, Bipboup fit un bond en arrière. Dans sa précipitation, sa pince se referma sur la roue, qui se détacha avec un <em>POP</em> lumineux. Paniqué, le petit robot serra son butin contre son corps de fer-blanc et détala à toute vitesse. Sans attendre, Brio sauta sur sa planche. Déséquilibrée, Fusée vacilla, mais glissa tout de même à la poursuite du voleur. La course-poursuite s'engagea dans les escaliers en colimaçon et les galeries secrètes du château, un ballet bancal entre un dragonnet vexé et un robot pressé.",
+      "image_prompt": "A dynamic action shot inside a grand hall of Belmondrie castle. Bipboup, the tiny robot, is scurrying away, holding a single glowing pink wheel. A short distance behind, Brio is unsteadily riding his magical skateboard, Fusee, which is tilted to one side with a missing wheel. Brio has a determined but slightly worried expression. The scene is full of movement and light from the remaining wheels."
+    },
+    {
+      "text": "La course prit fin tout en haut de la plus haute tour. Acculé, Bipboup ne bougeait plus. Il ne semblait plus malicieux du tout. Lentement, il se retourna. Son œil-écran affichait maintenant une ligne bleue et tremblante, comme une bouche triste. Il tenait la roue rose contre son torse. Une petite trappe y était ouverte, révélant un enchevêtrement de fils sombres et immobiles. La lumière de la roue faisait faiblement scintiller ce cœur brisé.<br><br>Brio freina net. La colère qui l'animait s'évanouit comme la brume du matin. Le petit robot n'était pas un voleur. Il était... cassé. Il avait froid. Il cherchait juste un peu de lumière, un peu d'énergie pour ranimer son cœur de métal.",
+      "image_prompt": "In the highest room of a castle tower, under a starry sky visible through a large broken window. Bipboup the robot is sitting on the floor, back against the wall. Its chest panel is open, showing dark, inert wires. It holds the glowing pink skateboard wheel close to its chest, and its single blue screen-eye displays a sad, drooping emoticon. Brio stands a few feet away, his expression changing from anger to surprise and compassion. The atmosphere is quiet, emotional, and bathed in moonlight and the wheel's pink glow."
+    },
+    {
+      "text": "Avec une infinie douceur, Brio s'approcha. Il ne reprit pas sa roue. À la place, il frotta son petit museau rond contre le torse froid de Bipboup. Une minuscule étincelle dorée, chaude et magique, jaillit du bout de son nez et vint toucher les fils éteints. <em>Bzzzzt !</em> Toutes les lumières de Bipboup s'allumèrent d'un coup. Ses antennes brillèrent d'un jaune joyeux et son œil-écran dessina un grand cœur reconnaissant.<br><br>Délicatement, le robot tendit la roue à Brio. Le dragonnet la remit sur Fusée, qui retrouva son équilibre parfait. Mais au lieu de repartir seul, Brio invita son nouvel ami à monter sur son dos. Ensemble, ils glissèrent dans la nuit étoilée, non plus comme un voleur et sa victime, mais comme deux amis partageant la même lumière.",
+      "image_prompt": "A heartwarming scene in the same tower room. Brio the baby dragon is gently touching his nose to Bipboup's open chest panel, and a single, warm golden spark connects them. Bipboup is fully lit up: its antenna bulbs glow bright yellow, and its screen-eye shows a big, happy heart symbol. The magical skateboard, Fusee, is whole again, resting nearby. The mood is magical, tender, and full of newfound friendship."
+    }
+  ],
+  "key": "courte_dragon_chateau_skateboard_robot",
+  "level": "courte",
+  "hero": "dragon",
+  "place": "chateau",
+  "item": "skateboard",
+  "villain": "robot"
+}
