@@ -94,6 +94,18 @@ CHIBI = {
                   "beard, round glasses, navy cap with patches and orange sweater. "
                   "Tiny body, giant kind smiling head.",
     },
+    "bot":    {
+        "refs": ["assets/c4s2_bot/bot_portrait.jpg"],
+        "prompt": "Chibi version of Bot the friendly talking AI robot, keeping its "
+                  "recognizable look (screen-face, antenna, body color). Tiny cute "
+                  "body, giant happy head, holding a tiny book.",
+    },
+    "echo":   {
+        "refs": ["assets/c5s5_robot/kid_robot.jpg"],
+        "prompt": "Chibi version of Echo the cute thinking-listening-speaking robot, "
+                  "keeping its recognizable colorful look. Tiny body, giant head with "
+                  "big sparkly eyes, surrounded by tiny musical notes and thought bubbles.",
+    },
 }
 
 

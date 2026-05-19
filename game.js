@@ -6408,15 +6408,16 @@ const ARTICLES_CATALOG = [
   { id: 'glasses-ai',    kind: 'accessory', slot: 'glasses', emoji: '🕶️', name: 'Lunettes IA',           cost:  6, desc: 'Lunettes futuristes lumineuses.' },
   { id: 'cape-hero',     kind: 'accessory', slot: 'cape',    emoji: '🧥', name: 'Pull du héros',         cost: 12, desc: 'Un pull rouge confortable, parfait pour aventurier.' },
   // Cartes à collectionner (achetables OU gagnées via chapitres)
+  // v573 : collection 100% chibi (style coherent). Fallback emoji si pas encore genere.
   // Heros jouables (les 4 personnages que l'enfant peut incarner)
-  { id: 'card-fille',  kind: 'card', emoji: '👧', img: 'assets/fille_face-removebg-preview.png',  name: 'L\'exploratrice', cost: 10, desc: 'Curieuse et courageuse, elle adore percer les mystères de l\'IA.' },
-  { id: 'card-garcon', kind: 'card', emoji: '👦', img: 'assets/garcon_de_face-removebg-preview.png', name: 'L\'explorateur', cost: 10, desc: 'Malin et débrouillard, rien ne l\'arrête dans le monde de Léon.' },
-  { id: 'card-remi',   kind: 'card', emoji: '🦊', img: 'assets/remi_face-removebg-preview.png',  name: 'Rémi',  cost: 10, desc: 'Le renard rusé, compagnon espiègle plein de bonnes idées.' },
-  { id: 'card-pixel',  kind: 'card', emoji: '🤖', img: 'assets/pixel_face-removebg-preview.png', name: 'Pixel', cost: 10, desc: 'Le petit robot explorateur, fidèle ami pour toute l\'aventure.' },
+  { id: 'card-fille',  kind: 'card', emoji: '👧', img: 'assets/cards/chibi_fille.jpg',  name: 'L\'exploratrice', cost: 10, desc: 'Curieuse et courageuse, elle adore percer les mystères de l\'IA.' },
+  { id: 'card-garcon', kind: 'card', emoji: '👦', img: 'assets/cards/chibi_garcon.jpg', name: 'L\'explorateur', cost: 10, desc: 'Malin et débrouillard, rien ne l\'arrête dans le monde de Léon.' },
+  { id: 'card-remi',   kind: 'card', emoji: '🦊', img: 'assets/cards/chibi_remi.jpg',  name: 'Rémi',  cost: 10, desc: 'Le renard rusé, compagnon espiègle plein de bonnes idées.' },
+  { id: 'card-pixel',  kind: 'card', emoji: '🤖', img: 'assets/cards/chibi_pixel.jpg', name: 'Pixel', cost: 10, desc: 'Le petit robot explorateur, fidèle ami pour toute l\'aventure.' },
   // Personnages-guides IA
-  { id: 'card-leon',  kind: 'card', emoji: '👴', img: 'assets/cards/leon.jpg',  name: 'Léon',  cost: 10, desc: 'Le maître inventeur, ton guide à travers tous les chapitres.' },
-  { id: 'card-bot',   kind: 'card', emoji: '💬', img: 'assets/c4s2_bot/bot_portrait.jpg', name: 'Bot',   cost: 10, desc: 'L\'IA qui parle. A lu des millions de livres mais peut se tromper.' },
-  { id: 'card-echo',  kind: 'card', emoji: '🧠', img: 'assets/c5s5_robot/kid_robot.jpg',  name: 'Echo',  cost: 10, desc: 'L\'IA qui écoute, parle et réfléchit : un compagnon qui adore les énigmes et les blagues.' },
+  { id: 'card-leon',  kind: 'card', emoji: '👴', img: 'assets/cards/chibi_leon.jpg',  name: 'Léon',  cost: 10, desc: 'Le maître inventeur, ton guide à travers tous les chapitres.' },
+  { id: 'card-bot',   kind: 'card', emoji: '💬', img: 'assets/cards/chibi_bot.jpg', name: 'Bot',   cost: 10, desc: 'L\'IA qui parle. A lu des millions de livres mais peut se tromper.' },
+  { id: 'card-echo',  kind: 'card', emoji: '🧠', img: 'assets/cards/chibi_echo.jpg',  name: 'Echo',  cost: 10, desc: 'L\'IA qui écoute, parle et réfléchit : un compagnon qui adore les énigmes et les blagues.' },
   // Carte LÉGENDAIRE : Léon Maître de l'IA
   // Acquisition : ACHAT a 40 ⭐ OU déblocage gratuit si 16/16 sur les 4 quiz V/F (chap 1-4)
   { id: 'card-leon-master', kind: 'card', emoji: '🌟', img: 'assets/cards/leon_master.jpg',
