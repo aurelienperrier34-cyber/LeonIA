@@ -402,10 +402,18 @@ body:has(#screen-1.active) .app {
 }
 .btn-back-map:hover { transform: scale(1.05); }
 
+/* v567 : titre parchemin dore (coherent avec l'ambiance fantasy + dock) */
 .map-title-badge {
-    background: linear-gradient(135deg, #FF6B6B, #9B5DE5); color: white;
-    padding: 10px 25px; border-radius: 30px; font-family: 'Baloo 2'; font-weight: 800; font-size: 1.2rem;
-    box-shadow: 0 5px 15px rgba(155,93,229,0.3); border: 2px solid white; pointer-events: auto;
+    background: linear-gradient(135deg, rgba(255, 225, 102, 0.22) 0%, rgba(255, 165, 30, 0.16) 100%);
+    color: #FFE166;
+    padding: 10px 28px; border-radius: 999px;
+    font-family: 'Cinzel', 'Baloo 2', serif; font-weight: 700; font-size: 1.15rem;
+    letter-spacing: 0.04em;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+    border: 2px solid rgba(255, 225, 102, 0.55);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    pointer-events: auto;
 }
 #btn-calib-map {
   position: absolute; right: 0;
@@ -417,33 +425,31 @@ body:has(#screen-1.active) .app {
    v561 : MAP BOTTOM DOCK - 2 cards d'acces Livre magique + Custom hero
    Place en dessous de la map (pas au-dessus, ne touche pas aux nodes)
    ============================================================ */
-.map-bottom-dock {
-  /* v563 : ancre bas-centre, mais decale a droite pour ne pas couvrir
-     chapitre 1 (bas-gauche) ni chapitre 2. Largeur reduite, centree
-     dans la moitie droite du bas. */
+/* v567 : dock vertical ancre au VIEWPORT a droite (position identique
+   tous supports). #screen-map est plein viewport sur PC et mobile, donc
+   ancrer dessus = meme position partout. */
+#screen-map.active { position: relative; }
+.map-side-dock {
   position: absolute;
-  bottom: clamp(10px, 2vw, 26px);
-  left: 50%;
-  transform: translateX(-50%);
+  right: clamp(10px, 1.6vw, 22px);
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 50;
-  width: min(70%, 620px);
   display: flex;
-  gap: clamp(10px, 1.5vw, 18px);
-  justify-content: center;
-  align-items: stretch;
-  flex-wrap: wrap;
-  pointer-events: none; /* le wrapper laisse passer les clics */
+  flex-direction: column;
+  gap: clamp(8px, 1.2vw, 14px);
+  width: min(46vw, 230px);
+  pointer-events: none;
 }
-.map-bottom-dock > * { pointer-events: auto; }
+.map-side-dock > * { pointer-events: auto; }
 .map-dock-card {
-  flex: 1 1 220px;
-  max-width: 340px;
-  /* v562 : plus compact pour ne pas couvrir le chapitre 1 (top:80%) */
-  min-height: clamp(56px, 7vw, 74px);
+  width: 100%;
+  /* v567 : compact, vertical stack a droite */
+  min-height: clamp(48px, 6vw, 62px);
   display: flex;
   align-items: center;
-  gap: clamp(10px, 1.4vw, 14px);
-  padding: clamp(8px, 1.2vw, 12px) clamp(12px, 1.6vw, 18px);
+  gap: clamp(8px, 1.2vw, 12px);
+  padding: clamp(7px, 1vw, 11px) clamp(10px, 1.4vw, 14px);
   background: linear-gradient(135deg, rgba(255, 225, 102, 0.18) 0%, rgba(255, 165, 30, 0.12) 100%);
   border: 2.5px solid rgba(255, 225, 102, 0.55);
   border-radius: 16px;
@@ -521,10 +527,10 @@ body:has(#screen-1.active) .app {
   opacity: 0.85;
 }
 
-/* Mobile : cards passent en colonne */
+/* Tres petit ecran : dock encore plus compact */
 @media (max-width: 600px) {
-  .map-bottom-dock { flex-direction: column; gap: 10px; padding: 10px 12px 18px; }
-  .map-dock-card { width: 100%; flex: 0 0 auto; }
+  .map-side-dock { width: min(52vw, 190px); gap: 8px; }
+  .map-dock-subtitle { display: none; } /* juste titre sur petit ecran */
 }
 .map-bg-img { width: 100%; height: auto; display: block; min-height: 150vh; object-fit: cover; }
 
