@@ -6414,7 +6414,7 @@ const ARTICLES_CATALOG = [
   { id: 'card-remi',   kind: 'card', emoji: '🦊', img: 'assets/remi_face-removebg-preview.png',  name: 'Rémi',  cost: 10, desc: 'Le renard rusé, compagnon espiègle plein de bonnes idées.' },
   { id: 'card-pixel',  kind: 'card', emoji: '🤖', img: 'assets/pixel_face-removebg-preview.png', name: 'Pixel', cost: 10, desc: 'Le petit robot explorateur, fidèle ami pour toute l\'aventure.' },
   // Personnages-guides IA
-  { id: 'card-leon',  kind: 'card', emoji: '👴', img: 'assets/Léon_debout_sans_fond.jpg',  name: 'Léon',  cost: 10, desc: 'Le maître inventeur, ton guide à travers tous les chapitres.' },
+  { id: 'card-leon',  kind: 'card', emoji: '👴', img: 'assets/cards/leon.jpg',  name: 'Léon',  cost: 10, desc: 'Le maître inventeur, ton guide à travers tous les chapitres.' },
   { id: 'card-bot',   kind: 'card', emoji: '💬', img: 'assets/c4s2_bot/bot_portrait.jpg', name: 'Bot',   cost: 10, desc: 'L\'IA qui parle. A lu des millions de livres mais peut se tromper.' },
   { id: 'card-echo',  kind: 'card', emoji: '🧠', img: 'assets/c5s5_robot/kid_robot.jpg',  name: 'Echo',  cost: 10, desc: 'L\'IA qui écoute, parle et réfléchit : un compagnon qui adore les énigmes et les blagues.' },
   // Carte LÉGENDAIRE : Léon Maître de l'IA
