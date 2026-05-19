@@ -6408,10 +6408,15 @@ const ARTICLES_CATALOG = [
   { id: 'glasses-ai',    kind: 'accessory', slot: 'glasses', emoji: '🕶️', name: 'Lunettes IA',           cost:  6, desc: 'Lunettes futuristes lumineuses.' },
   { id: 'cape-hero',     kind: 'accessory', slot: 'cape',    emoji: '🧥', name: 'Pull du héros',         cost: 12, desc: 'Un pull rouge confortable, parfait pour aventurier.' },
   // Cartes à collectionner (achetables OU gagnées via chapitres)
-  { id: 'card-leon',  kind: 'card', emoji: '👴', img: 'assets/cards/leon_master.jpg',  name: 'Léon',  cost: 10, desc: 'Le maître inventeur, ton guide à travers tous les chapitres.' },
-  { id: 'card-bot',   kind: 'card', emoji: '🤖', img: 'assets/c4s2_bot/bot_portrait.jpg', name: 'Bot',   cost: 10, desc: 'L IA qui parle. A lu des millions de livres mais peut se tromper.' },
-  { id: 'card-pixel', kind: 'card', emoji: '🎨', img: 'assets/pixel_face.jpg', name: 'Pixel', cost: 10, desc: 'L IA qui cree des images magiques a partir de mots.' },
-  { id: 'card-echo',  kind: 'card', emoji: '🧠', img: 'assets/c5s5_robot/kid_robot.jpg',  name: 'Echo',  cost: 10, desc: 'L IA qui ecoute, parle et reflechit : un compagnon de discussion qui adore les enigmes et les blagues.' },
+  // Heros jouables (les 4 personnages que l'enfant peut incarner)
+  { id: 'card-fille',  kind: 'card', emoji: '👧', img: 'assets/fille_face-removebg-preview.png',  name: 'L\'exploratrice', cost: 10, desc: 'Curieuse et courageuse, elle adore percer les mystères de l\'IA.' },
+  { id: 'card-garcon', kind: 'card', emoji: '👦', img: 'assets/garcon_de_face-removebg-preview.png', name: 'L\'explorateur', cost: 10, desc: 'Malin et débrouillard, rien ne l\'arrête dans le monde de Léon.' },
+  { id: 'card-remi',   kind: 'card', emoji: '🦊', img: 'assets/remi_face-removebg-preview.png',  name: 'Rémi',  cost: 10, desc: 'Le renard rusé, compagnon espiègle plein de bonnes idées.' },
+  { id: 'card-pixel',  kind: 'card', emoji: '🤖', img: 'assets/pixel_face-removebg-preview.png', name: 'Pixel', cost: 10, desc: 'Le petit robot explorateur, fidèle ami pour toute l\'aventure.' },
+  // Personnages-guides IA
+  { id: 'card-leon',  kind: 'card', emoji: '👴', img: 'assets/Léon_debout_sans_fond.jpg',  name: 'Léon',  cost: 10, desc: 'Le maître inventeur, ton guide à travers tous les chapitres.' },
+  { id: 'card-bot',   kind: 'card', emoji: '💬', img: 'assets/c4s2_bot/bot_portrait.jpg', name: 'Bot',   cost: 10, desc: 'L\'IA qui parle. A lu des millions de livres mais peut se tromper.' },
+  { id: 'card-echo',  kind: 'card', emoji: '🧠', img: 'assets/c5s5_robot/kid_robot.jpg',  name: 'Echo',  cost: 10, desc: 'L\'IA qui écoute, parle et réfléchit : un compagnon qui adore les énigmes et les blagues.' },
   // Carte LÉGENDAIRE : Léon Maître de l'IA
   // Acquisition : ACHAT a 40 ⭐ OU déblocage gratuit si 16/16 sur les 4 quiz V/F (chap 1-4)
   { id: 'card-leon-master', kind: 'card', emoji: '🌟', img: 'assets/cards/leon_master.jpg',
@@ -7942,35 +7947,48 @@ function renderAtelierModal() {
     allCards.forEach(a => {
       const owned = ownsArticle(a.id);
       const canBuy = !owned && (state.totalStars || 0) >= a.cost;
+      // v568 : carte premium type "trading card" avec flip 3D (recto image
+      // pleine carte + nom / verso description). Au clic la carte se retourne.
       const card = document.createElement('div');
       card.className = 'collect-card' + (owned ? ' owned' : ' missing') + (a.legendary ? ' legendary' : '');
-      // v557 : l'image (ou emoji fallback) est TOUJOURS dans la carte.
-      // Si owned -> nette. Si missing -> floutee + lock overlay via CSS.
-      const visual = a.img
-        ? '<img class="collect-card-img" src="' + a.img + '" alt="' + a.name + '"' +
-          ' onerror="this.style.display=\'none\'; var em=this.nextElementSibling; if(em && em.classList.contains(\'collect-card-emoji\')) em.style.display=\'block\';">' +
-          '<div class="collect-card-emoji" style="display:none">' + a.emoji + '</div>'
-        : '<div class="collect-card-emoji">' + a.emoji + '</div>';
-      let front;
+
+      const imgTag = a.img
+        ? '<img class="cc-img" src="' + a.img + '" alt="' + a.name + '"' +
+          ' onerror="this.style.display=\'none\'; var em=this.parentNode.querySelector(\'.cc-emoji\'); if(em) em.style.display=\'flex\';">' +
+          '<div class="cc-emoji" style="display:none">' + a.emoji + '</div>'
+        : '<div class="cc-emoji">' + a.emoji + '</div>';
+
       if (owned) {
-        front = visual +
-                '<div class="collect-card-name">' + a.name + '</div>' +
-                '<div class="collect-card-desc">' + a.desc + '</div>' +
-                (a.legendary ? '<span class="collect-card-badge">LÉGENDAIRE ⭐</span>' : '');
+        // Recto = image pleine + bandeau nom. Verso = description.
+        card.innerHTML =
+          '<div class="cc-inner">' +
+            '<div class="cc-face cc-front">' +
+              imgTag +
+              (a.legendary ? '<span class="cc-badge">★ LÉGENDAIRE</span>' : '') +
+              '<div class="cc-namebar">' + a.name + '</div>' +
+            '</div>' +
+            '<div class="cc-face cc-back">' +
+              '<div class="cc-back-name">' + a.name + '</div>' +
+              '<div class="cc-back-desc">' + a.desc + '</div>' +
+              (a.legendary ? '<div class="cc-back-legend">★ Carte légendaire</div>' : '') +
+              '<div class="cc-flip-hint">↩ retourner</div>' +
+            '</div>' +
+          '</div>';
+        // Flip au clic
+        card.onclick = () => card.classList.toggle('flipped');
       } else {
-        const buyBtn = '<button class="collect-card-buy" ' + (canBuy ? '' : 'disabled') +
-                       ' onclick="buyArticleUI(\'' + a.id + '\')">' +
+        // Verrouillee : image floutee + lock + bouton achat
+        const buyBtn = '<button class="cc-buy" ' + (canBuy ? '' : 'disabled') +
+                       ' onclick="event.stopPropagation(); buyArticleUI(\'' + a.id + '\')">' +
                        (canBuy ? 'Acheter ' + a.cost + ' ⭐' : '🔒 ' + a.cost + ' ⭐') + '</button>';
         const hint = a.legendary
-          ? '<div class="collect-card-hint">Auto-débloquée si tu réponds juste à TOUS les quiz</div>'
+          ? '<div class="cc-locked-hint">Débloquée si 16/16 aux quiz</div>'
           : '';
-        // v557 : visual floute (CSS) + nom visible + lock + bouton
-        front = '<div class="collect-card-locked-visual">' + visual + '</div>' +
-                '<div class="collect-card-locked-name">' + a.name + '</div>' +
-                hint +
-                buyBtn;
+        card.innerHTML =
+          '<div class="cc-locked-visual">' + imgTag + '</div>' +
+          '<div class="cc-locked-name">' + a.name + '</div>' +
+          hint + buyBtn;
       }
-      card.innerHTML = front;
       grid.appendChild(card);
     });
     tCards.appendChild(grid);
