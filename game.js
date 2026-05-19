@@ -6408,10 +6408,10 @@ const ARTICLES_CATALOG = [
   { id: 'glasses-ai',    kind: 'accessory', slot: 'glasses', emoji: '🕶️', name: 'Lunettes IA',           cost:  6, desc: 'Lunettes futuristes lumineuses.' },
   { id: 'cape-hero',     kind: 'accessory', slot: 'cape',    emoji: '🧥', name: 'Pull du héros',         cost: 12, desc: 'Un pull rouge confortable, parfait pour aventurier.' },
   // Cartes à collectionner (achetables OU gagnées via chapitres)
-  { id: 'card-leon',     kind: 'card', emoji: '👴', name: 'Léon',  cost: 10, desc: 'Le maître inventeur, ton guide à travers tous les chapitres.' },
-  { id: 'card-bot',   kind: 'card', emoji: '🤖', name: 'Bot',   cost: 10, desc: 'L IA qui parle. A lu des millions de livres mais peut se tromper.' },
-  { id: 'card-pixel', kind: 'card', emoji: '🎨', name: 'Pixel', cost: 10, desc: 'L IA qui cree des images magiques a partir de mots.' },
-  { id: 'card-echo',  kind: 'card', emoji: '🎵', name: 'Echo',  cost: 10, desc: 'L IA des sons qui compose et reconnait la musique.' },
+  { id: 'card-leon',  kind: 'card', emoji: '👴', img: 'assets/cards/leon.jpg',  name: 'Léon',  cost: 10, desc: 'Le maître inventeur, ton guide à travers tous les chapitres.' },
+  { id: 'card-bot',   kind: 'card', emoji: '🤖', img: 'assets/cards/bot.jpg',   name: 'Bot',   cost: 10, desc: 'L IA qui parle. A lu des millions de livres mais peut se tromper.' },
+  { id: 'card-pixel', kind: 'card', emoji: '🎨', img: 'assets/cards/pixel.jpg', name: 'Pixel', cost: 10, desc: 'L IA qui cree des images magiques a partir de mots.' },
+  { id: 'card-echo',  kind: 'card', emoji: '🎵', img: 'assets/cards/echo.jpg',  name: 'Echo',  cost: 10, desc: 'L IA des sons qui compose et reconnait la musique.' },
   // Carte LÉGENDAIRE : Léon Maître de l'IA
   // Acquisition : ACHAT a 40 ⭐ OU déblocage gratuit si 16/16 sur les 4 quiz V/F (chap 1-4)
   { id: 'card-leon-master', kind: 'card', emoji: '🌟', img: 'assets/cards/leon_master.jpg',
@@ -7944,8 +7944,12 @@ function renderAtelierModal() {
       const canBuy = !owned && (state.totalStars || 0) >= a.cost;
       const card = document.createElement('div');
       card.className = 'collect-card' + (owned ? ' owned' : ' missing') + (a.legendary ? ' legendary' : '');
+      // v557 : l'image (ou emoji fallback) est TOUJOURS dans la carte.
+      // Si owned -> nette. Si missing -> floutee + lock overlay via CSS.
       const visual = a.img
-        ? '<img class="collect-card-img" src="' + a.img + '" alt="' + a.name + '">'
+        ? '<img class="collect-card-img" src="' + a.img + '" alt="' + a.name + '"' +
+          ' onerror="this.style.display=\'none\'; var em=this.nextElementSibling; if(em && em.classList.contains(\'collect-card-emoji\')) em.style.display=\'block\';">' +
+          '<div class="collect-card-emoji" style="display:none">' + a.emoji + '</div>'
         : '<div class="collect-card-emoji">' + a.emoji + '</div>';
       let front;
       if (owned) {
@@ -7960,8 +7964,9 @@ function renderAtelierModal() {
         const hint = a.legendary
           ? '<div class="collect-card-hint">Auto-débloquée si tu réponds juste à TOUS les quiz</div>'
           : '';
-        front = '<div class="collect-card-silhouette">?</div>' +
-                '<div class="collect-card-locked">' + a.name + '</div>' +
+        // v557 : visual floute (CSS) + nom visible + lock + bouton
+        front = '<div class="collect-card-locked-visual">' + visual + '</div>' +
+                '<div class="collect-card-locked-name">' + a.name + '</div>' +
                 hint +
                 buyBtn;
       }
