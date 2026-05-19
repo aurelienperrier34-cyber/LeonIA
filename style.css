@@ -8564,16 +8564,33 @@ body:has(#screen-creator.active) #global-star-corner {
 }
 
 /* === RESPONSIVE : ecrans compacts (iPhone landscape, petits Android) === */
-@media (max-width: 760px), (max-height: 460px) {
-  .creator-phase-pick {
-    background-position: center center;
+/* ============================================================
+   v552 : RESPONSIVE COMPLET - tous mobiles landscape (Android/iOS)
+   On detecte les ecrans peu hauts (typique mobile landscape) ou peu larges.
+   Strategie : Leon devient un decor lateral (~30% gauche), livre ancre a
+   droite pour ne pas le couvrir.
+   ============================================================ */
+
+/* TABLET / PETIT PC (entre 760 et 1100px largeur) : ajustements doux */
+@media (max-width: 1100px) and (min-height: 500px) {
+  .pick-book {
+    left: 62%;
+    width: min(50vw, 580px);
   }
-  /* Voile sombre par-dessus Léon pour rendre l'UI lisible */
+}
+
+/* MOBILE LANDSCAPE (Android Pixel, iPhone landscape, tablet portrait) */
+@media (max-width: 900px), (max-height: 500px) {
+  .creator-phase-pick {
+    background-position: left center;
+  }
+  /* Vignette sombre legere pour aerer */
   .creator-phase-pick::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(20,10,30,0.55), rgba(43,24,84,0.7));
+    background: linear-gradient(90deg, transparent 0%, transparent 25%,
+                                rgba(20,10,30,0.45) 60%, rgba(43,24,84,0.65) 100%);
     z-index: 1;
     pointer-events: none;
   }
@@ -8583,19 +8600,57 @@ body:has(#screen-creator.active) #global-star-corner {
   .creator-phase-pick .creator-error {
     z-index: 5;
   }
+  /* Livre ancre A DROITE pour laisser Leon visible a gauche */
   .pick-book {
-    left: 50%;
+    left: auto;
+    right: clamp(8px, 2vw, 24px);
     top: 50%;
-    width: min(94vw, 600px);
+    transform: translateY(-50%);
+    width: min(62vw, 480px);
+    /* On garde aspect-ratio 3/2 mais avec une hauteur cappee */
+    height: auto;
+    max-height: 85vh;
   }
   .pick-surprise {
-    top: clamp(54px, 8vh, 70px);
+    top: clamp(50px, 7vh, 70px);
     padding: 6px 12px;
     font-size: 0.78rem;
   }
+  /* Vignette watermark plus petite sur mobile */
+  .creator-phase-pick::after {
+    background: radial-gradient(ellipse 30% 40% at 100% 100%,
+      rgba(15, 8, 25, 0.95) 0%,
+      rgba(43, 24, 84, 0.4) 50%,
+      transparent 100%);
+  }
 }
 
-/* Tres petit ecran : le livre devient une seule page (pas de double page) */
+/* MOBILE TRES COMPACT (iPhone SE landscape ~667x375, vieux Android) */
+@media (max-width: 700px) {
+  .creator-phase-pick {
+    /* Leon devient juste un fond ambiance, le livre prend tout */
+    background-image: none;
+    background: linear-gradient(135deg, #1a0d2e 0%, #2b1854 40%, #4a2a8a 100%);
+  }
+  .creator-phase-pick::before { display: none; }
+  .creator-phase-pick::after { display: none; }
+  .pick-book {
+    left: 50%;
+    right: auto;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(94vw, 600px);
+    max-height: 80vh;
+  }
+  .pick-surprise {
+    top: clamp(48px, 7vh, 62px);
+    right: clamp(8px, 2vw, 14px);
+    padding: 5px 10px;
+    font-size: 0.72rem;
+  }
+}
+
+/* TRES PETIT ECRAN : livre stack vertical (single page) */
 @media (max-width: 520px) {
   .pick-spread {
     background: linear-gradient(135deg, #f5e9d0, #f0dfb8);
