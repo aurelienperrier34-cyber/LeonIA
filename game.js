@@ -9649,6 +9649,7 @@ function showCreatorBook() {
 function wireBookAudioEvents() {
   if (bookAudioState.eventsWired) return;
   const audio = document.getElementById('book-audio');
+  const textEl = document.getElementById('book-text');
   if (!audio) return;
   audio.addEventListener('play',  () => setAudioButtonState('playing'));
   audio.addEventListener('pause', () => setAudioButtonState('ready'));
@@ -9663,6 +9664,30 @@ function wireBookAudioEvents() {
     }
   });
   audio.addEventListener('error', () => setAudioButtonState('unavailable'));
+
+  // v553 : auto-scroll du texte synchronise avec la progression de l'audio
+  if (textEl) {
+    audio.addEventListener('timeupdate', () => {
+      if (!audio.duration || isNaN(audio.duration)) return;
+      if (audio.paused) return;
+      if (bookAudioState.userScrolling) return;  // pause si user scroll a la main
+      const progress = audio.currentTime / audio.duration;
+      const maxScroll = textEl.scrollHeight - textEl.clientHeight;
+      if (maxScroll <= 0) return;
+      textEl.scrollTop = Math.max(0, progress * maxScroll);
+    });
+
+    // Detection du scroll manuel utilisateur -> on pause auto-scroll 3 sec
+    const markUserScroll = () => {
+      bookAudioState.userScrolling = true;
+      clearTimeout(bookAudioState._scrollTimer);
+      bookAudioState._scrollTimer = setTimeout(() => {
+        bookAudioState.userScrolling = false;
+      }, 3000);
+    };
+    textEl.addEventListener('wheel', markUserScroll, { passive: true });
+    textEl.addEventListener('touchmove', markUserScroll, { passive: true });
+  }
   bookAudioState.eventsWired = true;
 }
 
@@ -9760,6 +9785,9 @@ function showBookPage(idx, instant) {
     }
     // Texte
     textEl.innerHTML = '<p>' + (page.text || '') + '</p>';
+    // v553 : reset scroll au debut de la nouvelle page
+    textEl.scrollTop = 0;
+    bookAudioState.userScrolling = false;
     updateBookNav();
     // v529 : charge l audio de cette page (autoplay si toggle ON)
     loadBookAudioForPage(idx);
