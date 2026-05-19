@@ -196,7 +196,9 @@ body {
   overscroll-behavior-y: none; transition: background-color 0.4s;
 }
 
-body.map-mode { background-color: #E8D5FF; }
+/* v569 : fond sombre (au lieu de lavande) -> toute bande residuelle apres
+   toggle plein ecran se fond avec les bords sombres de la map, invisible */
+body.map-mode { background-color: #1a0d2e; overflow-x: hidden; }
 
 .app {
   width: 100%; min-height: 100vh; position: relative; z-index: 10;
@@ -430,15 +432,18 @@ body:has(#screen-1.active) .app {
    ancrer dessus = meme position partout. */
 #screen-map.active { position: relative; }
 .map-side-dock {
+  /* v569 : ancre bas-droite (foreground clair de la map, hors du chemin
+     dore qui monte vers chapitres 4-5). Au-dessus du bouton plein ecran. */
   position: absolute;
   right: clamp(10px, 1.6vw, 22px);
-  top: 50%;
-  transform: translateY(-50%);
+  bottom: clamp(74px, 13vh, 120px);
+  top: auto;
+  transform: none;
   z-index: 50;
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1.2vw, 14px);
-  width: min(46vw, 230px);
+  gap: clamp(8px, 1.2vw, 12px);
+  width: min(44vw, 210px);
   pointer-events: none;
 }
 .map-side-dock > * { pointer-events: auto; }
