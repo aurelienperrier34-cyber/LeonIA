@@ -7921,8 +7921,14 @@ function renderAtelierModal() {
         btn = '<button class="atelier-item-btn" ' + (canBuy ? '' : 'disabled') + ' onclick="buyArticleUI(\'' + a.id + '\')">Acheter</button>';
       }
       const legendBadge = a.legendary ? '<span class="atelier-legendary-badge">LÉGENDAIRE ⭐</span>' : '';
+      // v574 : pour les cartes avec image, on affiche l'image (fallback emoji)
+      const visual = a.img
+        ? '<img class="atelier-item-img" src="' + a.img + '" alt="' + a.name + '"' +
+          ' onerror="this.style.display=\'none\'; var em=this.nextElementSibling; if(em) em.style.display=\'block\';">' +
+          '<div class="atelier-item-emoji" style="display:none">' + a.emoji + '</div>'
+        : '<div class="atelier-item-emoji">' + a.emoji + '</div>';
       it.innerHTML = legendBadge +
-                     '<div class="atelier-item-emoji">' + a.emoji + '</div>' +
+                     visual +
                      '<div class="atelier-item-name">' + a.name + '</div>' +
                      '<div class="atelier-item-desc">' + a.desc + '</div>' +
                      '<div class="atelier-item-cost">' + a.cost + ' ⭐</div>' +
