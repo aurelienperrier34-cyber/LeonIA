@@ -8714,7 +8714,8 @@ body:has(#screen-creator.active) #global-star-corner {
 .book-image-zone {
   position: relative;
   width: 100%;
-  height: 60dvh;
+  /* v555 : image agrandie de 60 a 70dvh pour plus de visuel */
+  height: 70dvh;
   flex-shrink: 0;
   overflow: hidden;
   background: #1a0d2e;
@@ -8774,7 +8775,8 @@ body:has(#screen-creator.active) #global-star-corner {
   position: relative;
   width: 100%;
   flex: 1;
-  min-height: 40dvh;
+  /* v555 : text-zone reduit de 40 a 30dvh, l'image gagne 10dvh */
+  min-height: 30dvh;
   display: flex;
   flex-direction: column;
   background:
@@ -8855,6 +8857,22 @@ body:has(#screen-creator.active) #global-star-corner {
   display: flex;
   align-items: center;
   gap: clamp(14px, 2.2vw, 22px);
+  /* v555 : transition pour fade-in/out */
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+/* v555 : UI auto-hide quand l'utilisateur lit tranquillement */
+.creator-phase-book.ui-hidden .book-nav,
+.creator-phase-book.ui-hidden .book-close,
+.creator-phase-book.ui-hidden .creator-restart {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.creator-phase-book.ui-hidden .book-nav { transform: translate(-50%, 8px); }
+.creator-phase-book .book-close,
+.creator-phase-book .creator-restart {
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 .book-prev, .book-next {
   background: linear-gradient(135deg, #6b3d24, #3a1e10);

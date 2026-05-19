@@ -9642,8 +9642,36 @@ function showCreatorBook() {
   if (titleEl) titleEl.textContent = creatorState.story.title || 'Mon histoire';
   // Init audio events (une seule fois)
   wireBookAudioEvents();
+  // v555 : init auto-hide UI
+  wireBookUIAutoHide();
   // Show first page (instant = pas d animation initiale)
   showBookPage(0, true);
+}
+
+// v555 : auto-hide des boutons (nav + close + restart) apres 3s d'inactivite
+let _bookUIHideTimer = null;
+function wireBookUIAutoHide() {
+  const book = document.getElementById('creator-book');
+  if (!book || book._uiAutoHideWired) return;
+  book._uiAutoHideWired = true;
+
+  const showUI = () => {
+    book.classList.remove('ui-hidden');
+    clearTimeout(_bookUIHideTimer);
+    _bookUIHideTimer = setTimeout(() => {
+      book.classList.add('ui-hidden');
+    }, 3000);
+  };
+
+  // Affiche au demarrage puis fade
+  showUI();
+
+  // Mouse (PC)
+  book.addEventListener('mousemove', showUI);
+  // Touch (mobile)
+  book.addEventListener('touchstart', showUI, { passive: true });
+  // Clic sur n'importe quel bouton -> reset timer
+  book.addEventListener('click', showUI);
 }
 
 function wireBookAudioEvents() {
