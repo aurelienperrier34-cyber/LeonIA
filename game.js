@@ -7959,8 +7959,8 @@ function renderAtelierModal() {
           '<div class="cc-emoji" style="display:none">' + a.emoji + '</div>'
         : '<div class="cc-emoji">' + a.emoji + '</div>';
 
+      // v574 : TOUTES les cartes ont un flip (owned ou locked).
       if (owned) {
-        // Recto = image pleine + bandeau nom. Verso = description.
         card.innerHTML =
           '<div class="cc-inner">' +
             '<div class="cc-face cc-front">' +
@@ -7975,20 +7975,33 @@ function renderAtelierModal() {
               '<div class="cc-flip-hint">↩ retourner</div>' +
             '</div>' +
           '</div>';
-        // Flip au clic
         card.onclick = () => card.classList.toggle('flipped');
       } else {
-        // Verrouillee : image floutee + lock + bouton achat
+        // Verrouillee : recto image floutee + lock / verso = comment debloquer + achat
         const buyBtn = '<button class="cc-buy" ' + (canBuy ? '' : 'disabled') +
                        ' onclick="event.stopPropagation(); buyArticleUI(\'' + a.id + '\')">' +
                        (canBuy ? 'Acheter ' + a.cost + ' ⭐' : '🔒 ' + a.cost + ' ⭐') + '</button>';
-        const hint = a.legendary
-          ? '<div class="cc-locked-hint">Débloquée si 16/16 aux quiz</div>'
-          : '';
+        const backDesc = a.legendary
+          ? 'Débloque-la en répondant juste à TOUS les quiz du jeu (16/16) !'
+          : a.desc;
         card.innerHTML =
-          '<div class="cc-locked-visual">' + imgTag + '</div>' +
-          '<div class="cc-locked-name">' + a.name + '</div>' +
-          hint + buyBtn;
+          '<div class="cc-inner">' +
+            '<div class="cc-face cc-front">' +
+              '<div class="cc-locked-visual">' + imgTag + '</div>' +
+              '<div class="cc-namebar cc-namebar-locked">' + a.name + '</div>' +
+            '</div>' +
+            '<div class="cc-face cc-back">' +
+              '<div class="cc-back-name">' + a.name + '</div>' +
+              '<div class="cc-back-desc">' + backDesc + '</div>' +
+              buyBtn +
+              '<div class="cc-flip-hint">↩ retourner</div>' +
+            '</div>' +
+          '</div>';
+        // Flip au clic SAUF si on clique le bouton acheter
+        card.onclick = (e) => {
+          if (e.target.closest('.cc-buy')) return;
+          card.classList.toggle('flipped');
+        };
       }
       grid.appendChild(card);
     });
