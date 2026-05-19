@@ -412,6 +412,111 @@ body:has(#screen-1.active) .app {
 }
 
 .full-map-canvas { position: relative; width: 100%; height: auto; max-width: 1000px; margin: 0 auto; background: #FFF; }
+
+/* ============================================================
+   v561 : MAP BOTTOM DOCK - 2 cards d'acces Livre magique + Custom hero
+   Place en dessous de la map (pas au-dessus, ne touche pas aux nodes)
+   ============================================================ */
+.map-bottom-dock {
+  display: flex;
+  gap: clamp(12px, 1.8vw, 22px);
+  justify-content: center;
+  align-items: stretch;
+  padding: clamp(12px, 2vw, 22px) clamp(12px, 2vw, 22px) clamp(16px, 2.5vw, 28px);
+  max-width: 1000px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+.map-dock-card {
+  flex: 1 1 280px;
+  max-width: 480px;
+  min-height: clamp(80px, 11vw, 110px);
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 18px);
+  padding: clamp(12px, 1.8vw, 18px) clamp(14px, 2.2vw, 22px);
+  background: linear-gradient(135deg, rgba(255, 225, 102, 0.18) 0%, rgba(255, 165, 30, 0.12) 100%);
+  border: 2.5px solid rgba(255, 225, 102, 0.55);
+  border-radius: 16px;
+  cursor: pointer;
+  color: #fff;
+  text-align: left;
+  font-family: 'Baloo 2', cursive;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, box-shadow 0.25s ease, border-color 0.2s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+.map-dock-card::before {
+  /* Liseré doré qui pulse subtilement */
+  content: '';
+  position: absolute;
+  inset: -2.5px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255, 225, 102, 0.5), transparent 30%, transparent 70%, rgba(255, 225, 102, 0.5));
+  z-index: -1;
+  opacity: 0.6;
+}
+.map-dock-card:hover:not(.map-dock-card-locked) {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(255, 225, 102, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 225, 102, 0.9);
+}
+.map-dock-card:active:not(.map-dock-card-locked) {
+  transform: translateY(-1px);
+}
+.map-dock-icon {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  line-height: 1;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+}
+.map-dock-text {
+  flex: 1;
+  min-width: 0;
+}
+.map-dock-title {
+  font-weight: 800;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  color: #FFE166;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  margin-bottom: 2px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+.map-dock-subtitle {
+  font-size: clamp(0.78rem, 1.1vw, 0.92rem);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+/* Etat verrouille */
+.map-dock-card-locked {
+  background: linear-gradient(135deg, rgba(80, 60, 110, 0.4) 0%, rgba(60, 40, 90, 0.3) 100%);
+  border-color: rgba(180, 160, 220, 0.4);
+  opacity: 0.85;
+  cursor: not-allowed;
+}
+.map-dock-card-locked .map-dock-title { color: rgba(255, 225, 102, 0.7); }
+.map-dock-card-locked .map-dock-icon { filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4)) grayscale(0.4); }
+.map-dock-lock {
+  position: absolute;
+  top: clamp(6px, 1vw, 10px);
+  right: clamp(8px, 1.2vw, 12px);
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  opacity: 0.85;
+}
+
+/* Mobile : cards passent en colonne */
+@media (max-width: 600px) {
+  .map-bottom-dock { flex-direction: column; gap: 10px; padding: 10px 12px 18px; }
+  .map-dock-card { width: 100%; flex: 0 0 auto; }
+}
 .map-bg-img { width: 100%; height: auto; display: block; min-height: 150vh; object-fit: cover; }
 
 .map-track-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; }

@@ -64,8 +64,8 @@
   <title>IA : Le monde de Léon</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <!-- v554 : preload de l'image de fond Leon (picker) pour affichage instantane -->
-  <link rel="preload" as="image" href="assets/leon_holds_book.jpg?v=560">
-  <link rel="stylesheet" href="style.css?v=560">
+  <link rel="preload" as="image" href="assets/leon_holds_book.jpg?v=561">
+  <link rel="stylesheet" href="style.css?v=561">
 </head>
 <body>
 <!-- Overlay "Tourne ton téléphone" (portrait mobile uniquement) -->
@@ -84,7 +84,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v560</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v561</div>
 
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
@@ -153,7 +153,8 @@
         <button class="btn-back-map" onclick="goToScreen(1)">⬅ Personnages</button>
         <div class="map-title-badge">Le monde de Léon</div>
         <button id="btn-atelier-map" class="btn-atelier-map" onclick="openAtelier()" title="Mon Atelier">⭐ <span id="map-star-count">0</span></button>
-        <button id="btn-creator-map" class="btn-creator-map" onclick="openCreatorMode()" title="Le livre magique de Léon">📖 Le livre magique de Léon</button>
+        <!-- v561 : remplace par le dock du bas -->
+        <button id="btn-creator-map" class="btn-creator-map" onclick="openCreatorMode()" title="Le livre magique de Léon" style="display:none">📖 Le livre magique de Léon</button>
         <button id="btn-calib-map" type="button" class="calib-only" onclick="toggleMapCalib()">🎯 Calibrer</button>
       </div>
 
@@ -206,6 +207,25 @@
         <!-- Avatar du héros qui flotte au-dessus du prochain lieu -->
         <img src="" id="map-hero-avatar" class="map-candy-avatar anim-bounce avatar-with-accessories">
 
+      </div>
+
+      <!-- v561 : bottom dock - 2 cards d'acces au Livre magique + Custom Hero -->
+      <div class="map-bottom-dock">
+        <button class="map-dock-card" onclick="openCreatorMode()" type="button">
+          <div class="map-dock-icon">📖</div>
+          <div class="map-dock-text">
+            <div class="map-dock-title">Le livre magique</div>
+            <div class="map-dock-subtitle">81 histoires à découvrir</div>
+          </div>
+        </button>
+        <button class="map-dock-card map-dock-card-locked" onclick="alert('Cette fonctionnalité arrive bientôt !')" type="button">
+          <div class="map-dock-lock">🔒</div>
+          <div class="map-dock-icon">✨</div>
+          <div class="map-dock-text">
+            <div class="map-dock-title">Crée ton héros</div>
+            <div class="map-dock-subtitle">Bientôt — Premium</div>
+          </div>
+        </button>
       </div>
     </div>
 
@@ -1866,6 +1886,6 @@
 </div>
 
 <script src="calibration.js"></script>
-<script src="game.js?v=560"></script>
+<script src="game.js?v=561"></script>
 </body>
 </html>
