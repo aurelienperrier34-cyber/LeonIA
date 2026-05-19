@@ -4482,6 +4482,12 @@ body.calib-map-mode .full-map-pixar::before {
   flex: 1; overflow-y: auto; padding: 4px 4px 8px;
   display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px;
 }
+/* v572 : l'onglet Cartes n'est PAS une grille d'items (il a son propre
+   cards-grid interne) -> on le passe en block pour qu'il s'etale en pleine
+   largeur et affiche plusieurs colonnes */
+#atelier-content-cards {
+  display: block;
+}
 .atelier-item {
   background: white; border-radius: 16px;
   padding: 14px 10px 10px; text-align: center;
