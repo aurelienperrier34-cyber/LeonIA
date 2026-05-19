@@ -6422,7 +6422,7 @@ const ARTICLES_CATALOG = [
   // Acquisition : ACHAT a 40 ⭐ OU déblocage gratuit si 16/16 sur les 4 quiz V/F (chap 1-4)
   { id: 'card-leon-master', kind: 'card', emoji: '🌟', img: 'assets/cards/leon_master.jpg',
     name: 'Léon Maître de l\'IA', cost: 40, legendary: true,
-    desc: 'Carte LÉGENDAIRE ! Léon dans toute sa sagesse. Débloquée gratuitement si tu réponds juste à TOUS les quiz du jeu (16/16).' }
+    desc: 'Léon dans toute sa sagesse, Maître de l\'Intelligence Artificielle.' }
 ];
 
 const BADGES_CATALOG = [
@@ -7977,7 +7977,6 @@ function renderAtelierModal() {
             '<div class="cc-face cc-back">' +
               '<div class="cc-back-name">' + a.name + '</div>' +
               '<div class="cc-back-desc">' + a.desc + '</div>' +
-              (a.legendary ? '<div class="cc-back-legend">★ Carte légendaire</div>' : '') +
               '<div class="cc-flip-hint">↩ retourner</div>' +
             '</div>' +
           '</div>';
