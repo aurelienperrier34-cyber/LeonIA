@@ -7855,17 +7855,17 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   text-align: center;
 }
 .cc-back-name {
-  /* v577 : centrage robuste - on laisse align-items du flex centrer le bloc
-     (largeur = contenu), text-align centre les lignes. width:100% retire
-     (causait un decalage visuel avec le rotateY du verso). */
+  /* v578 : letter-spacing RETIRE - il creait un espace de fin a droite qui,
+     combine au rotateY(180deg) du verso (miroir), decalait le titre vers la
+     droite. Sans letter-spacing -> parfaitement centre. */
   font-family: 'Cinzel', serif;
   font-weight: 700;
   font-size: clamp(0.62rem, 1vw, 0.82rem);
   color: #5a3a1a;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
   line-height: 1.15;
   text-align: center;
-  max-width: 100%;
+  width: 100%;
 }
 .cc-back-desc {
   font-family: 'Cormorant Garamond', serif;
