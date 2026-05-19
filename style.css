@@ -7869,6 +7869,18 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   box-shadow: 0 0 22px rgba(255,225,102,0.6), 0 8px 22px rgba(155,93,229,0.5);
   animation: cc-legendary-shimmer 3s ease-in-out infinite;
 }
+/* v570 : verso legendaire en parchemin DORE (au lieu du parchemin standard) */
+.collect-card.legendary .cc-back {
+  background: radial-gradient(ellipse at center, #fff6d8 0%, #f3dd96 55%, #d4a14e 100%);
+  border: 3px solid rgba(255,225,102,0.9);
+  box-shadow: inset 0 0 24px rgba(212,161,78,0.4);
+}
+.collect-card.legendary .cc-back-name { color: #8a5a10; }
+.collect-card.legendary .cc-back-desc { color: #5a3a0a; }
+.collect-card.legendary .cc-back-legend {
+  color: #a8741a;
+  font-size: clamp(0.66rem, 1.05vw, 0.82rem);
+}
 @keyframes cc-legendary-shimmer {
   0%, 100% { box-shadow: 0 0 18px rgba(255,225,102,0.45), 0 8px 22px rgba(155,93,229,0.45); }
   50%      { box-shadow: 0 0 38px rgba(255,225,102,0.9), 0 8px 22px rgba(155,93,229,0.65); }
