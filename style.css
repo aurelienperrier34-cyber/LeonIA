@@ -7855,15 +7855,17 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   text-align: center;
 }
 .cc-back-name {
-  /* v576 : reduit + wrap + centre pour les noms longs */
+  /* v577 : centrage robuste - on laisse align-items du flex centrer le bloc
+     (largeur = contenu), text-align centre les lignes. width:100% retire
+     (causait un decalage visuel avec le rotateY du verso). */
   font-family: 'Cinzel', serif;
   font-weight: 700;
   font-size: clamp(0.62rem, 1vw, 0.82rem);
   color: #5a3a1a;
   letter-spacing: 0.02em;
   line-height: 1.15;
-  width: 100%;
   text-align: center;
+  max-width: 100%;
 }
 .cc-back-desc {
   font-family: 'Cormorant Garamond', serif;
