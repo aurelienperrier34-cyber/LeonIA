@@ -6408,7 +6408,7 @@ const ARTICLES_CATALOG = [
   { id: 'glasses-ai',    kind: 'accessory', slot: 'glasses', emoji: '🕶️', name: 'Lunettes IA',           cost:  6, desc: 'Lunettes futuristes lumineuses.' },
   { id: 'cape-hero',     kind: 'accessory', slot: 'cape',    emoji: '🧥', name: 'Pull du héros',         cost: 12, desc: 'Un pull rouge confortable, parfait pour aventurier.' },
   // Cartes à collectionner (achetables OU gagnées via chapitres)
-  { id: 'card-leon',  kind: 'card', emoji: '👴', img: 'assets/cards/leon.jpg',  name: 'Léon',  cost: 10, desc: 'Le maître inventeur, ton guide à travers tous les chapitres.' },
+  { id: 'card-leon',  kind: 'card', emoji: '👴', img: 'assets/cards/leon_master.jpg',  name: 'Léon',  cost: 10, desc: 'Le maître inventeur, ton guide à travers tous les chapitres.' },
   { id: 'card-bot',   kind: 'card', emoji: '🤖', img: 'assets/cards/bot.jpg',   name: 'Bot',   cost: 10, desc: 'L IA qui parle. A lu des millions de livres mais peut se tromper.' },
   { id: 'card-pixel', kind: 'card', emoji: '🎨', img: 'assets/cards/pixel.jpg', name: 'Pixel', cost: 10, desc: 'L IA qui cree des images magiques a partir de mots.' },
   { id: 'card-echo',  kind: 'card', emoji: '🎵', img: 'assets/cards/echo.jpg',  name: 'Echo',  cost: 10, desc: 'L IA des sons qui compose et reconnait la musique.' },
