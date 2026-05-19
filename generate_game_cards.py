@@ -53,14 +53,23 @@ STYLE_PREFIX = (
     "no watermark, square 1:1 composition. "
 )
 
+# Images de reference (passees en input a Gemini pour matcher le perso exact)
+CARD_REFS = {
+    "leon": [
+        "assets/leon_inventeur_1776108970406.png",
+        "assets/Léon_debout_sans_fond.jpg",
+    ],
+}
+
 CARDS = {
     "leon": (
-        "Portrait of Léon, an elderly kind inventor: bushy white-grey beard, "
+        "Using the attached reference images of Léon, create a clean card "
+        "portrait of him KEEPING HIS EXACT APPEARANCE: bushy white-grey beard, "
         "round silver-rimmed clear eyeglasses, dark navy newsboy cap decorated "
-        "with colorful patches (orange, green, yellow), bright orange knitted "
-        "sweater with cog/lightbulb/star patterns, brown leather apron with "
-        "tool pockets, rosy cheeks, blue eyes, warm grandfatherly smile, "
-        "head and shoulders shot, looking warmly at viewer."
+        "with colorful patches, bright orange knitted sweater with "
+        "cog/lightbulb/star patterns, brown leather apron, rosy cheeks, blue "
+        "eyes, warm grandfatherly smile. Head and shoulders shot, looking "
+        "warmly at viewer, centered."
     ),
     "bot": (
         "Portrait of Bot, a friendly talking robot: round silver metallic body "
@@ -83,9 +92,28 @@ CARDS = {
 }
 
 
+def _b64(p):
+    return base64.standard_b64encode(Path(p).read_bytes()).decode("utf-8")
+
+
+def _mime(p):
+    ext = Path(p).suffix.lower().lstrip(".")
+    return {"jpg": "image/jpeg", "jpeg": "image/jpeg",
+            "png": "image/png", "webp": "image/webp"}.get(ext, "image/jpeg")
+
+
 def gen(name, prompt, dest, model="gemini-2.5-flash-image"):
+    parts = []
+    # Images de reference si definies (pour matcher le perso exact)
+    refs = CARD_REFS.get(name, [])
+    for rp in refs:
+        rpath = Path(rp)
+        if rpath.exists():
+            parts.append({"text": f"Reference image of {name}:"})
+            parts.append({"inline_data": {"mime_type": _mime(rpath), "data": _b64(rpath)}})
+    parts.append({"text": STYLE_PREFIX + prompt})
     payload = {
-        "contents": [{"role": "user", "parts": [{"text": STYLE_PREFIX + prompt}]}],
+        "contents": [{"role": "user", "parts": parts}],
         "generationConfig": {
             "responseModalities": ["IMAGE"],
             "temperature": 0.5,

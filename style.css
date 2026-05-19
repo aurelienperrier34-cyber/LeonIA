@@ -430,20 +430,19 @@ body:has(#screen-1.active) .app {
 /* v567 : dock vertical ancre au VIEWPORT a droite (position identique
    tous supports). #screen-map est plein viewport sur PC et mobile, donc
    ancrer dessus = meme position partout. */
-#screen-map.active { position: relative; }
 .map-side-dock {
-  /* v569 : ancre bas-droite (foreground clair de la map, hors du chemin
-     dore qui monte vers chapitres 4-5). Au-dessus du bouton plein ecran. */
+  /* v571 : ancre au CANVAS (.full-map-canvas est le parent positionne),
+     coin bas-droite. Meme repere que les chapitres -> position relative
+     a la map IDENTIQUE sur PC et mobile, pas de chevauchement variable.
+     En % du canvas pour scaler avec la map. */
   position: absolute;
-  right: clamp(10px, 1.6vw, 22px);
-  bottom: clamp(74px, 13vh, 120px);
-  top: auto;
-  transform: none;
+  right: 2.5%;
+  bottom: 3.5%;
   z-index: 50;
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1.2vw, 12px);
-  width: min(44vw, 210px);
+  gap: clamp(7px, 1vw, 12px);
+  width: min(26%, 220px);
   pointer-events: none;
 }
 .map-side-dock > * { pointer-events: auto; }

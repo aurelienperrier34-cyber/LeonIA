@@ -64,8 +64,8 @@
   <title>IA : Le monde de Léon</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <!-- v554 : preload de l'image de fond Leon (picker) pour affichage instantane -->
-  <link rel="preload" as="image" href="assets/leon_holds_book.jpg?v=570">
-  <link rel="stylesheet" href="style.css?v=570">
+  <link rel="preload" as="image" href="assets/leon_holds_book.jpg?v=571">
+  <link rel="stylesheet" href="style.css?v=571">
 </head>
 <body>
 <!-- Overlay "Tourne ton téléphone" (portrait mobile uniquement) -->
@@ -84,7 +84,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v570</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v571</div>
 
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
@@ -207,26 +207,27 @@
         <!-- Avatar du héros qui flotte au-dessus du prochain lieu -->
         <img src="" id="map-hero-avatar" class="map-candy-avatar anim-bounce avatar-with-accessories">
 
-      </div>
+        <!-- v571 : dock ancre au CANVAS (meme repere que les chapitres) ->
+             position relative a la map identique sur TOUS supports. Coin
+             bas-droite = foreground, aucun node de chapitre. -->
+        <div class="map-side-dock">
+          <button class="map-dock-card" onclick="openCreatorMode()" type="button">
+            <div class="map-dock-icon">📖</div>
+            <div class="map-dock-text">
+              <div class="map-dock-title">Le livre magique</div>
+              <div class="map-dock-subtitle">81 histoires</div>
+            </div>
+          </button>
+          <button class="map-dock-card map-dock-card-locked" onclick="alert('Cette fonctionnalité arrive bientôt !')" type="button">
+            <div class="map-dock-lock">🔒</div>
+            <div class="map-dock-icon">✨</div>
+            <div class="map-dock-text">
+              <div class="map-dock-title">Crée ton héros</div>
+              <div class="map-dock-subtitle">Bientôt — Premium</div>
+            </div>
+          </button>
+        </div>
 
-      <!-- v567 : dock ancre au VIEWPORT (#screen-map), pas au canvas, pour
-           position identique sur tous les supports. Vertical, a droite. -->
-      <div class="map-side-dock">
-        <button class="map-dock-card" onclick="openCreatorMode()" type="button">
-          <div class="map-dock-icon">📖</div>
-          <div class="map-dock-text">
-            <div class="map-dock-title">Le livre magique</div>
-            <div class="map-dock-subtitle">81 histoires</div>
-          </div>
-        </button>
-        <button class="map-dock-card map-dock-card-locked" onclick="alert('Cette fonctionnalité arrive bientôt !')" type="button">
-          <div class="map-dock-lock">🔒</div>
-          <div class="map-dock-icon">✨</div>
-          <div class="map-dock-text">
-            <div class="map-dock-title">Crée ton héros</div>
-            <div class="map-dock-subtitle">Bientôt — Premium</div>
-          </div>
-        </button>
       </div>
     </div>
 
@@ -1887,6 +1888,6 @@
 </div>
 
 <script src="calibration.js"></script>
-<script src="game.js?v=570"></script>
+<script src="game.js?v=571"></script>
 </body>
 </html>
