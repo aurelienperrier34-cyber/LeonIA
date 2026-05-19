@@ -64,12 +64,12 @@ CARD_REFS = {
 CARDS = {
     "leon": (
         "Using the attached reference images of Léon, create a clean card "
-        "portrait of him KEEPING HIS EXACT APPEARANCE: bushy white-grey beard, "
+        "illustration of him KEEPING HIS EXACT APPEARANCE: bushy white-grey beard, "
         "round silver-rimmed clear eyeglasses, dark navy newsboy cap decorated "
         "with colorful patches, bright orange knitted sweater with "
         "cog/lightbulb/star patterns, brown leather apron, rosy cheeks, blue "
-        "eyes, warm grandfatherly smile. Head and shoulders shot, looking "
-        "warmly at viewer, centered."
+        "eyes, warm grandfatherly smile. FULL BODY standing pose (head to feet), "
+        "centered, looking warmly at viewer, friendly welcoming posture."
     ),
     "bot": (
         "Portrait of Bot, a friendly talking robot: round silver metallic body "
