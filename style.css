@@ -418,13 +418,15 @@ body:has(#screen-1.active) .app {
    Place en dessous de la map (pas au-dessus, ne touche pas aux nodes)
    ============================================================ */
 .map-bottom-dock {
-  /* v562 : position absolute INSIDE le canvas, ancre au bas-centre */
+  /* v563 : ancre bas-centre, mais decale a droite pour ne pas couvrir
+     chapitre 1 (bas-gauche) ni chapitre 2. Largeur reduite, centree
+     dans la moitie droite du bas. */
   position: absolute;
-  bottom: clamp(8px, 1.5vw, 20px);
+  bottom: clamp(10px, 2vw, 26px);
   left: 50%;
   transform: translateX(-50%);
   z-index: 50;
-  width: min(92%, 700px);
+  width: min(70%, 620px);
   display: flex;
   gap: clamp(10px, 1.5vw, 18px);
   justify-content: center;
@@ -4212,8 +4214,9 @@ body.novel-mode #screen-c5s5 .game-overlay {
    ou mapWidth = 100dvh * 1672/941 (ratio de la map). Si le viewport est
    plus etroit que la map, la formule donne un nombre negatif → la bande
    est de largeur 0 (pas affichee), comportement attendu en portrait.
-   Note : `(hover: none)` pour exclure ordi tactile (qui a souris en plus). */
-@media (max-width: 900px), (pointer: coarse) {
+   v563 : applique a TOUS les ecrans (desktop inclus) pour eliminer la
+   bande lavande sur ecrans larges. */
+@media (min-width: 1px) {
   #screen-map.active {
     position: relative;
     overflow: hidden;
