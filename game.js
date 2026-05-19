@@ -9631,8 +9631,11 @@ function _buildPlaceholderStory() {
 }
 
 // === PHASE 3 : LIVRE 3D === ==================================
-// Etat audio : autoplay toggle persiste pendant la session
-const bookAudioState = { autoplay: false, eventsWired: false };
+// Etat audio : autoplay toggle persiste en localStorage entre sessions
+const bookAudioState = {
+  autoplay: localStorage.getItem('book_autoplay') === 'true',
+  eventsWired: false
+};
 
 function showCreatorBook() {
   document.getElementById('creator-loading').hidden = true;
@@ -9642,6 +9645,8 @@ function showCreatorBook() {
   if (titleEl) titleEl.textContent = creatorState.story.title || 'Mon histoire';
   // Init audio events (une seule fois)
   wireBookAudioEvents();
+  // v556 : reflete l'etat autoplay sauve sur le bouton
+  _syncAutoplayButton();
   // v555 : init auto-hide UI
   wireBookUIAutoHide();
   // Show first page (instant = pas d animation initiale)
@@ -9682,11 +9687,15 @@ function wireBookAudioEvents() {
   audio.addEventListener('play',  () => setAudioButtonState('playing'));
   audio.addEventListener('pause', () => setAudioButtonState('ready'));
   audio.addEventListener('ended', () => {
+    console.log('[audio] ended, autoplay=', bookAudioState.autoplay,
+                'page', creatorState.currentPage, '/',
+                (creatorState.story && creatorState.story.pages || []).length);
     setAudioButtonState('ready');
     // Si autoplay : avance automatiquement a la page suivante
     if (bookAudioState.autoplay) {
       const pages = (creatorState.story && creatorState.story.pages) || [];
       if (creatorState.currentPage < pages.length - 1) {
+        console.log('[audio] auto-advancing to next page');
         setTimeout(() => bookNextPage(), 800);
       }
     }
@@ -9777,6 +9786,9 @@ function toggleBookAudio() {
 
 function toggleBookAutoplay() {
   bookAudioState.autoplay = !bookAudioState.autoplay;
+  // v556 : persist en localStorage entre sessions
+  localStorage.setItem('book_autoplay', String(bookAudioState.autoplay));
+  console.log('[audio] autoplay toggled ->', bookAudioState.autoplay);
   const btn = document.getElementById('book-autoplay-toggle');
   if (btn) {
     btn.classList.toggle('active', bookAudioState.autoplay);
@@ -9785,7 +9797,16 @@ function toggleBookAutoplay() {
   // Si on active autoplay et que l'audio est pret mais en pause, on lance
   const audio = document.getElementById('book-audio');
   if (bookAudioState.autoplay && audio && audio.paused && audio.src) {
-    audio.play().catch(()=>{});
+    audio.play().catch(e => console.warn('[audio] play() blocked:', e.message));
+  }
+}
+
+// v556 : reflete l'etat autoplay sauvegarde sur le bouton au demarrage
+function _syncAutoplayButton() {
+  const btn = document.getElementById('book-autoplay-toggle');
+  if (btn) {
+    btn.classList.toggle('active', bookAudioState.autoplay);
+    btn.title = 'Lecture auto : ' + (bookAudioState.autoplay ? 'ON' : 'OFF');
   }
 }
 

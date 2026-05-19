@@ -8860,16 +8860,20 @@ body:has(#screen-creator.active) #global-star-corner {
   /* v555 : transition pour fade-in/out */
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
-/* v555 : UI auto-hide quand l'utilisateur lit tranquillement */
+/* v556 : UI auto-hide quand l'utilisateur lit tranquillement.
+   Opacity 0.18 (pas 0) -> les boutons restent visibles ET cliquables, juste
+   faded pour ne pas distraire. Solution Netflix-like. */
 .creator-phase-book.ui-hidden .book-nav,
 .creator-phase-book.ui-hidden .book-close,
 .creator-phase-book.ui-hidden .creator-restart {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(8px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  opacity: 0.18;
+  transition: opacity 0.6s ease;
 }
-.creator-phase-book.ui-hidden .book-nav { transform: translate(-50%, 8px); }
+.creator-phase-book.ui-hidden .book-nav:hover,
+.creator-phase-book.ui-hidden .book-close:hover,
+.creator-phase-book.ui-hidden .creator-restart:hover {
+  opacity: 1;
+}
 .creator-phase-book .book-close,
 .creator-phase-book .creator-restart {
   transition: opacity 0.4s ease, transform 0.4s ease;
