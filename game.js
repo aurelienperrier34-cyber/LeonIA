@@ -1538,35 +1538,97 @@ function hbParams() {
   };
 }
 
-// PLACEHOLDER : la generation reelle viendra via la Cloud Function.
-function hbGenerate() {
-  const params = hbParams();
-  console.log('[hero-builder] params prets pour la generation :', params);
-  document.getElementById('hero-coming-soon')?.remove();
+// ============================================================
+// Connexion au BACKEND de generation
+// ============================================================
+// URL configurable : localhost par defaut (pilote), Cloud Run plus tard via
+//   localStorage.setItem('ia_backend_url', 'https://...')
+function getBackendUrl() {
+  try { return localStorage.getItem('ia_backend_url') || 'http://localhost:8787'; }
+  catch (e) { return 'http://localhost:8787'; }
+}
+function getLicenseCode() {
+  try { return localStorage.getItem('ia_license_code') || 'ECOLE-DEMO'; }
+  catch (e) { return 'ECOLE-DEMO'; }
+}
+window.getBackendUrl = getBackendUrl;
+
+function _heroOverlay(id, innerHtml) {
+  document.getElementById(id)?.remove();
   const ov = document.createElement('div');
-  ov.id = 'hero-coming-soon';
+  ov.id = id;
   ov.setAttribute('style',
     'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
     'justify-content:center;background:rgba(20,10,35,0.85);' +
     'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
   ov.innerHTML =
-    '<div style="max-width:420px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
-    'border:3px solid #e0a23a;border-radius:22px;padding:28px 24px;text-align:center;' +
-    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
-      '<div style="font-size:48px;line-height:1;margin-bottom:8px;">🪄</div>' +
-      '<h2 style="margin:0 0 8px;font-size:1.3rem;color:#7a4a10;">' +
-        (params.name || 'Ton héros') + ' arrive bientôt !</h2>' +
-      '<p style="margin:0 0 18px;font-size:.95rem;line-height:1.45;opacity:.9;">' +
-        'Léon prépare sa baguette ✨ La création de héros sur-mesure sera ' +
-        'disponible très bientôt. Tes choix sont prêts !</p>' +
-      '<button id="hero-coming-close" style="cursor:pointer;border:none;' +
-      'background:linear-gradient(160deg,#ffb74d,#f57c00);color:#fff;font-weight:800;' +
-      'font-size:1rem;padding:12px 28px;border-radius:14px;box-shadow:0 4px 14px rgba(245,124,0,.5);">' +
-      'D\'accord ! 😊</button>' +
-    '</div>';
-  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+    '<div style="max-width:430px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:26px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' + innerHtml + '</div>';
   document.body.appendChild(ov);
-  document.getElementById('hero-coming-close')?.addEventListener('click', () => ov.remove());
+  return ov;
+}
+
+function showHeroLoading(name) {
+  _heroOverlay('hero-loading',
+    '<div style="font-size:48px;line-height:1;margin-bottom:10px;" class="anim-bounce">🪄✨</div>' +
+    '<h2 style="margin:0 0 8px;font-size:1.3rem;color:#7a4a10;">Léon donne vie à ' + name + '…</h2>' +
+    '<p style="margin:0;font-size:.95rem;opacity:.85;">Sa baguette dessine ton héros. ' +
+    'Ça prend environ une minute ⏳</p>');
+}
+
+function showHeroError(msg) {
+  const ov = _heroOverlay('hero-error',
+    '<div style="font-size:44px;margin-bottom:8px;">😯</div>' +
+    '<h2 style="margin:0 0 8px;font-size:1.2rem;color:#7a4a10;">Oups</h2>' +
+    '<p style="margin:0 0 18px;font-size:.95rem;opacity:.9;">' + msg + '</p>' +
+    '<button id="hero-error-close" style="cursor:pointer;border:none;' +
+    'background:linear-gradient(160deg,#ffb74d,#f57c00);color:#fff;font-weight:800;' +
+    'font-size:1rem;padding:11px 26px;border-radius:14px;">Réessayer</button>');
+  document.getElementById('hero-error-close').addEventListener('click', () => ov.remove());
+}
+
+function showHeroResult(data) {
+  const url = getBackendUrl() + data.portrait_url;
+  const ov = _heroOverlay('hero-result',
+    '<h2 style="margin:0 0 10px;font-size:1.35rem;color:#7a4a10;">' +
+      (data.name || 'Ton héros') + ' est né ! 🎉</h2>' +
+    '<img src="' + url + '" alt="' + (data.name || '') + '" ' +
+    'style="width:200px;height:200px;object-fit:cover;border-radius:18px;' +
+    'border:3px solid #e0a23a;box-shadow:0 6px 18px rgba(0,0,0,.25);margin-bottom:14px;">' +
+    '<p style="margin:0 0 16px;font-size:.92rem;opacity:.85;">' +
+      'Il est ajouté à <b>Mes héros</b>. Tu pourras lui faire vivre des histoires 🪶</p>' +
+    '<button id="hero-result-close" style="cursor:pointer;border:none;' +
+    'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
+    'font-size:1rem;padding:12px 30px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.45);">' +
+    'Génial ! 😍</button>');
+  document.getElementById('hero-result-close').addEventListener('click', () => {
+    ov.remove();
+    goToScreen('map');   // retour carte ; la galerie "Mes heros" arrive (step 5b)
+  });
+}
+
+// Vrai appel au backend : cree le heros (portrait Gemini cote serveur).
+async function hbGenerate() {
+  const params = hbParams();
+  showHeroLoading(params.name || 'ton héros');
+  try {
+    const res = await fetch(getBackendUrl() + '/api/create-hero', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.assign({ license: getLicenseCode() }, params)),
+    });
+    const data = await res.json().catch(() => ({}));
+    document.getElementById('hero-loading')?.remove();
+    if (!res.ok) {
+      showHeroError(data.message || data.error || 'La génération a échoué. Réessaie.');
+      return;
+    }
+    showHeroResult(data);
+  } catch (e) {
+    document.getElementById('hero-loading')?.remove();
+    showHeroError('Le serveur de Léon est injoignable. Vérifie qu\'il est bien lancé. (' + e.message + ')');
+  }
 }
 window.hbGenerate = hbGenerate;
 
