@@ -8908,16 +8908,16 @@ body:has(#screen-creator.active) #global-star-corner {
   .creator-phase-pick .creator-error {
     z-index: 5;
   }
-  /* Livre ancre A DROITE pour laisser Leon visible a gauche */
+  /* v601 : livre CENTRE avec marges (Leon visible sur les cotes, titre au-dessus).
+     Unites relatives (vw/%) -> rendu identique sur tous mobiles, Android comme iOS. */
   .pick-book {
-    left: auto;
-    right: clamp(8px, 2vw, 24px);
-    top: 50%;
-    transform: translateY(-50%);
-    width: min(62vw, 480px);
-    /* On garde aspect-ratio 3/2 mais avec une hauteur cappee */
+    left: 50%;
+    right: auto;
+    top: 56%;
+    transform: translate(-50%, -50%);
+    width: min(66vw, 470px);
     height: auto;
-    max-height: 85vh;
+    max-height: 76vh;
   }
   .pick-surprise {
     /* v585 : passe SOUS la rangee de pastilles (etoiles + plumes) */
