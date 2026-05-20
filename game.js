@@ -1370,8 +1370,9 @@ function _hbRecapHtml() {
     '<div class="hb-recap-name">' + (hbState.name || 'Mon héros') + '</div>' +
     '<div class="hb-recap-list">' + lines.filter(Boolean).join('<br>') + '</div>' +
     '<button class="hb-btn hb-next" style="margin-top:14px" type="button" onclick="hbGenerate()">' +
-    'Donne vie à mon héros ! 🪶</button>' +
-    '<div style="color:rgba(255,255,255,0.5);font-size:.78rem;margin-top:6px">Coûte 1 plume</div>' +
+    'Donne vie à mon héros ! ✨</button>' +
+    '<div style="color:rgba(255,255,255,0.5);font-size:.78rem;margin-top:6px">' +
+    'Gratuit · tu utiliseras une plume 🪶 quand il vivra une histoire</div>' +
     '</div>';
 }
 
