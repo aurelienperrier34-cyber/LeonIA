@@ -273,6 +273,9 @@ let state = {
   tapAttempts: 0,
   chaptersCompleted: [],
   starsAwarded: false,
+  // PREMIUM : acces au contenu payant (chapitres 2-5 + Livre magique).
+  // Source de verite = localStorage 'ia_premium' (voir isPremium()).
+  isPremium: false,
   c2WordsSelected: [],
   vfScoreC2: 0,
   vfDoneC2: 0,
@@ -530,6 +533,7 @@ function restoreState() {
 // Init
 document.addEventListener("DOMContentLoaded", () => {
   restoreState();
+  state.isPremium = isPremium();   // source de verite = localStorage / ?premium=1
   if (!subtitlesEnabled()) document.body.classList.add('cc-off');
   if (state.characterType) document.body.classList.add('has-character');
   updateAVToggles();
@@ -917,8 +921,82 @@ function updateName() {
   saveState();
 }
 
+// ============================================================
+// PREMIUM — acces au contenu payant (chapitres 2-5 + Livre magique)
+// ============================================================
+// Source de verite : localStorage 'ia_premium' === '1' (persiste a la
+// fermeture de l'onglet). La monnaie de creation d'histoires s'appellera
+// "plumes" (a venir, phase paiement).
+//
+// >>> POUR DEVELOPPER / TESTER : tout debloquer facilement <<<
+//   - tape  unlockPremium()  dans la console du navigateur, OU
+//   - ouvre l'app avec  ?premium=1  dans l'URL
+//   - tape  lockPremium()  pour re-verrouiller et revoir les cadenas.
+// ============================================================
+function isPremium() {
+  try {
+    if (new URLSearchParams(location.search).get('premium') === '1') return true;
+    return localStorage.getItem('ia_premium') === '1';
+  } catch (e) { return false; }
+}
+
+function unlockPremium() {
+  try { localStorage.setItem('ia_premium', '1'); } catch (e) {}
+  state.isPremium = true;
+  try { if (typeof updateMapState === 'function') updateMapState(); } catch (e) {}
+  console.log('%c[premium] DÉBLOQUÉ — chapitres 2-5 + Livre magique accessibles.', 'color:#2e8b57;font-weight:bold');
+}
+
+function lockPremium() {
+  try { localStorage.removeItem('ia_premium'); } catch (e) {}
+  state.isPremium = false;
+  try { if (typeof updateMapState === 'function') updateMapState(); } catch (e) {}
+  console.log('%c[premium] VERROUILLÉ — contenu payant re-bloqué.', 'color:#b22222;font-weight:bold');
+}
+
+// Expose pour la console
+window.unlockPremium = unlockPremium;
+window.lockPremium = lockPremium;
+
+// Paywall : overlay leger injecte dynamiquement (aucun HTML a modifier).
+// feature = numero de chapitre (2..5) ou 'book' pour le Livre magique.
+function showPremiumPaywall(feature) {
+  const isBook = feature === 'book';
+  const titre = isBook ? 'Le Livre magique de Léon' : ('Chapitre ' + feature);
+  document.getElementById('premium-paywall')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'premium-paywall';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.82);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:440px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:26px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:46px;line-height:1;margin-bottom:8px;">👑</div>' +
+      '<h2 style="margin:0 0 6px;font-size:1.35rem;color:#7a4a10;">' + titre + '</h2>' +
+      '<p style="margin:0 0 4px;font-weight:700;font-size:1.05rem;">Contenu Premium</p>' +
+      '<p style="margin:0 0 18px;font-size:.95rem;line-height:1.4;opacity:.9;">' +
+        'Débloque <b>toute l\'aventure de Léon</b> : les chapitres 2 à 5 et le ' +
+        'Livre magique avec ses histoires illustrées et racontées.</p>' +
+      '<button id="premium-paywall-close" style="cursor:pointer;border:none;' +
+      'background:linear-gradient(160deg,#ffb74d,#f57c00);color:#fff;font-weight:800;' +
+      'font-size:1rem;padding:12px 26px;border-radius:14px;box-shadow:0 4px 14px rgba(245,124,0,.5);">' +
+      'Bientôt disponible ✨</button>' +
+      '<div style="margin-top:14px;font-size:.78rem;opacity:.6;">Pour les parents — abonnement à venir</div>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  document.getElementById('premium-paywall-close')?.addEventListener('click', () => ov.remove());
+}
+window.showPremiumPaywall = showPremiumPaywall;
+
 // Start a mapped chapter
 function startChapter(n) {
+  // Verrou Premium : seul le chapitre 1 est gratuit.
+  if (n >= 2 && !isPremium()) { showPremiumPaywall(n); return; }
+
   const firstScreens = { 1: 2, 2: 'c2s1', 3: 'c3s1', 4: 'c4s1', 5: 'c5s1' };
   const target = firstScreens[n];
   if (!target) return;
@@ -2862,23 +2940,42 @@ const MAP_NODE_ICONS = ['⚙️', '🎨', '🎵', '💬', '🏆'];
 function updateMapState() {
   const completed = state.chaptersCompleted || [];
 
+  const premium = isPremium();
   for (let i = 1; i <= 5; i++) {
     const node = document.getElementById('map-node-' + i);
     if (!node) continue;
-    const shouldUnlock = i === 1 || completed.includes(i - 1);
-    if (shouldUnlock) {
-      node.classList.remove('node-locked');
+    const icon = node.querySelector('.node-icon');
+    const progressOk = i === 1 || completed.includes(i - 1);
+    const premiumOk  = i === 1 || premium;   // chapitre 1 toujours gratuit
+
+    if (progressOk && premiumOk) {
+      // Pleinement debloque
+      node.classList.remove('node-locked', 'node-premium');
       node.classList.add('node-unlocked');
-      if (!node.getAttribute('onclick')) {
-        node.setAttribute('onclick', `startChapter(${i})`);
-      }
-      const icon = node.querySelector('.node-icon');
-      if (icon) {
-        icon.textContent = MAP_NODE_ICONS[i - 1];
-        icon.classList.remove('locked-icon');
-      }
+      node.setAttribute('onclick', `startChapter(${i})`);
+      if (icon) { icon.textContent = MAP_NODE_ICONS[i - 1]; icon.classList.remove('locked-icon'); }
+    } else if (progressOk && !premiumOk) {
+      // Progression faite mais contenu Premium -> cadenas dore + paywall
+      node.classList.remove('node-unlocked');
+      node.classList.add('node-locked', 'node-premium');
+      node.setAttribute('onclick', `showPremiumPaywall(${i})`);
+      if (icon) { icon.textContent = '👑'; icon.classList.add('locked-icon'); }
+    } else {
+      // Pas encore atteint (progression non faite)
+      node.classList.remove('node-unlocked', 'node-premium');
+      node.classList.add('node-locked');
+      node.removeAttribute('onclick');
+      if (icon) { icon.textContent = '🔒'; icon.classList.add('locked-icon'); }
     }
   }
+
+  // Badge Premium sur la carte "Le livre magique" du dock
+  try {
+    const bookLock = document.getElementById('dock-book-lock');
+    const bookCard = document.getElementById('dock-book-card');
+    if (bookLock) bookLock.style.display = premium ? 'none' : '';
+    if (bookCard) bookCard.classList.toggle('map-dock-card-locked', !premium);
+  } catch (e) {}
 
   // Pulse sur le prochain chapitre à jouer
   document.querySelectorAll('.node-island').forEach(n => n.classList.remove('candy-pulse'));
@@ -9244,6 +9341,8 @@ let creatorState = {
 };
 
 function openCreatorMode() {
+  // Verrou Premium : le Livre magique fait partie du contenu payant.
+  if (!isPremium()) { showPremiumPaywall('book'); goToScreen('map'); return; }
   goToScreen('creator');
   // v500 : le double rAF du v490 ne suffit pas avec le nouveau layout
   // position:absolute. On poll en rAF jusqu'a ce que l'ecran soit reellement
