@@ -8104,6 +8104,22 @@ body:has(#screen-creator.active) #global-star-corner {
   font-size: clamp(0.85rem, 1.2vw, 1rem);
   white-space: nowrap;
 }
+/* Groupe les pastilles (etoiles + plumes) a droite de la topbar */
+.creator-topbar-pills {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 1vw, 10px);
+}
+/* Pastille plumes : cliquable, ouvre la boutique. Accent orange. */
+.creator-plumes-pill {
+  cursor: pointer;
+  background: rgba(245,124,0,0.22);
+  color: #FFC078;
+  border: 1.5px solid rgba(245,124,0,0.5);
+  transition: transform .12s ease, background .2s ease;
+}
+.creator-plumes-pill:hover  { background: rgba(245,124,0,0.34); }
+.creator-plumes-pill:active { transform: scale(0.94); }
 
 /* ============================================================
    PHASE PICK v499 : Léon background + livre interactif 5 pages
@@ -8193,6 +8209,12 @@ body:has(#screen-creator.active) #global-star-corner {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
+/* Garde l'accent orange de la pastille plumes en phase pick (fond sombre) */
+.creator-phase-pick .creator-plumes-pill {
+  background: rgba(245,124,0,0.34);
+  border-color: rgba(245,124,0,0.6);
+}
+.creator-phase-pick .creator-plumes-pill:hover { background: rgba(245,124,0,0.5); }
 
 /* === Bouton Surprends-moi flottant === */
 .pick-surprise {
@@ -8847,7 +8869,8 @@ body:has(#screen-creator.active) #global-star-corner {
     max-height: 85vh;
   }
   .pick-surprise {
-    top: clamp(50px, 7vh, 70px);
+    /* v585 : passe SOUS la rangee de pastilles (etoiles + plumes) */
+    top: clamp(74px, 11vh, 96px);
     padding: 6px 12px;
     font-size: 0.78rem;
   }
@@ -8878,7 +8901,8 @@ body:has(#screen-creator.active) #global-star-corner {
     max-height: 80vh;
   }
   .pick-surprise {
-    top: clamp(48px, 7vh, 62px);
+    /* v585 : passe SOUS la rangee de pastilles (etoiles + plumes) */
+    top: clamp(74px, 11vh, 96px);
     right: clamp(8px, 2vw, 14px);
     padding: 5px 10px;
     font-size: 0.72rem;
