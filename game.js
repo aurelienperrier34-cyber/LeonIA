@@ -1362,7 +1362,8 @@ const HB_OPTS = {
     { v: 'roux', hex: '#c1440e' },   { v: 'noir', hex: '#2b2b2b' },
     { v: 'rose', hex: '#ff5fa2' },   { v: 'bleu', hex: '#3aa0ff' },
     { v: 'violet', hex: '#9b5de5' }, { v: 'vert', hex: '#3fbf6f' },
-    { v: 'blanc', hex: '#f4f4f4' },  { v: 'orange', hex: '#ff8c33' },
+    { v: 'rouge', hex: '#e23b3b' },  { v: 'orange', hex: '#ff8c33' },
+    { v: 'blanc', hex: '#f4f4f4' },
     { v: 'turquoise', hex: '#2ec4b6' },
     { v: 'arc-en-ciel', hex: 'linear-gradient(90deg,#ff5f5f,#ffd23f,#3fbf6f,#3aa0ff,#9b5de5)' },
   ],
@@ -1468,9 +1469,10 @@ function hbRender() {
         '<input id="hb-name" type="text" maxlength="20" placeholder="ex : Zoé" ' +
         'value="' + (hbState.name || '').replace(/"/g, '&quot;') + '" oninput="hbState.name=this.value; hbUpdateNav();"></div>' +
         '<div class="hb-field"><label>Une idée en plus ? (facultatif)</label>' +
-        '<input id="hb-keyword" type="text" maxlength="40" placeholder="ex : pirate, fée, footballeur..." ' +
-        'value="' + (hbState.keyword || '').replace(/"/g, '&quot;') + '" oninput="hbState.keyword=this.value;">' +
-        '<span class="hb-field-hint">Un mot pour rendre ton héros unique</span></div>';
+        '<textarea id="hb-keyword" rows="2" maxlength="120" class="hb-textarea" ' +
+        'placeholder="ex : une exploratrice qui adore les étoiles et les vieux grimoires" ' +
+        'oninput="hbState.keyword=this.value;">' + (hbState.keyword || '').replace(/</g, '&lt;') + '</textarea>' +
+        '<span class="hb-field-hint">Quelques mots pour rendre ton héros unique</span></div>';
       break;
     case 'recap':
       html = _hbRecapHtml();

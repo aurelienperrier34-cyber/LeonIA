@@ -95,7 +95,8 @@ V_COLOR = {  # sert pour cheveux ET tenue
     "brun":   "brown", "blond": "golden blonde", "roux": "ginger red",
     "noir":   "black", "rose": "bright pink", "bleu": "sky blue",
     "violet": "purple", "vert": "green", "blanc": "white",
-    "orange": "orange", "turquoise": "turquoise", "arc-en-ciel": "rainbow-colored",
+    "rouge": "bright red", "orange": "orange", "turquoise": "turquoise",
+    "arc-en-ciel": "rainbow-colored",
 }
 
 # fragments SANS article : l'article est ajoute par build_prompts ("wearing a ...")
@@ -145,7 +146,7 @@ def _clean_keyword(kw):
             raise ValueError(f"mot-cle refuse (moderation) : contient '{bad}'")
     # garde lettres/espaces/tirets, max 40 caracteres
     cleaned = re.sub(r"[^\w\s\-àâäéèêëïîôöùûüç']", "", kw, flags=re.UNICODE)
-    return cleaned.strip()[:40]
+    return cleaned.strip()[:120]
 
 
 def build_prompts(params):

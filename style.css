@@ -9492,7 +9492,8 @@ body:has(#screen-hero-builder.active) #global-star-corner {
   font-weight: 700;
   font-size: clamp(0.85rem, 2vw, 1rem);
 }
-.hb-field input {
+.hb-field input,
+.hb-field .hb-textarea {
   border: 2px solid rgba(255,255,255,0.25);
   background: rgba(255,255,255,0.95);
   border-radius: 12px;
@@ -9502,7 +9503,8 @@ body:has(#screen-hero-builder.active) #global-star-corner {
   color: #2a1d52;
   outline: none;
 }
-.hb-field input:focus { border-color: #FFE166; }
+.hb-field .hb-textarea { resize: none; line-height: 1.35; box-sizing: border-box; width: 100%; }
+.hb-field input:focus, .hb-field .hb-textarea:focus { border-color: #FFE166; }
 .hb-field-hint { color: rgba(255,255,255,0.55); font-size: 0.75rem; }
 /* Recap final */
 .hb-recap {
