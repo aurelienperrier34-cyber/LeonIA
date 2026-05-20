@@ -1020,6 +1020,126 @@ window.lockPremium = lockPremium;
 window.purchasePremium = purchasePremium;
 
 // ============================================================
+// ÉDITION ÉCOLE — déverrouillage par CODE DE LICENCE
+// ============================================================
+// En édition école, l'établissement a payé une licence : tout est débloqué
+// et le COMMERCE est masqué (les enfants n'achètent rien, ni Premium ni plumes ;
+// les plumes deviennent un quota géré par l'enseignant).
+// localStorage 'ia_edition' === 'school'.
+//
+// ⚠️ MVP : validation du code EN LOCAL (liste + motif). En production, le code
+// sera vérifié CÔTÉ SERVEUR (collection Firestore 'licenses') — sinon il suffit
+// de lire le code pour tricher. >>> TODO BACKEND : validation serveur.
+// DEV : activateSchoolLicense('ECOLE-DEMO') / deactivateSchoolLicense() en console.
+// ============================================================
+const SCHOOL_DEMO_CODES = ['ECOLE-DEMO', 'PROF-LEON', 'CLASSE-2026'];
+
+function isSchoolEdition() {
+  try { return localStorage.getItem('ia_edition') === 'school'; } catch (e) { return false; }
+}
+
+function _validateLicenseLocal(code) {
+  const c = (code || '').trim().toUpperCase();
+  if (!c) return false;
+  if (SCHOOL_DEMO_CODES.includes(c)) return true;
+  // Motif large pour les pilotes : ECOLE-XXXX (4+ alphanum)
+  return /^ECOLE-[A-Z0-9]{4,}$/.test(c);
+}
+
+function activateSchoolLicense(code) {
+  if (!_validateLicenseLocal(code)) return false;
+  try {
+    localStorage.setItem('ia_edition', 'school');
+    localStorage.setItem('ia_license_code', (code || '').trim().toUpperCase());
+  } catch (e) {}
+  _setPremiumFlag(true);              // débloque tout le contenu
+  document.getElementById('premium-paywall')?.remove();
+  document.getElementById('school-code-prompt')?.remove();
+  showSchoolWelcome();
+  console.log('%c[ecole] Licence activée — édition école, commerce masqué.', 'color:#2e8b57;font-weight:bold');
+  return true;
+}
+
+function deactivateSchoolLicense() {
+  try { localStorage.removeItem('ia_edition'); localStorage.removeItem('ia_license_code'); } catch (e) {}
+  _setPremiumFlag(false);
+  console.log('%c[ecole] Édition école désactivée.', 'color:#b22222;font-weight:bold');
+}
+window.activateSchoolLicense = activateSchoolLicense;
+window.deactivateSchoolLicense = deactivateSchoolLicense;
+window.isSchoolEdition = isSchoolEdition;
+
+// Saisie du code école (depuis le paywall)
+function showSchoolCodePrompt() {
+  document.getElementById('school-code-prompt')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'school-code-prompt';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:100000;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.85);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:400px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:26px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:42px;line-height:1;margin-bottom:6px;">🏫</div>' +
+      '<h2 style="margin:0 0 6px;font-size:1.2rem;color:#7a4a10;">Code école</h2>' +
+      '<p style="margin:0 0 14px;font-size:.9rem;opacity:.85;">Entre le code fourni à ' +
+      'ton établissement pour tout débloquer.</p>' +
+      '<input id="school-code-input" type="text" placeholder="ECOLE-XXXX" ' +
+      'style="width:100%;box-sizing:border-box;border:2px solid #e0a23a;border-radius:12px;' +
+      'padding:11px 14px;font-family:inherit;font-size:1.05rem;text-align:center;' +
+      'text-transform:uppercase;color:#4a2f12;margin-bottom:6px;">' +
+      '<div id="school-code-err" style="color:#b22222;font-size:.8rem;min-height:1em;margin-bottom:8px;"></div>' +
+      '<button id="school-code-ok" style="cursor:pointer;border:none;width:100%;' +
+      'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
+      'font-size:1rem;padding:12px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.45);">' +
+      'Activer 🏫</button>' +
+      '<button id="school-code-cancel" style="margin-top:12px;cursor:pointer;border:none;' +
+      'background:none;color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.7;">Annuler</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  const input = document.getElementById('school-code-input');
+  const tryActivate = () => {
+    if (!activateSchoolLicense(input.value)) {
+      document.getElementById('school-code-err').textContent = 'Code invalide. Vérifie auprès de ton établissement.';
+    }
+  };
+  document.getElementById('school-code-ok').addEventListener('click', tryActivate);
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryActivate(); });
+  document.getElementById('school-code-cancel').addEventListener('click', () => ov.remove());
+  setTimeout(() => input.focus(), 50);
+}
+window.showSchoolCodePrompt = showSchoolCodePrompt;
+
+function showSchoolWelcome() {
+  document.getElementById('school-welcome')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'school-welcome';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:100000;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.85);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:400px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:28px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:48px;line-height:1;margin-bottom:8px;">🏫✨</div>' +
+      '<h2 style="margin:0 0 8px;font-size:1.25rem;color:#7a4a10;">Édition école activée !</h2>' +
+      '<p style="margin:0 0 18px;font-size:.95rem;opacity:.9;">Toute l\'aventure de Léon ' +
+      'est débloquée pour ta classe : les 5 chapitres et le Livre magique.</p>' +
+      '<button id="school-welcome-close" style="cursor:pointer;border:none;' +
+      'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
+      'font-size:1rem;padding:12px 30px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.5);">' +
+      'En classe ! 🚀</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  document.getElementById('school-welcome-close')?.addEventListener('click', () => ov.remove());
+}
+
+// ============================================================
 // PLUMES 🪶 — monnaie consommable pour la creation d'histoires custom
 // ============================================================
 // 1 plume = 1 histoire personnalisee (fonctionnalite de generation a venir).
@@ -1085,6 +1205,8 @@ function purchasePlumes(packId) {
 
 // Boutique de plumes : overlay leger injecte dynamiquement.
 function showPlumesShop() {
+  // Édition école : pas d'achat. Les plumes sont un quota géré par l'enseignant.
+  if (isSchoolEdition()) { showSchoolPlumesInfo(); return; }
   document.getElementById('plumes-shop')?.remove();
   const solde = getPlumes();
   const cards = PLUMES_PACKS.map(p =>
@@ -1155,12 +1277,42 @@ function showPlumesSuccess(n) {
   document.getElementById('plumes-success-close')?.addEventListener('click', () => ov.remove());
 }
 
+// Édition école : info quota (pas d'achat) au lieu de la boutique.
+function showSchoolPlumesInfo() {
+  document.getElementById('plumes-shop')?.remove();
+  const solde = getPlumes();
+  const ov = document.createElement('div');
+  ov.id = 'plumes-shop';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.82);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:420px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:26px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:44px;line-height:1;margin-bottom:6px;">🪶🏫</div>' +
+      '<h2 style="margin:0 0 6px;font-size:1.25rem;color:#7a4a10;">Tes plumes de classe</h2>' +
+      '<p style="margin:0 0 8px;font-weight:700;">Il te reste <span data-plumes-balance>' + solde + '</span> 🪶</p>' +
+      '<p style="margin:0 0 18px;font-size:.92rem;line-height:1.4;opacity:.85;">' +
+        'Dans l\'édition école, les plumes sont fournies par ton enseignant. ' +
+        'Chaque plume permet de créer une histoire personnalisée.</p>' +
+      '<button id="plumes-shop-close" style="cursor:pointer;border:none;' +
+      'background:linear-gradient(160deg,#ffb74d,#f57c00);color:#fff;font-weight:800;' +
+      'font-size:1rem;padding:11px 26px;border-radius:14px;">D\'accord</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  document.getElementById('plumes-shop-close')?.addEventListener('click', () => ov.remove());
+}
+
 // Expose pour la console / le HTML
 window.getPlumes = getPlumes;
 window.addPlumes = addPlumes;
 window.setPlumes = setPlumes;
 window.spendPlumes = spendPlumes;
 window.openPlumesShop = showPlumesShop;
+window.showSchoolPlumesInfo = showSchoolPlumesInfo;
 
 // ============================================================
 // CRÉE TON HÉROS — builder visuel guidé (front)
@@ -1445,13 +1597,17 @@ function showPremiumPaywall(feature) {
       'font-size:1.05rem;padding:13px 28px;border-radius:14px;box-shadow:0 4px 14px rgba(245,124,0,.5);">' +
       'Débloquer tout — ' + PREMIUM_PRICE + '</button>' +
       '<div style="margin-top:12px;font-size:.82rem;opacity:.75;">Paiement unique · accès à vie · sans abonnement</div>' +
-      '<button id="premium-paywall-close" style="margin-top:14px;cursor:pointer;border:none;' +
-      'background:none;color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.7;">' +
+      '<button id="premium-paywall-school" style="margin-top:14px;cursor:pointer;border:none;' +
+      'background:none;color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.85;">' +
+      '🏫 J\'ai un code école</button><br>' +
+      '<button id="premium-paywall-close" style="margin-top:8px;cursor:pointer;border:none;' +
+      'background:none;color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.6;">' +
       'Plus tard</button>' +
     '</div>';
   ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
   document.body.appendChild(ov);
   document.getElementById('premium-paywall-buy')?.addEventListener('click', purchasePremium);
+  document.getElementById('premium-paywall-school')?.addEventListener('click', showSchoolCodePrompt);
   document.getElementById('premium-paywall-close')?.addEventListener('click', () => ov.remove());
 }
 window.showPremiumPaywall = showPremiumPaywall;
