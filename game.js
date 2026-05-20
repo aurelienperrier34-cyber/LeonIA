@@ -933,6 +933,9 @@ function updateName() {
 //   - ouvre l'app avec  ?premium=1  dans l'URL
 //   - tape  lockPremium()  pour re-verrouiller et revoir les cadenas.
 // ============================================================
+// Prix de l'achat unique (debloque tout le contenu Premium, a vie).
+const PREMIUM_PRICE = '4,99 €';
+
 function isPremium() {
   try {
     if (new URLSearchParams(location.search).get('premium') === '1') return true;
@@ -940,23 +943,75 @@ function isPremium() {
   } catch (e) { return false; }
 }
 
-function unlockPremium() {
-  try { localStorage.setItem('ia_premium', '1'); } catch (e) {}
-  state.isPremium = true;
+// Applique (ou retire) le statut Premium : persistance + state + rafraichit l'UI.
+function _setPremiumFlag(on) {
+  try {
+    if (on) localStorage.setItem('ia_premium', '1');
+    else    localStorage.removeItem('ia_premium');
+  } catch (e) {}
+  state.isPremium = !!on;
   try { if (typeof updateMapState === 'function') updateMapState(); } catch (e) {}
+}
+
+function unlockPremium() {
+  _setPremiumFlag(true);
   console.log('%c[premium] DÉBLOQUÉ — chapitres 2-5 + Livre magique accessibles.', 'color:#2e8b57;font-weight:bold');
 }
 
 function lockPremium() {
-  try { localStorage.removeItem('ia_premium'); } catch (e) {}
-  state.isPremium = false;
-  try { if (typeof updateMapState === 'function') updateMapState(); } catch (e) {}
+  _setPremiumFlag(false);
   console.log('%c[premium] VERROUILLÉ — contenu payant re-bloqué.', 'color:#b22222;font-weight:bold');
 }
 
-// Expose pour la console
+// Achat unique du Premium (user-facing, depuis le paywall).
+// ============================================================
+// ⚠️ MVP : PAIEMENT SIMULÉ — il n'y a PAS encore de backend de paiement.
+// Cliquer "Débloquer" debloque immediatement, SANS encaisser.
+// >>> TODO PAIEMENT : remplacer le corps par un Stripe Checkout :
+//     - rediriger vers la session Checkout / ouvrir le widget,
+//     - n'appeler _setPremiumFlag(true) + showPremiumSuccess() qu'au retour
+//       "payment succeeded" (webhook ou redirect success_url).
+//   NE PAS publier l'app au grand public tant que ce TODO n'est pas fait,
+//   sinon le contenu payant est donne gratuitement.
+// ============================================================
+function purchasePremium() {
+  _setPremiumFlag(true);
+  document.getElementById('premium-paywall')?.remove();
+  showPremiumSuccess();
+}
+
+// Petit ecran de confirmation apres achat.
+function showPremiumSuccess() {
+  document.getElementById('premium-success')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'premium-success';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.82);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:420px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:28px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:50px;line-height:1;margin-bottom:8px;">🎉</div>' +
+      '<h2 style="margin:0 0 8px;font-size:1.3rem;color:#7a4a10;">C\'est débloqué !</h2>' +
+      '<p style="margin:0 0 20px;font-size:.97rem;line-height:1.45;opacity:.9;">' +
+        'Toute l\'aventure de Léon est à toi : les <b>chapitres 2 à 5</b> et le ' +
+        '<b>Livre magique</b>. Bon voyage&nbsp;! ✨</p>' +
+      '<button id="premium-success-close" style="cursor:pointer;border:none;' +
+      'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
+      'font-size:1rem;padding:12px 30px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.5);">' +
+      'C\'est parti ! 🚀</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  document.getElementById('premium-success-close')?.addEventListener('click', () => ov.remove());
+}
+
+// Expose pour la console / le HTML
 window.unlockPremium = unlockPremium;
 window.lockPremium = lockPremium;
+window.purchasePremium = purchasePremium;
 
 // Paywall : overlay leger injecte dynamiquement (aucun HTML a modifier).
 // feature = numero de chapitre (2..5) ou 'book' pour le Livre magique.
@@ -980,14 +1035,18 @@ function showPremiumPaywall(feature) {
       '<p style="margin:0 0 18px;font-size:.95rem;line-height:1.4;opacity:.9;">' +
         'Débloque <b>toute l\'aventure de Léon</b> : les chapitres 2 à 5 et le ' +
         'Livre magique avec ses histoires illustrées et racontées.</p>' +
-      '<button id="premium-paywall-close" style="cursor:pointer;border:none;' +
+      '<button id="premium-paywall-buy" style="cursor:pointer;border:none;' +
       'background:linear-gradient(160deg,#ffb74d,#f57c00);color:#fff;font-weight:800;' +
-      'font-size:1rem;padding:12px 26px;border-radius:14px;box-shadow:0 4px 14px rgba(245,124,0,.5);">' +
-      'Bientôt disponible ✨</button>' +
-      '<div style="margin-top:14px;font-size:.78rem;opacity:.6;">Pour les parents — abonnement à venir</div>' +
+      'font-size:1.05rem;padding:13px 28px;border-radius:14px;box-shadow:0 4px 14px rgba(245,124,0,.5);">' +
+      'Débloquer tout — ' + PREMIUM_PRICE + '</button>' +
+      '<div style="margin-top:12px;font-size:.82rem;opacity:.75;">Paiement unique · accès à vie · sans abonnement</div>' +
+      '<button id="premium-paywall-close" style="margin-top:14px;cursor:pointer;border:none;' +
+      'background:none;color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.7;">' +
+      'Plus tard</button>' +
     '</div>';
   ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
   document.body.appendChild(ov);
+  document.getElementById('premium-paywall-buy')?.addEventListener('click', purchasePremium);
   document.getElementById('premium-paywall-close')?.addEventListener('click', () => ov.remove());
 }
 window.showPremiumPaywall = showPremiumPaywall;
