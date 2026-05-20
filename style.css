@@ -8915,11 +8915,11 @@ body:has(#screen-creator.active) #global-star-corner {
   .pick-book {
     left: 58%;
     right: auto;
-    top: 53%;                 /* v605 : remonte (boutons touchaient le bas) */
+    top: 53%;
     transform: translate(-50%, -50%);
     width: min(64vw, 470px);
     height: auto;
-    max-height: 58vh;         /* v605 : plus court -> marge sous la nav */
+    max-height: 61vh;         /* v606 : livre agrandi vers le bas (marge nav conservee) */
   }
   /* v605 : boutons prec/suiv + "x/5" remontes, marge confortable en bas */
   .pick-book-nav {
