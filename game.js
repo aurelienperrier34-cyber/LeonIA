@@ -9608,9 +9608,6 @@ function initCreatorPick() {
   document.getElementById('creator-pick').hidden = false;
   document.getElementById('creator-loading').hidden = true;
   document.getElementById('creator-book').hidden = true;
-  // Star count
-  const sc = document.getElementById('creator-star-count');
-  if (sc) sc.textContent = state.totalStars || 0;
   // Build livre
   renderPickBook();
   attachPickSwipe();
