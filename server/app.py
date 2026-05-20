@@ -55,6 +55,15 @@ QUOTA_FILE = Path(__file__).resolve().parent / "quota.json"
 HEROES_MAX = 6
 PORT = 8787
 
+# Projet PRINCIPAL (le worktree est sous <main>/.claude/worktrees/<id>).
+# Sert de REPLI pour les assets presents seulement cote main (ex: catalogue
+# des 243 histoires) -> evite de dupliquer 765 Mo dans le worktree.
+try:
+    _maybe_main = ROOT.parents[2]
+    MAIN_DIR = _maybe_main if (_maybe_main / "assets" / "stories").exists() else None
+except Exception:
+    MAIN_DIR = None
+
 app = Flask(__name__)
 CORS(app)   # autorise le front (autre origine/port) a appeler l'API
 
@@ -366,6 +375,11 @@ def _static_app(p):
     full = (ROOT / p).resolve()
     if str(full).startswith(str(ROOT.resolve())) and full.is_file():
         return send_from_directory(ROOT, p)
+    # Repli sur le projet principal (catalogue des 243 histoires, etc.)
+    if MAIN_DIR is not None:
+        mfull = (MAIN_DIR / p).resolve()
+        if str(mfull).startswith(str(MAIN_DIR.resolve())) and mfull.is_file():
+            return send_from_directory(MAIN_DIR, p)
     abort(404)
 
 
