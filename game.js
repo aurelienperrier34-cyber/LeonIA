@@ -10226,8 +10226,15 @@ function renderPickBook() {
           b.dataset.cat = 'hero';
           b.dataset.value = 'custom:' + h.hero_id;
           b.type = 'button';
-          b.innerHTML = '<img class="pick-item-img" src="' + getBackendUrl() + h.portrait_url +
+          b.style.position = 'relative';
+          b.innerHTML = '<span class="pick-hero-del" title="Supprimer" style="position:absolute;' +
+            'top:1px;right:3px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.5);' +
+            'color:#fff;font-size:12px;line-height:20px;text-align:center;z-index:3;">✕</span>' +
+            '<img class="pick-item-img" src="' + getBackendUrl() + h.portrait_url +
             '" alt="" loading="lazy"><span class="pick-item-label">' + h.name + '</span>';
+          b.querySelector('.pick-hero-del').addEventListener('click', (e) => {
+            e.stopPropagation(); deleteCustomHero(h.hero_id, h.name);
+          });
           itemsBox.appendChild(b);
         });
         const c = document.createElement('button');
@@ -10529,6 +10536,82 @@ async function generateCustomStoryViaBackend(heroId) {
     showPickError('Le serveur de Léon est injoignable. Vérifie qu\'il est lancé.');
   }
 }
+
+// ============================================================
+// MES HISTOIRES : relecture GRATUITE des histoires deja generees
+// ============================================================
+async function showMyStories() {
+  let stories = [];
+  try {
+    const r = await fetch(getBackendUrl() + '/api/stories?license=' + encodeURIComponent(getLicenseCode()));
+    if (r.ok) stories = (await r.json()).stories || [];
+  } catch (e) {}
+  document.getElementById('my-stories')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'my-stories';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.85);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  const cards = stories.length ? stories.map(s =>
+    '<button data-story-dir="' + s.story_dir + '" style="cursor:pointer;border:2px solid #e0a23a;' +
+    'border-radius:14px;background:#fffaf0;padding:8px;text-align:center;font-family:inherit;' +
+    'color:#4a2f12;width:130px;">' +
+      '<img src="' + getBackendUrl() + s.cover_url + '" style="width:100%;height:88px;object-fit:cover;' +
+      'border-radius:8px;margin-bottom:6px;" onerror="this.style.display=\'none\'">' +
+      '<div style="font-size:.8rem;font-weight:800;line-height:1.2;">' + s.title + '</div>' +
+      '<div style="font-size:.7rem;opacity:.7;">' + (s.hero_name || '') + '</div>' +
+    '</button>'
+  ).join('') : '<p style="opacity:.7;margin:10px 0;">Aucune histoire pour l\'instant. Crée-en une !</p>';
+  ov.innerHTML =
+    '<div style="max-width:480px;width:100%;max-height:85vh;overflow-y:auto;' +
+    'background:linear-gradient(160deg,#fff8ee,#ffe9c7);border:3px solid #e0a23a;border-radius:22px;' +
+    'padding:22px;text-align:center;font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:40px;line-height:1;">📚</div>' +
+      '<h2 style="margin:4px 0 2px;color:#7a4a10;">Mes histoires</h2>' +
+      '<p style="margin:0 0 14px;font-size:.85rem;opacity:.8;">Relis tes histoires (gratuit 🆓)</p>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">' + cards + '</div>' +
+      '<button id="my-stories-close" style="margin-top:16px;cursor:pointer;border:none;' +
+      'background:none;color:#7a4a10;text-decoration:underline;opacity:.7;">Fermer</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  ov.querySelectorAll('[data-story-dir]').forEach(b =>
+    b.addEventListener('click', () => openSavedStory(b.dataset.storyDir)));
+  document.getElementById('my-stories-close').addEventListener('click', () => ov.remove());
+}
+
+async function openSavedStory(storyDir) {
+  document.getElementById('my-stories')?.remove();
+  const base = getBackendUrl() + '/custom/' + storyDir + '/';
+  try {
+    const data = await (await fetch(base + 'story.json')).json();
+    creatorState.story = {
+      title: data.title || 'Mon histoire',
+      pages: (data.pages || []).map((pg, i) => ({ text: pg.text || '', image: base + 'page' + (i + 1) + '.jpg' })),
+    };
+    creatorState.assetsFolder = null;
+    creatorState.currentPage = 0;
+    document.getElementById('creator-pick').hidden = true;
+    document.getElementById('creator-loading').hidden = true;
+    showCreatorBook();
+  } catch (e) {}
+}
+window.showMyStories = showMyStories;
+window.openSavedStory = openSavedStory;
+
+// Suppression d'un heros custom (libere un slot ; supprime aussi ses histoires)
+async function deleteCustomHero(heroId, name) {
+  if (!confirm('Supprimer ' + (name || 'ce héros') + ' ? Ses histoires seront aussi effacées.')) return;
+  try {
+    await fetch(getBackendUrl() + '/api/hero/' + encodeURIComponent(heroId) +
+                '?license=' + encodeURIComponent(getLicenseCode()), { method: 'DELETE' });
+  } catch (e) {}
+  await fetchCustomHeroes();
+  if (creatorState.hero === 'custom:' + heroId) creatorState.hero = null;
+  renderPickBook();
+}
+window.deleteCustomHero = deleteCustomHero;
 
 function _buildNotYetGeneratedStory() {
   const h = creatorState.hero, p = creatorState.place;

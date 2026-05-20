@@ -262,6 +262,61 @@ def create_story():
     })
 
 
+@app.get("/api/stories")
+def list_stories():
+    """Liste les histoires deja generees pour cette licence (relecture gratuite)."""
+    code = request.args.get("license", "")
+    if not _valid_license(code):
+        return jsonify({"error": "licence invalide"}), 403
+    _license_record(code)
+    hero_ids = {h["hero_id"] for h in _list_heroes(code)}
+    out = []
+    for hid in hero_ids:
+        sdir = CUSTOM_DIR / hid / "stories"
+        if not sdir.exists():
+            continue
+        for d in sorted(sdir.iterdir()):
+            sj = d / "story.json"
+            if not sj.exists():
+                continue
+            try:
+                s = json.loads(sj.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            rel = str(d.relative_to(CUSTOM_DIR)).replace("\\", "/")
+            out.append({
+                "story_dir": rel,
+                "title": s.get("title", "Mon histoire"),
+                "hero_name": s.get("hero_name", ""),
+                "level": s.get("level", ""),
+                "story_url": f"/custom/{rel}/story.json",
+                "cover_url": f"/custom/{rel}/page1.jpg",
+            })
+    out.sort(key=lambda x: x["story_dir"], reverse=True)   # plus recentes d'abord
+    return jsonify({"stories": out})
+
+
+@app.delete("/api/hero/<hero_id>")
+def delete_hero(hero_id):
+    """Supprime un heros (et ses histoires) pour liberer un slot."""
+    code = request.args.get("license", "")
+    if not _valid_license(code):
+        return jsonify({"error": "licence invalide"}), 403
+    d = CUSTOM_DIR / hero_id
+    hj = d / "hero.json"
+    if not hj.exists():
+        return jsonify({"error": "hero introuvable"}), 404
+    try:
+        h = json.loads(hj.read_text(encoding="utf-8"))
+    except Exception:
+        h = {}
+    if h.get("license") != code:
+        return jsonify({"error": "hero non autorise"}), 403
+    import shutil
+    shutil.rmtree(d, ignore_errors=True)
+    return jsonify({"ok": True, "deleted": hero_id})
+
+
 @app.get("/custom/<path:subpath>")
 def serve_custom(subpath):
     """Sert les fichiers generes (portraits, images, story.json)."""
