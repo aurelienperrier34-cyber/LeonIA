@@ -8121,6 +8121,20 @@ body:has(#screen-creator.active) #global-star-corner {
 .creator-plumes-pill:hover  { background: rgba(245,124,0,0.34); }
 .creator-plumes-pill:active { transform: scale(0.94); }
 
+/* Bouton "Mes histoires" : icone image (pile de livres) au lieu de l'emoji */
+.creator-stories-pill {
+  padding: clamp(3px, 0.6vw, 5px);
+  display: inline-flex;
+  align-items: center;
+}
+.creator-stories-icon {
+  display: block;
+  width: clamp(24px, 3.4vw, 32px);
+  height: clamp(24px, 3.4vw, 32px);
+  object-fit: cover;
+  border-radius: 8px;
+}
+
 /* ============================================================
    PHASE PICK v499 : Léon background + livre interactif 5 pages
    ============================================================ */
@@ -8249,7 +8263,7 @@ body:has(#screen-creator.active) #global-star-corner {
 .pick-book {
   position: absolute;
   left: 58%;
-  top: 54%;
+  top: 57%;                /* v608 : descendu pour rejoindre les doigts de Leon (PC) */
   transform: translate(-50%, -50%);
   width: clamp(360px, 46vw, 660px);
   /* Fallback height explicite si aspect-ratio non supporte (older Safari) */
