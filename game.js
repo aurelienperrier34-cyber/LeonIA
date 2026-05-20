@@ -10228,7 +10228,7 @@ function renderPickBook() {
           b.type = 'button';
           b.style.position = 'relative';
           b.innerHTML = '<span class="pick-hero-del" title="Supprimer" style="position:absolute;' +
-            'top:1px;right:3px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.5);' +
+            'top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.5);' +
             'color:#fff;font-size:12px;line-height:20px;text-align:center;z-index:3;">✕</span>' +
             '<img class="pick-item-img" src="' + getBackendUrl() + h.portrait_url +
             '" alt="" loading="lazy"><span class="pick-item-label">' + h.name + '</span>';

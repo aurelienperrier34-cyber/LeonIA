@@ -8551,6 +8551,43 @@ body:has(#screen-creator.active) #global-star-corner {
   text-align: left;
   line-height: 1.2;
 }
+
+/* ============================================================
+   Page HEROS : GRILLE d'icones (portrait seul, sans nom) -> tout tient
+   sans scroller, meme avec les heros custom. Le nom reste en infobulle.
+   ============================================================ */
+.pick-spread[data-step="hero"] .pick-items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(8px, 1.5vw, 14px);
+  align-content: start;
+  padding: clamp(6px, 1.2vw, 12px) 4px;
+}
+.pick-spread[data-step="hero"] .pick-item {
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+  padding: clamp(5px, 0.8vw, 8px);
+  gap: 4px;
+  min-height: 0;
+  aspect-ratio: 1 / 1;
+  justify-content: center;
+}
+/* Portrait = toute la carte ; pas de label (sauf carte "Creer") */
+.pick-spread[data-step="hero"] .pick-item:not(.pick-item-create) .pick-item-label {
+  display: none;
+}
+.pick-spread[data-step="hero"] .pick-item-img {
+  width: 100%;
+  height: 100%;
+}
+.pick-spread[data-step="hero"] .pick-item-emoji {
+  font-size: clamp(1.9rem, 6vw, 2.8rem);
+}
+.pick-spread[data-step="hero"] .pick-item-create .pick-item-label {
+  font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+  text-align: center;
+}
 .pick-level-time {
   font-size: clamp(0.72rem, 1vw, 0.85rem);
   color: #7a5520;
