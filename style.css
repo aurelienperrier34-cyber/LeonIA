@@ -8556,19 +8556,25 @@ body:has(#screen-creator.active) #global-star-corner {
    Page HEROS : GRILLE d'icones (portrait seul, sans nom) -> tout tient
    sans scroller, meme avec les heros custom. Le nom reste en infobulle.
    ============================================================ */
+/* Sur la page heros, la grille recupere de la largeur (moins de marge cote
+   pliure) pour des icones plus grandes. */
+.pick-spread[data-step="hero"] .pick-page-right {
+  padding-left: clamp(8px, 1.4vw, 16px);
+  padding-right: clamp(6px, 1vw, 12px);
+}
 .pick-spread[data-step="hero"] .pick-items {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(8px, 1.5vw, 14px);
-  align-content: start;
-  padding: clamp(6px, 1.2vw, 12px) 4px;
+  gap: clamp(6px, 1vw, 10px);
+  align-content: safe center;   /* centre si ca tient, defilable si ca deborde */
+  padding: clamp(4px, 0.8vw, 8px) 2px;
 }
 .pick-spread[data-step="hero"] .pick-item {
   flex-direction: column;
   width: 100%;
   margin: 0;
-  padding: clamp(5px, 0.8vw, 8px);
-  gap: 4px;
+  padding: clamp(3px, 0.6vw, 6px);
+  gap: 3px;
   min-height: 0;
   aspect-ratio: 1 / 1;
   justify-content: center;
