@@ -276,6 +276,9 @@ let state = {
   // PREMIUM : acces au contenu payant (chapitres 2-5 + Livre magique).
   // Source de verite = localStorage 'ia_premium' (voir isPremium()).
   isPremium: false,
+  // PLUMES : monnaie consommable pour creer des histoires custom (a venir).
+  // Source de verite = localStorage 'ia_plumes' (voir getPlumes()).
+  plumes: 0,
   c2WordsSelected: [],
   vfScoreC2: 0,
   vfDoneC2: 0,
@@ -534,6 +537,9 @@ function restoreState() {
 document.addEventListener("DOMContentLoaded", () => {
   restoreState();
   state.isPremium = isPremium();   // source de verite = localStorage / ?premium=1
+  grantInitialPlumes();            // offre PLUMES_FREE_GIFT a la 1re ouverture
+  state.plumes = getPlumes();      // source de verite = localStorage 'ia_plumes'
+  updatePlumesUI();
   if (!subtitlesEnabled()) document.body.classList.add('cc-off');
   if (state.characterType) document.body.classList.add('has-character');
   updateAVToggles();
@@ -1012,6 +1018,149 @@ function showPremiumSuccess() {
 window.unlockPremium = unlockPremium;
 window.lockPremium = lockPremium;
 window.purchasePremium = purchasePremium;
+
+// ============================================================
+// PLUMES 🪶 — monnaie consommable pour la creation d'histoires custom
+// ============================================================
+// 1 plume = 1 histoire personnalisee (fonctionnalite de generation a venir).
+// Source de verite : localStorage 'ia_plumes' (solde persiste, comme un achat).
+// Packs vendus a l'unite (pas d'abonnement). Paiement SIMULE pour l'instant.
+//
+// >>> DEV / TEST : addPlumes(10), setPlumes(0), openPlumesShop() en console.
+// ============================================================
+const PLUMES_PACKS = [
+  { id: 'decouverte', plumes: 5,  price: '2,99 €',  label: 'Découverte' },
+  { id: 'famille',    plumes: 25, price: '9,99 €',  label: 'Famille', best: true },
+  { id: 'conteur',    plumes: 60, price: '19,99 €', label: 'Conteur' },
+];
+const PLUMES_FREE_GIFT = 3;   // plumes offertes a la toute premiere ouverture
+
+function getPlumes() {
+  try { return parseInt(localStorage.getItem('ia_plumes') || '0', 10) || 0; }
+  catch (e) { return 0; }
+}
+
+function setPlumes(n) {
+  n = Math.max(0, n | 0);
+  try { localStorage.setItem('ia_plumes', String(n)); } catch (e) {}
+  state.plumes = n;
+  try { updatePlumesUI(); } catch (e) {}
+  return n;
+}
+
+function addPlumes(n)   { return setPlumes(getPlumes() + (n | 0)); }
+function spendPlumes(n) {                       // renvoie true si solde suffisant
+  n = n | 0;
+  if (getPlumes() < n) return false;
+  setPlumes(getPlumes() - n);
+  return true;
+}
+
+// Cadeau de bienvenue : quelques plumes offertes une seule fois.
+function grantInitialPlumes() {
+  try {
+    if (localStorage.getItem('ia_plumes_init') !== '1') {
+      localStorage.setItem('ia_plumes_init', '1');
+      addPlumes(PLUMES_FREE_GIFT);
+    }
+  } catch (e) {}
+}
+
+// Met a jour tout afficheur de solde present dans le DOM (id ou classe).
+function updatePlumesUI() {
+  const n = getPlumes();
+  document.querySelectorAll('[data-plumes-balance]').forEach(el => { el.textContent = n; });
+}
+
+// Achat d'un pack de plumes (depuis la boutique).
+// ⚠️ MVP : PAIEMENT SIMULÉ — voir le meme TODO Stripe que purchasePremium().
+function purchasePlumes(packId) {
+  const pack = PLUMES_PACKS.find(p => p.id === packId);
+  if (!pack) return;
+  // TODO PAIEMENT : Stripe Checkout, puis addPlumes au retour "paid" seulement.
+  addPlumes(pack.plumes);
+  document.getElementById('plumes-shop')?.remove();
+  showPlumesSuccess(pack.plumes);
+}
+
+// Boutique de plumes : overlay leger injecte dynamiquement.
+function showPlumesShop() {
+  document.getElementById('plumes-shop')?.remove();
+  const solde = getPlumes();
+  const cards = PLUMES_PACKS.map(p =>
+    '<button data-plumes-pack="' + p.id + '" style="position:relative;cursor:pointer;' +
+    'border:2px solid ' + (p.best ? '#f57c00' : '#e0a23a') + ';border-radius:16px;' +
+    'background:' + (p.best ? 'linear-gradient(160deg,#fff3df,#ffe2b3)' : '#fffaf0') + ';' +
+    'padding:14px 10px;text-align:center;font-family:inherit;color:#4a2f12;flex:1;min-width:96px;">' +
+      (p.best ? '<div style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);' +
+        'background:#f57c00;color:#fff;font-size:.62rem;font-weight:800;padding:2px 8px;' +
+        'border-radius:8px;white-space:nowrap;">LE + POPULAIRE</div>' : '') +
+      '<div style="font-size:1.5rem;font-weight:800;">' + p.plumes + ' 🪶</div>' +
+      '<div style="font-size:.8rem;opacity:.7;margin:2px 0 8px;">' + p.label + '</div>' +
+      '<div style="background:#f57c00;color:#fff;font-weight:800;font-size:.9rem;' +
+      'padding:7px 4px;border-radius:10px;">' + p.price + '</div>' +
+    '</button>'
+  ).join('');
+  const ov = document.createElement('div');
+  ov.id = 'plumes-shop';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.82);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:460px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:24px 22px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:44px;line-height:1;margin-bottom:4px;">🪶</div>' +
+      '<h2 style="margin:0 0 4px;font-size:1.3rem;color:#7a4a10;">Les plumes de Léon</h2>' +
+      '<p style="margin:0 0 4px;font-size:.92rem;line-height:1.4;opacity:.9;">' +
+        'Chaque plume permet de créer <b>une histoire personnalisée</b>.</p>' +
+      '<p style="margin:0 0 16px;font-weight:700;font-size:.95rem;">' +
+        'Tu as <span data-plumes-balance>' + solde + '</span> 🪶</p>' +
+      '<div style="display:flex;gap:10px;justify-content:center;margin-bottom:16px;">' + cards + '</div>' +
+      '<button id="plumes-shop-close" style="cursor:pointer;border:none;background:none;' +
+      'color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.7;">Fermer</button>' +
+      '<div style="margin-top:10px;font-size:.74rem;opacity:.55;">Paiement à l\'unité · sans abonnement</div>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  ov.querySelectorAll('[data-plumes-pack]').forEach(btn =>
+    btn.addEventListener('click', () => purchasePlumes(btn.getAttribute('data-plumes-pack'))));
+  document.getElementById('plumes-shop-close')?.addEventListener('click', () => ov.remove());
+}
+
+function showPlumesSuccess(n) {
+  document.getElementById('plumes-success')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'plumes-success';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.82);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:400px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:26px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:48px;line-height:1;margin-bottom:6px;">🪶✨</div>' +
+      '<h2 style="margin:0 0 8px;font-size:1.25rem;color:#7a4a10;">+' + n + ' plumes !</h2>' +
+      '<p style="margin:0 0 18px;font-size:.95rem;opacity:.9;">Tu as maintenant ' +
+        '<b><span data-plumes-balance>' + getPlumes() + '</span> 🪶</b> pour créer tes histoires.</p>' +
+      '<button id="plumes-success-close" style="cursor:pointer;border:none;' +
+      'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
+      'font-size:1rem;padding:12px 30px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.5);">' +
+      'Super ! 🎉</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  document.getElementById('plumes-success-close')?.addEventListener('click', () => ov.remove());
+}
+
+// Expose pour la console / le HTML
+window.getPlumes = getPlumes;
+window.addPlumes = addPlumes;
+window.setPlumes = setPlumes;
+window.spendPlumes = spendPlumes;
+window.openPlumesShop = showPlumesShop;
 
 // Paywall : overlay leger injecte dynamiquement (aucun HTML a modifier).
 // feature = numero de chapitre (2..5) ou 'book' pour le Livre magique.
