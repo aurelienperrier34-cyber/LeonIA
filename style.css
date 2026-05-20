@@ -8915,15 +8915,17 @@ body:has(#screen-creator.active) #global-star-corner {
   .pick-book {
     left: 58%;
     right: auto;
-    top: 53%;
+    top: 56%;                 /* v607 : descend le centre -> bas du livre plus bas */
     transform: translate(-50%, -50%);
     width: min(64vw, 470px);
     height: auto;
-    max-height: 61vh;         /* v606 : livre agrandi vers le bas (marge nav conservee) */
+    max-height: 67vh;         /* v607 : livre agrandi vers le bas (doigts de Leon) */
   }
-  /* v605 : boutons prec/suiv + "x/5" remontes, marge confortable en bas */
+  /* v607 : la nav se pose A L'INTERIEUR du bas du livre (sous la grille) ->
+     le livre peut descendre jusqu'aux doigts de Leon sans pousser la nav
+     hors ecran. */
   .pick-book-nav {
-    bottom: clamp(-36px, -6vh, -24px);
+    bottom: clamp(2px, 1.5vh, 12px);
   }
   .pick-surprise {
     /* v585 : passe SOUS la rangee de pastilles (etoiles + plumes) */
