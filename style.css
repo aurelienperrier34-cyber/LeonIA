@@ -9259,6 +9259,215 @@ body:has(#screen-creator.active) #global-star-corner {
   .creator-restart-text { display: none; }
 }
 
+/* ============================================================ */
+/* CRÉE TON HÉROS — builder visuel guidé                         */
+/* ============================================================ */
+/* Plein ecran fixe au-dessus de #app (meme pattern que #screen-creator) */
+#screen-hero-builder.active {
+  display: flex !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0;
+  background: linear-gradient(135deg, #1a0d2e 0%, #2b1854 45%, #4a2a8a 100%);
+}
+/* Masque les UI flottantes globales pendant le builder */
+body:has(#screen-hero-builder.active) #btn-back-map-global,
+body:has(#screen-hero-builder.active) .av-toggles,
+body:has(#screen-hero-builder.active) #global-star-corner {
+  display: none !important;
+}
+.hb-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(10px, 2vw, 22px);
+  padding-top: max(clamp(10px, 2vw, 22px), env(safe-area-inset-top));
+  box-sizing: border-box;
+}
+.hb-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(8px, 1.5vw, 16px);
+  flex: 0 0 auto;
+}
+.hb-title {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  color: #FFE166;
+  font-size: clamp(1.1rem, 3.2vw, 1.8rem);
+  text-align: center;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+/* Barre de progression (pastilles d'etapes) */
+.hb-progress {
+  display: flex;
+  justify-content: center;
+  gap: clamp(6px, 1.2vw, 10px);
+  margin: clamp(8px, 1.6vw, 16px) 0;
+  flex: 0 0 auto;
+}
+.hb-dot {
+  width: clamp(8px, 1.4vw, 12px);
+  height: clamp(8px, 1.4vw, 12px);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.22);
+  transition: background .25s ease, transform .25s ease;
+}
+.hb-dot.done { background: rgba(255,225,102,0.55); }
+.hb-dot.current { background: #FFE166; transform: scale(1.35); }
+/* Zone centrale (etape courante) */
+.hb-stage {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2vw, 18px);
+  overflow-y: auto;
+  min-height: 0;
+}
+.hb-step-title {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  color: #fff;
+  font-size: clamp(1.2rem, 3.5vw, 2rem);
+  text-align: center;
+  margin: 0;
+}
+.hb-step-hint {
+  color: rgba(255,255,255,0.7);
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  text-align: center;
+  margin: -6px 0 4px;
+}
+/* Grille d'options (cartes tappables) */
+.hb-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(8px, 1.6vw, 14px);
+  max-width: 640px;
+  width: 100%;
+}
+.hb-opt {
+  cursor: pointer;
+  border: 2.5px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: clamp(10px, 1.8vw, 16px);
+  min-width: clamp(78px, 20vw, 120px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: clamp(0.78rem, 1.8vw, 0.98rem);
+  transition: transform .12s ease, border-color .18s ease, background .18s ease;
+}
+.hb-opt:hover { background: rgba(255,255,255,0.14); }
+.hb-opt:active { transform: scale(0.95); }
+.hb-opt-emoji { font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1; }
+.hb-opt.selected {
+  border-color: #FFE166;
+  background: rgba(255,225,102,0.2);
+  box-shadow: 0 0 0 3px rgba(255,225,102,0.25);
+}
+/* Pastille couleur */
+.hb-swatch {
+  width: clamp(34px, 8vw, 50px);
+  height: clamp(34px, 8vw, 50px);
+  min-width: 0;
+  border-radius: 999px;
+  padding: 0;
+  border: 3px solid rgba(255,255,255,0.25);
+}
+.hb-swatch.selected {
+  border-color: #fff;
+  box-shadow: 0 0 0 3px rgba(255,225,102,0.6);
+}
+/* Champ prenom + mot-cle */
+.hb-field {
+  width: min(92%, 420px);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+.hb-field label {
+  color: rgba(255,255,255,0.85);
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+}
+.hb-field input {
+  border: 2px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.95);
+  border-radius: 12px;
+  padding: clamp(8px, 1.6vw, 12px) clamp(12px, 2vw, 16px);
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(0.9rem, 2.2vw, 1.05rem);
+  color: #2a1d52;
+  outline: none;
+}
+.hb-field input:focus { border-color: #FFE166; }
+.hb-field-hint { color: rgba(255,255,255,0.55); font-size: 0.75rem; }
+/* Recap final */
+.hb-recap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-align: center;
+}
+.hb-recap-name {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  color: #FFE166;
+}
+.hb-recap-list { color: rgba(255,255,255,0.8); font-size: clamp(0.85rem, 2vw, 1rem); line-height: 1.6; }
+/* Navigation bas */
+.hb-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex: 0 0 auto;
+  padding-top: clamp(8px, 1.6vw, 14px);
+}
+.hb-btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 14px;
+  padding: clamp(10px, 1.8vw, 14px) clamp(18px, 3vw, 30px);
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+  transition: transform .12s ease, opacity .2s ease;
+}
+.hb-btn:active { transform: scale(0.95); }
+.hb-prev {
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.25);
+}
+.hb-next {
+  background: linear-gradient(160deg, #ffb74d, #f57c00);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(245,124,0,0.45);
+}
+.hb-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.hb-prev[hidden] { visibility: hidden; }
+
 
 
 

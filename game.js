@@ -1162,6 +1162,261 @@ window.setPlumes = setPlumes;
 window.spendPlumes = spendPlumes;
 window.openPlumesShop = showPlumesShop;
 
+// ============================================================
+// CRÉE TON HÉROS — builder visuel guidé (front)
+// ============================================================
+// Collecte les choix de l'enfant (memes cles que generate_custom_hero.py) :
+//   type / hair / hair_color / outfit / outfit_color / accessory / name / keyword
+// La generation reelle (portrait Gemini) se fera via la Cloud Function ;
+// pour l'instant le bouton final appelle un PLACEHOLDER.
+// ============================================================
+const HB_OPTS = {
+  type: [
+    { v: 'fille',  label: 'Fille',  emoji: '👧' },
+    { v: 'garcon', label: 'Garçon', emoji: '👦' },
+    { v: 'animal', label: 'Animal', emoji: '🦊' },
+    { v: 'robot',  label: 'Robot',  emoji: '🤖' },
+  ],
+  hair: [
+    { v: 'court',    label: 'Courts',   emoji: '💇' },
+    { v: 'long',     label: 'Longs',    emoji: '👩' },
+    { v: 'boucle',   label: 'Bouclés',  emoji: '🦱' },
+    { v: 'couettes', label: 'Couettes', emoji: '👧' },
+    { v: 'queue',    label: 'Queue',    emoji: '🎀' },
+    { v: 'tresse',   label: 'Tresse',   emoji: '🧒' },
+    { v: 'chauve',   label: 'Aucun',    emoji: '🥚' },
+  ],
+  outfit: [
+    { v: 'cape',        label: 'Cape',        emoji: '🦸' },
+    { v: 'robe',        label: 'Robe',        emoji: '👗' },
+    { v: 'salopette',   label: 'Salopette',   emoji: '👖' },
+    { v: 'pull',        label: 'Pull',        emoji: '🧶' },
+    { v: 'combinaison', label: 'Combinaison', emoji: '🧑‍🚀' },
+    { v: 'tshirt',      label: 'T-shirt',     emoji: '👕' },
+    { v: 'armure',      label: 'Armure',      emoji: '🛡️' },
+  ],
+  accessory: [
+    { v: 'chapeau',   label: 'Chapeau',  emoji: '🎩' },
+    { v: 'couronne',  label: 'Couronne', emoji: '👑' },
+    { v: 'lunettes',  label: 'Lunettes', emoji: '👓' },
+    { v: 'echarpe',   label: 'Écharpe',  emoji: '🧣' },
+    { v: 'sac',       label: 'Sac à dos',emoji: '🎒' },
+    { v: 'casquette', label: 'Casquette',emoji: '🧢' },
+    { v: 'noeud',     label: 'Nœud',     emoji: '🎀' },
+    { v: 'aucun',     label: 'Aucun',    emoji: '🚫' },
+  ],
+  colors: [
+    { v: 'brun', hex: '#6b4423' },   { v: 'blond', hex: '#e6c34a' },
+    { v: 'roux', hex: '#c1440e' },   { v: 'noir', hex: '#2b2b2b' },
+    { v: 'rose', hex: '#ff5fa2' },   { v: 'bleu', hex: '#3aa0ff' },
+    { v: 'violet', hex: '#9b5de5' }, { v: 'vert', hex: '#3fbf6f' },
+    { v: 'blanc', hex: '#f4f4f4' },  { v: 'orange', hex: '#ff8c33' },
+    { v: 'turquoise', hex: '#2ec4b6' },
+    { v: 'arc-en-ciel', hex: 'linear-gradient(90deg,#ff5f5f,#ffd23f,#3fbf6f,#3aa0ff,#9b5de5)' },
+  ],
+};
+
+let hbState = {
+  step: 0, type: 'fille', hair: 'court', hair_color: 'brun',
+  outfit: 'tshirt', outfit_color: 'bleu', accessory: 'aucun',
+  name: '', keyword: '',
+};
+
+// Liste des etapes selon le type (animal/robot sautent les cheveux)
+function hbSteps() {
+  const s = ['type'];
+  if (hbState.type === 'fille' || hbState.type === 'garcon') {
+    s.push('hair');
+    if (hbState.hair !== 'chauve') s.push('hair_color');
+  }
+  s.push('outfit', 'outfit_color', 'accessory', 'name', 'recap');
+  return s;
+}
+
+function openHeroBuilder() {
+  // Premium : la creation fait partie du contenu payant.
+  if (!isPremium()) { showPremiumPaywall('book'); goToScreen('map'); return; }
+  hbState.step = 0;
+  goToScreen('hero-builder');
+  updatePlumesUI();
+  hbRender();
+}
+window.openHeroBuilder = openHeroBuilder;
+
+function hbPick(field, value) {
+  hbState[field] = value;
+  hbRender();
+}
+window.hbPick = hbPick;
+
+function hbNext() {
+  const steps = hbSteps();
+  if (hbState.step < steps.length - 1) { hbState.step++; hbRender(); }
+}
+function hbPrev() {
+  if (hbState.step > 0) { hbState.step--; hbRender(); }
+}
+window.hbNext = hbNext;
+window.hbPrev = hbPrev;
+
+function _hbGrid(field) {
+  return '<div class="hb-grid">' + HB_OPTS[field].map(o =>
+    '<button type="button" class="hb-opt' + (hbState[field] === o.v ? ' selected' : '') +
+    '" onclick="hbPick(\'' + field + '\',\'' + o.v + '\')">' +
+    '<span class="hb-opt-emoji">' + o.emoji + '</span>' + o.label + '</button>'
+  ).join('') + '</div>';
+}
+
+function _hbColors(field) {
+  return '<div class="hb-grid">' + HB_OPTS.colors.map(c =>
+    '<button type="button" class="hb-opt hb-swatch' + (hbState[field] === c.v ? ' selected' : '') +
+    '" title="' + c.v + '" style="background:' + c.hex + '" ' +
+    'onclick="hbPick(\'' + field + '\',\'' + c.v + '\')"></button>'
+  ).join('') + '</div>';
+}
+
+function hbRender() {
+  const steps = hbSteps();
+  if (hbState.step >= steps.length) hbState.step = steps.length - 1;
+  const cur = steps[hbState.step];
+  const stage = document.getElementById('hb-stage');
+  const prog = document.getElementById('hb-progress');
+  const prevBtn = document.getElementById('hb-prev');
+  const nextBtn = document.getElementById('hb-next');
+  if (!stage) return;
+
+  // Barre de progression
+  prog.innerHTML = steps.map((_, i) =>
+    '<span class="hb-dot' + (i === hbState.step ? ' current' : (i < hbState.step ? ' done' : '')) + '"></span>'
+  ).join('');
+
+  let html = '';
+  switch (cur) {
+    case 'type':
+      html = '<h2 class="hb-step-title">Qui est ton héros ?</h2>' + _hbGrid('type');
+      break;
+    case 'hair':
+      html = '<h2 class="hb-step-title">Ses cheveux ?</h2>' + _hbGrid('hair');
+      break;
+    case 'hair_color':
+      html = '<h2 class="hb-step-title">Couleur des cheveux ?</h2>' + _hbColors('hair_color');
+      break;
+    case 'outfit':
+      html = '<h2 class="hb-step-title">Sa tenue ?</h2>' + _hbGrid('outfit');
+      break;
+    case 'outfit_color':
+      html = '<h2 class="hb-step-title">Couleur de la tenue ?</h2>' + _hbColors('outfit_color');
+      break;
+    case 'accessory':
+      html = '<h2 class="hb-step-title">Un accessoire ?</h2>' + _hbGrid('accessory');
+      break;
+    case 'name':
+      html = '<h2 class="hb-step-title">Son petit nom ?</h2>' +
+        '<div class="hb-field"><label>Prénom du héros</label>' +
+        '<input id="hb-name" type="text" maxlength="20" placeholder="ex : Zoé" ' +
+        'value="' + (hbState.name || '').replace(/"/g, '&quot;') + '" oninput="hbState.name=this.value; hbUpdateNav();"></div>' +
+        '<div class="hb-field"><label>Une idée en plus ? (facultatif)</label>' +
+        '<input id="hb-keyword" type="text" maxlength="40" placeholder="ex : pirate, fée, footballeur..." ' +
+        'value="' + (hbState.keyword || '').replace(/"/g, '&quot;') + '" oninput="hbState.keyword=this.value;">' +
+        '<span class="hb-field-hint">Un mot pour rendre ton héros unique</span></div>';
+      break;
+    case 'recap':
+      html = _hbRecapHtml();
+      break;
+  }
+  stage.innerHTML = html;
+
+  // Navigation
+  prevBtn.hidden = (hbState.step === 0);
+  if (cur === 'recap') {
+    nextBtn.style.display = 'none';
+  } else {
+    nextBtn.style.display = '';
+  }
+  hbUpdateNav();
+}
+
+// Active/desactive "Suivant" (ex: prenom obligatoire)
+function hbUpdateNav() {
+  const steps = hbSteps();
+  const cur = steps[hbState.step];
+  const nextBtn = document.getElementById('hb-next');
+  if (!nextBtn) return;
+  nextBtn.disabled = (cur === 'name' && !(hbState.name || '').trim());
+}
+window.hbUpdateNav = hbUpdateNav;
+
+function _hbLabel(field, val) {
+  if (field === 'colors') {
+    const c = HB_OPTS.colors.find(x => x.v === val); return c ? c.v : val;
+  }
+  const o = (HB_OPTS[field] || []).find(x => x.v === val);
+  return o ? o.label.toLowerCase() : val;
+}
+
+function _hbRecapHtml() {
+  const isHuman = hbState.type === 'fille' || hbState.type === 'garcon';
+  const lines = [];
+  lines.push((HB_OPTS.type.find(t => t.v === hbState.type) || {}).label);
+  if (isHuman) {
+    if (hbState.hair === 'chauve') lines.push('sans cheveux');
+    else lines.push('cheveux ' + _hbLabel('hair', hbState.hair) + ' ' + hbState.hair_color);
+  }
+  lines.push('tenue : ' + _hbLabel('outfit', hbState.outfit) + ' ' + hbState.outfit_color);
+  if (hbState.accessory !== 'aucun') lines.push('accessoire : ' + _hbLabel('accessory', hbState.accessory));
+  if ((hbState.keyword || '').trim()) lines.push('idée : ' + hbState.keyword.trim());
+  return '<div class="hb-recap">' +
+    '<div class="hb-opt-emoji" style="font-size:3.4rem">✨</div>' +
+    '<div class="hb-recap-name">' + (hbState.name || 'Mon héros') + '</div>' +
+    '<div class="hb-recap-list">' + lines.filter(Boolean).join('<br>') + '</div>' +
+    '<button class="hb-btn hb-next" style="margin-top:14px" type="button" onclick="hbGenerate()">' +
+    'Donne vie à mon héros ! 🪶</button>' +
+    '<div style="color:rgba(255,255,255,0.5);font-size:.78rem;margin-top:6px">Coûte 1 plume</div>' +
+    '</div>';
+}
+
+// Construit l'objet params (memes cles que generate_custom_hero.py)
+function hbParams() {
+  return {
+    type: hbState.type, hair: hbState.hair, hair_color: hbState.hair_color,
+    outfit: hbState.outfit, outfit_color: hbState.outfit_color,
+    accessory: hbState.accessory, name: (hbState.name || '').trim(),
+    keyword: (hbState.keyword || '').trim(),
+  };
+}
+
+// PLACEHOLDER : la generation reelle viendra via la Cloud Function.
+function hbGenerate() {
+  const params = hbParams();
+  console.log('[hero-builder] params prets pour la generation :', params);
+  document.getElementById('hero-coming-soon')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'hero-coming-soon';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.85);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:420px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:28px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:48px;line-height:1;margin-bottom:8px;">🪄</div>' +
+      '<h2 style="margin:0 0 8px;font-size:1.3rem;color:#7a4a10;">' +
+        (params.name || 'Ton héros') + ' arrive bientôt !</h2>' +
+      '<p style="margin:0 0 18px;font-size:.95rem;line-height:1.45;opacity:.9;">' +
+        'Léon prépare sa baguette ✨ La création de héros sur-mesure sera ' +
+        'disponible très bientôt. Tes choix sont prêts !</p>' +
+      '<button id="hero-coming-close" style="cursor:pointer;border:none;' +
+      'background:linear-gradient(160deg,#ffb74d,#f57c00);color:#fff;font-weight:800;' +
+      'font-size:1rem;padding:12px 28px;border-radius:14px;box-shadow:0 4px 14px rgba(245,124,0,.5);">' +
+      'D\'accord ! 😊</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  document.getElementById('hero-coming-close')?.addEventListener('click', () => ov.remove());
+}
+window.hbGenerate = hbGenerate;
+
 // Paywall : overlay leger injecte dynamiquement (aucun HTML a modifier).
 // feature = numero de chapitre (2..5) ou 'book' pour le Livre magique.
 function showPremiumPaywall(feature) {
@@ -3177,12 +3432,16 @@ function updateMapState() {
     }
   }
 
-  // Badge Premium sur la carte "Le livre magique" du dock
+  // Badge Premium sur les cartes du dock (livre magique + crée ton héros)
   try {
     const bookLock = document.getElementById('dock-book-lock');
     const bookCard = document.getElementById('dock-book-card');
     if (bookLock) bookLock.style.display = premium ? 'none' : '';
     if (bookCard) bookCard.classList.toggle('map-dock-card-locked', !premium);
+    const heroLock = document.getElementById('dock-hero-lock');
+    const heroCard = document.getElementById('dock-hero-card');
+    if (heroLock) heroLock.style.display = premium ? 'none' : '';
+    if (heroCard) heroCard.classList.toggle('map-dock-card-locked', !premium);
   } catch (e) {}
 
   // Pulse sur le prochain chapitre à jouer
