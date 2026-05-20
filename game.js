@@ -10526,10 +10526,12 @@ async function generateCustomStoryViaBackend(heroId) {
     creatorState.story = {
       title: data.title || 'Mon histoire',
       pages: (data.pages || []).map((pg, i) => ({
-        text: pg.text || '', image: base + 'page' + (i + 1) + '.jpg',
+        text: pg.text || '',
+        image: base + 'page' + (i + 1) + '.jpg',
+        audio: base + 'page' + (i + 1) + '.mp3',
       })),
     };
-    creatorState.assetsFolder = null;   // pas d'audio pour le custom (a venir)
+    creatorState.assetsFolder = null;   // audio fourni par page.audio (URL backend)
     creatorState.currentPage = 0;
     showCreatorBook();
   } catch (e) {
@@ -10588,7 +10590,11 @@ async function openSavedStory(storyDir) {
     const data = await (await fetch(base + 'story.json')).json();
     creatorState.story = {
       title: data.title || 'Mon histoire',
-      pages: (data.pages || []).map((pg, i) => ({ text: pg.text || '', image: base + 'page' + (i + 1) + '.jpg' })),
+      pages: (data.pages || []).map((pg, i) => ({
+        text: pg.text || '',
+        image: base + 'page' + (i + 1) + '.jpg',
+        audio: base + 'page' + (i + 1) + '.mp3',
+      })),
     };
     creatorState.assetsFolder = null;
     creatorState.currentPage = 0;
@@ -10751,23 +10757,41 @@ function wireBookAudioEvents() {
   bookAudioState.eventsWired = true;
 }
 
+let _bookAudioToken = 0;
 function loadBookAudioForPage(idx) {
   const audio = document.getElementById('book-audio');
   if (!audio) return;
-  const folder = creatorState.assetsFolder;
-  if (!folder) { setAudioButtonState('unavailable'); return; }
-  const url = 'assets/stories/' + folder + '/page' + (idx + 1) + '.mp3';
+  const pages = (creatorState.story && creatorState.story.pages) || [];
+  const page = pages[idx];
+  // URL audio : soit fournie par page (custom, backend), soit le dossier catalogue
+  let url = null;
+  let isCustom = false;
+  if (page && page.audio) { url = page.audio; isCustom = true; }
+  else if (creatorState.assetsFolder) { url = 'assets/stories/' + creatorState.assetsFolder + '/page' + (idx + 1) + '.mp3'; }
+  if (!url) { setAudioButtonState('unavailable'); return; }
+  const token = ++_bookAudioToken;
   audio.pause();
-  // On teste la presence via HEAD (rapide) - sinon onerror gere le fallback
   audio.src = url;
   audio.currentTime = 0;
   setAudioButtonState('loading');
   audio.load();
   audio.addEventListener('canplay', function _ready() {
     audio.removeEventListener('canplay', _ready);
+    if (token !== _bookAudioToken) return;
     setAudioButtonState('ready');
     if (bookAudioState.autoplay) {
       audio.play().catch(e => console.warn('autoplay denied:', e.message));
+    }
+  }, { once: true });
+  // Custom : la narration est peut-etre encore en cours de generation -> retry
+  audio.addEventListener('error', function _err() {
+    audio.removeEventListener('error', _err);
+    if (token !== _bookAudioToken) return;
+    if (isCustom) {
+      setAudioButtonState('loading');
+      setTimeout(() => { if (token === _bookAudioToken) loadBookAudioForPage(idx); }, 5000);
+    } else {
+      setAudioButtonState('unavailable');
     }
   }, { once: true });
 }
@@ -10836,6 +10860,42 @@ function _syncAutoplayButton() {
 // v494 : plus de renderBookPages (plus de pile de pages DOM). On change juste
 // le contenu de .book-image (background-image) et .book-text (innerHTML) a
 // chaque page, avec transitions fade+slide.
+// Charge l'image d'une page avec RETRY : si l'image n'est pas encore generee
+// (histoire custom en cours de generation progressive), affiche "Leon dessine…"
+// et re-essaie jusqu'a ce qu'elle apparaisse. Le token annule les chargements
+// des pages precedentes quand on tourne les pages.
+let _bookImgToken = 0;
+function setBookImage(imgEl, url) {
+  const token = ++_bookImgToken;
+  const placeholder = () => {
+    imgEl.style.backgroundImage = 'linear-gradient(135deg,#4a2a8a 0%,#2b1854 50%,#1a0d2e 100%)';
+  };
+  if (!url || !url.trim()) { placeholder(); imgEl.innerHTML = ''; return; }
+  const showGenerating = () => {
+    imgEl.style.position = 'relative';
+    placeholder();
+    imgEl.innerHTML = '<div style="position:absolute;inset:0;display:flex;flex-direction:column;' +
+      'align-items:center;justify-content:center;color:#fff;text-align:center;padding:20px;">' +
+      '<div style="font-size:42px" class="anim-bounce">🪄</div>' +
+      '<div style="opacity:.9;font-size:.95rem;margin-top:8px;">Léon dessine cette page…</div></div>';
+  };
+  const attempt = () => {
+    const probe = new Image();
+    probe.onload = () => {
+      if (token !== _bookImgToken) return;
+      imgEl.innerHTML = '';
+      imgEl.style.backgroundImage = "url('" + url + "')";
+    };
+    probe.onerror = () => {
+      if (token !== _bookImgToken) return;
+      showGenerating();
+      setTimeout(() => { if (token === _bookImgToken) attempt(); }, 4000);
+    };
+    probe.src = url;
+  };
+  attempt();
+}
+
 function showBookPage(idx, instant) {
   const pages = (creatorState.story && creatorState.story.pages) || [];
   if (idx < 0 || idx >= pages.length) return;
@@ -10847,14 +10907,8 @@ function showBookPage(idx, instant) {
 
   const setContent = () => {
     creatorState.currentPage = idx;
-    // Image
-    if (page.image && page.image.trim()) {
-      imgEl.style.backgroundImage = `url('${page.image}')`;
-    } else {
-      // Placeholder gradient en attente d image generee
-      const emoji = CREATOR_PLACEHOLDER_EMOJI[creatorState.hero] || '✨';
-      imgEl.style.backgroundImage = `linear-gradient(135deg, #4a2a8a 0%, #2b1854 50%, #1a0d2e 100%)`;
-    }
+    // Image (avec retry si pas encore generee -> progressif custom)
+    setBookImage(imgEl, page.image);
     // Texte
     textEl.innerHTML = '<p>' + (page.text || '') + '</p>';
     // v553 : reset scroll au debut de la nouvelle page

@@ -41,9 +41,14 @@ sys.path.insert(0, str(ROOT))
 from flask import Flask, request, jsonify, send_from_directory, abort
 from flask_cors import CORS
 
+import threading
+
 import generate_custom_hero as gch
 import generate_custom_story as gcs
 from stories_db import LEVEL_PAGES
+from generate_story_audio import synthesize_page, clean_html_for_tts
+
+CUSTOM_VOICE = "fr-FR-Studio-A"   # voix narration (comme le catalogue)
 
 CUSTOM_DIR = ROOT / "assets" / "custom"
 QUOTA_FILE = Path(__file__).resolve().parent / "quota.json"
@@ -182,6 +187,25 @@ def create_hero():
                     "portrait_url": f"/custom/{hero_id}/portrait.jpg", "canon": canon})
 
 
+def _generate_assets_bg(story, out_dir, hero, place, item, villain):
+    """Thread de fond : genere image + narration MP3 pour chaque page."""
+    pages = story.get("pages", [])
+    for idx, page in enumerate(pages, 1):
+        try:
+            gcs.gen_page_image(page, idx, len(pages), hero, place, item, villain,
+                               out_dir, page_delay=8.0, force=False)
+        except Exception as e:
+            print(f"[bg] image page{idx} err: {e}")
+        try:
+            txt = clean_html_for_tts(page.get("text", ""))
+            if txt:
+                synthesize_page(txt, out_dir / f"page{idx}.mp3",
+                                voice=CUSTOM_VOICE, speaking_rate=0.95)
+        except Exception as e:
+            print(f"[bg] audio page{idx} err: {e}")
+    print(f"[bg] termine : {out_dir.name}")
+
+
 @app.post("/api/create-story")
 def create_story():
     body = request.get_json(force=True, silent=True) or {}
@@ -239,25 +263,26 @@ def create_story():
     (out_dir / "story.json").write_text(
         json.dumps(story, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    # Images (synchrone pour le local ; -> progressif/async sur Cloud Run)
-    ok_imgs = 0
-    for idx, page in enumerate(story["pages"], 1):
-        if gcs.gen_page_image(page, idx, len(story["pages"]), hero,
-                              place, item, villain, out_dir, page_delay=10.0, force=False):
-            ok_imgs += 1
-
-    # Debit d'une plume APRES succes de la generation du texte
+    # Debit d'une plume des que le TEXTE est pret (la partie garantie/utile)
     data, code = _license_record(code)
     data[code]["plumes"] = max(0, data[code]["plumes"] - 1)
     _save_quota(data)
 
+    # Images + audio EN TACHE DE FOND -> le front affiche le texte immediatement
+    # et charge chaque page (image + narration) au fur et a mesure (progressif).
+    threading.Thread(
+        target=_generate_assets_bg,
+        args=(story, out_dir, hero, place, item, villain),
+        daemon=True,
+    ).start()
+
     rel = str(out_dir.relative_to(CUSTOM_DIR)).replace("\\", "/")
     return jsonify({
+        "status": "generating",
         "story_dir": rel,
         "story_url": f"/custom/{rel}/story.json",
         "title": story["title"],
         "pages_total": len(story["pages"]),
-        "images_ok": ok_imgs,
         "plumes_left": data[code]["plumes"],
     })
 
@@ -326,7 +351,26 @@ def serve_custom(subpath):
     return send_from_directory(CUSTOM_DIR, subpath)
 
 
+# ============================================================
+# Sert AUSSI l'app statique (index.html, game.js, assets...) -> une seule
+# commande, une seule URL (http://localhost:8787), pas de souci de CORS.
+# Les routes /api/* et /custom/* sont prioritaires (plus specifiques).
+# ============================================================
+@app.get("/")
+def _index():
+    return send_from_directory(ROOT, "index.html")
+
+
+@app.get("/<path:p>")
+def _static_app(p):
+    full = (ROOT / p).resolve()
+    if str(full).startswith(str(ROOT.resolve())) and full.is_file():
+        return send_from_directory(ROOT, p)
+    abort(404)
+
+
 if __name__ == "__main__":
     print(f"[backend] Leon — http://localhost:{PORT}")
+    print(f"[backend] Ouvre l'app : http://localhost:{PORT}/")
     print(f"[backend] custom dir : {CUSTOM_DIR}")
     app.run(host="0.0.0.0", port=PORT, threaded=True)
