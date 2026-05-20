@@ -54,3 +54,6 @@ tests/test-results/
 playwright-report/
 test-results/
 service-account.json
+
+# Heros + histoires custom generes a l execution (vont sur Cloud Storage en prod)
+assets/custom/
