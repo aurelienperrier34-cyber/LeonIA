@@ -8129,10 +8129,10 @@ body:has(#screen-creator.active) #global-star-corner {
 }
 .creator-stories-icon {
   display: block;
-  width: clamp(24px, 3.4vw, 32px);
-  height: clamp(24px, 3.4vw, 32px);
+  width: clamp(30px, 4.4vw, 42px);
+  height: clamp(30px, 4.4vw, 42px);
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 9px;
 }
 
 /* ============================================================
