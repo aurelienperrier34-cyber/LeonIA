@@ -9356,7 +9356,11 @@ body:has(#screen-creator.active) #global-star-corner {
   height: 100vh;
   height: 100dvh;
   margin: 0;
-  background: linear-gradient(135deg, #1a0d2e 0%, #2b1854 45%, #4a2a8a 100%);
+  /* Decor : atelier magique de Leon + voile sombre pour lisibilite de l'UI */
+  background:
+    linear-gradient(rgba(18,9,32,0.48), rgba(18,9,32,0.62)),
+    url('assets/ui/builder_bg.jpg?v=613') center / cover no-repeat,
+    #1a0d2e;
 }
 /* Masque les UI flottantes globales pendant le builder */
 body:has(#screen-hero-builder.active) #btn-back-map-global,
@@ -9424,6 +9428,7 @@ body:has(#screen-hero-builder.active) #global-star-corner {
   font-size: clamp(1.2rem, 3.5vw, 2rem);
   text-align: center;
   margin: 0;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.55);   /* lisible sur le decor */
 }
 .hb-step-hint {
   color: rgba(255,255,255,0.7);
@@ -9442,8 +9447,11 @@ body:has(#screen-hero-builder.active) #global-star-corner {
 }
 .hb-opt {
   cursor: pointer;
-  border: 2.5px solid rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.08);
+  border: 2.5px solid rgba(255,225,160,0.28);
+  background: rgba(18, 10, 34, 0.55);          /* carte sombre givree -> ressort sur le decor */
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
   border-radius: 18px;
   padding: clamp(10px, 1.8vw, 16px);
   min-width: clamp(78px, 20vw, 120px);
