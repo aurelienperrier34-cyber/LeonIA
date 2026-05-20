@@ -1544,8 +1544,18 @@ function hbParams() {
 // URL configurable : localhost par defaut (pilote), Cloud Run plus tard via
 //   localStorage.setItem('ia_backend_url', 'https://...')
 function getBackendUrl() {
-  try { return localStorage.getItem('ia_backend_url') || 'http://localhost:8787'; }
-  catch (e) { return 'http://localhost:8787'; }
+  // Par defaut : MEME ORIGINE que la page (le serveur sert l'app + l'API).
+  // -> marche depuis n'importe quel appareil du reseau (PC, Pixel, tablette...)
+  //    sans hardcoder localhost (qui, sur le tel, designe le tel lui-meme !).
+  //    Surchageable via localStorage 'ia_backend_url' (ex: Cloud Run).
+  try {
+    const override = localStorage.getItem('ia_backend_url');
+    if (override) return override;
+  } catch (e) {}
+  if (location && location.origin && location.origin.indexOf('http') === 0) {
+    return location.origin;
+  }
+  return 'http://localhost:8787';   // fallback (app ouverte en file://)
 }
 function getLicenseCode() {
   try { return localStorage.getItem('ia_license_code') || 'ECOLE-DEMO'; }
