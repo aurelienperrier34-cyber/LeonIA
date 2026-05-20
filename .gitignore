@@ -57,3 +57,6 @@ service-account.json
 
 # Heros + histoires custom generes a l execution (vont sur Cloud Storage en prod)
 assets/custom/
+
+# Backend : quota local (etat d execution -> Firestore en prod)
+server/quota.json
