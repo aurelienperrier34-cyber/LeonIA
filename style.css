@@ -8908,14 +8908,16 @@ body:has(#screen-creator.active) #global-star-corner {
   .creator-phase-pick .creator-error {
     z-index: 5;
   }
-  /* v601 : livre CENTRE avec marges (Leon visible sur les cotes, titre au-dessus).
-     Unites relatives (vw/%) -> rendu identique sur tous mobiles, Android comme iOS. */
+  /* v603 : livre a 58% (comme le PC) -> degage le visage de Leon (epingle a
+     gauche par background-position:left center). Approche PROPORTIONNELLE
+     (pourcentage + meme bord de reference) -> robuste sur tous mobiles,
+     Android comme iOS, quel que soit le ratio d'ecran. */
   .pick-book {
-    left: 50%;
+    left: 58%;
     right: auto;
     top: 56%;
     transform: translate(-50%, -50%);
-    width: min(66vw, 470px);
+    width: min(64vw, 470px);
     height: auto;
     max-height: 76vh;
   }
