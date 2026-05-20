@@ -10071,6 +10071,21 @@ const PICK_STEPS = [
 ];
 let pickBookState = { currentStep: 0, isFlipping: false, swipeWired: false };
 
+// Heros custom crees par l'enfant (recuperes du backend pour la galerie)
+let creatorCustomHeroes = [];
+async function fetchCustomHeroes() {
+  try {
+    const r = await fetch(getBackendUrl() + '/api/state?license=' + encodeURIComponent(getLicenseCode()));
+    if (!r.ok) { creatorCustomHeroes = []; return; }
+    const d = await r.json();
+    creatorCustomHeroes = d.heroes || [];
+    // En edition ecole, le solde de plumes fait foi cote SERVEUR -> on synchronise l'affichage
+    if (typeof d.plumes === 'number') {
+      document.querySelectorAll('[data-plumes-balance]').forEach(el => { el.textContent = d.plumes; });
+    }
+  } catch (e) { creatorCustomHeroes = []; }   // backend absent : pas de heros custom
+}
+
 function initCreatorPick() {
   // Reset state (mais on garde le level choisi)
   creatorState.hero = null;
@@ -10091,6 +10106,10 @@ function initCreatorPick() {
   attachPickSwipe();
   const err = document.getElementById('creator-error-msg');
   if (err) err.textContent = '';
+  // Recupere les heros custom (backend) puis re-render pour les afficher
+  fetchCustomHeroes().then(() => {
+    if (!document.getElementById('creator-pick').hidden) renderPickBook();
+  });
 }
 
 function renderPickBook() {
@@ -10196,6 +10215,29 @@ function renderPickBook() {
           </div>
         </div>
       `;
+    }
+    // Page HEROS : ajoute les heros custom de l'enfant + une carte "Creer"
+    if (step.key === 'hero') {
+      const itemsBox = spread.querySelector('.pick-items');
+      if (itemsBox) {
+        creatorCustomHeroes.forEach(h => {
+          const b = document.createElement('button');
+          b.className = 'pick-item' + (creatorState.hero === 'custom:' + h.hero_id ? ' selected' : '');
+          b.dataset.cat = 'hero';
+          b.dataset.value = 'custom:' + h.hero_id;
+          b.type = 'button';
+          b.innerHTML = '<img class="pick-item-img" src="' + getBackendUrl() + h.portrait_url +
+            '" alt="" loading="lazy"><span class="pick-item-label">' + h.name + '</span>';
+          itemsBox.appendChild(b);
+        });
+        const c = document.createElement('button');
+        c.className = 'pick-item pick-item-create';
+        c.type = 'button';
+        c.innerHTML = '<span class="pick-item-emoji" style="display:inline-block;font-size:1.7rem">➕</span>' +
+          '<span class="pick-item-label">Créer</span>';
+        c.onclick = () => openHeroBuilder();
+        itemsBox.appendChild(c);
+      }
     }
     pagesEl.appendChild(spread);
   });
@@ -10372,6 +10414,10 @@ async function generateCreatorStory() {
     if (err) err.textContent = '⚠️ Choisis un élément dans chaque catégorie !';
     return;
   }
+  // HEROS CUSTOM : on genere l'histoire via le backend (debit 1 plume)
+  if (creatorState.hero.indexOf('custom:') === 0) {
+    return generateCustomStoryViaBackend(creatorState.hero.slice('custom:'.length));
+  }
   // Show loading, hide pick
   document.getElementById('creator-pick').hidden = true;
   document.getElementById('creator-loading').hidden = false;
@@ -10428,6 +10474,60 @@ async function generateCreatorStory() {
     creatorState.currentPage = 0;
     showCreatorBook();
   }, 800);
+}
+
+// Genere une histoire CUSTOM via le backend (heros cree par l'enfant).
+// Debite 1 plume cote serveur, puis affiche l'histoire dans le lecteur.
+async function generateCustomStoryViaBackend(heroId) {
+  document.getElementById('creator-pick').hidden = true;
+  document.getElementById('creator-loading').hidden = false;
+  // Message d'attente adapte (la generation custom prend ~1-2 min)
+  const loadEl = document.getElementById('creator-loading');
+  const sub = loadEl && loadEl.querySelector('p');
+  if (sub) sub.textContent = 'Léon écrit et illustre ton histoire (environ une minute)…';
+
+  const showPickError = (msg) => {
+    document.getElementById('creator-loading').hidden = true;
+    document.getElementById('creator-pick').hidden = false;
+    const err = document.getElementById('creator-error-msg');
+    if (err) err.textContent = '⚠️ ' + msg;
+  };
+
+  try {
+    const r = await fetch(getBackendUrl() + '/api/create-story', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        license: getLicenseCode(), hero_id: heroId,
+        place: creatorState.place, item: creatorState.item,
+        villain: creatorState.villain, level: creatorState.level || 'courte',
+      }),
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      showPickError(d.message || d.error || 'Génération impossible. Réessaie.');
+      return;
+    }
+    // Charge le story.json genere et construit les pages (images servies par le backend)
+    // Met a jour le solde de plumes affiche (debit cote serveur)
+    if (typeof d.plumes_left === 'number') {
+      document.querySelectorAll('[data-plumes-balance]').forEach(el => { el.textContent = d.plumes_left; });
+    }
+    const sresp = await fetch(getBackendUrl() + d.story_url);
+    const data = await sresp.json();
+    const base = getBackendUrl() + '/custom/' + d.story_dir + '/';
+    creatorState.story = {
+      title: data.title || 'Mon histoire',
+      pages: (data.pages || []).map((pg, i) => ({
+        text: pg.text || '', image: base + 'page' + (i + 1) + '.jpg',
+      })),
+    };
+    creatorState.assetsFolder = null;   // pas d'audio pour le custom (a venir)
+    creatorState.currentPage = 0;
+    showCreatorBook();
+  } catch (e) {
+    showPickError('Le serveur de Léon est injoignable. Vérifie qu\'il est lancé.');
+  }
 }
 
 function _buildNotYetGeneratedStory() {

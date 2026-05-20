@@ -229,7 +229,9 @@ def create_story():
         return jsonify({"error": "generation", "message": "Texte non genere (quota ?)."}), 502
 
     combo = f"{level}_{place}_{item}_{villain}"
-    out_dir = hero["_dir"] / "stories" / f"{combo}_{str(int(time.time()))[-6:]}"
+    # IMPORTANT : chemin ABSOLU (sous CUSTOM_DIR) pour que relative_to() marche
+    # plus bas (hero["_dir"] est relatif et fait planter relative_to).
+    out_dir = CUSTOM_DIR / hero["hero_id"] / "stories" / f"{combo}_{str(int(time.time()))[-6:]}"
     out_dir.mkdir(parents=True, exist_ok=True)
     story.update({"custom": True, "level": level, "hero_id": hero["hero_id"],
                   "hero_name": hero["name"], "place": place, "item": item,
