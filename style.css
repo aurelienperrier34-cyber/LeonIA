@@ -8309,6 +8309,7 @@ body:has(#screen-creator.active) #global-star-corner {
 .pick-page {
   flex: 1 1 50%;
   min-width: 0;
+  min-height: 0;          /* autorise le contenu interne (pick-items) a defiler */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8450,11 +8451,18 @@ body:has(#screen-creator.active) #global-star-corner {
   display: flex;
   flex-direction: column;
   gap: clamp(6px, 1vw, 10px);
-  justify-content: center;
+  /* flex-start (pas center) pour que le defilement reste accessible depuis le
+     haut quand il y a beaucoup de cartes ; le centrage vertical quand il y en a
+     peu est assure par .pick-page (justify-content:center). */
+  justify-content: flex-start;
   align-items: stretch;
   position: relative;
   z-index: 2;
   width: 100%;
+  /* Defilable si trop de heros (catalogue + custom + Creer) */
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   /* v543 : padding leger pour laisser place au box-shadow + scale du selected */
   padding: clamp(8px, 1.3vw, 14px) 0;
 }
@@ -8925,6 +8933,8 @@ body:has(#screen-creator.active) #global-star-corner {
   }
   .pick-page-right { padding-top: clamp(8px, 1.5vw, 14px); }
   .pick-cat-decor { font-size: clamp(2rem, 8vw, 3rem); }
+  /* Liste d'items defilable sur mobile (pages a hauteur auto) */
+  .pick-items { max-height: 42vh; }
 }
 
 /* iOS-only ajustements (notch, safe area) */
