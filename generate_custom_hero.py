@@ -177,20 +177,22 @@ def build_prompts(params):
         bits_c.append(acc_c)
 
     kw = _clean_keyword(params.get("keyword", ""))
-    if kw:
-        bits_p.append(f"themed as {kw}")
-        bits_c.append(f"{kw} theme")
 
     descr_p = ", ".join(b for b in bits_p if b)
+    # L'idee libre = instruction FORTE (pas un simple theme noye) -> Gemini l'honore
+    # vraiment (ex: ajouter une licorne de compagnie a cote du heros).
+    idea_p = (f" IMPORTANT additional idea to clearly include in the illustration: {kw}."
+              if kw else "")
     portrait_prompt = (
         PORTRAIT_STYLE +
         f"Portrait of {name}, {type_p}, {descr_p}, "
         "big bright friendly smile, rosy cheeks, looking warmly at the viewer, "
-        "full upper body shot, adorable and kid-friendly."
+        "full upper body shot, adorable and kid-friendly." + idea_p
     )
     canon_text = (
         f"{name}: {type_c}, " + ", ".join(b for b in bits_c if b) +
-        ", friendly cheerful expression. "
+        (f". Notable detail: {kw}" if kw else "") +
+        ". Friendly cheerful expression. "
     )
     hero_id = _slug(name) + "-" + str(int(time.time()))[-6:]
     return portrait_prompt, canon_text, hero_id, name

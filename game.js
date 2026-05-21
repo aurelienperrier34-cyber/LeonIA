@@ -1474,9 +1474,9 @@ function hbRender() {
         'value="' + (hbState.name || '').replace(/"/g, '&quot;') + '" oninput="hbState.name=this.value; hbUpdateNav();"></div>' +
         '<div class="hb-field"><label>Une idée en plus ? (facultatif)</label>' +
         '<textarea id="hb-keyword" rows="2" maxlength="120" class="hb-textarea" ' +
-        'placeholder="ex : une exploratrice qui adore les étoiles et les vieux grimoires" ' +
+        'placeholder="ex : avec une petite licorne de compagnie ; ou : une exploratrice des étoiles" ' +
         'oninput="hbState.keyword=this.value;">' + (hbState.keyword || '').replace(/</g, '&lt;') + '</textarea>' +
-        '<span class="hb-field-hint">Quelques mots pour rendre ton héros unique</span></div>';
+        '<span class="hb-field-hint">Un détail, un thème ou un compagnon (le héros reste celui choisi plus haut)</span></div>';
       break;
     case 'recap':
       html = _hbRecapHtml();
