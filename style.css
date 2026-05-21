@@ -8607,16 +8607,24 @@ body:has(#screen-creator.active) #global-star-corner {
   padding: clamp(3px, 0.6vw, 6px);
   gap: 3px;
   min-height: 0;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: auto;        /* la carte epouse l'image carree (plus de carte aplatie) */
   justify-content: center;
 }
 /* Portrait = toute la carte ; pas de label (sauf carte "Creer") */
 .pick-spread[data-step="hero"] .pick-item:not(.pick-item-create) .pick-item-label {
   display: none;
 }
+/* Vignette CARREE (l'image impose son ratio 1:1) -> ne coupe plus la tete */
 .pick-spread[data-step="hero"] .pick-item-img {
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center top;   /* garde la tete si jamais un leger rognage */
+}
+/* La carte "Creer" garde un carre regulier */
+.pick-spread[data-step="hero"] .pick-item-create {
+  aspect-ratio: 1 / 1;
 }
 .pick-spread[data-step="hero"] .pick-item-emoji {
   font-size: clamp(1.9rem, 6vw, 2.8rem);
