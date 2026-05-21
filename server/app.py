@@ -43,12 +43,59 @@ from flask_cors import CORS
 
 import threading
 
+import requests as _rq
+
 import generate_custom_hero as gch
 import generate_custom_story as gcs
 from stories_db import LEVEL_PAGES
 from generate_story_audio import synthesize_page, clean_html_for_tts
+from generate_story_text import _token as _mod_token, _vertex_url as _mod_url
 
 CUSTOM_VOICE = "fr-FR-Studio-A"   # voix narration (comme le catalogue)
+
+
+# ============================================================
+# MODERATION (securite enfants) — classifieur Gemini sur le texte libre
+# ============================================================
+def moderate_kid_safe(text):
+    """Classe un texte libre comme adapte (ou non) aux 5-9 ans via Gemini.
+    Renvoie (ok: bool, message: str). Fail-open si l'appel echoue : les filtres
+    natifs de Gemini Image/Texte restent une 2e barriere lors de la generation."""
+    text = (text or "").strip()
+    if not text:
+        return True, ""
+    prompt = (
+        "Tu es un filtre de SECURITE pour une application d'histoires destinee a des "
+        "ENFANTS de 5 a 9 ans. Un enfant a saisi le texte ci-dessous pour decrire son "
+        "heros. Reponds STRICTEMENT par un seul mot : 'OUI' si le texte est totalement "
+        "adapte aux jeunes enfants, ou 'NON' s'il contient (meme de maniere detournee) : "
+        "violence, arme, mort, sang, sexe ou nudite, drogue ou alcool, haine ou insultes, "
+        "grossierete, ou tout theme adulte, choquant ou effrayant.\n\nTEXTE: " + text
+    )
+    payload = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
+               "generationConfig": {"temperature": 0, "maxOutputTokens": 10}}
+    refus = "Cette idee n'est pas adaptee. Essaie quelque chose de plus rigolo !"
+    try:
+        # gemini-2.5-pro = seul modele texte accessible sur ce projet
+        r = _rq.post(_mod_url("gemini-2.5-pro"), json=payload, timeout=30,
+                     headers={"Authorization": f"Bearer {_mod_token()}",
+                              "Content-Type": "application/json"})
+        if r.status_code >= 400:
+            print(f"[moderation] HTTP {r.status_code} -> fail-open"); return True, ""
+        cand = (r.json().get("candidates") or [{}])[0]
+        parts = cand.get("content", {}).get("parts", [])
+        if not parts:
+            # Gemini a REFUSE de classer (filtre de securite declenche par l'input)
+            # -> l'input est probablement inapproprie -> on BLOQUE.
+            fr = cand.get("finishReason", "")
+            print(f"[moderation] reponse vide (finishReason={fr}) -> bloque par prudence")
+            return False, refus
+        out = parts[0].get("text", "").strip().upper()
+        if out.startswith("N"):       # NON (tronque possible)
+            return False, refus
+        return True, ""               # OUI / O
+    except Exception as e:
+        print(f"[moderation] exception {e} -> fail-open"); return True, ""
 
 CUSTOM_DIR = ROOT / "assets" / "custom"
 QUOTA_FILE = Path(__file__).resolve().parent / "quota.json"
@@ -170,9 +217,15 @@ def create_hero():
     params = {k: body.get(k, "") for k in
               ["type", "hair", "hair_color", "outfit", "outfit_color",
                "accessory", "name", "keyword"]}
+
+    # Moderation IA (securite enfants) sur le texte libre : prenom + idee
+    ok_mod, why = moderate_kid_safe((params.get("name", "") + " " + params.get("keyword", "")).strip())
+    if not ok_mod:
+        return jsonify({"error": "moderation", "message": why}), 400
+
     try:
         portrait_prompt, canon, hero_id, name = gch.build_prompts(params)
-    except ValueError as e:   # moderation du mot-cle
+    except ValueError as e:   # liste de mots interdits (pre-filtre rapide)
         return jsonify({"error": "moderation", "message": str(e)}), 400
 
     out_dir = CUSTOM_DIR / hero_id
