@@ -9424,7 +9424,7 @@ body:has(#screen-hero-builder.active) #global-star-corner {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: safe center;   /* centre si ca tient, defilable si ca deborde */
   gap: clamp(10px, 2vw, 18px);
   overflow-y: auto;
   min-height: 0;
@@ -9453,6 +9453,20 @@ body:has(#screen-hero-builder.active) #global-star-corner {
   max-width: 640px;
   width: 100%;
 }
+/* Choix type/cheveux/tenue/accessoire : 2 colonnes -> grandes icones lisibles */
+.hb-grid-icons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 2vw, 18px);
+  max-width: 540px;
+  margin: 0 auto;
+}
+.hb-grid-icons .hb-opt { min-width: 0; width: 100%; padding: clamp(8px, 1.4vw, 14px); }
+.hb-grid-icons .hb-opt-img {
+  width: clamp(92px, 26vw, 150px);
+  height: clamp(92px, 26vw, 150px);
+}
+.hb-grid-icons .hb-opt-emoji { font-size: clamp(2.8rem, 10vw, 4.2rem); }
 .hb-opt {
   cursor: pointer;
   border: 2.5px solid rgba(255,225,160,0.28);

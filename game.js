@@ -1413,7 +1413,7 @@ window.hbNext = hbNext;
 window.hbPrev = hbPrev;
 
 function _hbGrid(field) {
-  return '<div class="hb-grid">' + HB_OPTS[field].map(o =>
+  return '<div class="hb-grid hb-grid-icons">' + HB_OPTS[field].map(o =>
     '<button type="button" class="hb-opt' + (hbState[field] === o.v ? ' selected' : '') +
     '" onclick="hbPick(\'' + field + '\',\'' + o.v + '\')">' +
     // Illustration watercolor ; repli sur l'emoji si l'icone n'est pas (encore) generee
