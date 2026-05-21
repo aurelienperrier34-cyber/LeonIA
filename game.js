@@ -1416,7 +1416,11 @@ function _hbGrid(field) {
   return '<div class="hb-grid">' + HB_OPTS[field].map(o =>
     '<button type="button" class="hb-opt' + (hbState[field] === o.v ? ' selected' : '') +
     '" onclick="hbPick(\'' + field + '\',\'' + o.v + '\')">' +
-    '<span class="hb-opt-emoji">' + o.emoji + '</span>' + o.label + '</button>'
+    // Illustration watercolor ; repli sur l'emoji si l'icone n'est pas (encore) generee
+    '<img class="hb-opt-img" src="assets/ui/builder/' + field + '_' + o.v + '.jpg?v=614" alt="" loading="lazy" ' +
+    'onerror="this.style.display=\'none\'; var e=this.nextElementSibling; if(e) e.style.display=\'inline-block\';">' +
+    '<span class="hb-opt-emoji" style="display:none">' + o.emoji + '</span>' +
+    '<span class="hb-opt-label">' + o.label + '</span></button>'
   ).join('') + '</div>';
 }
 

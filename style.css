@@ -9468,6 +9468,14 @@ body:has(#screen-hero-builder.active) #global-star-corner {
 .hb-opt:hover { background: rgba(255,255,255,0.14); }
 .hb-opt:active { transform: scale(0.95); }
 .hb-opt-emoji { font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1; }
+.hb-opt-img {
+  display: block;
+  width: clamp(48px, 9vw, 70px);
+  height: clamp(48px, 9vw, 70px);
+  object-fit: cover;
+  border-radius: 12px;
+}
+.hb-opt-label { line-height: 1.15; }
 .hb-opt.selected {
   border-color: #FFE166;
   background: rgba(255,225,102,0.2);
