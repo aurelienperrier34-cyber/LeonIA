@@ -9359,7 +9359,7 @@ body:has(#screen-creator.active) #global-star-corner {
   /* Decor : atelier magique de Leon + voile sombre pour lisibilite de l'UI */
   background:
     linear-gradient(rgba(18,9,32,0.48), rgba(18,9,32,0.62)),
-    url('assets/ui/builder_bg.jpg?v=613') center / cover no-repeat,
+    url('assets/ui/builder_bg.jpg?v=615') center / cover no-repeat,
     #1a0d2e;
 }
 /* Masque les UI flottantes globales pendant le builder */
