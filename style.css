@@ -4214,18 +4214,18 @@ body.novel-mode #screen-c5s5 .game-overlay {
   position: relative;
 }
 
-/* MOBILE/TOUCH UNIQUEMENT : la map fait TOUJOURS toute la hauteur du
-   viewport. Le flou Netflix est applique UNIQUEMENT sur les bandes
+/* TOUS SUPPORTS (mobile + desktop) : la map fait TOUJOURS toute la hauteur
+   du viewport. Le flou Netflix est applique UNIQUEMENT sur les bandes
    laterales (gauche/droite) via deux pseudo-elements ::before / ::after
-   dont la largeur est calculee explicitement. Ainsi le flou est
-   physiquement absent de la zone sous/au-dessus de la map.
+   dont la largeur est calculee explicitement. Ainsi aucune bande violette
+   (#1a0d2e du body) ne reste visible quand le viewport ne correspond pas
+   exactement au ratio de la map (notamment a la sortie du plein ecran).
 
    Largeur d'une bande laterale = (100vw - mapWidth) / 2,
    ou mapWidth = 100dvh * 1672/941 (ratio de la map). Si le viewport est
    plus etroit que la map, la formule donne un nombre negatif → la bande
-   est de largeur 0 (pas affichee), comportement attendu en portrait.
-   Note : `(hover: none)` pour exclure ordi tactile (qui a souris en plus). */
-@media (max-width: 900px), (pointer: coarse) {
+   est de largeur 0 (pas affichee), comportement attendu en portrait. */
+@media all {
   #screen-map.active {
     position: relative;
     overflow: hidden;
