@@ -8198,7 +8198,78 @@ function buyArticleUI(id) {
   const r = buyArticle(id);
   if (!r.ok && r.reason === 'pas assez d etoiles') {
     alert('Pas assez d etoiles ! Joue d autres chapitres pour en gagner.');
+    return;
   }
+  // Achat reussi : pour une CARTE on offre une revelation en grand avec
+  // flip recto/verso (effet ouverture de booster). Pour un skin on laisse
+  // le comportement silencieux (la pastille "Acheter" devient "Acheté").
+  if (r.ok) {
+    const item = ARTICLES_CATALOG.find(a => a.id === id);
+    if (item && item.kind === 'card' && typeof showCardReveal === 'function') {
+      showCardReveal(item);
+    }
+  }
+}
+
+// Modale "revelation de carte" : ouvre une vue plein ecran avec la carte
+// affichee en grand (recto = image + nom), invite a recliquer pour voir
+// le verso (description), puis a recliquer pour fermer. Effet "j'ouvre
+// un booster" pour valoriser l'achat.
+function showCardReveal(item) {
+  if (!item) return;
+  // Nettoie une eventuelle modale precedente
+  const existing = document.getElementById('card-reveal-modal');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'card-reveal-modal';
+  overlay.className = 'card-reveal-modal';
+
+  const imgTag = item.img
+    ? '<img class="cr-img" src="' + item.img + '" alt="' + item.name + '"' +
+      ' onerror="this.style.display=\'none\'; var em=this.parentNode.querySelector(\'.cr-emoji\'); if(em) em.style.display=\'flex\';">' +
+      '<div class="cr-emoji" style="display:none">' + item.emoji + '</div>'
+    : '<div class="cr-emoji">' + item.emoji + '</div>';
+
+  const legendBanner = item.legendary
+    ? '<span class="cr-legendary">★ LÉGENDAIRE ★</span>'
+    : '';
+
+  overlay.innerHTML =
+    '<div class="cr-stage">' +
+      '<div class="cr-card' + (item.legendary ? ' cr-card-legendary' : '') + '">' +
+        '<div class="cr-card-inner">' +
+          '<div class="cr-face cr-front">' +
+            imgTag +
+            legendBanner +
+            '<div class="cr-namebar">' + item.name + '</div>' +
+          '</div>' +
+          '<div class="cr-face cr-back">' +
+            '<div class="cr-back-name">' + item.name + '</div>' +
+            '<div class="cr-back-desc">' + item.desc + '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-hint" id="cr-hint">Clique pour découvrir le verso ✨</div>' +
+    '</div>';
+
+  document.body.appendChild(overlay);
+
+  // Etat : 0 = recto visible, 1 = verso visible, 2 = ferme
+  let phase = 0;
+  const card  = overlay.querySelector('.cr-card');
+  const hint  = overlay.querySelector('#cr-hint');
+  overlay.addEventListener('click', () => {
+    if (phase === 0) {
+      card.classList.add('cr-flipped');
+      hint.textContent = 'Clique pour continuer';
+      phase = 1;
+    } else {
+      overlay.classList.add('cr-closing');
+      setTimeout(() => overlay.remove(), 260);
+      phase = 2;
+    }
+  });
 }
 
 // ============================================================

@@ -7759,6 +7759,142 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
 }
 
 /* ============================================================
+   Revelation de carte achetee : modale plein ecran avec flip
+   recto / verso (effet ouverture de booster Pokemon).
+   ============================================================ */
+.card-reveal-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000000;
+  background: radial-gradient(ellipse at center, rgba(40,20,80,0.92) 0%, rgba(10,5,25,0.98) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  animation: cr-fade-in 0.28s ease-out;
+}
+.card-reveal-modal.cr-closing { animation: cr-fade-out 0.26s ease-in forwards; }
+@keyframes cr-fade-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cr-fade-out { from { opacity: 1; } to { opacity: 0; } }
+
+.cr-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  perspective: 1200px;
+}
+.cr-card {
+  width: min(78vw, 320px);
+  aspect-ratio: 3 / 4.2;
+  transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transform-style: preserve-3d;
+  animation: cr-pop-in 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes cr-pop-in {
+  from { transform: scale(0.4) rotate(-8deg); opacity: 0; }
+  to   { transform: scale(1)   rotate(0deg);  opacity: 1; }
+}
+.cr-card.cr-flipped { transform: rotateY(180deg); }
+.cr-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+.cr-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.55), 0 0 0 4px rgba(255,255,255,0.08) inset;
+  display: flex;
+  flex-direction: column;
+}
+.cr-front {
+  background: linear-gradient(160deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+}
+.cr-back  {
+  background: linear-gradient(160deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+  color: white;
+  transform: rotateY(180deg);
+  padding: 28px 24px;
+  justify-content: center;
+  text-align: center;
+}
+.cr-card-legendary .cr-front {
+  background: linear-gradient(160deg, #fde047 0%, #fb923c 50%, #ef4444 100%);
+  box-shadow: 0 25px 60px rgba(251,146,60,0.4), 0 0 28px rgba(253,224,71,0.6), 0 0 0 4px rgba(255,255,255,0.15) inset;
+}
+.cr-card-legendary .cr-back {
+  background: linear-gradient(160deg, #78350f 0%, #92400e 50%, #b45309 100%);
+}
+.cr-img {
+  flex: 1;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+.cr-emoji {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 6rem;
+}
+.cr-legendary {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: #2a1a4a;
+  background: linear-gradient(135deg, #FFE166, #FF8E00);
+  padding: 5px 14px;
+  border-radius: 999px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+  z-index: 2;
+}
+.cr-namebar {
+  background: rgba(0,0,0,0.55);
+  color: white;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: 1.4rem;
+  text-align: center;
+  padding: 12px 10px;
+  border-top: 2px solid rgba(255,255,255,0.2);
+}
+.cr-back-name {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: 1.6rem;
+  margin-bottom: 18px;
+  color: #FFE166;
+}
+.cr-back-desc {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.92);
+}
+.cr-hint {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: 1rem;
+  color: rgba(255,255,255,0.85);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  animation: cr-hint-pulse 1.4s ease-in-out infinite;
+}
+@keyframes cr-hint-pulse {
+  0%, 100% { opacity: 0.7; transform: translateY(0); }
+  50%      { opacity: 1;   transform: translateY(-4px); }
+}
+
+/* ============================================================
    Onglet "Cartes" — Collection style Pokémon
    ============================================================ */
 .cards-header {
