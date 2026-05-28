@@ -7956,13 +7956,21 @@ function renderAtelierModal() {
       } else {
         btn = '<button class="atelier-item-btn" ' + (canBuy ? '' : 'disabled') + ' onclick="buyArticleUI(\'' + a.id + '\')">Acheter</button>';
       }
-      const legendBadge = a.legendary ? '<span class="atelier-legendary-badge">LÉGENDAIRE ⭐</span>' : '';
-      // Badge "type d'article" : carte a collectionner vs skin (accessoire avatar).
-      // Les enfants et leurs parents ne devinaient pas la difference -> on l'affiche
-      // explicitement en haut a gauche de chaque article de la boutique.
-      const kindBadge = a.kind === 'card'
-        ? '<span class="atelier-kind-badge atelier-kind-card">🎴 Carte</span>'
-        : '<span class="atelier-kind-badge atelier-kind-skin">👕 Skin</span>';
+      // Badge "type d'article" : carte / skin / carte legendaire.
+      // - Carte standard : badge violet "Carte"
+      // - Skin (accessoire avatar) : badge orange "Skin"
+      // - Carte legendaire : un SEUL badge dore "Carte legendaire" (sinon les
+      //   deux pastilles legendaire+type se chevauchaient et c'etait confus).
+      let kindBadge;
+      if (a.kind === 'card' && a.legendary) {
+        kindBadge = '<span class="atelier-kind-badge atelier-kind-legendary">🎴 Carte légendaire ⭐</span>';
+      } else if (a.kind === 'card') {
+        kindBadge = '<span class="atelier-kind-badge atelier-kind-card">🎴 Carte</span>';
+      } else {
+        kindBadge = '<span class="atelier-kind-badge atelier-kind-skin">👕 Skin</span>';
+      }
+      // Plus de pastille "LEGENDAIRE" separee : fusionnee dans kindBadge ci-dessus.
+      const legendBadge = '';
       // v574 : pour les cartes avec image, on affiche l'image (fallback emoji)
       const visual = a.img
         ? '<img class="atelier-item-img" src="' + a.img + '" alt="' + a.name + '"' +

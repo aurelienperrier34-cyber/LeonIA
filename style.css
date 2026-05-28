@@ -7750,6 +7750,13 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
 }
 .atelier-kind-card { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
 .atelier-kind-skin { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+/* Carte legendaire : un seul badge fusionne (couleur "or legendaire" qui
+   reprend celle de l'ancienne pastille .atelier-legendary-badge). */
+.atelier-kind-legendary {
+  background: linear-gradient(135deg, #FFE166, #FF8E00);
+  color: #2a1a4a;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.35);
+}
 
 /* ============================================================
    Onglet "Cartes" — Collection style Pokémon
