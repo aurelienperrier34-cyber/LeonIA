@@ -65,6 +65,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <!-- v554 : preload de l'image de fond Leon (picker) pour affichage instantane -->
   <link rel="preload" as="image" href="assets/leon_holds_book.jpg?v=581">
+  <!-- Image d'accueil (ecran 0) : preload prioritaire pour l'afficher INSTANTANEMENT
+       a la connexion, avant meme le CSS. JPG progressif 288 KB (vs 7 MB PNG avant). -->
+  <link rel="preload" as="image" href="assets/leon_bienvenue.jpg" fetchpriority="high">
   <link rel="stylesheet" href="style.css?v=581">
 </head>
 <body>
@@ -130,7 +133,7 @@
     <!-- Screen 0 : Intro -->
     <div class="screen active" id="screen-0">
       <!-- Fond image (nanobanana) avec animation CSS subtile : Ken Burns + particules -->
-      <img src="assets/leon_bienvenue.png" id="intro-bg-image" class="intro-bg-image" alt="">
+      <img src="assets/leon_bienvenue.jpg" id="intro-bg-image" class="intro-bg-image" alt="">
       <div class="intro-bg-particles" aria-hidden="true"></div>
       <div class="intro-bg-particles intro-bg-particles-2" aria-hidden="true"></div>
       <div class="intro-container">
@@ -234,7 +237,7 @@
     <!-- Screen 1: Character Select -->
     <div class="screen" id="screen-1">
       <!-- Meme fond magique que l'ecran d'accueil -->
-      <img src="assets/leon_bienvenue.png" class="intro-bg-image" alt="">
+      <img src="assets/leon_bienvenue.jpg" class="intro-bg-image" alt="">
       <div class="intro-bg-particles" aria-hidden="true"></div>
       <div class="intro-bg-particles intro-bg-particles-2" aria-hidden="true"></div>
       <h1 class="screen-title mt-md">Qui sera ton héros ?</h1>

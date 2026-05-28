@@ -54,3 +54,14 @@ tests/test-results/
 playwright-report/
 test-results/
 service-account.json
+
+# === Donnees runtime (NE PAS publier — RGPD : prenoms d'eleves, quotas) ===
+server/quota.json
+quota.json
+
+# === Documents business / locaux (garder hors du depot public) ===
+KIT_PILOTE.*
+FICHE_COLLEGUE_TESTEUR.*
+PLAN_FINANCEMENT.*
+demo_qr.png
+audit_out/
