@@ -7765,16 +7765,18 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
 .card-reveal-modal {
   position: fixed;
   inset: 0;
-  z-index: 1000000;
+  z-index: 2147483600; /* tres haut, au-dessus de .atelier-modal (9999) et tout le reste */
   background: radial-gradient(ellipse at center, rgba(40,20,80,0.92) 0%, rgba(10,5,25,0.98) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  animation: cr-fade-in 0.28s ease-out;
+  /* opacity 1 par defaut (pas d'animation opacity sur le wrapper) : sinon dans
+     certains contextes (tab en arriere-plan, GPU throttle headless) l'animation
+     reste figee a opacity 0 et la modale est invisible. */
+  opacity: 1;
 }
-.card-reveal-modal.cr-closing { animation: cr-fade-out 0.26s ease-in forwards; }
-@keyframes cr-fade-in  { from { opacity: 0; } to { opacity: 1; } }
+.card-reveal-modal.cr-closing { animation: cr-fade-out 0.22s ease-in forwards; }
 @keyframes cr-fade-out { from { opacity: 1; } to { opacity: 0; } }
 
 .cr-stage {
@@ -7789,11 +7791,14 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   aspect-ratio: 3 / 4.2;
   transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
   transform-style: preserve-3d;
-  animation: cr-pop-in 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* opacity 1 + fill-mode forwards : meme si l'anim ne progresse pas,
+     la carte reste visible (cf. note sur .card-reveal-modal). */
+  opacity: 1;
+  animation: cr-pop-in 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 @keyframes cr-pop-in {
-  from { transform: scale(0.4) rotate(-8deg); opacity: 0; }
-  to   { transform: scale(1)   rotate(0deg);  opacity: 1; }
+  from { transform: scale(0.4) rotate(-8deg); }
+  to   { transform: scale(1)   rotate(0deg); }
 }
 .cr-card.cr-flipped { transform: rotateY(180deg); }
 .cr-card-inner {
