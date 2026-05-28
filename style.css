@@ -7791,14 +7791,10 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   aspect-ratio: 3 / 4.2;
   transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
   transform-style: preserve-3d;
-  /* opacity 1 + fill-mode forwards : meme si l'anim ne progresse pas,
-     la carte reste visible (cf. note sur .card-reveal-modal). */
   opacity: 1;
-  animation: cr-pop-in 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-@keyframes cr-pop-in {
-  from { transform: scale(0.4) rotate(-8deg); }
-  to   { transform: scale(1)   rotate(0deg); }
+  /* L'animation d'entree (pop-in) est sur .cr-card-inner ENFANT, pas sur
+     .cr-card : sinon le forwards fill-mode de l'animation figerait le
+     transform et bloquerait le rotateY(180deg) du flip recto/verso. */
 }
 .cr-card.cr-flipped { transform: rotateY(180deg); }
 .cr-card-inner {
@@ -7806,6 +7802,11 @@ body.novel-mode #screen-c5s2 .scene-text .dialogue-bubble {
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
+  animation: cr-pop-in 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+@keyframes cr-pop-in {
+  from { transform: scale(0.4) rotate(-8deg); opacity: 0; }
+  to   { transform: scale(1)   rotate(0deg);  opacity: 1; }
 }
 .cr-face {
   position: absolute;
