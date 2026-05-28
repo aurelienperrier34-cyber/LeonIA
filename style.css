@@ -496,6 +496,14 @@ body:has(#screen-1.active) .app {
   flex-shrink: 0;
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
 }
+/* Icone image (ex: livre magique) dans une carte du dock */
+.map-dock-img {
+  display: block;
+  width: clamp(34px, 4.6vw, 48px);
+  height: clamp(34px, 4.6vw, 48px);
+  object-fit: cover;
+  border-radius: 11px;
+}
 .map-dock-text {
   flex: 1;
   min-width: 0;
@@ -8288,6 +8296,45 @@ body:has(#screen-creator.active) #global-star-corner {
   font-size: clamp(0.85rem, 1.2vw, 1rem);
   white-space: nowrap;
 }
+/* Groupe les pastilles (etoiles + plumes) a droite de la topbar */
+.creator-topbar-pills {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 1vw, 10px);
+}
+/* Pastille plumes : cliquable, ouvre la boutique. Accent orange. */
+.creator-plumes-pill {
+  cursor: pointer;
+  background: rgba(245,124,0,0.22);
+  color: #FFC078;
+  border: 1.5px solid rgba(245,124,0,0.5);
+  transition: transform .12s ease, background .2s ease;
+}
+.creator-plumes-pill:hover  { background: rgba(245,124,0,0.34); }
+.creator-plumes-pill:active { transform: scale(0.94); }
+
+/* Bouton "Mes histoires" : icone ronde (pile de livres) -> matche la pastille ronde */
+.creator-stories-pill {
+  padding: 0;
+  width: clamp(34px, 4.8vw, 46px);
+  height: clamp(34px, 4.8vw, 46px);
+  border-radius: 50%;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .2s ease;
+}
+.creator-stories-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;   /* cercle plein -> plus de cadre carre */
+}
+.creator-stories-pill:hover  { box-shadow: 0 0 0 2px rgba(255,225,102,0.55); }
+.creator-stories-pill:active { transform: scale(0.94); }
 
 /* ============================================================
    PHASE PICK v499 : Léon background + livre interactif 5 pages
@@ -8377,6 +8424,12 @@ body:has(#screen-creator.active) #global-star-corner {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
+/* Garde l'accent orange de la pastille plumes en phase pick (fond sombre) */
+.creator-phase-pick .creator-plumes-pill {
+  background: rgba(245,124,0,0.34);
+  border-color: rgba(245,124,0,0.6);
+}
+.creator-phase-pick .creator-plumes-pill:hover { background: rgba(245,124,0,0.5); }
 
 /* === Bouton Surprends-moi flottant === */
 .pick-surprise {
@@ -8411,7 +8464,7 @@ body:has(#screen-creator.active) #global-star-corner {
 .pick-book {
   position: absolute;
   left: 58%;
-  top: 54%;
+  top: 57%;                /* v608 : descendu pour rejoindre les doigts de Leon (PC) */
   transform: translate(-50%, -50%);
   width: clamp(360px, 46vw, 660px);
   /* Fallback height explicite si aspect-ratio non supporte (older Safari) */
@@ -8471,6 +8524,7 @@ body:has(#screen-creator.active) #global-star-corner {
 .pick-page {
   flex: 1 1 50%;
   min-width: 0;
+  min-height: 0;          /* autorise le contenu interne (pick-items) a defiler */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8612,11 +8666,18 @@ body:has(#screen-creator.active) #global-star-corner {
   display: flex;
   flex-direction: column;
   gap: clamp(6px, 1vw, 10px);
-  justify-content: center;
+  /* flex-start (pas center) pour que le defilement reste accessible depuis le
+     haut quand il y a beaucoup de cartes ; le centrage vertical quand il y en a
+     peu est assure par .pick-page (justify-content:center). */
+  justify-content: flex-start;
   align-items: stretch;
   position: relative;
   z-index: 2;
   width: 100%;
+  /* Defilable si trop de heros (catalogue + custom + Creer) */
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   /* v543 : padding leger pour laisser place au box-shadow + scale du selected */
   padding: clamp(8px, 1.3vw, 14px) 0;
 }
@@ -8704,6 +8765,57 @@ body:has(#screen-creator.active) #global-star-corner {
   font-weight: 700;
   text-align: left;
   line-height: 1.2;
+}
+
+/* ============================================================
+   Page HEROS : GRILLE d'icones (portrait seul, sans nom) -> tout tient
+   sans scroller, meme avec les heros custom. Le nom reste en infobulle.
+   ============================================================ */
+/* Sur la page heros, la grille recupere de la largeur (moins de marge cote
+   pliure) pour des icones plus grandes. */
+.pick-spread[data-step="hero"] .pick-page-right {
+  padding-left: clamp(8px, 1.4vw, 16px);
+  padding-right: clamp(6px, 1vw, 12px);
+}
+.pick-spread[data-step="hero"] .pick-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);   /* 2 colonnes -> grandes vignettes (defile si besoin) */
+  gap: clamp(8px, 1.4vw, 14px);
+  align-content: safe center;   /* centre si ca tient, defilable si ca deborde */
+  padding: clamp(4px, 0.8vw, 8px) 2px;
+}
+.pick-spread[data-step="hero"] .pick-item {
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+  padding: clamp(3px, 0.6vw, 6px);
+  gap: 3px;
+  min-height: 0;
+  aspect-ratio: auto;        /* la carte epouse l'image carree (plus de carte aplatie) */
+  justify-content: center;
+}
+/* Portrait = toute la carte ; pas de label (sauf carte "Creer") */
+.pick-spread[data-step="hero"] .pick-item:not(.pick-item-create) .pick-item-label {
+  display: none;
+}
+/* Vignette CARREE (l'image impose son ratio 1:1) -> ne coupe plus la tete */
+.pick-spread[data-step="hero"] .pick-item-img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center top;   /* garde la tete si jamais un leger rognage */
+}
+/* La carte "Creer" garde un carre regulier */
+.pick-spread[data-step="hero"] .pick-item-create {
+  aspect-ratio: 1 / 1;
+}
+.pick-spread[data-step="hero"] .pick-item-emoji {
+  font-size: clamp(1.9rem, 6vw, 2.8rem);
+}
+.pick-spread[data-step="hero"] .pick-item-create .pick-item-label {
+  font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+  text-align: center;
 }
 .pick-level-time {
   font-size: clamp(0.72rem, 1vw, 0.85rem);
@@ -9019,19 +9131,28 @@ body:has(#screen-creator.active) #global-star-corner {
   .creator-phase-pick .creator-error {
     z-index: 5;
   }
-  /* Livre ancre A DROITE pour laisser Leon visible a gauche */
+  /* v603 : livre a 58% (comme le PC) -> degage le visage de Leon (epingle a
+     gauche par background-position:left center). Approche PROPORTIONNELLE
+     (pourcentage + meme bord de reference) -> robuste sur tous mobiles,
+     Android comme iOS, quel que soit le ratio d'ecran. */
   .pick-book {
-    left: auto;
-    right: clamp(8px, 2vw, 24px);
-    top: 50%;
-    transform: translateY(-50%);
-    width: min(62vw, 480px);
-    /* On garde aspect-ratio 3/2 mais avec une hauteur cappee */
+    left: 58%;
+    right: auto;
+    top: 56%;                 /* v607 : descend le centre -> bas du livre plus bas */
+    transform: translate(-50%, -50%);
+    width: min(64vw, 470px);
     height: auto;
-    max-height: 85vh;
+    max-height: 67vh;         /* v607 : livre agrandi vers le bas (doigts de Leon) */
+  }
+  /* v607 : la nav se pose A L'INTERIEUR du bas du livre (sous la grille) ->
+     le livre peut descendre jusqu'aux doigts de Leon sans pousser la nav
+     hors ecran. */
+  .pick-book-nav {
+    bottom: clamp(2px, 1.5vh, 12px);
   }
   .pick-surprise {
-    top: clamp(50px, 7vh, 70px);
+    /* v585 : passe SOUS la rangee de pastilles (etoiles + plumes) */
+    top: clamp(74px, 11vh, 96px);
     padding: 6px 12px;
     font-size: 0.78rem;
   }
@@ -9062,7 +9183,8 @@ body:has(#screen-creator.active) #global-star-corner {
     max-height: 80vh;
   }
   .pick-surprise {
-    top: clamp(48px, 7vh, 62px);
+    /* v585 : passe SOUS la rangee de pastilles (etoiles + plumes) */
+    top: clamp(74px, 11vh, 96px);
     right: clamp(8px, 2vw, 14px);
     padding: 5px 10px;
     font-size: 0.72rem;
@@ -9085,6 +9207,8 @@ body:has(#screen-creator.active) #global-star-corner {
   }
   .pick-page-right { padding-top: clamp(8px, 1.5vw, 14px); }
   .pick-cat-decor { font-size: clamp(2rem, 8vw, 3rem); }
+  /* Liste d'items defilable sur mobile (pages a hauteur auto) */
+  .pick-items { max-height: 42vh; }
 }
 
 /* iOS-only ajustements (notch, safe area) */
@@ -9418,6 +9542,247 @@ body:has(#screen-creator.active) #global-star-corner {
 @media (max-width: 700px) {
   .creator-restart-text { display: none; }
 }
+
+/* ============================================================ */
+/* CRÉE TON HÉROS — builder visuel guidé                         */
+/* ============================================================ */
+/* Plein ecran fixe au-dessus de #app (meme pattern que #screen-creator) */
+#screen-hero-builder.active {
+  display: flex !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0;
+  /* Decor : atelier magique de Leon + voile sombre pour lisibilite de l'UI */
+  background:
+    linear-gradient(rgba(18,9,32,0.48), rgba(18,9,32,0.62)),
+    url('assets/ui/builder_bg.jpg?v=615') center / cover no-repeat,
+    #1a0d2e;
+}
+/* Masque les UI flottantes globales pendant le builder */
+body:has(#screen-hero-builder.active) #btn-back-map-global,
+body:has(#screen-hero-builder.active) .av-toggles,
+body:has(#screen-hero-builder.active) #global-star-corner {
+  display: none !important;
+}
+.hb-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(10px, 2vw, 22px);
+  padding-top: max(clamp(10px, 2vw, 22px), env(safe-area-inset-top));
+  box-sizing: border-box;
+}
+.hb-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(8px, 1.5vw, 16px);
+  flex: 0 0 auto;
+}
+.hb-title {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  color: #FFE166;
+  font-size: clamp(1.1rem, 3.2vw, 1.8rem);
+  text-align: center;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+/* Barre de progression (pastilles d'etapes) */
+.hb-progress {
+  display: flex;
+  justify-content: center;
+  gap: clamp(6px, 1.2vw, 10px);
+  margin: clamp(8px, 1.6vw, 16px) 0;
+  flex: 0 0 auto;
+}
+.hb-dot {
+  width: clamp(8px, 1.4vw, 12px);
+  height: clamp(8px, 1.4vw, 12px);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.22);
+  transition: background .25s ease, transform .25s ease;
+}
+.hb-dot.done { background: rgba(255,225,102,0.55); }
+.hb-dot.current { background: #FFE166; transform: scale(1.35); }
+/* Zone centrale (etape courante) */
+.hb-stage {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;   /* centre si ca tient, defilable si ca deborde */
+  gap: clamp(10px, 2vw, 18px);
+  overflow-y: auto;
+  min-height: 0;
+}
+.hb-step-title {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  color: #fff;
+  font-size: clamp(1.2rem, 3.5vw, 2rem);
+  text-align: center;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.55);   /* lisible sur le decor */
+}
+.hb-step-hint {
+  color: rgba(255,255,255,0.7);
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  text-align: center;
+  margin: -6px 0 4px;
+}
+/* Grille d'options (cartes tappables) */
+.hb-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(8px, 1.6vw, 14px);
+  max-width: 640px;
+  width: 100%;
+}
+/* Choix type/cheveux/tenue/accessoire : 2 colonnes -> grandes icones lisibles */
+.hb-grid-icons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 2vw, 18px);
+  max-width: 540px;
+  margin: 0 auto;
+}
+.hb-grid-icons .hb-opt { min-width: 0; width: 100%; padding: clamp(8px, 1.4vw, 14px); }
+.hb-grid-icons .hb-opt-img {
+  width: clamp(92px, 26vw, 150px);
+  height: clamp(92px, 26vw, 150px);
+}
+.hb-grid-icons .hb-opt-emoji { font-size: clamp(2.8rem, 10vw, 4.2rem); }
+.hb-opt {
+  cursor: pointer;
+  border: 2.5px solid rgba(255,225,160,0.28);
+  background: rgba(18, 10, 34, 0.55);          /* carte sombre givree -> ressort sur le decor */
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  border-radius: 18px;
+  padding: clamp(10px, 1.8vw, 16px);
+  min-width: clamp(78px, 20vw, 120px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: clamp(0.78rem, 1.8vw, 0.98rem);
+  transition: transform .12s ease, border-color .18s ease, background .18s ease;
+}
+.hb-opt:hover { background: rgba(255,255,255,0.14); }
+.hb-opt:active { transform: scale(0.95); }
+.hb-opt-emoji { font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1; }
+.hb-opt-img {
+  display: block;
+  width: clamp(48px, 9vw, 70px);
+  height: clamp(48px, 9vw, 70px);
+  object-fit: cover;
+  border-radius: 12px;
+}
+.hb-opt-label { line-height: 1.15; }
+.hb-opt.selected {
+  border-color: #FFE166;
+  background: rgba(255,225,102,0.2);
+  box-shadow: 0 0 0 3px rgba(255,225,102,0.25);
+}
+/* Pastille couleur */
+.hb-swatch {
+  width: clamp(34px, 8vw, 50px);
+  height: clamp(34px, 8vw, 50px);
+  min-width: 0;
+  border-radius: 999px;
+  padding: 0;
+  border: 3px solid rgba(255,255,255,0.25);
+}
+.hb-swatch.selected {
+  border-color: #fff;
+  box-shadow: 0 0 0 3px rgba(255,225,102,0.6);
+}
+/* Champ prenom + mot-cle */
+.hb-field {
+  width: min(92%, 420px);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+.hb-field label {
+  color: rgba(255,255,255,0.85);
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+}
+.hb-field input,
+.hb-field .hb-textarea {
+  border: 2px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.95);
+  border-radius: 12px;
+  padding: clamp(8px, 1.6vw, 12px) clamp(12px, 2vw, 16px);
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(0.9rem, 2.2vw, 1.05rem);
+  color: #2a1d52;
+  outline: none;
+}
+.hb-field .hb-textarea { resize: none; line-height: 1.35; box-sizing: border-box; width: 100%; }
+.hb-field input:focus, .hb-field .hb-textarea:focus { border-color: #FFE166; }
+.hb-field-hint { color: rgba(255,255,255,0.55); font-size: 0.75rem; }
+/* Recap final */
+.hb-recap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-align: center;
+}
+.hb-recap-name {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  color: #FFE166;
+}
+.hb-recap-list { color: rgba(255,255,255,0.8); font-size: clamp(0.85rem, 2vw, 1rem); line-height: 1.6; }
+/* Navigation bas */
+.hb-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex: 0 0 auto;
+  padding-top: clamp(8px, 1.6vw, 14px);
+}
+.hb-btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 14px;
+  padding: clamp(10px, 1.8vw, 14px) clamp(18px, 3vw, 30px);
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+  transition: transform .12s ease, opacity .2s ease;
+}
+.hb-btn:active { transform: scale(0.95); }
+.hb-prev {
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.25);
+}
+.hb-next {
+  background: linear-gradient(160deg, #ffb74d, #f57c00);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(245,124,0,0.45);
+}
+.hb-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.hb-prev[hidden] { visibility: hidden; }
 
 
 

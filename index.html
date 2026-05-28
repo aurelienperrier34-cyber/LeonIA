@@ -68,7 +68,7 @@
   <!-- Image d'accueil (ecran 0) : preload prioritaire pour l'afficher INSTANTANEMENT
        a la connexion, avant meme le CSS. JPG progressif 288 KB (vs 7 MB PNG avant). -->
   <link rel="preload" as="image" href="assets/leon_bienvenue.jpg" fetchpriority="high">
-  <link rel="stylesheet" href="style.css?v=593">
+  <link rel="stylesheet" href="style.css?v=621">
 </head>
 <body>
 <!-- Overlay "Tourne ton téléphone" (portrait mobile uniquement) -->
@@ -87,7 +87,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v593</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v621</div>
 
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
@@ -214,19 +214,19 @@
              position relative a la map identique sur TOUS supports. Coin
              bas-droite = foreground, aucun node de chapitre. -->
         <div class="map-side-dock">
-          <button class="map-dock-card" onclick="openCreatorMode()" type="button">
-            <div class="map-dock-icon">📖</div>
+          <button class="map-dock-card" id="dock-book-card" onclick="openCreatorMode()" type="button">
+            <div class="map-dock-lock" id="dock-book-lock" style="display:none">👑</div>
+            <div class="map-dock-icon"><img src="assets/ui/livre_magique.jpg?v=616" class="map-dock-img" alt=""></div>
             <div class="map-dock-text">
               <div class="map-dock-title">Le livre magique</div>
               <div class="map-dock-subtitle">81 histoires</div>
             </div>
           </button>
-          <button class="map-dock-card map-dock-card-locked" onclick="alert('Cette fonctionnalité arrive bientôt !')" type="button">
-            <div class="map-dock-lock">🔒</div>
+          <button class="map-dock-card" id="dock-hero-card" onclick="openHeroBuilder()" type="button">
+            <div class="map-dock-lock" id="dock-hero-lock" style="display:none">👑</div>
             <div class="map-dock-icon">✨</div>
             <div class="map-dock-text">
               <div class="map-dock-title">Crée ton héros</div>
-              <div class="map-dock-subtitle">Bientôt — Premium</div>
             </div>
           </button>
         </div>
@@ -1823,7 +1823,10 @@
     <header class="creator-topbar">
       <button class="creator-back" onclick="goToScreen('map')" aria-label="Retour carte">← Carte</button>
       <h1 class="creator-title">Le livre magique <span class="creator-title-author">de Léon</span></h1>
-      <div class="creator-stars-pill">⭐ <span id="creator-star-count">0</span></div>
+      <div class="creator-topbar-pills">
+        <button class="creator-stars-pill creator-stories-pill" onclick="showMyStories()" type="button" title="Mes histoires (relire gratuitement)"><img src="assets/ui/mes_histoires.jpg?v=615" alt="Mes histoires" class="creator-stories-icon"></button>
+        <button class="creator-stars-pill creator-plumes-pill" onclick="openPlumesShop()" type="button" title="Mes plumes — créer une histoire">🪶 <span data-plumes-balance>0</span></button>
+      </div>
     </header>
 
     <button class="pick-surprise" onclick="surpriseMeCreator()" type="button" title="Choix au hasard">
@@ -1890,7 +1893,33 @@
   </div>
 </div>
 
+<!-- ============================================================ -->
+<!-- ÉCRAN : CRÉE TON HÉROS (builder visuel guidé)               -->
+<!-- ============================================================ -->
+<div class="screen" id="screen-hero-builder">
+  <div class="hb-wrap">
+    <header class="hb-topbar">
+      <button class="creator-back" onclick="goToScreen('map')" aria-label="Retour carte">← Carte</button>
+      <h1 class="hb-title">Crée ton héros <span class="creator-title-author">✨</span></h1>
+      <div class="creator-topbar-pills">
+        <button class="creator-stars-pill creator-plumes-pill" onclick="openPlumesShop()" type="button" title="Mes plumes">🪶 <span data-plumes-balance>0</span></button>
+      </div>
+    </header>
+
+    <div class="hb-progress" id="hb-progress"></div>
+
+    <div class="hb-stage" id="hb-stage">
+      <!-- contenu de l'etape courante injecte par JS (hbRender) -->
+    </div>
+
+    <div class="hb-nav">
+      <button class="hb-btn hb-prev" id="hb-prev" type="button" onclick="hbPrev()">‹ Retour</button>
+      <button class="hb-btn hb-next" id="hb-next" type="button" onclick="hbNext()">Suivant ›</button>
+    </div>
+  </div>
+</div>
+
 <script src="calibration.js"></script>
-<script src="game.js?v=593"></script>
+<script src="game.js?v=621"></script>
 </body>
 </html>

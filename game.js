@@ -273,6 +273,12 @@ let state = {
   tapAttempts: 0,
   chaptersCompleted: [],
   starsAwarded: false,
+  // PREMIUM : acces au contenu payant (chapitres 2-5 + Livre magique).
+  // Source de verite = localStorage 'ia_premium' (voir isPremium()).
+  isPremium: false,
+  // PLUMES : monnaie consommable pour creer des histoires custom (a venir).
+  // Source de verite = localStorage 'ia_plumes' (voir getPlumes()).
+  plumes: 0,
   c2WordsSelected: [],
   vfScoreC2: 0,
   vfDoneC2: 0,
@@ -530,6 +536,10 @@ function restoreState() {
 // Init
 document.addEventListener("DOMContentLoaded", () => {
   restoreState();
+  state.isPremium = isPremium();   // source de verite = localStorage / ?premium=1
+  grantInitialPlumes();            // offre PLUMES_FREE_GIFT a la 1re ouverture
+  state.plumes = getPlumes();      // source de verite = localStorage 'ia_plumes'
+  updatePlumesUI();
   if (!subtitlesEnabled()) document.body.classList.add('cc-off');
   if (state.characterType) document.body.classList.add('has-character');
   updateAVToggles();
@@ -917,8 +927,774 @@ function updateName() {
   saveState();
 }
 
+// ============================================================
+// PREMIUM — acces au contenu payant (chapitres 2-5 + Livre magique)
+// ============================================================
+// Source de verite : localStorage 'ia_premium' === '1' (persiste a la
+// fermeture de l'onglet). La monnaie de creation d'histoires s'appellera
+// "plumes" (a venir, phase paiement).
+//
+// >>> POUR DEVELOPPER / TESTER : tout debloquer facilement <<<
+//   - tape  unlockPremium()  dans la console du navigateur, OU
+//   - ouvre l'app avec  ?premium=1  dans l'URL
+//   - tape  lockPremium()  pour re-verrouiller et revoir les cadenas.
+// ============================================================
+// Prix de l'achat unique (debloque tout le contenu Premium, a vie).
+const PREMIUM_PRICE = '4,99 €';
+
+function isPremium() {
+  try {
+    if (new URLSearchParams(location.search).get('premium') === '1') return true;
+    return localStorage.getItem('ia_premium') === '1';
+  } catch (e) { return false; }
+}
+
+// Applique (ou retire) le statut Premium : persistance + state + rafraichit l'UI.
+function _setPremiumFlag(on) {
+  try {
+    if (on) localStorage.setItem('ia_premium', '1');
+    else    localStorage.removeItem('ia_premium');
+  } catch (e) {}
+  state.isPremium = !!on;
+  try { if (typeof updateMapState === 'function') updateMapState(); } catch (e) {}
+}
+
+function unlockPremium() {
+  _setPremiumFlag(true);
+  console.log('%c[premium] DÉBLOQUÉ — chapitres 2-5 + Livre magique accessibles.', 'color:#2e8b57;font-weight:bold');
+}
+
+function lockPremium() {
+  _setPremiumFlag(false);
+  console.log('%c[premium] VERROUILLÉ — contenu payant re-bloqué.', 'color:#b22222;font-weight:bold');
+}
+
+// Achat unique du Premium (user-facing, depuis le paywall).
+// ============================================================
+// ⚠️ MVP : PAIEMENT SIMULÉ — il n'y a PAS encore de backend de paiement.
+// Cliquer "Débloquer" debloque immediatement, SANS encaisser.
+// >>> TODO PAIEMENT : remplacer le corps par un Stripe Checkout :
+//     - rediriger vers la session Checkout / ouvrir le widget,
+//     - n'appeler _setPremiumFlag(true) + showPremiumSuccess() qu'au retour
+//       "payment succeeded" (webhook ou redirect success_url).
+//   NE PAS publier l'app au grand public tant que ce TODO n'est pas fait,
+//   sinon le contenu payant est donne gratuitement.
+// ============================================================
+function purchasePremium() {
+  _setPremiumFlag(true);
+  document.getElementById('premium-paywall')?.remove();
+  showPremiumSuccess();
+}
+
+// Petit ecran de confirmation apres achat.
+function showPremiumSuccess() {
+  document.getElementById('premium-success')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'premium-success';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.82);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:420px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:28px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:50px;line-height:1;margin-bottom:8px;">🎉</div>' +
+      '<h2 style="margin:0 0 8px;font-size:1.3rem;color:#7a4a10;">C\'est débloqué !</h2>' +
+      '<p style="margin:0 0 20px;font-size:.97rem;line-height:1.45;opacity:.9;">' +
+        'Toute l\'aventure de Léon est à toi : les <b>chapitres 2 à 5</b> et le ' +
+        '<b>Livre magique</b>. Bon voyage&nbsp;! ✨</p>' +
+      '<button id="premium-success-close" style="cursor:pointer;border:none;' +
+      'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
+      'font-size:1rem;padding:12px 30px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.5);">' +
+      'C\'est parti ! 🚀</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  document.getElementById('premium-success-close')?.addEventListener('click', () => ov.remove());
+}
+
+// Expose pour la console / le HTML
+window.unlockPremium = unlockPremium;
+window.lockPremium = lockPremium;
+window.purchasePremium = purchasePremium;
+
+// ============================================================
+// ÉDITION ÉCOLE — déverrouillage par CODE DE LICENCE
+// ============================================================
+// En édition école, l'établissement a payé une licence : tout est débloqué
+// et le COMMERCE est masqué (les enfants n'achètent rien, ni Premium ni plumes ;
+// les plumes deviennent un quota géré par l'enseignant).
+// localStorage 'ia_edition' === 'school'.
+//
+// ⚠️ MVP : validation du code EN LOCAL (liste + motif). En production, le code
+// sera vérifié CÔTÉ SERVEUR (collection Firestore 'licenses') — sinon il suffit
+// de lire le code pour tricher. >>> TODO BACKEND : validation serveur.
+// DEV : activateSchoolLicense('ECOLE-DEMO') / deactivateSchoolLicense() en console.
+// ============================================================
+const SCHOOL_DEMO_CODES = ['ECOLE-DEMO', 'PROF-LEON', 'CLASSE-2026'];
+
+function isSchoolEdition() {
+  try { return localStorage.getItem('ia_edition') === 'school'; } catch (e) { return false; }
+}
+
+function _validateLicenseLocal(code) {
+  const c = (code || '').trim().toUpperCase();
+  if (!c) return false;
+  if (SCHOOL_DEMO_CODES.includes(c)) return true;
+  // Motif large pour les pilotes : ECOLE-XXXX (4+ alphanum)
+  return /^ECOLE-[A-Z0-9]{4,}$/.test(c);
+}
+
+function activateSchoolLicense(code) {
+  if (!_validateLicenseLocal(code)) return false;
+  try {
+    localStorage.setItem('ia_edition', 'school');
+    localStorage.setItem('ia_license_code', (code || '').trim().toUpperCase());
+  } catch (e) {}
+  _setPremiumFlag(true);              // débloque tout le contenu
+  document.getElementById('premium-paywall')?.remove();
+  document.getElementById('school-code-prompt')?.remove();
+  showSchoolWelcome();
+  console.log('%c[ecole] Licence activée — édition école, commerce masqué.', 'color:#2e8b57;font-weight:bold');
+  return true;
+}
+
+function deactivateSchoolLicense() {
+  try { localStorage.removeItem('ia_edition'); localStorage.removeItem('ia_license_code'); } catch (e) {}
+  _setPremiumFlag(false);
+  console.log('%c[ecole] Édition école désactivée.', 'color:#b22222;font-weight:bold');
+}
+window.activateSchoolLicense = activateSchoolLicense;
+window.deactivateSchoolLicense = deactivateSchoolLicense;
+window.isSchoolEdition = isSchoolEdition;
+
+// Saisie du code école (depuis le paywall)
+function showSchoolCodePrompt() {
+  document.getElementById('school-code-prompt')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'school-code-prompt';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:100000;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.85);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:400px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:26px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:42px;line-height:1;margin-bottom:6px;">🏫</div>' +
+      '<h2 style="margin:0 0 6px;font-size:1.2rem;color:#7a4a10;">Code école</h2>' +
+      '<p style="margin:0 0 14px;font-size:.9rem;opacity:.85;">Entre le code fourni à ' +
+      'ton établissement pour tout débloquer.</p>' +
+      '<input id="school-code-input" type="text" placeholder="ECOLE-XXXX" ' +
+      'style="width:100%;box-sizing:border-box;border:2px solid #e0a23a;border-radius:12px;' +
+      'padding:11px 14px;font-family:inherit;font-size:1.05rem;text-align:center;' +
+      'text-transform:uppercase;color:#4a2f12;margin-bottom:6px;">' +
+      '<div id="school-code-err" style="color:#b22222;font-size:.8rem;min-height:1em;margin-bottom:8px;"></div>' +
+      '<button id="school-code-ok" style="cursor:pointer;border:none;width:100%;' +
+      'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
+      'font-size:1rem;padding:12px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.45);">' +
+      'Activer 🏫</button>' +
+      '<button id="school-code-cancel" style="margin-top:12px;cursor:pointer;border:none;' +
+      'background:none;color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.7;">Annuler</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  const input = document.getElementById('school-code-input');
+  const tryActivate = () => {
+    if (!activateSchoolLicense(input.value)) {
+      document.getElementById('school-code-err').textContent = 'Code invalide. Vérifie auprès de ton établissement.';
+    }
+  };
+  document.getElementById('school-code-ok').addEventListener('click', tryActivate);
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryActivate(); });
+  document.getElementById('school-code-cancel').addEventListener('click', () => ov.remove());
+  setTimeout(() => input.focus(), 50);
+}
+window.showSchoolCodePrompt = showSchoolCodePrompt;
+
+function showSchoolWelcome() {
+  document.getElementById('school-welcome')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'school-welcome';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:100000;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.85);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:400px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:28px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:48px;line-height:1;margin-bottom:8px;">🏫✨</div>' +
+      '<h2 style="margin:0 0 8px;font-size:1.25rem;color:#7a4a10;">Édition école activée !</h2>' +
+      '<p style="margin:0 0 18px;font-size:.95rem;opacity:.9;">Toute l\'aventure de Léon ' +
+      'est débloquée pour ta classe : les 5 chapitres et le Livre magique.</p>' +
+      '<button id="school-welcome-close" style="cursor:pointer;border:none;' +
+      'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
+      'font-size:1rem;padding:12px 30px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.5);">' +
+      'En classe ! 🚀</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  document.getElementById('school-welcome-close')?.addEventListener('click', () => ov.remove());
+}
+
+// ============================================================
+// PLUMES 🪶 — monnaie consommable pour la creation d'histoires custom
+// ============================================================
+// 1 plume = 1 histoire personnalisee (fonctionnalite de generation a venir).
+// Source de verite : localStorage 'ia_plumes' (solde persiste, comme un achat).
+// Packs vendus a l'unite (pas d'abonnement). Paiement SIMULE pour l'instant.
+//
+// >>> DEV / TEST : addPlumes(10), setPlumes(0), openPlumesShop() en console.
+// ============================================================
+const PLUMES_PACKS = [
+  { id: 'decouverte', plumes: 5,  price: '2,99 €',  label: 'Découverte' },
+  { id: 'famille',    plumes: 25, price: '9,99 €',  label: 'Famille', best: true },
+  { id: 'conteur',    plumes: 60, price: '19,99 €', label: 'Conteur' },
+];
+const PLUMES_FREE_GIFT = 3;   // plumes offertes a la toute premiere ouverture
+
+function getPlumes() {
+  try { return parseInt(localStorage.getItem('ia_plumes') || '0', 10) || 0; }
+  catch (e) { return 0; }
+}
+
+function setPlumes(n) {
+  n = Math.max(0, n | 0);
+  try { localStorage.setItem('ia_plumes', String(n)); } catch (e) {}
+  state.plumes = n;
+  try { updatePlumesUI(); } catch (e) {}
+  return n;
+}
+
+function addPlumes(n)   { return setPlumes(getPlumes() + (n | 0)); }
+function spendPlumes(n) {                       // renvoie true si solde suffisant
+  n = n | 0;
+  if (getPlumes() < n) return false;
+  setPlumes(getPlumes() - n);
+  return true;
+}
+
+// Cadeau de bienvenue : quelques plumes offertes une seule fois.
+function grantInitialPlumes() {
+  try {
+    if (localStorage.getItem('ia_plumes_init') !== '1') {
+      localStorage.setItem('ia_plumes_init', '1');
+      addPlumes(PLUMES_FREE_GIFT);
+    }
+  } catch (e) {}
+}
+
+// Met a jour tout afficheur de solde present dans le DOM (id ou classe).
+function updatePlumesUI() {
+  const n = getPlumes();
+  document.querySelectorAll('[data-plumes-balance]').forEach(el => { el.textContent = n; });
+}
+
+// Achat d'un pack de plumes (depuis la boutique).
+// ⚠️ MVP : PAIEMENT SIMULÉ — voir le meme TODO Stripe que purchasePremium().
+function purchasePlumes(packId) {
+  const pack = PLUMES_PACKS.find(p => p.id === packId);
+  if (!pack) return;
+  // TODO PAIEMENT : Stripe Checkout, puis addPlumes au retour "paid" seulement.
+  addPlumes(pack.plumes);
+  document.getElementById('plumes-shop')?.remove();
+  showPlumesSuccess(pack.plumes);
+}
+
+// Boutique de plumes : overlay leger injecte dynamiquement.
+function showPlumesShop() {
+  // Édition école : pas d'achat. Les plumes sont un quota géré par l'enseignant.
+  if (isSchoolEdition()) { showSchoolPlumesInfo(); return; }
+  document.getElementById('plumes-shop')?.remove();
+  const solde = getPlumes();
+  const cards = PLUMES_PACKS.map(p =>
+    '<button data-plumes-pack="' + p.id + '" style="position:relative;cursor:pointer;' +
+    'border:2px solid ' + (p.best ? '#f57c00' : '#e0a23a') + ';border-radius:16px;' +
+    'background:' + (p.best ? 'linear-gradient(160deg,#fff3df,#ffe2b3)' : '#fffaf0') + ';' +
+    'padding:14px 10px;text-align:center;font-family:inherit;color:#4a2f12;flex:1;min-width:96px;">' +
+      (p.best ? '<div style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);' +
+        'background:#f57c00;color:#fff;font-size:.62rem;font-weight:800;padding:2px 8px;' +
+        'border-radius:8px;white-space:nowrap;">LE + POPULAIRE</div>' : '') +
+      '<div style="font-size:1.5rem;font-weight:800;">' + p.plumes + ' 🪶</div>' +
+      '<div style="font-size:.8rem;opacity:.7;margin:2px 0 8px;">' + p.label + '</div>' +
+      '<div style="background:#f57c00;color:#fff;font-weight:800;font-size:.9rem;' +
+      'padding:7px 4px;border-radius:10px;">' + p.price + '</div>' +
+    '</button>'
+  ).join('');
+  const ov = document.createElement('div');
+  ov.id = 'plumes-shop';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.82);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:460px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:24px 22px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:44px;line-height:1;margin-bottom:4px;">🪶</div>' +
+      '<h2 style="margin:0 0 4px;font-size:1.3rem;color:#7a4a10;">Les plumes de Léon</h2>' +
+      '<p style="margin:0 0 4px;font-size:.92rem;line-height:1.4;opacity:.9;">' +
+        'Chaque plume permet de créer <b>une histoire personnalisée</b>.</p>' +
+      '<p style="margin:0 0 16px;font-weight:700;font-size:.95rem;">' +
+        'Tu as <span data-plumes-balance>' + solde + '</span> 🪶</p>' +
+      '<div style="display:flex;gap:10px;justify-content:center;margin-bottom:16px;">' + cards + '</div>' +
+      '<button id="plumes-shop-close" style="cursor:pointer;border:none;background:none;' +
+      'color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.7;">Fermer</button>' +
+      '<div style="margin-top:10px;font-size:.74rem;opacity:.55;">Paiement à l\'unité · sans abonnement</div>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  ov.querySelectorAll('[data-plumes-pack]').forEach(btn =>
+    btn.addEventListener('click', () => purchasePlumes(btn.getAttribute('data-plumes-pack'))));
+  document.getElementById('plumes-shop-close')?.addEventListener('click', () => ov.remove());
+}
+
+function showPlumesSuccess(n) {
+  document.getElementById('plumes-success')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'plumes-success';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.82);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:400px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:26px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:48px;line-height:1;margin-bottom:6px;">🪶✨</div>' +
+      '<h2 style="margin:0 0 8px;font-size:1.25rem;color:#7a4a10;">+' + n + ' plumes !</h2>' +
+      '<p style="margin:0 0 18px;font-size:.95rem;opacity:.9;">Tu as maintenant ' +
+        '<b><span data-plumes-balance>' + getPlumes() + '</span> 🪶</b> pour créer tes histoires.</p>' +
+      '<button id="plumes-success-close" style="cursor:pointer;border:none;' +
+      'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
+      'font-size:1rem;padding:12px 30px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.5);">' +
+      'Super ! 🎉</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  document.getElementById('plumes-success-close')?.addEventListener('click', () => ov.remove());
+}
+
+// Édition école : info quota (pas d'achat) au lieu de la boutique.
+function showSchoolPlumesInfo() {
+  document.getElementById('plumes-shop')?.remove();
+  const solde = getPlumes();
+  const ov = document.createElement('div');
+  ov.id = 'plumes-shop';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.82);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:420px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:26px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:44px;line-height:1;margin-bottom:6px;">🪶🏫</div>' +
+      '<h2 style="margin:0 0 6px;font-size:1.25rem;color:#7a4a10;">Tes plumes de classe</h2>' +
+      '<p style="margin:0 0 8px;font-weight:700;">Il te reste <span data-plumes-balance>' + solde + '</span> 🪶</p>' +
+      '<p style="margin:0 0 18px;font-size:.92rem;line-height:1.4;opacity:.85;">' +
+        'Dans l\'édition école, les plumes sont fournies par ton enseignant. ' +
+        'Chaque plume permet de créer une histoire personnalisée.</p>' +
+      '<button id="plumes-shop-close" style="cursor:pointer;border:none;' +
+      'background:linear-gradient(160deg,#ffb74d,#f57c00);color:#fff;font-weight:800;' +
+      'font-size:1rem;padding:11px 26px;border-radius:14px;">D\'accord</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  document.getElementById('plumes-shop-close')?.addEventListener('click', () => ov.remove());
+}
+
+// Expose pour la console / le HTML
+window.getPlumes = getPlumes;
+window.addPlumes = addPlumes;
+window.setPlumes = setPlumes;
+window.spendPlumes = spendPlumes;
+window.openPlumesShop = showPlumesShop;
+window.showSchoolPlumesInfo = showSchoolPlumesInfo;
+
+// ============================================================
+// CRÉE TON HÉROS — builder visuel guidé (front)
+// ============================================================
+// Collecte les choix de l'enfant (memes cles que generate_custom_hero.py) :
+//   type / hair / hair_color / outfit / outfit_color / accessory / name / keyword
+// La generation reelle (portrait Gemini) se fera via la Cloud Function ;
+// pour l'instant le bouton final appelle un PLACEHOLDER.
+// ============================================================
+const HB_OPTS = {
+  type: [
+    { v: 'fille',  label: 'Fille',  emoji: '👧' },
+    { v: 'garcon', label: 'Garçon', emoji: '👦' },
+    { v: 'animal', label: 'Animal', emoji: '🦊' },
+    { v: 'robot',  label: 'Robot',  emoji: '🤖' },
+  ],
+  hair: [
+    { v: 'court',    label: 'Courts',   emoji: '💇' },
+    { v: 'long',     label: 'Longs',    emoji: '👩' },
+    { v: 'boucle',   label: 'Bouclés',  emoji: '🦱' },
+    { v: 'couettes', label: 'Couettes', emoji: '👧' },
+    { v: 'queue',    label: 'Queue',    emoji: '🎀' },
+    { v: 'tresse',   label: 'Tresse',   emoji: '🧒' },
+    { v: 'chauve',   label: 'Aucun',    emoji: '🥚' },
+  ],
+  outfit: [
+    { v: 'cape',        label: 'Cape',        emoji: '🦸' },
+    { v: 'robe',        label: 'Robe',        emoji: '👗' },
+    { v: 'salopette',   label: 'Salopette',   emoji: '👖' },
+    { v: 'pull',        label: 'Pull',        emoji: '🧶' },
+    { v: 'combinaison', label: 'Combinaison', emoji: '🧑‍🚀' },
+    { v: 'tshirt',      label: 'T-shirt',     emoji: '👕' },
+    { v: 'armure',      label: 'Armure',      emoji: '🛡️' },
+  ],
+  accessory: [
+    { v: 'chapeau',   label: 'Chapeau',  emoji: '🎩' },
+    { v: 'couronne',  label: 'Couronne', emoji: '👑' },
+    { v: 'lunettes',  label: 'Lunettes', emoji: '👓' },
+    { v: 'echarpe',   label: 'Écharpe',  emoji: '🧣' },
+    { v: 'sac',       label: 'Sac à dos',emoji: '🎒' },
+    { v: 'casquette', label: 'Casquette',emoji: '🧢' },
+    { v: 'noeud',     label: 'Nœud',     emoji: '🎀' },
+    { v: 'aucun',     label: 'Aucun',    emoji: '🚫' },
+  ],
+  colors: [
+    { v: 'brun', hex: '#6b4423' },   { v: 'blond', hex: '#e6c34a' },
+    { v: 'roux', hex: '#c1440e' },   { v: 'noir', hex: '#2b2b2b' },
+    { v: 'rose', hex: '#ff5fa2' },   { v: 'bleu', hex: '#3aa0ff' },
+    { v: 'violet', hex: '#9b5de5' }, { v: 'vert', hex: '#3fbf6f' },
+    { v: 'rouge', hex: '#e23b3b' },  { v: 'orange', hex: '#ff8c33' },
+    { v: 'blanc', hex: '#f4f4f4' },
+    { v: 'turquoise', hex: '#2ec4b6' },
+    { v: 'arc-en-ciel', hex: 'linear-gradient(90deg,#ff5f5f,#ffd23f,#3fbf6f,#3aa0ff,#9b5de5)' },
+  ],
+};
+
+let hbState = {
+  step: 0, type: 'fille', hair: 'court', hair_color: 'brun',
+  outfit: 'tshirt', outfit_color: 'bleu', accessory: 'aucun',
+  name: '', keyword: '',
+};
+
+// Liste des etapes selon le type (animal/robot sautent les cheveux)
+function hbSteps() {
+  const s = ['type'];
+  if (hbState.type === 'fille' || hbState.type === 'garcon') {
+    s.push('hair');
+    if (hbState.hair !== 'chauve') s.push('hair_color');
+  }
+  s.push('outfit', 'outfit_color', 'accessory', 'name', 'recap');
+  return s;
+}
+
+function openHeroBuilder() {
+  // Premium : la creation fait partie du contenu payant.
+  if (!isPremium()) { showPremiumPaywall('book'); goToScreen('map'); return; }
+  hbState.step = 0;
+  goToScreen('hero-builder');
+  updatePlumesUI();
+  hbRender();
+}
+window.openHeroBuilder = openHeroBuilder;
+
+function hbPick(field, value) {
+  hbState[field] = value;
+  hbRender();
+}
+window.hbPick = hbPick;
+
+function hbNext() {
+  const steps = hbSteps();
+  if (hbState.step < steps.length - 1) { hbState.step++; hbRender(); }
+}
+function hbPrev() {
+  if (hbState.step > 0) { hbState.step--; hbRender(); }
+}
+window.hbNext = hbNext;
+window.hbPrev = hbPrev;
+
+function _hbGrid(field) {
+  return '<div class="hb-grid hb-grid-icons">' + HB_OPTS[field].map(o =>
+    '<button type="button" class="hb-opt' + (hbState[field] === o.v ? ' selected' : '') +
+    '" onclick="hbPick(\'' + field + '\',\'' + o.v + '\')">' +
+    // Illustration watercolor ; repli sur l'emoji si l'icone n'est pas (encore) generee
+    '<img class="hb-opt-img" src="assets/ui/builder/' + field + '_' + o.v + '.jpg?v=614" alt="" loading="lazy" ' +
+    'onerror="this.style.display=\'none\'; var e=this.nextElementSibling; if(e) e.style.display=\'inline-block\';">' +
+    '<span class="hb-opt-emoji" style="display:none">' + o.emoji + '</span>' +
+    '<span class="hb-opt-label">' + o.label + '</span></button>'
+  ).join('') + '</div>';
+}
+
+function _hbColors(field) {
+  return '<div class="hb-grid">' + HB_OPTS.colors.map(c =>
+    '<button type="button" class="hb-opt hb-swatch' + (hbState[field] === c.v ? ' selected' : '') +
+    '" title="' + c.v + '" style="background:' + c.hex + '" ' +
+    'onclick="hbPick(\'' + field + '\',\'' + c.v + '\')"></button>'
+  ).join('') + '</div>';
+}
+
+function hbRender() {
+  const steps = hbSteps();
+  if (hbState.step >= steps.length) hbState.step = steps.length - 1;
+  const cur = steps[hbState.step];
+  const stage = document.getElementById('hb-stage');
+  const prog = document.getElementById('hb-progress');
+  const prevBtn = document.getElementById('hb-prev');
+  const nextBtn = document.getElementById('hb-next');
+  if (!stage) return;
+
+  // Barre de progression
+  prog.innerHTML = steps.map((_, i) =>
+    '<span class="hb-dot' + (i === hbState.step ? ' current' : (i < hbState.step ? ' done' : '')) + '"></span>'
+  ).join('');
+
+  let html = '';
+  switch (cur) {
+    case 'type':
+      html = '<h2 class="hb-step-title">Qui est ton héros ?</h2>' + _hbGrid('type');
+      break;
+    case 'hair':
+      html = '<h2 class="hb-step-title">Ses cheveux ?</h2>' + _hbGrid('hair');
+      break;
+    case 'hair_color':
+      html = '<h2 class="hb-step-title">Couleur des cheveux ?</h2>' + _hbColors('hair_color');
+      break;
+    case 'outfit':
+      html = '<h2 class="hb-step-title">Sa tenue ?</h2>' + _hbGrid('outfit');
+      break;
+    case 'outfit_color':
+      html = '<h2 class="hb-step-title">Couleur de la tenue ?</h2>' + _hbColors('outfit_color');
+      break;
+    case 'accessory':
+      html = '<h2 class="hb-step-title">Un accessoire ?</h2>' + _hbGrid('accessory');
+      break;
+    case 'name':
+      html = '<h2 class="hb-step-title">Son petit nom ?</h2>' +
+        '<div class="hb-field"><label>Prénom du héros</label>' +
+        '<input id="hb-name" type="text" maxlength="20" placeholder="ex : Zoé" ' +
+        'value="' + (hbState.name || '').replace(/"/g, '&quot;') + '" oninput="hbState.name=this.value; hbUpdateNav();"></div>' +
+        '<div class="hb-field"><label>Une idée en plus ? (facultatif)</label>' +
+        '<textarea id="hb-keyword" rows="2" maxlength="120" class="hb-textarea" ' +
+        'placeholder="ex : avec une petite licorne de compagnie ; ou : une exploratrice des étoiles" ' +
+        'oninput="hbState.keyword=this.value;">' + (hbState.keyword || '').replace(/</g, '&lt;') + '</textarea>' +
+        '<span class="hb-field-hint">Un détail, un thème ou un compagnon (le héros reste celui choisi plus haut)</span></div>';
+      break;
+    case 'recap':
+      html = _hbRecapHtml();
+      break;
+  }
+  stage.innerHTML = html;
+
+  // Navigation
+  prevBtn.hidden = (hbState.step === 0);
+  if (cur === 'recap') {
+    nextBtn.style.display = 'none';
+  } else {
+    nextBtn.style.display = '';
+  }
+  hbUpdateNav();
+}
+
+// Active/desactive "Suivant" (ex: prenom obligatoire)
+function hbUpdateNav() {
+  const steps = hbSteps();
+  const cur = steps[hbState.step];
+  const nextBtn = document.getElementById('hb-next');
+  if (!nextBtn) return;
+  nextBtn.disabled = (cur === 'name' && !(hbState.name || '').trim());
+}
+window.hbUpdateNav = hbUpdateNav;
+
+function _hbLabel(field, val) {
+  if (field === 'colors') {
+    const c = HB_OPTS.colors.find(x => x.v === val); return c ? c.v : val;
+  }
+  const o = (HB_OPTS[field] || []).find(x => x.v === val);
+  return o ? o.label.toLowerCase() : val;
+}
+
+function _hbRecapHtml() {
+  const isHuman = hbState.type === 'fille' || hbState.type === 'garcon';
+  const lines = [];
+  lines.push((HB_OPTS.type.find(t => t.v === hbState.type) || {}).label);
+  if (isHuman) {
+    if (hbState.hair === 'chauve') lines.push('sans cheveux');
+    else lines.push('cheveux ' + _hbLabel('hair', hbState.hair) + ' ' + hbState.hair_color);
+  }
+  lines.push('tenue : ' + _hbLabel('outfit', hbState.outfit) + ' ' + hbState.outfit_color);
+  if (hbState.accessory !== 'aucun') lines.push('accessoire : ' + _hbLabel('accessory', hbState.accessory));
+  if ((hbState.keyword || '').trim()) lines.push('idée : ' + hbState.keyword.trim());
+  return '<div class="hb-recap">' +
+    '<div class="hb-opt-emoji" style="font-size:3.4rem">✨</div>' +
+    '<div class="hb-recap-name">' + (hbState.name || 'Mon héros') + '</div>' +
+    '<div class="hb-recap-list">' + lines.filter(Boolean).join('<br>') + '</div>' +
+    '<button class="hb-btn hb-next" style="margin-top:14px" type="button" onclick="hbGenerate()">' +
+    'Donne vie à mon héros ! ✨</button>' +
+    '<div style="color:rgba(255,255,255,0.5);font-size:.78rem;margin-top:6px">' +
+    'Gratuit · tu utiliseras une plume 🪶 quand il vivra une histoire</div>' +
+    '</div>';
+}
+
+// Construit l'objet params (memes cles que generate_custom_hero.py)
+function hbParams() {
+  return {
+    type: hbState.type, hair: hbState.hair, hair_color: hbState.hair_color,
+    outfit: hbState.outfit, outfit_color: hbState.outfit_color,
+    accessory: hbState.accessory, name: (hbState.name || '').trim(),
+    keyword: (hbState.keyword || '').trim(),
+  };
+}
+
+// ============================================================
+// Connexion au BACKEND de generation
+// ============================================================
+// URL configurable : localhost par defaut (pilote), Cloud Run plus tard via
+//   localStorage.setItem('ia_backend_url', 'https://...')
+function getBackendUrl() {
+  // Par defaut : MEME ORIGINE que la page (le serveur sert l'app + l'API).
+  // -> marche depuis n'importe quel appareil du reseau (PC, Pixel, tablette...)
+  //    sans hardcoder localhost (qui, sur le tel, designe le tel lui-meme !).
+  //    Surchageable via localStorage 'ia_backend_url' (ex: Cloud Run).
+  try {
+    const override = localStorage.getItem('ia_backend_url');
+    if (override) return override;
+  } catch (e) {}
+  if (location && location.origin && location.origin.indexOf('http') === 0) {
+    return location.origin;
+  }
+  return 'http://localhost:8787';   // fallback (app ouverte en file://)
+}
+function getLicenseCode() {
+  try { return localStorage.getItem('ia_license_code') || 'ECOLE-DEMO'; }
+  catch (e) { return 'ECOLE-DEMO'; }
+}
+window.getBackendUrl = getBackendUrl;
+
+function _heroOverlay(id, innerHtml) {
+  document.getElementById(id)?.remove();
+  const ov = document.createElement('div');
+  ov.id = id;
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.85);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:430px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:26px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' + innerHtml + '</div>';
+  document.body.appendChild(ov);
+  return ov;
+}
+
+function showHeroLoading(name) {
+  _heroOverlay('hero-loading',
+    '<div style="font-size:48px;line-height:1;margin-bottom:10px;" class="anim-bounce">🪄✨</div>' +
+    '<h2 style="margin:0 0 8px;font-size:1.3rem;color:#7a4a10;">Léon donne vie à ' + name + '…</h2>' +
+    '<p style="margin:0;font-size:.95rem;opacity:.85;">Sa baguette dessine ton héros. ' +
+    'Ça prend environ une minute ⏳</p>');
+}
+
+function showHeroError(msg) {
+  const ov = _heroOverlay('hero-error',
+    '<div style="font-size:44px;margin-bottom:8px;">😯</div>' +
+    '<h2 style="margin:0 0 8px;font-size:1.2rem;color:#7a4a10;">Oups</h2>' +
+    '<p style="margin:0 0 18px;font-size:.95rem;opacity:.9;">' + msg + '</p>' +
+    '<button id="hero-error-close" style="cursor:pointer;border:none;' +
+    'background:linear-gradient(160deg,#ffb74d,#f57c00);color:#fff;font-weight:800;' +
+    'font-size:1rem;padding:11px 26px;border-radius:14px;">Réessayer</button>');
+  document.getElementById('hero-error-close').addEventListener('click', () => ov.remove());
+}
+
+function showHeroResult(data) {
+  const url = getBackendUrl() + data.portrait_url;
+  const ov = _heroOverlay('hero-result',
+    '<h2 style="margin:0 0 10px;font-size:1.35rem;color:#7a4a10;">' +
+      (data.name || 'Ton héros') + ' est né ! 🎉</h2>' +
+    '<img src="' + url + '" alt="' + (data.name || '') + '" ' +
+    'style="width:200px;height:200px;object-fit:cover;border-radius:18px;' +
+    'border:3px solid #e0a23a;box-shadow:0 6px 18px rgba(0,0,0,.25);margin-bottom:14px;">' +
+    '<p style="margin:0 0 16px;font-size:.92rem;opacity:.85;">' +
+      'Il est ajouté à <b>Mes héros</b>. Tu pourras lui faire vivre des histoires 🪶</p>' +
+    '<button id="hero-result-close" style="cursor:pointer;border:none;' +
+    'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
+    'font-size:1rem;padding:12px 30px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.45);">' +
+    'Génial ! 😍</button>');
+  document.getElementById('hero-result-close').addEventListener('click', () => {
+    ov.remove();
+    goToScreen('map');   // retour carte ; la galerie "Mes heros" arrive (step 5b)
+  });
+}
+
+// Vrai appel au backend : cree le heros (portrait Gemini cote serveur).
+async function hbGenerate() {
+  const params = hbParams();
+  showHeroLoading(params.name || 'ton héros');
+  try {
+    const res = await fetch(getBackendUrl() + '/api/create-hero', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.assign({ license: getLicenseCode() }, params)),
+    });
+    const data = await res.json().catch(() => ({}));
+    document.getElementById('hero-loading')?.remove();
+    if (!res.ok) {
+      showHeroError(data.message || data.error || 'La génération a échoué. Réessaie.');
+      return;
+    }
+    showHeroResult(data);
+  } catch (e) {
+    document.getElementById('hero-loading')?.remove();
+    showHeroError('Le serveur de Léon est injoignable. Vérifie qu\'il est bien lancé. (' + e.message + ')');
+  }
+}
+window.hbGenerate = hbGenerate;
+
+// Paywall : overlay leger injecte dynamiquement (aucun HTML a modifier).
+// feature = numero de chapitre (2..5) ou 'book' pour le Livre magique.
+function showPremiumPaywall(feature) {
+  const isBook = feature === 'book';
+  const titre = isBook ? 'Le Livre magique de Léon' : ('Chapitre ' + feature);
+  document.getElementById('premium-paywall')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'premium-paywall';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.82);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:440px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:26px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:46px;line-height:1;margin-bottom:8px;">👑</div>' +
+      '<h2 style="margin:0 0 6px;font-size:1.35rem;color:#7a4a10;">' + titre + '</h2>' +
+      '<p style="margin:0 0 4px;font-weight:700;font-size:1.05rem;">Contenu Premium</p>' +
+      '<p style="margin:0 0 18px;font-size:.95rem;line-height:1.4;opacity:.9;">' +
+        'Débloque <b>toute l\'aventure de Léon</b> : les chapitres 2 à 5 et le ' +
+        'Livre magique avec ses histoires illustrées et racontées.</p>' +
+      '<button id="premium-paywall-buy" style="cursor:pointer;border:none;' +
+      'background:linear-gradient(160deg,#ffb74d,#f57c00);color:#fff;font-weight:800;' +
+      'font-size:1.05rem;padding:13px 28px;border-radius:14px;box-shadow:0 4px 14px rgba(245,124,0,.5);">' +
+      'Débloquer tout — ' + PREMIUM_PRICE + '</button>' +
+      '<div style="margin-top:12px;font-size:.82rem;opacity:.75;">Paiement unique · accès à vie · sans abonnement</div>' +
+      '<button id="premium-paywall-school" style="margin-top:14px;cursor:pointer;border:none;' +
+      'background:none;color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.85;">' +
+      '🏫 J\'ai un code école</button><br>' +
+      '<button id="premium-paywall-close" style="margin-top:8px;cursor:pointer;border:none;' +
+      'background:none;color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.6;">' +
+      'Plus tard</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  document.getElementById('premium-paywall-buy')?.addEventListener('click', purchasePremium);
+  document.getElementById('premium-paywall-school')?.addEventListener('click', showSchoolCodePrompt);
+  document.getElementById('premium-paywall-close')?.addEventListener('click', () => ov.remove());
+}
+window.showPremiumPaywall = showPremiumPaywall;
+
 // Start a mapped chapter
 function startChapter(n) {
+  // Verrou Premium : seul le chapitre 1 est gratuit.
+  if (n >= 2 && !isPremium()) { showPremiumPaywall(n); return; }
+
   const firstScreens = { 1: 2, 2: 'c2s1', 3: 'c3s1', 4: 'c4s1', 5: 'c5s1' };
   const target = firstScreens[n];
   if (!target) return;
@@ -2876,23 +3652,46 @@ const MAP_NODE_ICONS = ['⚙️', '🎨', '🎵', '💬', '🏆'];
 function updateMapState() {
   const completed = state.chaptersCompleted || [];
 
+  const premium = isPremium();
   for (let i = 1; i <= 5; i++) {
     const node = document.getElementById('map-node-' + i);
     if (!node) continue;
-    const shouldUnlock = i === 1 || completed.includes(i - 1);
-    if (shouldUnlock) {
-      node.classList.remove('node-locked');
+    const icon = node.querySelector('.node-icon');
+    const progressOk = i === 1 || completed.includes(i - 1);
+    const premiumOk  = i === 1 || premium;   // chapitre 1 toujours gratuit
+
+    if (progressOk && premiumOk) {
+      // Pleinement debloque
+      node.classList.remove('node-locked', 'node-premium');
       node.classList.add('node-unlocked');
-      if (!node.getAttribute('onclick')) {
-        node.setAttribute('onclick', `startChapter(${i})`);
-      }
-      const icon = node.querySelector('.node-icon');
-      if (icon) {
-        icon.textContent = MAP_NODE_ICONS[i - 1];
-        icon.classList.remove('locked-icon');
-      }
+      node.setAttribute('onclick', `startChapter(${i})`);
+      if (icon) { icon.textContent = MAP_NODE_ICONS[i - 1]; icon.classList.remove('locked-icon'); }
+    } else if (progressOk && !premiumOk) {
+      // Progression faite mais contenu Premium -> cadenas dore + paywall
+      node.classList.remove('node-unlocked');
+      node.classList.add('node-locked', 'node-premium');
+      node.setAttribute('onclick', `showPremiumPaywall(${i})`);
+      if (icon) { icon.textContent = '👑'; icon.classList.add('locked-icon'); }
+    } else {
+      // Pas encore atteint (progression non faite)
+      node.classList.remove('node-unlocked', 'node-premium');
+      node.classList.add('node-locked');
+      node.removeAttribute('onclick');
+      if (icon) { icon.textContent = '🔒'; icon.classList.add('locked-icon'); }
     }
   }
+
+  // Badge Premium sur les cartes du dock (livre magique + crée ton héros)
+  try {
+    const bookLock = document.getElementById('dock-book-lock');
+    const bookCard = document.getElementById('dock-book-card');
+    if (bookLock) bookLock.style.display = premium ? 'none' : '';
+    if (bookCard) bookCard.classList.toggle('map-dock-card-locked', !premium);
+    const heroLock = document.getElementById('dock-hero-lock');
+    const heroCard = document.getElementById('dock-hero-card');
+    if (heroLock) heroLock.style.display = premium ? 'none' : '';
+    if (heroCard) heroCard.classList.toggle('map-dock-card-locked', !premium);
+  } catch (e) {}
 
   // Pulse sur le prochain chapitre à jouer
   document.querySelectorAll('.node-island').forEach(n => n.classList.remove('candy-pulse'));
@@ -9380,6 +10179,8 @@ let creatorState = {
 };
 
 function openCreatorMode() {
+  // Verrou Premium : le Livre magique fait partie du contenu payant.
+  if (!isPremium()) { showPremiumPaywall('book'); goToScreen('map'); return; }
   goToScreen('creator');
   // v500 : le double rAF du v490 ne suffit pas avec le nouveau layout
   // position:absolute. On poll en rAF jusqu'a ce que l'ecran soit reellement
@@ -9422,6 +10223,21 @@ const PICK_STEPS = [
 ];
 let pickBookState = { currentStep: 0, isFlipping: false, swipeWired: false };
 
+// Heros custom crees par l'enfant (recuperes du backend pour la galerie)
+let creatorCustomHeroes = [];
+async function fetchCustomHeroes() {
+  try {
+    const r = await fetch(getBackendUrl() + '/api/state?license=' + encodeURIComponent(getLicenseCode()));
+    if (!r.ok) { creatorCustomHeroes = []; return; }
+    const d = await r.json();
+    creatorCustomHeroes = d.heroes || [];
+    // En edition ecole, le solde de plumes fait foi cote SERVEUR -> on synchronise l'affichage
+    if (typeof d.plumes === 'number') {
+      document.querySelectorAll('[data-plumes-balance]').forEach(el => { el.textContent = d.plumes; });
+    }
+  } catch (e) { creatorCustomHeroes = []; }   // backend absent : pas de heros custom
+}
+
 function initCreatorPick() {
   // Reset state (mais on garde le level choisi)
   creatorState.hero = null;
@@ -9437,14 +10253,15 @@ function initCreatorPick() {
   document.getElementById('creator-pick').hidden = false;
   document.getElementById('creator-loading').hidden = true;
   document.getElementById('creator-book').hidden = true;
-  // Star count
-  const sc = document.getElementById('creator-star-count');
-  if (sc) sc.textContent = state.totalStars || 0;
   // Build livre
   renderPickBook();
   attachPickSwipe();
   const err = document.getElementById('creator-error-msg');
   if (err) err.textContent = '';
+  // Recupere les heros custom (backend) puis re-render pour les afficher
+  fetchCustomHeroes().then(() => {
+    if (!document.getElementById('creator-pick').hidden) renderPickBook();
+  });
 }
 
 function renderPickBook() {
@@ -9550,6 +10367,36 @@ function renderPickBook() {
           </div>
         </div>
       `;
+    }
+    // Page HEROS : ajoute les heros custom de l'enfant + une carte "Creer"
+    if (step.key === 'hero') {
+      const itemsBox = spread.querySelector('.pick-items');
+      if (itemsBox) {
+        creatorCustomHeroes.forEach(h => {
+          const b = document.createElement('button');
+          b.className = 'pick-item' + (creatorState.hero === 'custom:' + h.hero_id ? ' selected' : '');
+          b.dataset.cat = 'hero';
+          b.dataset.value = 'custom:' + h.hero_id;
+          b.type = 'button';
+          b.style.position = 'relative';
+          b.innerHTML = '<span class="pick-hero-del" title="Supprimer" style="position:absolute;' +
+            'top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.5);' +
+            'color:#fff;font-size:12px;line-height:20px;text-align:center;z-index:3;">✕</span>' +
+            '<img class="pick-item-img" src="' + getBackendUrl() + h.portrait_url +
+            '" alt="" loading="lazy"><span class="pick-item-label">' + h.name + '</span>';
+          b.querySelector('.pick-hero-del').addEventListener('click', (e) => {
+            e.stopPropagation(); deleteCustomHero(h.hero_id, h.name);
+          });
+          itemsBox.appendChild(b);
+        });
+        const c = document.createElement('button');
+        c.className = 'pick-item pick-item-create';
+        c.type = 'button';
+        c.innerHTML = '<span class="pick-item-emoji" style="display:inline-block;font-size:1.7rem">➕</span>' +
+          '<span class="pick-item-label">Créer</span>';
+        c.onclick = () => openHeroBuilder();
+        itemsBox.appendChild(c);
+      }
     }
     pagesEl.appendChild(spread);
   });
@@ -9726,6 +10573,10 @@ async function generateCreatorStory() {
     if (err) err.textContent = '⚠️ Choisis un élément dans chaque catégorie !';
     return;
   }
+  // HEROS CUSTOM : on genere l'histoire via le backend (debit 1 plume)
+  if (creatorState.hero.indexOf('custom:') === 0) {
+    return generateCustomStoryViaBackend(creatorState.hero.slice('custom:'.length));
+  }
   // Show loading, hide pick
   document.getElementById('creator-pick').hidden = true;
   document.getElementById('creator-loading').hidden = false;
@@ -9783,6 +10634,142 @@ async function generateCreatorStory() {
     showCreatorBook();
   }, 800);
 }
+
+// Genere une histoire CUSTOM via le backend (heros cree par l'enfant).
+// Debite 1 plume cote serveur, puis affiche l'histoire dans le lecteur.
+async function generateCustomStoryViaBackend(heroId) {
+  document.getElementById('creator-pick').hidden = true;
+  document.getElementById('creator-loading').hidden = false;
+  // Message d'attente adapte (la generation custom prend ~1-2 min)
+  const loadEl = document.getElementById('creator-loading');
+  const sub = loadEl && loadEl.querySelector('p');
+  if (sub) sub.textContent = 'Léon écrit et illustre ton histoire (environ une minute)…';
+
+  const showPickError = (msg) => {
+    document.getElementById('creator-loading').hidden = true;
+    document.getElementById('creator-pick').hidden = false;
+    const err = document.getElementById('creator-error-msg');
+    if (err) err.textContent = '⚠️ ' + msg;
+  };
+
+  try {
+    const r = await fetch(getBackendUrl() + '/api/create-story', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        license: getLicenseCode(), hero_id: heroId,
+        place: creatorState.place, item: creatorState.item,
+        villain: creatorState.villain, level: creatorState.level || 'courte',
+      }),
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      showPickError(d.message || d.error || 'Génération impossible. Réessaie.');
+      return;
+    }
+    // Charge le story.json genere et construit les pages (images servies par le backend)
+    // Met a jour le solde de plumes affiche (debit cote serveur)
+    if (typeof d.plumes_left === 'number') {
+      document.querySelectorAll('[data-plumes-balance]').forEach(el => { el.textContent = d.plumes_left; });
+    }
+    const sresp = await fetch(getBackendUrl() + d.story_url);
+    const data = await sresp.json();
+    const base = getBackendUrl() + '/custom/' + d.story_dir + '/';
+    creatorState.story = {
+      title: data.title || 'Mon histoire',
+      pages: (data.pages || []).map((pg, i) => ({
+        text: pg.text || '',
+        image: base + 'page' + (i + 1) + '.jpg',
+        audio: base + 'page' + (i + 1) + '.mp3',
+      })),
+    };
+    creatorState.assetsFolder = null;   // audio fourni par page.audio (URL backend)
+    creatorState.currentPage = 0;
+    showCreatorBook();
+  } catch (e) {
+    showPickError('Le serveur de Léon est injoignable. Vérifie qu\'il est lancé.');
+  }
+}
+
+// ============================================================
+// MES HISTOIRES : relecture GRATUITE des histoires deja generees
+// ============================================================
+async function showMyStories() {
+  let stories = [];
+  try {
+    const r = await fetch(getBackendUrl() + '/api/stories?license=' + encodeURIComponent(getLicenseCode()));
+    if (r.ok) stories = (await r.json()).stories || [];
+  } catch (e) {}
+  document.getElementById('my-stories')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'my-stories';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.85);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  const cards = stories.length ? stories.map(s =>
+    '<button data-story-dir="' + s.story_dir + '" style="cursor:pointer;border:2px solid #e0a23a;' +
+    'border-radius:14px;background:#fffaf0;padding:8px;text-align:center;font-family:inherit;' +
+    'color:#4a2f12;width:130px;">' +
+      '<img src="' + getBackendUrl() + s.cover_url + '" style="width:100%;height:88px;object-fit:cover;' +
+      'border-radius:8px;margin-bottom:6px;" onerror="this.style.display=\'none\'">' +
+      '<div style="font-size:.8rem;font-weight:800;line-height:1.2;">' + s.title + '</div>' +
+      '<div style="font-size:.7rem;opacity:.7;">' + (s.hero_name || '') + '</div>' +
+    '</button>'
+  ).join('') : '<p style="opacity:.7;margin:10px 0;">Aucune histoire pour l\'instant. Crée-en une !</p>';
+  ov.innerHTML =
+    '<div style="max-width:480px;width:100%;max-height:85vh;overflow-y:auto;' +
+    'background:linear-gradient(160deg,#fff8ee,#ffe9c7);border:3px solid #e0a23a;border-radius:22px;' +
+    'padding:22px;text-align:center;font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:40px;line-height:1;">📚</div>' +
+      '<h2 style="margin:4px 0 2px;color:#7a4a10;">Mes histoires</h2>' +
+      '<p style="margin:0 0 14px;font-size:.85rem;opacity:.8;">Relis tes histoires (gratuit 🆓)</p>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">' + cards + '</div>' +
+      '<button id="my-stories-close" style="margin-top:16px;cursor:pointer;border:none;' +
+      'background:none;color:#7a4a10;text-decoration:underline;opacity:.7;">Fermer</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  ov.querySelectorAll('[data-story-dir]').forEach(b =>
+    b.addEventListener('click', () => openSavedStory(b.dataset.storyDir)));
+  document.getElementById('my-stories-close').addEventListener('click', () => ov.remove());
+}
+
+async function openSavedStory(storyDir) {
+  document.getElementById('my-stories')?.remove();
+  const base = getBackendUrl() + '/custom/' + storyDir + '/';
+  try {
+    const data = await (await fetch(base + 'story.json')).json();
+    creatorState.story = {
+      title: data.title || 'Mon histoire',
+      pages: (data.pages || []).map((pg, i) => ({
+        text: pg.text || '',
+        image: base + 'page' + (i + 1) + '.jpg',
+        audio: base + 'page' + (i + 1) + '.mp3',
+      })),
+    };
+    creatorState.assetsFolder = null;
+    creatorState.currentPage = 0;
+    document.getElementById('creator-pick').hidden = true;
+    document.getElementById('creator-loading').hidden = true;
+    showCreatorBook();
+  } catch (e) {}
+}
+window.showMyStories = showMyStories;
+window.openSavedStory = openSavedStory;
+
+// Suppression d'un heros custom (libere un slot ; supprime aussi ses histoires)
+async function deleteCustomHero(heroId, name) {
+  if (!confirm('Supprimer ' + (name || 'ce héros') + ' ? Ses histoires seront aussi effacées.')) return;
+  try {
+    await fetch(getBackendUrl() + '/api/hero/' + encodeURIComponent(heroId) +
+                '?license=' + encodeURIComponent(getLicenseCode()), { method: 'DELETE' });
+  } catch (e) {}
+  await fetchCustomHeroes();
+  if (creatorState.hero === 'custom:' + heroId) creatorState.hero = null;
+  renderPickBook();
+}
+window.deleteCustomHero = deleteCustomHero;
 
 function _buildNotYetGeneratedStory() {
   const h = creatorState.hero, p = creatorState.place;
@@ -9922,23 +10909,41 @@ function wireBookAudioEvents() {
   bookAudioState.eventsWired = true;
 }
 
+let _bookAudioToken = 0;
 function loadBookAudioForPage(idx) {
   const audio = document.getElementById('book-audio');
   if (!audio) return;
-  const folder = creatorState.assetsFolder;
-  if (!folder) { setAudioButtonState('unavailable'); return; }
-  const url = 'assets/stories/' + folder + '/page' + (idx + 1) + '.mp3';
+  const pages = (creatorState.story && creatorState.story.pages) || [];
+  const page = pages[idx];
+  // URL audio : soit fournie par page (custom, backend), soit le dossier catalogue
+  let url = null;
+  let isCustom = false;
+  if (page && page.audio) { url = page.audio; isCustom = true; }
+  else if (creatorState.assetsFolder) { url = 'assets/stories/' + creatorState.assetsFolder + '/page' + (idx + 1) + '.mp3'; }
+  if (!url) { setAudioButtonState('unavailable'); return; }
+  const token = ++_bookAudioToken;
   audio.pause();
-  // On teste la presence via HEAD (rapide) - sinon onerror gere le fallback
   audio.src = url;
   audio.currentTime = 0;
   setAudioButtonState('loading');
   audio.load();
   audio.addEventListener('canplay', function _ready() {
     audio.removeEventListener('canplay', _ready);
+    if (token !== _bookAudioToken) return;
     setAudioButtonState('ready');
     if (bookAudioState.autoplay) {
       audio.play().catch(e => console.warn('autoplay denied:', e.message));
+    }
+  }, { once: true });
+  // Custom : la narration est peut-etre encore en cours de generation -> retry
+  audio.addEventListener('error', function _err() {
+    audio.removeEventListener('error', _err);
+    if (token !== _bookAudioToken) return;
+    if (isCustom) {
+      setAudioButtonState('loading');
+      setTimeout(() => { if (token === _bookAudioToken) loadBookAudioForPage(idx); }, 5000);
+    } else {
+      setAudioButtonState('unavailable');
     }
   }, { once: true });
 }
@@ -10007,6 +11012,42 @@ function _syncAutoplayButton() {
 // v494 : plus de renderBookPages (plus de pile de pages DOM). On change juste
 // le contenu de .book-image (background-image) et .book-text (innerHTML) a
 // chaque page, avec transitions fade+slide.
+// Charge l'image d'une page avec RETRY : si l'image n'est pas encore generee
+// (histoire custom en cours de generation progressive), affiche "Leon dessine…"
+// et re-essaie jusqu'a ce qu'elle apparaisse. Le token annule les chargements
+// des pages precedentes quand on tourne les pages.
+let _bookImgToken = 0;
+function setBookImage(imgEl, url) {
+  const token = ++_bookImgToken;
+  const placeholder = () => {
+    imgEl.style.backgroundImage = 'linear-gradient(135deg,#4a2a8a 0%,#2b1854 50%,#1a0d2e 100%)';
+  };
+  if (!url || !url.trim()) { placeholder(); imgEl.innerHTML = ''; return; }
+  const showGenerating = () => {
+    imgEl.style.position = 'relative';
+    placeholder();
+    imgEl.innerHTML = '<div style="position:absolute;inset:0;display:flex;flex-direction:column;' +
+      'align-items:center;justify-content:center;color:#fff;text-align:center;padding:20px;">' +
+      '<div style="font-size:42px" class="anim-bounce">🪄</div>' +
+      '<div style="opacity:.9;font-size:.95rem;margin-top:8px;">Léon dessine cette page…</div></div>';
+  };
+  const attempt = () => {
+    const probe = new Image();
+    probe.onload = () => {
+      if (token !== _bookImgToken) return;
+      imgEl.innerHTML = '';
+      imgEl.style.backgroundImage = "url('" + url + "')";
+    };
+    probe.onerror = () => {
+      if (token !== _bookImgToken) return;
+      showGenerating();
+      setTimeout(() => { if (token === _bookImgToken) attempt(); }, 4000);
+    };
+    probe.src = url;
+  };
+  attempt();
+}
+
 function showBookPage(idx, instant) {
   const pages = (creatorState.story && creatorState.story.pages) || [];
   if (idx < 0 || idx >= pages.length) return;
@@ -10018,14 +11059,8 @@ function showBookPage(idx, instant) {
 
   const setContent = () => {
     creatorState.currentPage = idx;
-    // Image
-    if (page.image && page.image.trim()) {
-      imgEl.style.backgroundImage = `url('${page.image}')`;
-    } else {
-      // Placeholder gradient en attente d image generee
-      const emoji = CREATOR_PLACEHOLDER_EMOJI[creatorState.hero] || '✨';
-      imgEl.style.backgroundImage = `linear-gradient(135deg, #4a2a8a 0%, #2b1854 50%, #1a0d2e 100%)`;
-    }
+    // Image (avec retry si pas encore generee -> progressif custom)
+    setBookImage(imgEl, page.image);
     // Texte
     textEl.innerHTML = '<p>' + (page.text || '') + '</p>';
     // v553 : reset scroll au debut de la nouvelle page

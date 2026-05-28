@@ -59,6 +59,9 @@ service-account.json
 server/quota.json
 quota.json
 
+# === Heros + histoires custom generes a l execution (vont sur Cloud Storage en prod) ===
+assets/custom/
+
 # === Documents business / locaux (garder hors du depot public) ===
 KIT_PILOTE.*
 FICHE_COLLEGUE_TESTEUR.*
