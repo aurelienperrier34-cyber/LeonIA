@@ -2865,7 +2865,7 @@ function showVFScore() {
   if (stars) stars.textContent = starsMsg;
   if (text)  text.textContent  = `${state.vfScore}/4 — ${textMsg}`;
   if (disp)  disp.style.display = 'block';
-  document.getElementById('btn-to-7')?.classList.add('show-btn');
+  _revealChestBtn('btn-to-7');
 }
 
 // ============================================================
@@ -3533,7 +3533,7 @@ function showVFScoreC2() {
   document.getElementById('score-stars-c2').textContent = starsMsg;
   document.getElementById('score-text-c2').textContent = `${state.vfScoreC2}/4 — ${textMsg}`;
   document.getElementById('score-display-c2').style.display = 'block';
-  document.getElementById('btn-to-c2s9')?.classList.add('show-btn');
+  _revealChestBtn('btn-to-c2s9');
 }
 
 function launchConfettiC2() {
@@ -3893,7 +3893,7 @@ function showVFScoreC3() {
   document.getElementById('score-stars-c3').textContent = starsMsg;
   document.getElementById('score-text-c3').textContent  = `${state.vfScoreC3}/4 — ${textMsg}`;
   document.getElementById('score-display-c3').style.display = 'block';
-  document.getElementById('btn-to-c3s9')?.classList.add('show-btn');
+  _revealChestBtn('btn-to-c3s9');
 }
 
 // ============================================================
@@ -5898,7 +5898,7 @@ function showVFScoreC4() {
   if (stars) stars.textContent = starsMsg;
   if (txt)   txt.textContent   = `${state.vfScoreC4}/4 — ${textMsg}`;
   if (disp)  disp.style.display = 'block';
-  document.getElementById('btn-to-c4s8')?.classList.add('show-btn');
+  _revealChestBtn('btn-to-c4s8');
 }
 
 function _launchConfettiInto(containerId) {
@@ -5993,6 +5993,25 @@ function awardLegendaryLeonIfPerfect() {
 // launchConfetti() : confettis sur la victoire chap 1 (ecran 7).
 // Reference dans le code mais avait disparu de la definition.
 function launchConfetti()   { _launchConfettiInto('confetti-container'); }
+
+// Apres le 4e quiz de chaque chapitre, on revele le bouton "Ouvrir le coffre"
+// (ou "Voir mon badge" au chap 4). Sur mobile/petit ecran ce bouton apparait
+// SOUS le score et n'est pas force visible -> on scrolle l'ecran a sa hauteur
+// pour eviter que l'enfant cherche ou cliquer. Smooth + center pour rester lisible.
+function _revealChestBtn(btnId) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.classList.add('show-btn');
+  // Petit delai : laisse l'animation show-btn (bounce/fade) demarrer, puis scrolle.
+  setTimeout(() => {
+    try {
+      btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch(e) {
+      // Fallback navigateurs anciens (sans options object)
+      btn.scrollIntoView();
+    }
+  }, 350);
+}
 
 // updateStarBadge() : met a jour tous les compteurs d'etoiles affiches dans
 // l'UI (header, map, rue, atelier). Appelee apres chaque ajout d'etoiles.
