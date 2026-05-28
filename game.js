@@ -2046,6 +2046,8 @@ function goToScreen(screenIdentifier, force) {
     saveState();
     launchConfettiC3();
     if (typeof awardLegendaryLeonIfPerfect === 'function') awardLegendaryLeonIfPerfect();
+    if (typeof updateStarBadge === 'function') updateStarBadge();
+    if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
   }
 
   // ============================================================
@@ -2126,6 +2128,8 @@ function goToScreen(screenIdentifier, force) {
     saveState();
     if (typeof launchConfettiC4 === 'function') launchConfettiC4();
     if (typeof awardLegendaryLeonIfPerfect === 'function') awardLegendaryLeonIfPerfect();
+    if (typeof updateStarBadge === 'function') updateStarBadge();
+    if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
   }
 
   // ============================================================
@@ -2230,6 +2234,12 @@ function goToScreen(screenIdentifier, force) {
     if (typeof launchConfettiC5 === 'function') launchConfettiC5();
     // Tente de débloquer la carte LÉGENDAIRE si 16/16 sur tous les quiz
     if (typeof awardLegendaryLeonIfPerfect === 'function') awardLegendaryLeonIfPerfect();
+    // Filet de securite : on force la mise a jour de la pastille etoiles
+    // globale + on reapplique sa position calibree. addStars() s'en occupe
+    // deja, mais sur l'ecran de victoire (transition sceneswap) la pastille
+    // pouvait afficher l'ancien total / etre mal positionnee dans certains cas.
+    if (typeof updateStarBadge === 'function') updateStarBadge();
+    if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
   }
 
   // Victoire chapitre 2
@@ -2264,6 +2274,8 @@ function goToScreen(screenIdentifier, force) {
     saveState();
     launchConfettiC2();
     if (typeof awardLegendaryLeonIfPerfect === 'function') awardLegendaryLeonIfPerfect();
+    if (typeof updateStarBadge === 'function') updateStarBadge();
+    if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
   }
 
   if (screenIdentifier === 8) {
@@ -2329,6 +2341,8 @@ function goToScreen(screenIdentifier, force) {
     saveState();
     launchConfetti();
     if (typeof awardLegendaryLeonIfPerfect === 'function') awardLegendaryLeonIfPerfect();
+    if (typeof updateStarBadge === 'function') updateStarBadge();
+    if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
   }
 
   const isMap = screenIdentifier === 'map';
@@ -6288,6 +6302,17 @@ function revealC5Robot() {
         greeting = kidName
           ? `Bonjour ${kidName} ! Je suis ${persona.name}. Je vais te tenir compagnie. Clique sur un module pour me voir en action !`
           : `Bonjour ! Je suis ${persona.name}. Je vais te tenir compagnie. Clique sur un module pour me voir en action !`;
+      }
+      // Affiche AUSSI le greeting dans la bulle texte (comme pour Bot au
+      // chap 4 et comme pour les demos de modules ensuite) -> les enfants
+      // qui lisent mieux qu'ils n'entendent (et le son coupe) suivent quand meme.
+      const _c5GreetBubble = document.getElementById('c5s5-bubble');
+      if (_c5GreetBubble) {
+        _c5GreetBubble.textContent = greeting;
+        _c5GreetBubble.style.display = 'block';
+        _c5GreetBubble.classList.remove('anim-pop-in');
+        void _c5GreetBubble.offsetWidth;
+        _c5GreetBubble.classList.add('anim-pop-in');
       }
       // v477 : ne re-speak pas le greeting si deja queued dans selectC5Module
       // (cas iOS ou on doit queue dans le user gesture).
