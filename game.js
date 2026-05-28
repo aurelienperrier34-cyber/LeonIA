@@ -8055,7 +8055,13 @@ function renderAtelierModal() {
               '<div class="cc-flip-hint">↩ retourner</div>' +
             '</div>' +
           '</div>';
-        card.onclick = () => card.classList.toggle('flipped');
+        // Au clic sur une carte deja possedee : on ouvre la modale "grand format"
+        // (meme effet qu'a l'achat) pour pouvoir la re-admirer en plein ecran.
+        // L'utilisateur clique ensuite dans la modale pour voir le verso, puis fermer.
+        card.onclick = () => {
+          if (typeof showCardReveal === 'function') showCardReveal(a);
+          else card.classList.toggle('flipped'); // fallback
+        };
       } else {
         // Verrouillee : recto image floutee + lock / verso = comment debloquer + achat
         const buyBtn = '<button class="cc-buy" ' + (canBuy ? '' : 'disabled') +
