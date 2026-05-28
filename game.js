@@ -2124,7 +2124,7 @@ function goToScreen(screenIdentifier, force) {
       state.chaptersCompleted.push(4);
     }
     saveState();
-    if (typeof launchConfettiC3 === 'function') launchConfettiC3();
+    if (typeof launchConfettiC4 === 'function') launchConfettiC4();
     if (typeof awardLegendaryLeonIfPerfect === 'function') awardLegendaryLeonIfPerfect();
   }
 
