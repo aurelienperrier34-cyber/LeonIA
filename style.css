@@ -232,7 +232,25 @@ body.map-mode::before {
   background-color: var(--white); transition: all 0.4s;
 }
 
-body.map-mode .app { padding: 0; background-color: transparent; }
+body.map-mode .app {
+  padding: 0;
+  background-color: transparent;
+  /* Force le chain a remplir EXACTEMENT le viewport (pas min-height:100vh
+     qui laisse le navigateur calculer un peu different selon dvh/vh). */
+  height: 100vh !important;
+  min-height: 100vh !important;
+  max-height: 100vh !important;
+}
+body.map-mode #app-container {
+  height: 100vh !important;
+  min-height: 100vh !important;
+  max-height: 100vh !important;
+  flex: 1 1 100% !important;
+}
+body.map-mode html, body.map-mode body {
+  height: 100vh !important;
+  overflow: hidden !important;
+}
 
 .bg-scene { position: fixed; inset: 0; background: linear-gradient(180deg, #D4F0FF 0%, var(--cream) 60%); z-index: 0; pointer-events: none; }
 body.map-mode .bg-scene { display: none; }
