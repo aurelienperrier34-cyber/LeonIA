@@ -3319,11 +3319,20 @@ function goToScreen(screenIdentifier, force) {
     window._refixMap = fixMapVHGuarded;
     fixMapVHGuarded();
     requestAnimationFrame(fixMapVHGuarded);
-    // Filet sur DESKTOP aussi : 200ms apres l'entree, on re-fixe si dimensions
-    // ont change (ex : retour de personnages -> animation slideUpFade en
-    // cours, viewport en transition). Le guard SKIPPE l'appel si rien n'a
-    // bouge -> pas de tressautement, juste un filet de securite.
     setTimeout(fixMapVHGuarded, 200);
+    // v647 : USER FEEDBACK CRITIQUE - quand l'utilisateur ouvre la console
+    // (DevTools), la bande noire disparait. C'est parce que l'ouverture de
+    // DevTools declenche un resize qui force le navigateur a recomposer la
+    // layout (position:fixed inset:0 est alors applique correctement).
+    // Sans ca, au premier paint, Chrome ne recalcule pas et laisse la map
+    // avec une hauteur stale. On reproduit l'effet DevTools en dispatching
+    // un faux resize 100ms apres l'entree -> meme comportement, fix invisible.
+    setTimeout(() => {
+      try { window.dispatchEvent(new Event('resize')); } catch(e) {}
+    }, 100);
+    setTimeout(() => {
+      try { window.dispatchEvent(new Event('resize')); } catch(e) {}
+    }, 400);
     if (_isTouch) {
       setTimeout(fixMapVHGuarded, 400);
       setTimeout(fixMapVHGuarded, 1000);

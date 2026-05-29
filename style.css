@@ -198,32 +198,12 @@ body {
 
 /* v569 : fond sombre (au lieu de lavande) -> toute bande residuelle apres
    toggle plein ecran se fond avec les bords sombres de la map, invisible */
-/* Fond = IMAGE FLOUTEE de la map elle-meme. Si un mismatch dvh/innerHeight
-   laisse un gap, ce qu'on voit est encore de la map (floutee) -> aucune
-   bande "cassee" visible, peu importe le timing de fullscreenchange ou
-   les ecarts de hauteur. La vraie map par-dessus reste nette via z-index. */
+/* Fond NOIR : si jamais un mismatch dvh/innerHeight laisse 1-2 px visibles
+   autour de la map, ca passe pour un bord d'image naturel. */
 body.map-mode {
-  background-image: url('assets/map_world.jpg');
-  background-size: cover;
-  background-position: center;
   background-color: #000;
   overflow-x: hidden;
   overflow-y: hidden;
-}
-body.map-mode::before {
-  /* Overlay flou + sombre par-dessus l'image de fond : la version blurry
-     ne doit pas "voler" la vedette a la vraie map qui se superpose.
-     Pointer-events:none pour ne pas bloquer les clics. */
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image: inherit;
-  background-size: cover;
-  background-position: center;
-  filter: blur(24px) brightness(0.5) saturate(1.1);
-  transform: scale(1.2); /* evite que le flou laisse voir un bord net */
 }
 
 .app {
