@@ -4354,16 +4354,18 @@ body.novel-mode #screen-c5s5 .c5-robot-bubble.anim-pop-in {
     pointer-events: none;
     z-index: 0;
   }
+  /* MAP PLEIN VIEWPORT : on remplit TOUT l'ecran. La contrainte
+     aspect-ratio:1672/941 forcait la map a une taille calculee qui ne
+     correspondait pas toujours au viewport -> bande visible.
+     Maintenant inset:0 + object-fit:cover sur l'image = la map remplit
+     toujours TOUT l'ecran, qu'importe le ratio du viewport. */
   .full-map-pixar {
-    aspect-ratio: 1672 / 941 !important;
     position: absolute !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    left: 50% !important;
-    transform: translateX(-50%);
-    height: auto !important;
-    width: auto !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     margin: 0 !important;
+    transform: none !important;
     background: transparent !important;
     z-index: 1;
   }
