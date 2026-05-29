@@ -3316,21 +3316,26 @@ function goToScreen(screenIdentifier, force) {
     // fixMapVH() restait celle d'avant l'evenement -> bande violette en bas.
     window._refixMap = fixMapVHGuarded;
     fixMapVHGuarded();
-    requestAnimationFrame(fixMapVHGuarded);
-    setTimeout(fixMapVHGuarded, 200);
-    // v647 : USER FEEDBACK CRITIQUE - quand l'utilisateur ouvre la console
-    // (DevTools), la bande noire disparait. C'est parce que l'ouverture de
-    // DevTools declenche un resize qui force le navigateur a recomposer la
-    // layout (position:fixed inset:0 est alors applique correctement).
-    // Sans ca, au premier paint, Chrome ne recalcule pas et laisse la map
-    // avec une hauteur stale. On reproduit l'effet DevTools en dispatching
-    // un faux resize 100ms apres l'entree -> meme comportement, fix invisible.
-    setTimeout(() => {
-      try { window.dispatchEvent(new Event('resize')); } catch(e) {}
-    }, 100);
-    setTimeout(() => {
-      try { window.dispatchEvent(new Event('resize')); } catch(e) {}
-    }, 400);
+    // v650 : rAF boucle pendant 30 frames (~500 ms) qui re-applique fixMapVH
+    // a CHAQUE frame. C'est la seule approche fiable apres feedback user :
+    // le bug "bande noire fixee par ouverture DevTools" indique que Chrome
+    // ne calcule pas la layout correctement au premier paint et ne re-apply
+    // pas une simple modif de style. Forcer a chaque frame contourne ce
+    // probleme - le 1er paint est wrong, mais les paints suivants ont la
+    // bonne dimension parce qu'on les pousse explicitement.
+    let _frameI = 0;
+    function _fixMapLoop() {
+      if (!document.body.classList.contains('map-mode')) return;
+      // visualViewport est plus fiable au premier paint que innerHeight
+      const h = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+      const sm = document.getElementById('screen-map');
+      if (sm && Math.abs(sm.getBoundingClientRect().height - h) > 1) {
+        if (typeof window._refixMap === 'function') window._refixMap();
+      }
+      _frameI++;
+      if (_frameI < 30) requestAnimationFrame(_fixMapLoop);
+    }
+    requestAnimationFrame(_fixMapLoop);
     if (_isTouch) {
       setTimeout(fixMapVHGuarded, 400);
       setTimeout(fixMapVHGuarded, 1000);
