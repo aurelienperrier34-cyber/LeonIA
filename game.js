@@ -3229,6 +3229,12 @@ function goToScreen(screenIdentifier, force) {
     // IMPORTANT : le CSS a `height: 100dvh !important` qui bat un style inline
     // normal. Il faut donc utiliser setProperty(..., 'important') pour gagner.
     function fixMapVH() {
+      // v645 : la map est maintenant en position:fixed inset:0 dans la CSS
+      // -> ancree au viewport, aucun mismatch possible. Le JS fixMapVH
+      // appliquait des styles inline qui finissaient par creer un OFFSET
+      // (innerHeight stale durant fullscreenchange, +2px sur la mauvaise
+      // dimension, etc.). On le neutralise completement : la CSS suffit.
+      return;
       if (!screenMap) return;
       // Padding +2px : compense les ecarts de 1 px entre 100dvh et innerHeight
       // (Chrome arrondit, devicePixelRatio non entier sur certains zooms,
