@@ -4333,16 +4333,17 @@ body.novel-mode #screen-c5s5 .c5-robot-bubble.anim-pop-in {
    est de largeur 0 (pas affichee), comportement attendu en portrait. */
 @media all {
   #screen-map.active {
-    position: relative;
-    overflow: hidden;
-    /* 100vh (pas 100dvh) pour matcher EXACTEMENT body/.app/main qui sont
-       en 100vh dans body.map-mode. Sur desktop Chrome, dvh et vh peuvent
-       differer pendant les transitions URL bar -> la bande noire venait
-       de la difference 100vh > 100dvh sur certains setups. */
+    /* position: FIXED !important -> la map est ancree au VIEWPORT directement,
+       independamment de la hauteur reelle de ses parents (.app, #app-container).
+       inset:0 = elle remplit STRICTEMENT le viewport. Plus aucun mismatch
+       possible avec dvh/vh/min-height des parents. */
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
     height: 100vh !important;
-    min-height: 100vh !important;
-    max-height: 100vh !important;
+    overflow: hidden;
     background: #000;
+    z-index: 100;
   }
   /* Bande laterale GAUCHE : flou Netflix */
   #screen-map.active::before {
