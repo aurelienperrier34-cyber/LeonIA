@@ -447,7 +447,12 @@ body:has(#screen-1.active) .app {
   position: absolute; right: 0;
 }
 
-.full-map-canvas { position: relative; width: 100%; height: auto; max-width: 1000px; margin: 0 auto; background: #FFF; }
+/* .full-map-canvas : autrefois limite a max-width:1000px + height:auto.
+   Cumule avec .full-map-pixar dans le HTML (cf. id="the-map-canvas"), ce
+   max-width creait des bandes laterales et un offset vertical -> "bande
+   noire" en dessous. On neutralise toutes les contraintes : le plein
+   viewport est gere par .full-map-pixar plus bas dans @media all. */
+.full-map-canvas { position: relative; width: 100%; height: 100%; max-width: none; margin: 0; background: transparent; }
 
 /* ============================================================
    v561 : MAP BOTTOM DOCK - 2 cards d'acces Livre magique + Custom hero
