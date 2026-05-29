@@ -859,11 +859,21 @@ document.addEventListener("DOMContentLoaded", () => {
   // déjà en plein écran. Ça permet de récupérer si le premier clic n'a pas
   // déclenché (clic refusé par certains navigateurs, popup permission etc).
   // Une fois en plein écran, le listener s'auto-retire pour ne plus interférer.
-  const autoFs = () => {
+  // IMPORTANT : on skip si la cible est le bouton plein écran lui-même
+  // (sinon autoFs s'exécute en capture phase AVANT le click du bouton et
+  // consomme le gesture utilisateur -> le bouton ne fonctionne plus sur
+  // Chrome desktop).
+  const autoFs = (ev) => {
     if (_fsElement()) {
       window.removeEventListener('pointerdown', autoFs, true);
       window.removeEventListener('touchend',    autoFs, true);
       window.removeEventListener('keydown',     autoFs, true);
+      return;
+    }
+    // Skip si l'utilisateur clique sur le bouton plein ecran -> on laisse
+    // toggleFullscreen() gerer l'appel proprement avec userGesture: true.
+    const t = ev && ev.target;
+    if (t && (t.id === 'btn-fullscreen' || (t.closest && t.closest('#btn-fullscreen')))) {
       return;
     }
     enterFullscreen();
@@ -2534,6 +2544,9 @@ function goToScreen(screenIdentifier, force) {
           narratorAudio: 'assets/chapitre_4/t5_narrateur.mp3', leonAudio: 'assets/chapitre_4/t5_leon.mp3',
           onLeonStart: () => {
             const v = document.getElementById('leon-video-c4s5');
+            // Reset le flag de stop pour autoriser la vidéo à reboucler PENDANT
+            // que Léon parle. On le remettra à true dans onLeonEnd.
+            window._c4s5LoopOff = false;
             if (v) { v.currentTime = 1.5; v.play().catch(()=>{}); }
             // v447 : trace le moment ou Leon commence pour proteger contre
             // un onLeonEnd premature (sur iOS, leonAudio peut fire 'ended'
@@ -2550,6 +2563,9 @@ function goToScreen(screenIdentifier, force) {
             const MIN_PLAY_MS = 13500;
             const remaining = Math.max(0, MIN_PLAY_MS - elapsed);
             setTimeout(() => {
+              // Coupe le rebouclage AVANT de pause -> sinon timeupdate/ended
+              // relance la vidéo pendant le memory game.
+              window._c4s5LoopOff = true;
               if (v) { try { v.pause(); } catch(e) {} }
               if (typeof activateC4s5Game === 'function') activateC4s5Game();
             }, remaining);
@@ -3214,7 +3230,11 @@ function goToScreen(screenIdentifier, force) {
     // normal. Il faut donc utiliser setProperty(..., 'important') pour gagner.
     function fixMapVH() {
       if (!screenMap) return;
-      const h = window.innerHeight;
+      // Padding +2px : compense les ecarts de 1 px entre 100dvh et innerHeight
+      // (Chrome arrondit, devicePixelRatio non entier sur certains zooms,
+      // etc.). Le overflow:hidden ci-dessous absorbe ces 2 px en trop, ce
+      // qui garantit AUCUN gap en bas mais aussi aucune cassure visuelle.
+      const h = window.innerHeight + 2;
       const w = window.innerWidth;
       screenMap.style.setProperty('height', h + 'px', 'important');
       screenMap.style.setProperty('min-height', h + 'px', 'important');
@@ -3269,16 +3289,45 @@ function goToScreen(screenIdentifier, force) {
         }
       }
     }
-    fixMapVH();
-    requestAnimationFrame(fixMapVH);
-    setTimeout(fixMapVH, 100);
-    setTimeout(fixMapVH, 400);
-    setTimeout(fixMapVH, 1000);
+    // fixMapVH : sur DESKTOP, 100dvh est fiable -> 1 appel + 1 rAF suffit
+    // (les timeouts repetes provoquaient un tressautement visible a chaque
+    // appel apres la sortie de chapitre). Sur MOBILE/TOUCH, on garde les
+    // appels echelonnes pour capter la transition de la barre URL Chrome
+    // qui change 100dvh apres coup. Guard "dimensions identiques" pour
+    // eviter les reapplis inutiles meme dans le delai chevauchant.
+    const _isTouch = window.matchMedia && (
+      window.matchMedia('(pointer: coarse)').matches ||
+      window.matchMedia('(max-width: 900px)').matches
+    );
+    let _lastVH = -1, _lastVW = -1;
+    function fixMapVHGuarded() {
+      const h = window.innerHeight, w = window.innerWidth;
+      if (h === _lastVH && w === _lastVW) return;
+      _lastVH = h; _lastVW = w;
+      fixMapVH();
+    }
+    // Expose pour les listeners globaux (resize + fullscreenchange) afin de
+    // re-fixer la map quand le viewport change apres l'entree (sortie de
+    // plein ecran, rotate, redim. fenetre). Sans ca, la hauteur figee par
+    // fixMapVH() restait celle d'avant l'evenement -> bande violette en bas.
+    window._refixMap = fixMapVHGuarded;
+    fixMapVHGuarded();
+    requestAnimationFrame(fixMapVHGuarded);
+    // Filet sur DESKTOP aussi : 200ms apres l'entree, on re-fixe si dimensions
+    // ont change (ex : retour de personnages -> animation slideUpFade en
+    // cours, viewport en transition). Le guard SKIPPE l'appel si rien n'a
+    // bouge -> pas de tressautement, juste un filet de securite.
+    setTimeout(fixMapVHGuarded, 200);
+    if (_isTouch) {
+      setTimeout(fixMapVHGuarded, 400);
+      setTimeout(fixMapVHGuarded, 1000);
+    }
 
     requestAnimationFrame(scrollMapToBottom);
-    setTimeout(scrollMapToBottom, 50);
-    setTimeout(scrollMapToBottom, 300);
-    setTimeout(scrollMapToBottom, 800);
+    if (_isTouch) {
+      setTimeout(scrollMapToBottom, 300);
+      setTimeout(scrollMapToBottom, 800);
+    }
 
     // Quand l'image de la carte finit de charger, on re-scrolle
     const mapImg = document.querySelector('.map-bg-img');
@@ -7255,12 +7304,12 @@ function playC5ModuleDemo(mod) {
 // ============================================================
 // Catalogue d'articles cosmétiques (accessoires avatar) + cartes à collectionner
 const ARTICLES_CATALOG = [
-  // Accessoires avatar (équipables)
-  { id: 'cap-leon',      kind: 'accessory', slot: 'hat',     emoji: '🧢', name: 'Cap de Léon',           cost:  8, desc: 'La même casquette à patches que Léon !' },
-  { id: 'magic-hat',     kind: 'accessory', slot: 'hat',     emoji: '🎩', name: 'Chapeau de magicien',  cost:  8, desc: 'Pour faire chic et mystérieux.' },
-  { id: 'crown',         kind: 'accessory', slot: 'hat',     emoji: '👑', name: 'Couronne dorée',       cost: 20, desc: 'Article premium qui brille.' },
-  { id: 'glasses-ai',    kind: 'accessory', slot: 'glasses', emoji: '🕶️', name: 'Lunettes IA',           cost:  6, desc: 'Lunettes futuristes lumineuses.' },
-  { id: 'cape-hero',     kind: 'accessory', slot: 'cape',    emoji: '🧥', name: 'Pull du héros',         cost: 12, desc: 'Un pull rouge confortable, parfait pour aventurier.' },
+  // Accessoires avatar (équipables) - icones watercolor reutilisees du builder
+  { id: 'cap-leon',      kind: 'accessory', slot: 'hat',     emoji: '🧢', img: 'assets/ui/builder/accessory_casquette.jpg', name: 'Cap de Léon',           cost:  8, desc: 'La même casquette à patches que Léon !' },
+  { id: 'magic-hat',     kind: 'accessory', slot: 'hat',     emoji: '🎩', img: 'assets/ui/builder/accessory_chapeau.jpg',   name: 'Chapeau de magicien',  cost:  8, desc: 'Pour faire chic et mystérieux.' },
+  { id: 'crown',         kind: 'accessory', slot: 'hat',     emoji: '👑', img: 'assets/ui/builder/accessory_couronne.jpg',  name: 'Couronne dorée',       cost: 20, desc: 'Article premium qui brille.' },
+  { id: 'glasses-ai',    kind: 'accessory', slot: 'glasses', emoji: '🕶️', img: 'assets/ui/builder/accessory_lunettes.jpg', name: 'Lunettes IA',           cost:  6, desc: 'Lunettes futuristes lumineuses.' },
+  { id: 'cape-hero',     kind: 'accessory', slot: 'cape',    emoji: '🧥', img: 'assets/ui/builder/accessory_echarpe.jpg',   name: 'Pull du héros',         cost: 12, desc: 'Un pull rouge confortable, parfait pour aventurier.' },
   // Cartes à collectionner (achetables OU gagnées via chapitres)
   // v573 : collection 100% chibi (style coherent). Fallback emoji si pas encore genere.
   // Heros jouables (les 4 personnages que l'enfant peut incarner)
@@ -7439,6 +7488,55 @@ function applyAvatarAccessoriesEverywhere() {
 // Repositionnement automatique lors d'un resize ou rotation (universel mobile/tablette/PC)
 window.addEventListener('resize', applyAvatarAccessoriesEverywhere);
 window.addEventListener('orientationchange', () => setTimeout(applyAvatarAccessoriesEverywhere, 150));
+
+// Re-fix de la map quand la viewport change PENDANT qu'on est sur la map
+// (sortie de plein ecran F11/Esc, redim fenetre, rotation). Sans ca, la
+// hauteur figee par fixMapVH() reste celle d'avant l'evenement et une
+// bande violette du body apparait sous la map.
+function _maybeRefixMap() {
+  if (!document.body.classList.contains('map-mode')) return;
+  if (typeof window._refixMap === 'function') window._refixMap();
+}
+window.addEventListener('resize', _maybeRefixMap);
+
+// Filet de securite supplementaire : ResizeObserver sur #screen-map. Si la
+// hauteur reelle de l'element devient differente de window.innerHeight
+// (entre transitions de scenes, retour de win screen vers la map, ou
+// n'importe quel mismatch silencieux), on refixe. Couvre les cas que les
+// events resize/fullscreenchange ne capturent pas (transition d'animation
+// CSS qui change la hauteur, content shift apres image load, etc.).
+(function _setupMapResizeObserver() {
+  if (typeof ResizeObserver === 'undefined') return; // navigateur ancien
+  const setup = () => {
+    const sm = document.getElementById('screen-map');
+    if (!sm) return;
+    const ro = new ResizeObserver(() => {
+      if (!document.body.classList.contains('map-mode')) return;
+      const expected = window.innerHeight;
+      const actual = sm.getBoundingClientRect().height;
+      if (Math.abs(actual - expected) > 2 && typeof window._refixMap === 'function') {
+        window._refixMap();
+      }
+    });
+    ro.observe(sm);
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup);
+  } else {
+    setup();
+  }
+})();
+document.addEventListener('fullscreenchange', () => {
+  // Double timeout : sortie de plein ecran est asynchrone, innerHeight
+  // est mis a jour APRES le firing de l'event. On retente a +50 et +250 ms
+  // pour capter la valeur finale du viewport.
+  _maybeRefixMap();
+  setTimeout(_maybeRefixMap, 50);
+  setTimeout(_maybeRefixMap, 250);
+});
+document.addEventListener('webkitfullscreenchange', () => {
+  _maybeRefixMap(); setTimeout(_maybeRefixMap, 50); setTimeout(_maybeRefixMap, 250);
+});
 
 function refreshAtelierUI() {
   if (typeof renderAtelierModal === 'function') renderAtelierModal();
@@ -8911,7 +9009,13 @@ function renderAtelierModal() {
         } else {
           action = '<div class="atelier-item-cost">Carte</div>';
         }
-        it.innerHTML = '<div class="atelier-item-emoji">' + a.emoji + '</div>' +
+        // Image watercolor (builder) si dispo, sinon emoji en fallback
+        const vestVisual = a.img
+          ? '<img class="atelier-item-img" src="' + a.img + '" alt="' + a.name + '"' +
+            ' onerror="this.style.display=\'none\'; var em=this.nextElementSibling; if(em) em.style.display=\'block\';">' +
+            '<div class="atelier-item-emoji" style="display:none">' + a.emoji + '</div>'
+          : '<div class="atelier-item-emoji">' + a.emoji + '</div>';
+        it.innerHTML = vestVisual +
                        '<div class="atelier-item-name">' + a.name + '</div>' +
                        '<div class="atelier-item-desc">' + a.desc + '</div>' +
                        action;
@@ -10063,25 +10167,30 @@ function completeC3s2Game() {
 
 // v385 : C4S5 — le coeur barre apparait a ~1s dans la video (pas a la fin).
 // On demarre et on reloope depuis 1.5s pour le sauter proprement.
+// IMPORTANT : ce rebouclage doit s'arreter quand Leon a fini de parler
+// (sinon la video tourne pendant le memory game). On utilise un flag
+// window._c4s5LoopOff que onLeonEnd (cf. screenDialogues) met a true.
 document.addEventListener('DOMContentLoaded', () => {
   const v = document.getElementById('leon-video-c4s5');
   if (!v) return;
   const START = 1.5; // saut du coeur barre (apparait entre 0s et ~1.03s)
   function _c4s5Restart() {
+    // Stop le rebouclage si Leon a fini de parler -> activateC4s5Game a tourne.
+    if (window._c4s5LoopOff) { try { v.pause(); } catch(e) {} return; }
     v.currentTime = START;
     v.play().catch(() => {});
   }
-  // Au 1er chargement : deja pret a jouer depuis START
+  // Reset du flag a chaque (re)entree sur c4s5 : on rejoue la video pendant
+  // Leon, puis on coupe a nouveau a la fin du dialogue.
   v.addEventListener('loadedmetadata', () => {
     if (v.currentTime < START) v.currentTime = START;
   });
-  // Filet 1 : reloope avant la fin naturelle
   v.addEventListener('timeupdate', () => {
+    if (window._c4s5LoopOff) return; // skip si Leon a fini
     if (v.duration && v.currentTime >= v.duration - 1.0) {
       _c4s5Restart();
     }
   });
-  // Filet 2 : si timeupdate rate, redemarre a ended
   v.addEventListener('ended', _c4s5Restart);
 });
 
