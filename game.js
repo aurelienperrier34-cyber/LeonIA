@@ -3229,18 +3229,14 @@ function goToScreen(screenIdentifier, force) {
     // IMPORTANT : le CSS a `height: 100dvh !important` qui bat un style inline
     // normal. Il faut donc utiliser setProperty(..., 'important') pour gagner.
     function fixMapVH() {
-      // v645 : la map est maintenant en position:fixed inset:0 dans la CSS
-      // -> ancree au viewport, aucun mismatch possible. Le JS fixMapVH
-      // appliquait des styles inline qui finissaient par creer un OFFSET
-      // (innerHeight stale durant fullscreenchange, +2px sur la mauvaise
-      // dimension, etc.). On le neutralise completement : la CSS suffit.
-      return;
+      // v649 : on REMET le JS fixMapVH parce que la CSS position:fixed inset:0
+      // seule n'a pas suffi (user feedback : bande noire persistante). Chrome
+      // calcule 100vh a une valeur differente de innerHeight au premier paint
+      // sur certains setups. Le JS mesure et applique la VRAIE valeur.
       if (!screenMap) return;
-      // Padding +2px : compense les ecarts de 1 px entre 100dvh et innerHeight
-      // (Chrome arrondit, devicePixelRatio non entier sur certains zooms,
-      // etc.). Le overflow:hidden ci-dessous absorbe ces 2 px en trop, ce
-      // qui garantit AUCUN gap en bas mais aussi aucune cassure visuelle.
-      const h = window.innerHeight + 2;
+      // v649 : utilise EXACTEMENT innerHeight (mesure JS, pas 100vh CSS qui
+      // peut etre miscalcule par Chrome au premier paint).
+      const h = window.innerHeight;
       const w = window.innerWidth;
       screenMap.style.setProperty('height', h + 'px', 'important');
       screenMap.style.setProperty('min-height', h + 'px', 'important');
@@ -3291,7 +3287,9 @@ function goToScreen(screenIdentifier, force) {
           img.style.setProperty('left', '0', 'important');
           img.style.setProperty('width', mapW + 'px', 'important');
           img.style.setProperty('height', h + 'px', 'important');
-          img.style.setProperty('object-fit', 'fill', 'important');
+          // v649 : object-fit: cover (preserve ratio, crop si necessaire) au
+          // lieu de fill (etirement non uniforme qui deformait la map).
+          img.style.setProperty('object-fit', 'cover', 'important');
         }
       }
     }
