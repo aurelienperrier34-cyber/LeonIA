@@ -4335,12 +4335,13 @@ body.novel-mode #screen-c5s5 .c5-robot-bubble.anim-pop-in {
   #screen-map.active {
     position: relative;
     overflow: hidden;
-    height: 100dvh !important;
-    min-height: 100dvh !important;
-    max-height: 100dvh !important;
-    /* Fond NOIR (etait #1a0d2e violet) : si la map ne fait pas exactement
-       la hauteur du viewport, le bord visible passe pour un cadre noir
-       d'image, pas pour une bande violette "cassee". */
+    /* 100vh (pas 100dvh) pour matcher EXACTEMENT body/.app/main qui sont
+       en 100vh dans body.map-mode. Sur desktop Chrome, dvh et vh peuvent
+       differer pendant les transitions URL bar -> la bande noire venait
+       de la difference 100vh > 100dvh sur certains setups. */
+    height: 100vh !important;
+    min-height: 100vh !important;
+    max-height: 100vh !important;
     background: #000;
   }
   /* Bande laterale GAUCHE : flou Netflix */
