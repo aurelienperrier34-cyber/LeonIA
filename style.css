@@ -4297,10 +4297,9 @@ body.novel-mode #screen-c5s5 .c5-robot-bubble.anim-pop-in {
   max-width: none !important;
   height: 100dvh !important;
   margin: 0 !important;
-  /* Fond NOIR (etait #1a0d2e violet) : si jamais l'aspect-ratio rend la map
-     plus courte que le viewport, le bord visible passe pour un cadre noir
-     d'image, pas pour une bande violette "cassee". */
-  background: #000 !important;
+  /* v651 : transparent pour laisser passer le background-image du body
+     (la map est maintenant sur body.map-mode, pas sur l'IMG cachee). */
+  background: transparent !important;
   overflow: hidden;
   position: relative;
 }
