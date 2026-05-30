@@ -198,9 +198,14 @@ body {
 
 /* v569 : fond sombre (au lieu de lavande) -> toute bande residuelle apres
    toggle plein ecran se fond avec les bords sombres de la map, invisible */
-/* Fond NOIR : si jamais un mismatch dvh/innerHeight laisse 1-2 px visibles
-   autour de la map, ca passe pour un bord d'image naturel. */
+/* v651 : map en background-image directement sur le body. Plus aucune
+   dependance a la chaine layout (app/main/screen-map/full-map-pixar/IMG).
+   background-size:cover garantit que l'image remplit le viewport, peu
+   importe le timing de calcul de Chrome. */
 body.map-mode {
+  background-image: url('assets/map_world.jpg');
+  background-size: cover;
+  background-position: center;
   background-color: #000;
   overflow-x: hidden;
   overflow-y: hidden;
