@@ -198,17 +198,25 @@ body {
 
 /* v569 : fond sombre (au lieu de lavande) -> toute bande residuelle apres
    toggle plein ecran se fond avec les bords sombres de la map, invisible */
-/* v651 : map en background-image directement sur le body. Plus aucune
-   dependance a la chaine layout (app/main/screen-map/full-map-pixar/IMG).
-   background-size:cover garantit que l'image remplit le viewport, peu
-   importe le timing de calcul de Chrome. */
+/* v653 : map en background-image avec !important partout pour s'assurer
+   que rien ne l'override. v652 sans !important laissait certaines regles
+   plus specifiques masquer l'image. */
 body.map-mode {
-  background-image: url('assets/map_world.jpg');
-  background-size: cover;
-  background-position: center;
+  background-image: url('assets/map_world.jpg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
   background-color: #000;
   overflow-x: hidden;
   overflow-y: hidden;
+}
+/* Override toutes les regles qui pourraient mettre un bg color/image sur
+   les parents (app, app-container, screen-map) - on les force transparent
+   pour laisser passer l'image du body. */
+body.map-mode .app,
+body.map-mode #app-container,
+body.map-mode #screen-map {
+  background: transparent !important;
 }
 
 .app {
