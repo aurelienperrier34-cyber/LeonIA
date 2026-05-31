@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mode enseignant — IA : Le monde de Léon</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(160deg, #1a0d2e 0%, #2a1850 60%, #1a0d2e 100%);
+    color: #f4eeda;
+    min-height: 100vh;
+  }
+  header {
+    background: rgba(0,0,0,0.35);
+    padding: 16px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 2px solid rgba(255,225,102,0.3);
+  }
+  h1 { margin: 0; font-size: 1.4rem; color: #FFE166; font-weight: 800; }
+  .meta { font-size: 0.88rem; opacity: 0.75; }
+  main { padding: 22px 28px; max-width: 1100px; margin: 0 auto; }
+  /* Login screen */
+  .login-card {
+    max-width: 420px; margin: 60px auto;
+    background: linear-gradient(160deg, #fff8ee, #ffe9c7);
+    color: #4a2f12;
+    border: 3px solid #e0a23a; border-radius: 22px;
+    padding: 36px 30px; text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .login-card h2 { color: #7a4a10; margin: 0 0 14px; font-size: 1.4rem; }
+  .login-card p  { margin: 0 0 22px; font-size: 0.96rem; line-height: 1.5; opacity: 0.85; }
+  .login-card input {
+    width: 100%; padding: 14px 16px; font-size: 1.1rem;
+    border: 2px solid #d4a76a; border-radius: 12px;
+    text-align: center; text-transform: uppercase; letter-spacing: 2px;
+    font-family: inherit; margin-bottom: 14px;
+  }
+  .login-card button {
+    width: 100%; padding: 14px; font-size: 1.05rem; font-weight: 800;
+    border: none; border-radius: 12px; cursor: pointer; color: #fff;
+    background: linear-gradient(160deg, #7ec850, #4ca22f);
+    box-shadow: 0 4px 14px rgba(76,162,47,0.45);
+    font-family: inherit;
+  }
+  .login-card button:hover { transform: translateY(-1px); }
+  .login-card .hint {
+    margin-top: 18px; font-size: 0.82rem; color: #8a5a20;
+    background: rgba(255,255,255,0.5); padding: 10px; border-radius: 8px;
+  }
+  .login-err {
+    margin: 14px 0; padding: 10px; border-radius: 8px;
+    background: rgba(220,50,50,0.18); color: #b3001b;
+    border: 1px solid rgba(220,50,50,0.4); font-size: 0.92rem;
+  }
+  /* Dashboard table */
+  .toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; margin-bottom: 18px; flex-wrap: wrap;
+  }
+  .toolbar .hint {
+    font-size: 0.88rem; opacity: 0.75; max-width: 600px;
+  }
+  .btn-logout {
+    background: rgba(255,255,255,0.1); color: #f4eeda;
+    border: 1.5px solid rgba(255,255,255,0.25); border-radius: 10px;
+    padding: 8px 14px; font-size: 0.9rem; cursor: pointer;
+    font-family: inherit;
+  }
+  table.students {
+    width: 100%; border-collapse: collapse;
+    background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+  }
+  table.students th {
+    text-align: left; padding: 12px 14px; font-size: 0.85rem;
+    background: rgba(0,0,0,0.3); color: #FFE166; font-weight: 700;
+    border-bottom: 2px solid rgba(255,225,102,0.2);
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  table.students td {
+    padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.96rem; vertical-align: middle;
+  }
+  table.students tr:hover { background: rgba(255,225,102,0.06); }
+  .avatar { font-size: 1.8rem; line-height: 1; cursor: pointer; user-select: none; }
+  .avatar:hover { transform: scale(1.15); }
+  input.name-input {
+    background: transparent; border: 1px solid transparent;
+    color: #f4eeda; font-size: 1rem; padding: 6px 8px; border-radius: 6px;
+    font-family: inherit; width: 100%;
+  }
+  input.name-input:focus, input.name-input:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,225,102,0.4); outline: none;
+  }
+  .quota-cell { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .quota-full { color: #ff7e6b; font-weight: 700; }
+  .quota-mid  { color: #ffd166; }
+  .quota-ok   { color: #7ec850; }
+  .quota-bar {
+    width: 60px; height: 6px; background: rgba(255,255,255,0.1);
+    border-radius: 3px; display: inline-block; margin-left: 6px;
+    vertical-align: middle; overflow: hidden;
+  }
+  .quota-bar > span { display: block; height: 100%; transition: width .3s ease; }
+  .btn-reset {
+    background: transparent; border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7); border-radius: 8px;
+    padding: 6px 10px; font-size: 0.85rem; cursor: pointer;
+    font-family: inherit;
+  }
+  .btn-reset:hover { background: rgba(220,50,50,0.2); color: #fff; border-color: rgba(220,50,50,0.4); }
+  .save-status {
+    font-size: 0.85rem; opacity: 0.6; margin-left: 12px;
+    transition: opacity .3s ease;
+  }
+  .save-status.visible { opacity: 1; color: #7ec850; }
+  /* Avatar picker dialog */
+  .avatar-picker {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(10,5,20,0.85); display: none;
+    align-items: center; justify-content: center; padding: 5vw;
+  }
+  .avatar-picker.show { display: flex; }
+  .avatar-picker .grid {
+    background: #2a1850; border-radius: 16px; padding: 22px;
+    max-width: 480px; border: 2px solid #FFE166;
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px;
+  }
+  .avatar-picker .grid button {
+    font-size: 1.8rem; padding: 8px; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+    cursor: pointer; transition: all .15s ease;
+  }
+  .avatar-picker .grid button:hover { background: rgba(255,225,102,0.25); transform: scale(1.1); }
+  /* Loading state */
+  .loading-msg { text-align: center; padding: 60px; font-size: 1.05rem; opacity: 0.7; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏫 Mode enseignant — IA : Le monde de Léon</h1>
+  <div class="meta" id="header-meta"></div>
+</header>
+
+<main id="main">
+  <!-- ===== LOGIN ===== -->
+  <div id="view-login">
+    <div class="login-card">
+      <h2>Tableau de bord</h2>
+      <p>Entrez votre code enseignant pour gérer les prénoms de vos élèves et suivre leurs créations.</p>
+      <form id="login-form">
+        <input id="login-code" type="text" placeholder="PROF-XXXX" autocomplete="off" required>
+        <div id="login-err" class="login-err" style="display:none"></div>
+        <button type="submit">Accéder au tableau de bord</button>
+      </form>
+      <div class="hint">
+        💡 Pour la démo, utilisez <b>PROF-DEMO</b> (donne accès à la classe ECOLE-DEMO).
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DASHBOARD ===== -->
+  <div id="view-dashboard" style="display:none">
+    <div class="toolbar">
+      <div class="hint">
+        Modifiez les prénoms de vos élèves directement dans le tableau.
+        Chaque élève peut créer <b>3 héros</b> qui vivront <b>1 histoire</b> chacun.
+      </div>
+      <div>
+        <span id="save-status" class="save-status">Enregistré ✓</span>
+        <button class="btn-logout" id="btn-logout">Se déconnecter</button>
+      </div>
+    </div>
+    <div id="loading" class="loading-msg">Chargement…</div>
+    <table class="students" id="tbl" style="display:none">
+      <thead>
+        <tr>
+          <th style="width:60px">Avatar</th>
+          <th>Prénom</th>
+          <th style="width:160px">Héros créés</th>
+          <th style="width:160px">Histoires lues</th>
+          <th style="width:120px">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</main>
+
+<div class="avatar-picker" id="avatar-picker">
+  <div class="grid" id="avatar-grid"></div>
+</div>
+
+<script>
+const API = location.origin;
+const AVATARS = [
+  "🦊","🐻","🐰","🦁","🐼","🐸","🐵","🦉","🐯","🦄",
+  "🐶","🐱","🐧","🐢","🦋","🐝","🐙","🦖","🐳","🦅",
+  "🐞","🦒","🐨","🦔","🐺","🦝","🦘","🦥","🦡","🦃",
+  "🐔","🐢","🦎","🐍","🦂","🐊","🐎","🦓","🐘","🦏",
+];
+let TEACHER_CODE = '';
+let CURRENT_LICENSE = '';
+
+// ===== LOGIN =====
+function showLoginError(msg) {
+  const e = document.getElementById('login-err');
+  e.textContent = msg; e.style.display = 'block';
+}
+function hideLoginError() {
+  document.getElementById('login-err').style.display = 'none';
+}
+
+document.getElementById('login-form').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  hideLoginError();
+  const code = document.getElementById('login-code').value.trim().toUpperCase();
+  if (!code) return;
+  try {
+    const r = await fetch(API + '/api/teacher/login', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({teacher_code: code}),
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) { showLoginError(d.message || d.error || 'Code invalide.'); return; }
+    TEACHER_CODE = code;
+    CURRENT_LICENSE = d.license;
+    try { sessionStorage.setItem('teacher_code', code); } catch(e){}
+    showDashboard();
+  } catch (e) {
+    showLoginError('Serveur injoignable. ' + e.message);
+  }
+});
+
+// Auto-login si code en session
+try {
+  const saved = sessionStorage.getItem('teacher_code');
+  if (saved) { document.getElementById('login-code').value = saved; }
+} catch(e){}
+
+// ===== DASHBOARD =====
+function showDashboard() {
+  document.getElementById('view-login').style.display = 'none';
+  document.getElementById('view-dashboard').style.display = '';
+  document.getElementById('header-meta').textContent =
+    'Connecté : ' + TEACHER_CODE + ' → ' + CURRENT_LICENSE;
+  loadStudents();
+}
+
+async function loadStudents() {
+  document.getElementById('loading').style.display = '';
+  document.getElementById('tbl').style.display = 'none';
+  try {
+    const r = await fetch(API + '/api/teacher/students?teacher_code=' + encodeURIComponent(TEACHER_CODE));
+    if (!r.ok) {
+      if (r.status === 403) { logout(); return; }
+      throw new Error('HTTP ' + r.status);
+    }
+    const d = await r.json();
+    renderTable(d.students || []);
+  } catch (e) {
+    document.getElementById('loading').textContent = 'Erreur : ' + e.message;
+  }
+}
+
+function quotaCell(n, max) {
+  const pct = max > 0 ? (n / max) * 100 : 0;
+  const cls = n >= max ? 'quota-full' : (n >= max - 1 ? 'quota-mid' : 'quota-ok');
+  const color = cls === 'quota-full' ? '#ff7e6b' : (cls === 'quota-mid' ? '#ffd166' : '#7ec850');
+  return '<span class="' + cls + '">' + n + '/' + max + '</span>' +
+         '<span class="quota-bar"><span style="width:' + pct + '%;background:' + color + '"></span></span>';
+}
+
+function renderTable(students) {
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  students.forEach(s => {
+    const tr = document.createElement('tr');
+    tr.dataset.sid = s.id;
+    tr.innerHTML =
+      '<td><span class="avatar" data-sid="' + s.id + '" title="Changer l\'avatar">' + s.avatar + '</span></td>' +
+      '<td><input class="name-input" data-sid="' + s.id + '" value="' + s.name.replace(/"/g, '&quot;') + '" maxlength="24"></td>' +
+      '<td class="quota-cell">' + quotaCell(s.heroes, s.heroes_max) + '</td>' +
+      '<td class="quota-cell">' + quotaCell(s.stories, s.stories_max) + '</td>' +
+      '<td><button class="btn-reset" data-sid="' + s.id + '">↻ Reset</button></td>';
+    tbody.appendChild(tr);
+  });
+  // Wire name input changes
+  tbody.querySelectorAll('input.name-input').forEach(inp => {
+    inp.addEventListener('change', () => saveStudent(inp.dataset.sid, {name: inp.value.trim()}));
+  });
+  // Wire avatar picker
+  tbody.querySelectorAll('.avatar').forEach(av => {
+    av.addEventListener('click', () => openAvatarPicker(av.dataset.sid));
+  });
+  // Wire reset buttons
+  tbody.querySelectorAll('.btn-reset').forEach(btn => {
+    btn.addEventListener('click', () => resetStudent(btn.dataset.sid));
+  });
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('tbl').style.display = '';
+}
+
+async function saveStudent(sid, fields) {
+  try {
+    const r = await fetch(API + '/api/teacher/students/' + sid, {
+      method: 'PUT', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(Object.assign({teacher_code: TEACHER_CODE}, fields)),
+    });
+    if (r.ok) flashStatus('Enregistré ✓');
+    else flashStatus('Erreur', true);
+  } catch (e) { flashStatus('Erreur réseau', true); }
+}
+
+async function resetStudent(sid) {
+  if (!confirm('Supprimer tous les héros et histoires de cet élève ? Action irréversible.')) return;
+  try {
+    const r = await fetch(API + '/api/teacher/students/' + sid + '/heroes?teacher_code=' + encodeURIComponent(TEACHER_CODE), {method: 'DELETE'});
+    if (r.ok) { flashStatus('Reset effectué ✓'); loadStudents(); }
+    else flashStatus('Erreur reset', true);
+  } catch (e) { flashStatus('Erreur réseau', true); }
+}
+
+function flashStatus(msg, isErr) {
+  const el = document.getElementById('save-status');
+  el.textContent = msg;
+  el.style.color = isErr ? '#ff7e6b' : '#7ec850';
+  el.classList.add('visible');
+  clearTimeout(window._statusTo);
+  window._statusTo = setTimeout(() => el.classList.remove('visible'), 1800);
+}
+
+// ===== AVATAR PICKER =====
+function openAvatarPicker(sid) {
+  const dlg = document.getElementById('avatar-picker');
+  const grid = document.getElementById('avatar-grid');
+  grid.innerHTML = '';
+  AVATARS.forEach(em => {
+    const b = document.createElement('button');
+    b.textContent = em;
+    b.addEventListener('click', () => {
+      saveStudent(sid, {avatar: em}).then(() => loadStudents());
+      dlg.classList.remove('show');
+    });
+    grid.appendChild(b);
+  });
+  dlg.classList.add('show');
+}
+document.getElementById('avatar-picker').addEventListener('click', (e) => {
+  if (e.target.id === 'avatar-picker') e.target.classList.remove('show');
+});
+
+// ===== LOGOUT =====
+function logout() {
+  TEACHER_CODE = '';
+  CURRENT_LICENSE = '';
+  try { sessionStorage.removeItem('teacher_code'); } catch(e){}
+  document.getElementById('view-dashboard').style.display = 'none';
+  document.getElementById('view-login').style.display = '';
+  document.getElementById('header-meta').textContent = '';
+}
+document.getElementById('btn-logout').addEventListener('click', logout);
+</script>
+</body>
+</html>

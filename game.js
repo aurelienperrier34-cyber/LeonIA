@@ -1394,6 +1394,9 @@ const HB_OPTS = {
     { v: 'combinaison', label: 'Combinaison', emoji: '🧑‍🚀' },
     { v: 'tshirt',      label: 'T-shirt',     emoji: '👕' },
     { v: 'armure',      label: 'Armure',      emoji: '🛡️' },
+    // v694 : option "Aucune" tenue. Pour animal/robot = pelage/coque naturel.
+    // Pour humains = tshirt simple par defaut (fallback securite backend).
+    { v: 'aucune',      label: 'Aucune',      emoji: '🚫' },
   ],
   accessory: [
     { v: 'chapeau',   label: 'Chapeau',  emoji: '🎩' },
@@ -1424,19 +1427,31 @@ let hbState = {
 };
 
 // Liste des etapes selon le type (animal/robot sautent les cheveux)
+// v677 : si outfit=aucune (option "Naturel"), saute aussi outfit_color
+// (pas de couleur a choisir pour le pelage/coque naturel).
 function hbSteps() {
   const s = ['type'];
   if (hbState.type === 'fille' || hbState.type === 'garcon') {
     s.push('hair');
     if (hbState.hair !== 'chauve') s.push('hair_color');
   }
-  s.push('outfit', 'outfit_color', 'accessory', 'name', 'recap');
+  s.push('outfit');
+  if (hbState.outfit !== 'aucune') s.push('outfit_color');
+  s.push('accessory', 'name', 'recap');
   return s;
 }
 
 function openHeroBuilder() {
   // Premium : la creation fait partie du contenu payant.
   if (!isPremium()) { showPremiumPaywall('book'); goToScreen('map'); return; }
+  // v685 : verrou 3 perso max par eleve. La carte "Creer" est masquee a 3 mais
+  // si on arrive ici par un autre chemin (ex: console, raccourci), on bloque.
+  const HEROES_LIMIT = 3;
+  if ((window.creatorCustomHeroes || []).length >= HEROES_LIMIT) {
+    alert("Tu as déjà créé " + HEROES_LIMIT + " héros (la limite). " +
+          "Demande à ton maître ou ta maîtresse d'en supprimer un avant d'en créer un nouveau.");
+    return;
+  }
   hbState.step = 0;
   goToScreen('hero-builder');
   updatePlumesUI();
@@ -1461,11 +1476,14 @@ window.hbNext = hbNext;
 window.hbPrev = hbPrev;
 
 function _hbGrid(field) {
+  // v693 : option "Aucune" / "Naturel" disponible POUR TOUS (humains compris).
+  // Pour humain qui choisit "aucune", le backend retombe automatiquement sur
+  // un t-shirt simple (cf generate_custom_hero.py V_OUTFIT) -> jamais nu.
   return '<div class="hb-grid hb-grid-icons">' + HB_OPTS[field].map(o =>
     '<button type="button" class="hb-opt' + (hbState[field] === o.v ? ' selected' : '') +
     '" onclick="hbPick(\'' + field + '\',\'' + o.v + '\')">' +
     // Illustration watercolor ; repli sur l'emoji si l'icone n'est pas (encore) generee
-    '<img class="hb-opt-img" src="assets/ui/builder/' + field + '_' + o.v + '.jpg?v=614" alt="" loading="lazy" ' +
+    '<img class="hb-opt-img" src="assets/ui/builder/' + field + '_' + o.v + '.jpg?v=695" alt="" loading="lazy" ' +
     'onerror="this.style.display=\'none\'; var e=this.nextElementSibling; if(e) e.style.display=\'inline-block\';">' +
     '<span class="hb-opt-emoji" style="display:none">' + o.emoji + '</span>' +
     '<span class="hb-opt-label">' + o.label + '</span></button>'
@@ -1561,24 +1579,82 @@ function _hbLabel(field, val) {
 }
 
 function _hbRecapHtml() {
+  // v676 : preview visuelle des choix dans le recap (avant : juste un emoji "*")
+  // On compose un mini-avatar : emoji du type + pastille cheveux + pastille tenue
+  // + emoji accessoire flottant.
   const isHuman = hbState.type === 'fille' || hbState.type === 'garcon';
+  const typeOpt = HB_OPTS.type.find(t => t.v === hbState.type) || {};
+  const accOpt  = HB_OPTS.accessory.find(a => a.v === hbState.accessory) || {};
+  const outfitOpt = HB_OPTS.outfit.find(o => o.v === hbState.outfit) || {};
+  const hairOpt   = HB_OPTS.hair.find(h => h.v === hbState.hair) || {};
+  const hairColor = (HB_OPTS.colors.find(c => c.v === hbState.hair_color) || {}).hex || '#888';
+  const outfitColor = (HB_OPTS.colors.find(c => c.v === hbState.outfit_color) || {}).hex || '#888';
+  const isRainbowHair = hairColor && hairColor.indexOf('gradient') >= 0;
+  const isRainbowOutfit = outfitColor && outfitColor.indexOf('gradient') >= 0;
+
+  // --- preview SVG-like en CSS pur ---
+  const preview =
+    '<div class="hb-recap-preview" style="position:relative;width:140px;height:140px;' +
+    'margin:0 auto 10px;display:flex;align-items:center;justify-content:center;">' +
+    // halo couleur tenue derriere l'emoji
+    '<div style="position:absolute;inset:8px;border-radius:50%;' +
+    'background:' + (isRainbowOutfit ? outfitColor : outfitColor) + ';' +
+    'opacity:.6;box-shadow:0 4px 18px rgba(0,0,0,.3);"></div>' +
+    // emoji type principal (au centre)
+    '<div style="position:relative;z-index:2;font-size:5rem;line-height:1;' +
+    'filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));">' + (typeOpt.emoji || '✨') + '</div>' +
+    // pastille couleur cheveux (humain only, en haut a droite)
+    (isHuman && hbState.hair !== 'chauve'
+      ? '<div title="Cheveux" style="position:absolute;top:0;right:0;width:34px;height:34px;' +
+        'border-radius:50%;background:' + hairColor + ';border:3px solid #fff;' +
+        'box-shadow:0 2px 8px rgba(0,0,0,.4);display:flex;align-items:center;' +
+        'justify-content:center;font-size:1.1rem;z-index:3;">' + (hairOpt.emoji || '') + '</div>'
+      : '') +
+    // emoji accessoire (en bas a droite si != aucun)
+    (hbState.accessory !== 'aucun'
+      ? '<div title="Accessoire" style="position:absolute;bottom:0;right:0;width:38px;height:38px;' +
+        'border-radius:50%;background:#fff;border:2px solid #ffd166;' +
+        'box-shadow:0 2px 8px rgba(0,0,0,.4);display:flex;align-items:center;' +
+        'justify-content:center;font-size:1.4rem;z-index:3;">' + (accOpt.emoji || '') + '</div>'
+      : '') +
+    // emoji tenue (en bas a gauche)
+    '<div title="Tenue" style="position:absolute;bottom:0;left:0;width:38px;height:38px;' +
+    'border-radius:50%;background:#fff;border:2px solid #ffd166;' +
+    'box-shadow:0 2px 8px rgba(0,0,0,.4);display:flex;align-items:center;' +
+    'justify-content:center;font-size:1.4rem;z-index:3;">' + (outfitOpt.emoji || '') + '</div>' +
+    '</div>';
+
+  // --- liste textuelle des choix ---
   const lines = [];
-  lines.push((HB_OPTS.type.find(t => t.v === hbState.type) || {}).label);
+  lines.push(typeOpt.label || hbState.type);
   if (isHuman) {
     if (hbState.hair === 'chauve') lines.push('sans cheveux');
     else lines.push('cheveux ' + _hbLabel('hair', hbState.hair) + ' ' + hbState.hair_color);
   }
-  lines.push('tenue : ' + _hbLabel('outfit', hbState.outfit) + ' ' + hbState.outfit_color);
+  if (hbState.outfit === 'aucune') {
+    // v693 : adapte selon le type (humain, animal, robot)
+    const naturalLabel = {
+      'robot':  'apparence : coque naturelle',
+      'animal': 'apparence : pelage naturel',
+      'fille':  'tenue : simple (au choix de Léon)',
+      'garcon': 'tenue : simple (au choix de Léon)',
+    }[hbState.type] || 'tenue : naturelle';
+    lines.push(naturalLabel);
+  } else {
+    lines.push('tenue : ' + _hbLabel('outfit', hbState.outfit) + ' ' + hbState.outfit_color);
+  }
   if (hbState.accessory !== 'aucun') lines.push('accessoire : ' + _hbLabel('accessory', hbState.accessory));
   if ((hbState.keyword || '').trim()) lines.push('idée : ' + hbState.keyword.trim());
+
   return '<div class="hb-recap">' +
-    '<div class="hb-opt-emoji" style="font-size:3.4rem">✨</div>' +
+    preview +
     '<div class="hb-recap-name">' + (hbState.name || 'Mon héros') + '</div>' +
     '<div class="hb-recap-list">' + lines.filter(Boolean).join('<br>') + '</div>' +
     '<button class="hb-btn hb-next" style="margin-top:14px" type="button" onclick="hbGenerate()">' +
     'Donne vie à mon héros ! ✨</button>' +
-    '<div style="color:rgba(255,255,255,0.5);font-size:.78rem;margin-top:6px">' +
-    'Gratuit · tu utiliseras une plume 🪶 quand il vivra une histoire</div>' +
+    // v679 : retire la mention "tu utiliseras une plume" -> en mode ecole (B2G),
+    // la monnaie plumes est un quota interne gere par l'enseignant, jamais
+    // visible des eleves.
     '</div>';
 }
 
@@ -1633,12 +1709,140 @@ function _heroOverlay(id, innerHtml) {
   return ov;
 }
 
+// v689 : OVERLAY orbe avec ANIMATIONS MAGIQUES enrichies :
+//  - 3 anneaux concentriques de particules orbitales (vitesses opposees)
+//  - 14 etincelles flottantes qui montent du bas (cascade de delays)
+//  - halo dore qui pulse + brille fortement
+//  - 6 micro-eclats scintillent autour de l'orbe (twinkle aleatoire)
 function showHeroLoading(name) {
-  _heroOverlay('hero-loading',
-    '<div style="font-size:48px;line-height:1;margin-bottom:10px;" class="anim-bounce">🪄✨</div>' +
-    '<h2 style="margin:0 0 8px;font-size:1.3rem;color:#7a4a10;">Léon donne vie à ' + name + '…</h2>' +
-    '<p style="margin:0;font-size:.95rem;opacity:.85;">Sa baguette dessine ton héros. ' +
-    'Ça prend environ une minute ⏳</p>');
+  document.getElementById('hero-loading')?.remove();
+  document.getElementById('hero-result')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'hero-loading';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;' +
+    'background:#0a0518 url(assets/ui/orb_empty.jpg) center/cover no-repeat;' +
+    'overflow:hidden;');
+
+  // Helper : 1 etincelle SVG (etoile a 4 branches)
+  const spark = (size, color) =>
+    '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" ' +
+    'style="display:block;">' +
+    '<path d="M12 2 L14 10 L22 12 L14 14 L12 22 L10 14 L2 12 L10 10 Z" ' +
+    'fill="' + color + '" opacity="0.95"/></svg>';
+
+  // 3 ANNEAUX d'orbe : ring container = cercle dont le PARENT tourne ; chaque
+  // sparkle est ancre au CENTRE puis pousse vers le bord via rotate+translateY.
+  const buildOrbit = (count, radiusVmin, dur, reverse, sizes, colors) => {
+    let html = '<div class="hero-orb-ring" style="position:absolute;' +
+      'left:50%;top:45%;width:' + (2*radiusVmin) + 'vmin;height:' +
+      (2*radiusVmin) + 'vmin;margin-left:-' + radiusVmin + 'vmin;' +
+      'margin-top:-' + radiusVmin + 'vmin;' +
+      'pointer-events:none;animation:heroRingSpin ' + dur + 's linear infinite ' +
+      (reverse ? 'reverse' : '') + ';">';
+    for (let i = 0; i < count; i++) {
+      const ang = (i * 360 / count);
+      const sz = sizes[i % sizes.length];
+      const col = colors[i % colors.length];
+      html += '<div style="position:absolute;left:50%;top:50%;' +
+        'margin-left:-' + (sz/2) + 'px;margin-top:-' + (sz/2) + 'px;' +
+        'transform:rotate(' + ang + 'deg) translateY(-' + radiusVmin + 'vmin);' +
+        'filter:drop-shadow(0 0 8px ' + col + ');">' + spark(sz, col) + '</div>';
+    }
+    return html + '</div>';
+  };
+
+  // 14 ETINCELLES qui montent du bas (positions x aleatoires, delays escalonnes)
+  let risingSparks = '';
+  for (let i = 0; i < 14; i++) {
+    const x = (i * 7.3 + 5) % 95;        // distribution pseudo-aleatoire
+    const delay = (i * 0.6) % 8;          // 0..8s
+    const dur = 6 + (i % 4);              // 6..9s
+    const size = 8 + (i % 3) * 4;         // 8, 12, 16
+    const colors = ['#ffe680', '#ffd166', '#fff4c2', '#a3e7ff'];
+    const col = colors[i % colors.length];
+    risingSparks += '<div style="position:absolute;left:' + x +
+      '%;bottom:-5%;animation:heroSparkRise ' + dur + 's ease-in -' + delay +
+      's infinite;filter:drop-shadow(0 0 6px ' + col + ');">' +
+      spark(size, col) + '</div>';
+  }
+
+  // 6 MICRO-ECLATS qui scintillent autour de l'orbe (twinkle)
+  let twinkles = '';
+  const twinklePositions = [
+    [38, 35], [62, 35], [30, 50], [70, 50], [42, 62], [58, 62],
+  ];
+  twinklePositions.forEach((p, i) => {
+    twinkles += '<div style="position:absolute;left:' + p[0] + '%;top:' + p[1] +
+      '%;animation:heroTwinkle 1.6s ease-in-out -' + (i * 0.3) +
+      's infinite;filter:drop-shadow(0 0 10px #fff8c0);">' +
+      spark(14, '#fff8c0') + '</div>';
+  });
+
+  ov.innerHTML =
+    // HALO PRINCIPAL (dore pulsant, plus marque)
+    '<div class="hero-orb-halo" style="position:absolute;' +
+    'left:50%;top:45%;transform:translate(-50%,-50%);' +
+    'width:40vmin;height:40vmin;border-radius:50%;' +
+    'background:radial-gradient(circle,rgba(255,235,140,0.75) 0%,' +
+    'rgba(255,200,80,0.4) 35%,rgba(255,180,60,0.15) 60%,transparent 80%);' +
+    'animation:heroOrbPulse 1.8s ease-in-out infinite;pointer-events:none;' +
+    'mix-blend-mode:screen;"></div>' +
+    // 3 ANNEAUX de particules (rayons et vitesses differents)
+    buildOrbit(8,  16, 10, false, [10, 14], ['#ffe680', '#fff4c2']) +
+    buildOrbit(12, 22, 18, true,  [8, 12],  ['#ffd166', '#ffba2e', '#fff8c0']) +
+    buildOrbit(6,  28, 28, false, [16],     ['#a3e7ff', '#fff8c0']) +
+    // ETINCELLES qui montent
+    risingSparks +
+    // MICRO-ECLATS twinkle
+    twinkles +
+    // SLOT du portrait (vide pendant loading)
+    '<div id="hero-orb" style="position:absolute;' +
+    'left:50%;top:45%;transform:translate(-50%,-50%);' +
+    'width:22vmin;height:22vmin;border-radius:50%;' +
+    'overflow:hidden;z-index:2;"></div>' +
+    // TEXTE en bas
+    '<div style="position:absolute;left:50%;bottom:3vh;transform:translateX(-50%);' +
+    'text-align:center;color:#fff8ee;text-shadow:0 2px 12px rgba(0,0,0,.85);' +
+    'padding:0 4vw;max-width:680px;z-index:3;">' +
+      '<h2 id="hero-orb-title" style="margin:0 0 4px;' +
+      'font-size:clamp(1.1rem,2.4vw,1.6rem);color:#ffd166;font-family:inherit;">' +
+      'Léon donne vie à ' + (name || 'ton héros') + '…</h2>' +
+      '<p id="hero-orb-text" style="margin:0;' +
+      'font-size:clamp(0.85rem,1.6vw,1.05rem);color:rgba(255,255,255,0.9);">' +
+      'La magie prend forme dans l\'orbe ✨ (environ une minute ⏳)</p>' +
+    '</div>';
+  if (!document.getElementById('hero-orb-css')) {
+    const st = document.createElement('style');
+    st.id = 'hero-orb-css';
+    st.textContent =
+      '@keyframes heroOrbPulse { 0%,100% { opacity:0.6; transform:translate(-50%,-50%) scale(1); } ' +
+      '50% { opacity:1; transform:translate(-50%,-50%) scale(1.22); } }' +
+      '@keyframes heroRingSpin { 0% { transform:rotate(0deg); } ' +
+      '100% { transform:rotate(360deg); } }' +
+      '@keyframes heroSparkRise { 0% { transform:translateY(0) scale(0.4); opacity:0; } ' +
+      '15% { opacity:1; } ' +
+      '85% { opacity:1; } ' +
+      '100% { transform:translateY(-110vh) scale(1.2) rotate(180deg); opacity:0; } }' +
+      '@keyframes heroTwinkle { 0%,100% { opacity:0; transform:scale(0.4); } ' +
+      '50% { opacity:1; transform:scale(1.3); } }' +
+      '@keyframes heroPortraitReveal { 0% { opacity:0; transform:scale(0.2); filter:blur(24px); } ' +
+      '60% { opacity:1; filter:blur(0); } ' +
+      '100% { opacity:1; transform:scale(1); filter:blur(0); } }';
+    document.head.appendChild(st);
+  }
+  document.body.appendChild(ov);
+  // v695 : passe en mode FULLSCREEN navigateur (masque la barre d'adresse).
+  // Le user-gesture (clic "Donne vie a mon heros") est requis -> ok puisqu'on
+  // est juste apres le clic. En cas d'echec (API bloquee, deja en FS, etc.),
+  // on ignore silencieusement.
+  try {
+    const el = document.documentElement;
+    if (!document.fullscreenElement) {
+      const req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen;
+      if (req) req.call(el).catch(() => {});
+    }
+  } catch (e) {}
 }
 
 function showHeroError(msg) {
@@ -1653,23 +1857,55 @@ function showHeroError(msg) {
 }
 
 function showHeroResult(data) {
+  // v682 : le portrait apparait DANS l'orbe (deja positionnee dans l'image
+  // d'atelier au centre 50%/55%). Effet revelation magique : blur->net + scale.
   const url = getBackendUrl() + data.portrait_url;
-  const ov = _heroOverlay('hero-result',
-    '<h2 style="margin:0 0 10px;font-size:1.35rem;color:#7a4a10;">' +
-      (data.name || 'Ton héros') + ' est né ! 🎉</h2>' +
-    '<img src="' + url + '" alt="' + (data.name || '') + '" ' +
-    'style="width:200px;height:200px;object-fit:cover;border-radius:18px;' +
-    'border:3px solid #e0a23a;box-shadow:0 6px 18px rgba(0,0,0,.25);margin-bottom:14px;">' +
-    '<p style="margin:0 0 16px;font-size:.92rem;opacity:.85;">' +
-      'Il est ajouté à <b>Mes héros</b>. Tu pourras lui faire vivre des histoires 🪶</p>' +
-    '<button id="hero-result-close" style="cursor:pointer;border:none;' +
-    'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
-    'font-size:1rem;padding:12px 30px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.45);">' +
-    'Génial ! 😍</button>');
-  document.getElementById('hero-result-close').addEventListener('click', () => {
-    ov.remove();
-    goToScreen('map');   // retour carte ; la galerie "Mes heros" arrive (step 5b)
-  });
+  let orb = document.getElementById('hero-orb');
+  let loadingOv = document.getElementById('hero-loading');
+  if (!orb) {
+    showHeroLoading(data.name || '');
+    orb = document.getElementById('hero-orb');
+    loadingOv = document.getElementById('hero-loading');
+  }
+  // Injecte le portrait dans le slot (deja positionne sur l'orbe de l'image)
+  orb.innerHTML =
+    '<img src="' + url + '" alt="' + (data.name || '').replace(/"/g, '&quot;') +
+    '" style="width:100%;height:100%;object-fit:cover;display:block;' +
+    'border-radius:50%;' +
+    'animation:heroPortraitReveal 1.2s cubic-bezier(.16,.84,.44,1) both;">';
+  // Stop le halo pulsant : la magie est terminee, on passe a la revelation
+  const glow = loadingOv.querySelector('.hero-orb-glow');
+  if (glow) glow.style.animation = 'none';
+  // Update les textes
+  const h2 = document.getElementById('hero-orb-title');
+  if (h2) h2.innerHTML = (data.name || 'Ton héros') + ' est né&nbsp;! 🎉';
+  const p = document.getElementById('hero-orb-text');
+  if (p) p.innerHTML = 'Il est ajouté à <b>Mes héros</b>.';
+  // Bouton "Genial" sous le texte
+  if (!document.getElementById('hero-result-close')) {
+    const btn = document.createElement('button');
+    btn.id = 'hero-result-close';
+    btn.setAttribute('style',
+      'position:absolute;left:50%;bottom:max(2vh,env(safe-area-inset-bottom,0));' +
+      'transform:translateX(-50%);' +
+      'cursor:pointer;border:none;' +
+      'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
+      'font-size:clamp(0.95rem,1.6vw,1.1rem);padding:12px 30px;border-radius:14px;' +
+      'box-shadow:0 4px 14px rgba(76,162,47,.45);font-family:inherit;z-index:3;');
+    btn.textContent = 'Génial ! 😍';
+    btn.addEventListener('click', () => {
+      loadingOv.remove();
+      // v695 : sort du fullscreen (rend la barre navigateur)
+      try {
+        if (document.fullscreenElement) {
+          const exit = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen;
+          if (exit) exit.call(document).catch(() => {});
+        }
+      } catch (e) {}
+      goToScreen('map');
+    });
+    loadingOv.appendChild(btn);
+  }
 }
 
 // Vrai appel au backend : cree le heros (portrait Gemini cote serveur).
@@ -10634,6 +10870,9 @@ function renderPickBook() {
              `).join('')}
            </div>
            <h2 class="pick-cat-title">${step.title}</h2>`;
+      // v691 : on AFFICHE TOUJOURS les 3 heros catalogue (astronaute, sorciere,
+      // dragon). L'eleve peut en plus en creer jusqu'a 3 perso custom. La carte
+      // "Creer" disparait quand 3 custom sont atteints -> max 6 vignettes total.
       spread.innerHTML = `
         <div class="pick-page pick-page-left">
           ${leftPaneHtml}
@@ -10673,13 +10912,21 @@ function renderPickBook() {
           });
           itemsBox.appendChild(b);
         });
-        const c = document.createElement('button');
-        c.className = 'pick-item pick-item-create';
-        c.type = 'button';
-        c.innerHTML = '<span class="pick-item-emoji" style="display:inline-block;font-size:1.7rem">➕</span>' +
-          '<span class="pick-item-label">Créer</span>';
-        c.onclick = () => openHeroBuilder();
-        itemsBox.appendChild(c);
+        // v681 : carte "Creer" affichee SEULEMENT si l'eleve n'a pas atteint
+        // son quota de 3 persos. Evite le 7e item qui faisait deborder la
+        // grille 2 colonnes (chevauchement / scroll).
+        // HEROES_PER_STUDENT = 3 (cote backend). Cote front on lit le compte
+        // des heros custom existants.
+        const HEROES_LIMIT = 3;
+        if ((creatorCustomHeroes || []).length < HEROES_LIMIT) {
+          const c = document.createElement('button');
+          c.className = 'pick-item pick-item-create';
+          c.type = 'button';
+          c.innerHTML = '<span class="pick-item-emoji" style="display:inline-block;font-size:1.7rem">➕</span>' +
+            '<span class="pick-item-label">Créer</span>';
+          c.onclick = () => openHeroBuilder();
+          itemsBox.appendChild(c);
+        }
       }
     }
     pagesEl.appendChild(spread);
@@ -10789,6 +11036,20 @@ function updatePickSummary() {
   // avec fallback emoji si l'image n'existe pas encore
   const cardOf = (catKey, val) => {
     if (!val) return '<div class="pick-summary-card empty">?</div>';
+    // v678 : heros CUSTOM (val = "custom:<hero_id>") -> portrait perso
+    if (catKey === 'hero' && typeof val === 'string' && val.indexOf('custom:') === 0) {
+      const hid = val.slice(7);
+      const ch = (creatorCustomHeroes || []).find(h => h.hero_id === hid);
+      if (ch) {
+        return `
+          <div class="pick-summary-card" title="${(ch.name || '').replace(/"/g, '&quot;')}">
+            <img class="pick-summary-img" src="${getBackendUrl() + ch.portrait_url}" alt="${ch.name}"
+                 onerror="this.style.display='none'; var em=this.nextElementSibling; if(em) em.style.display='inline-block';">
+            <span class="pick-summary-emoji" style="display:none">🦸</span>
+            <span class="pick-summary-label">${ch.name}</span>
+          </div>`;
+      }
+    }
     const cat = CREATOR_CATEGORIES.find(c => c.key === catKey);
     const item = cat && cat.items.find(i => i.value === val);
     if (!item) return '<div class="pick-summary-card empty">?</div>';

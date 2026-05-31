@@ -67,6 +67,7 @@ KIT_PILOTE.*
 FICHE_COLLEGUE_TESTEUR.*
 PLAN_FINANCEMENT.*
 PITCH_MAIRIE.*
+CANDIDATURE_GOOGLE_EDU.*
 _build_docs.js
 demo_qr.png
 audit_out/
@@ -78,6 +79,8 @@ audit_map_nodes.py
 # === Scripts dev locaux (utilitaires / batch / scratch) ===
 DEMO*.bat
 regen_page.py
+regen_orb.py
+regen_outfit_aucune.py
 resume_catalog_audio.py
 samples/
 scratch/
@@ -89,3 +92,17 @@ demo_seed.py
 generate_leon_writing_still.py
 generate_veo_clip.py
 ~$*.docx
+
+# === Tests modeles d'images alternatifs (Leonardo/FAL/Imagen) - dev local ===
+test_flux_story.py
+test_flux_multiref.py
+test_fal_story.py
+test_fal_pulid.py
+test_imagen_story.py
+_test_flux/
+_shot.js
+_shot2.js
+_shot_debug.js
+
+# === Preview HTML interne (jamais en prod) ===
+preview_overlays.html

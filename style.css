@@ -8474,16 +8474,10 @@ body:has(#screen-creator.active) #global-star-corner {
   align-items: center;
   gap: clamp(6px, 1vw, 10px);
 }
-/* Pastille plumes : cliquable, ouvre la boutique. Accent orange. */
-.creator-plumes-pill {
-  cursor: pointer;
-  background: rgba(245,124,0,0.22);
-  color: #FFC078;
-  border: 1.5px solid rgba(245,124,0,0.5);
-  transition: transform .12s ease, background .2s ease;
-}
-.creator-plumes-pill:hover  { background: rgba(245,124,0,0.34); }
-.creator-plumes-pill:active { transform: scale(0.94); }
+/* v679 : pastille plumes MASQUEE (mode ecole B2G). La notion de plumes est
+   un quota interne gere par l'enseignant, jamais visible des eleves. Pour
+   reactiver (mode grand public futur) : retirer la regle display:none. */
+.creator-plumes-pill { display: none !important; }
 
 /* Bouton "Mes histoires" : icone ronde (pile de livres) -> matche la pastille ronde */
 .creator-stories-pill {
@@ -9245,25 +9239,60 @@ body:has(#screen-creator.active) #global-star-corner {
 }
 .creator-phase-pick .creator-error:empty { display: none; }
 
-/* === LOADING === */
+/* === LOADING (generation histoire) === */
+/* v686 : video "Leon avec sa plume magique" en BACKGROUND PLEIN ECRAN, le
+   texte ("Ton histoire arrive...") en overlay bas. Meme pattern que l'orbe
+   de creation de heros. */
 .creator-phase-loading {
-  align-items: center;
-  justify-content: center;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 9999;
+  display: block;
+  background: #0a0518;
+  overflow: hidden;
+}
+.creator-phase-loading[hidden] { display: none !important; }
+/* La video Leon-plume occupe TOUT l'ecran (cover sans deformation) */
+.loading-leon-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Caption en bas, sur fond degradé pour lisibilité */
+.loading-leon-caption {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: clamp(40px, 8vh, 80px) clamp(20px, 5vw, 60px) clamp(16px, 4vh, 32px);
+  background: linear-gradient(to top, rgba(10,5,25,0.92) 0%,
+              rgba(10,5,25,0.7) 60%, transparent 100%);
   text-align: center;
+}
+.loading-leon-caption h3 {
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  color: #FFE166;
+  margin: 0 0 6px;
+  text-shadow: 0 2px 16px rgba(0,0,0,.85);
+}
+.loading-leon-caption p {
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  color: rgba(255,255,255,0.92);
+  margin: 0;
+  text-shadow: 0 1px 8px rgba(0,0,0,.8);
 }
 .loading-sparkles {
   font-size: clamp(3rem, 8vw, 5rem);
   animation: loadingSpark 1.6s ease-in-out infinite;
-}
-.creator-phase-loading h3 {
-  font-family: 'Baloo 2', cursive;
-  font-size: clamp(1.2rem, 2vw, 1.6rem);
-  color: #FFE166;
-  margin: clamp(10px, 2vw, 18px) 0 clamp(6px, 1vw, 10px);
-}
-.creator-phase-loading p {
-  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
-  opacity: 0.85;
 }
 @keyframes loadingSpark {
   0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }

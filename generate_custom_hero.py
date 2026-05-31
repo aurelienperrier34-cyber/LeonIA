@@ -100,6 +100,9 @@ V_COLOR = {  # sert pour cheveux ET tenue
 }
 
 # fragments SANS article : l'article est ajoute par build_prompts ("wearing a ...")
+# v677 : "aucune" = pelage/coque naturel. Pour les humains, c'est un fallback
+# de SECURITE -> on force une tenue par defaut (t-shirt simple) pour ne JAMAIS
+# generer de personnage humain nu, meme si "aucune" arrive cote serveur.
 V_OUTFIT = {
     "cape":       ("flowing hero cape",     "hero cape"),
     "robe":       ("pretty dress",          "dress"),
@@ -108,6 +111,9 @@ V_OUTFIT = {
     "combinaison":("adventurer jumpsuit",   "adventurer jumpsuit"),
     "tshirt":     ("colorful t-shirt",      "t-shirt"),
     "armure":     ("light shiny toy-knight armor", "light toy-knight armor"),
+    "aucune":     ("natural look (fur/scales/shell/skin for animals, "
+                   "smooth plating for robots) without human clothing",
+                   "natural appearance"),
 }
 
 V_ACCESSORY = {
@@ -166,10 +172,21 @@ def build_prompts(params):
         else:
             bits_p.append(hair_p); bits_c.append(hair_c)
 
-    out_p, out_c = V_OUTFIT.get(params.get("outfit", "tshirt"), V_OUTFIT["tshirt"])
-    oc = V_COLOR.get(params.get("outfit_color", "bleu"), "blue")
-    bits_p.append(f"wearing a {oc} {out_p}")
-    bits_c.append(f"{oc} {out_c}")
+    # v677 : option "aucune" = pelage/coque naturel pour animal/robot.
+    # SECURITE : si un humain arrive avec outfit=aucune (UI le filtre mais
+    # garde-fou serveur), on force "tshirt" pour ne JAMAIS generer un humain nu.
+    outfit_key = params.get("outfit", "tshirt")
+    if outfit_key == "aucune" and not is_creature:
+        outfit_key = "tshirt"  # fallback securite humains
+    out_p, out_c = V_OUTFIT.get(outfit_key, V_OUTFIT["tshirt"])
+    if outfit_key == "aucune":
+        # Animal / robot : pas de mention de couleur de tenue (pas de tenue)
+        bits_p.append(out_p)
+        bits_c.append(out_c)
+    else:
+        oc = V_COLOR.get(params.get("outfit_color", "bleu"), "blue")
+        bits_p.append(f"wearing a {oc} {out_p}")
+        bits_c.append(f"{oc} {out_c}")
 
     acc_p, acc_c = V_ACCESSORY.get(params.get("accessory", "aucun"), V_ACCESSORY["aucun"])
     if acc_p:
@@ -179,15 +196,21 @@ def build_prompts(params):
     kw = _clean_keyword(params.get("keyword", ""))
 
     descr_p = ", ".join(b for b in bits_p if b)
-    # L'idee libre = instruction FORTE (pas un simple theme noye) -> Gemini l'honore
-    # vraiment (ex: ajouter une licorne de compagnie a cote du heros).
-    idea_p = (f" IMPORTANT additional idea to clearly include in the illustration: {kw}."
+    # v676 : le keyword DECRIT le perso, il NE doit PAS introduire un 2e personnage.
+    # Ex : "tortue super-heros qui vole" = le perso EST une tortue super-heros, pas
+    # "le perso + une tortue a cote". Avant, Gemini empilait 2 personnages dans
+    # l'image (bug rapporte par le user 2026-05-31).
+    idea_p = (f" The keyword '{kw}' DESCRIBES this same single character "
+              "(NOT a separate creature or sidekick). Integrate it into the main "
+              "subject : adapt species, costume or pose as needed."
               if kw else "")
     portrait_prompt = (
         PORTRAIT_STYLE +
-        f"Portrait of {name}, {type_p}, {descr_p}, "
+        f"Portrait of ONE single character only : {name}, {type_p}, {descr_p}, "
         "big bright friendly smile, rosy cheeks, looking warmly at the viewer, "
-        "full upper body shot, adorable and kid-friendly." + idea_p
+        "full upper body shot, adorable and kid-friendly. "
+        "STRICTLY ONE CHARACTER - no sidekick, no companion, no second creature, "
+        "no other person in the frame." + idea_p
     )
     canon_text = (
         f"{name}: {type_c}, " + ", ".join(b for b in bits_c if b) +

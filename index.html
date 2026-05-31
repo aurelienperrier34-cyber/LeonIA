@@ -68,7 +68,7 @@
   <!-- Image d'accueil (ecran 0) : preload prioritaire pour l'afficher INSTANTANEMENT
        a la connexion, avant meme le CSS. JPG progressif 288 KB (vs 7 MB PNG avant). -->
   <link rel="preload" as="image" href="assets/leon_bienvenue.jpg" fetchpriority="high">
-  <link rel="stylesheet" href="style.css?v=675">
+  <link rel="stylesheet" href="style.css?v=696">
 </head>
 <body>
 <!-- Overlay "Tourne ton téléphone" (portrait mobile uniquement) -->
@@ -87,7 +87,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v675</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v696</div>
 
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
@@ -224,13 +224,10 @@
               <div class="map-dock-subtitle">81 histoires</div>
             </div>
           </button>
-          <button class="map-dock-card" id="dock-hero-card" onclick="openHeroBuilder()" type="button">
-            <div class="map-dock-lock" id="dock-hero-lock" style="display:none">👑</div>
-            <div class="map-dock-icon">✨</div>
-            <div class="map-dock-text">
-              <div class="map-dock-title">Crée ton héros</div>
-            </div>
-          </button>
+          <!-- v688 : carte "Crée ton héros" retiree du dock map (redondante
+               avec la carte "Créer" du picker Livre magique). 1 seul point
+               d'entree vers la creation = UX plus simple, cohérence narrative
+               (l'enfant cree son perso au moment de lancer son histoire). -->
         </div>
 
       </div>
@@ -1888,10 +1885,17 @@
   </div>
 
   <!-- PHASE 3 : LOADING (transition vers livre) -->
+  <!-- v686 : video "Leon ecrit avec sa plume" en BACKGROUND PLEIN ECRAN
+       (16:9 natif 1344x768). Le texte vient par dessus en overlay bas. -->
   <div class="creator-phase creator-phase-loading" id="creator-loading" hidden>
-    <div class="loading-sparkles">✨</div>
-    <h3>Ton histoire arrive...</h3>
-    <p>Léon prépare le livre magique</p>
+    <video class="loading-leon-video" autoplay loop muted playsinline
+           poster="assets/ui/leon_writing_poster.jpg">
+      <source src="assets/ui/leon_writing.mp4" type="video/mp4">
+    </video>
+    <div class="loading-leon-caption">
+      <h3>Ton histoire arrive...</h3>
+      <p>Léon prépare le livre magique avec sa plume ✨</p>
+    </div>
   </div>
 </div>
 
@@ -1922,6 +1926,6 @@
 </div>
 
 <script src="calibration.js"></script>
-<script src="game.js?v=675"></script>
+<script src="game.js?v=696"></script>
 </body>
 </html>
