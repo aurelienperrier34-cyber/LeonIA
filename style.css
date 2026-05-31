@@ -2270,6 +2270,21 @@ body.calib-hero-mode .hero-destination::before {
     line-height: 1.2 !important;
     text-align: center !important;
   }
+  /* v669 : sur mobile/iPhone landscape, la calibration desktop (top:~196px
+     en pixels absolus) place les micros en bas du viewport, ou la consigne
+     les recouvre. On remonte de 90px sur les petits ecrans (override la
+     valeur calibree desktop). */
+  body.novel-mode #screen-c3s7 .sound-buttons .sound-btn:nth-child(1),
+  body.novel-mode #screen-c3s7 .sound-buttons .sound-btn:nth-child(2),
+  body.novel-mode #screen-c3s7 .sound-buttons .sound-btn:nth-child(3) {
+    top: calc(var(--mic1-top, 0) - 90px) !important;
+  }
+  body.novel-mode #screen-c3s7 .sound-buttons .sound-btn:nth-child(2) {
+    top: calc(var(--mic2-top, 0) - 90px) !important;
+  }
+  body.novel-mode #screen-c3s7 .sound-buttons .sound-btn:nth-child(3) {
+    top: calc(var(--mic3-top, 0) - 90px) !important;
+  }
   /* ANTI-FLICKER mobile : pendant le typewriter, on neutralise les sources
      de re-render coûteux qui causaient les "lettres doublees/triplees" sur
      Android :
