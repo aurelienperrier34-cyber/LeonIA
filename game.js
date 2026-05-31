@@ -1123,6 +1123,44 @@ function showSchoolCodePrompt() {
 }
 window.showSchoolCodePrompt = showSchoolCodePrompt;
 
+// v653 : info pour les chapitres non encore atteints (progress lock). Permet
+// aux enseignants en demo d'acceder via Code ecole sans avoir a tout refaire.
+function showProgressLockInfo(chap) {
+  document.getElementById('progress-lock-info')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'progress-lock-info';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.82);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  const prev = (chap || 2) - 1;
+  ov.innerHTML =
+    '<div style="max-width:420px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #b89868;border-radius:22px;padding:26px 24px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:46px;line-height:1;margin-bottom:8px;">🔒</div>' +
+      '<h2 style="margin:0 0 8px;font-size:1.2rem;color:#7a4a10;">Chapitre ' + chap + ' verrouillé</h2>' +
+      '<p style="margin:0 0 18px;font-size:.95rem;line-height:1.5;opacity:.9;">' +
+        'Pour découvrir ce chapitre, termine d\'abord le <b>chapitre ' + prev + '</b>. ' +
+        'L\'aventure est conçue pour être suivie dans l\'ordre.</p>' +
+      '<button id="progress-lock-school" style="cursor:pointer;border:none;width:100%;' +
+      'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
+      'font-size:.95rem;padding:11px 20px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.35);">' +
+      'Vous êtes enseignant ? Code école 🏫</button>' +
+      '<button id="progress-lock-close" style="margin-top:12px;cursor:pointer;border:none;' +
+      'background:none;color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.7;">' +
+      'Fermer</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  document.getElementById('progress-lock-school')?.addEventListener('click', () => {
+    ov.remove();
+    showSchoolCodePrompt();
+  });
+  document.getElementById('progress-lock-close')?.addEventListener('click', () => ov.remove());
+}
+window.showProgressLockInfo = showProgressLockInfo;
+
 function showSchoolWelcome() {
   document.getElementById('school-welcome')?.remove();
   const ov = document.createElement('div');
@@ -1670,31 +1708,34 @@ function showPremiumPaywall(feature) {
     'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
     'justify-content:center;background:rgba(20,10,35,0.82);' +
     'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  // v653 : pivot B2G (vente mairie / ecole). On retire le bouton "Debloquer
+  // tout 4,99 EUR" (Stripe pas integre + brouille le positionnement aupres
+  // des collectivites). Le Code ecole devient l'action principale.
   ov.innerHTML =
-    '<div style="max-width:440px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
-    'border:3px solid #e0a23a;border-radius:22px;padding:26px 24px;text-align:center;' +
+    '<div style="max-width:460px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:28px 26px;text-align:center;' +
     'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
-      '<div style="font-size:46px;line-height:1;margin-bottom:8px;">👑</div>' +
-      '<h2 style="margin:0 0 6px;font-size:1.35rem;color:#7a4a10;">' + titre + '</h2>' +
-      '<p style="margin:0 0 4px;font-weight:700;font-size:1.05rem;">Contenu Premium</p>' +
-      '<p style="margin:0 0 18px;font-size:.95rem;line-height:1.4;opacity:.9;">' +
-        'Débloque <b>toute l\'aventure de Léon</b> : les chapitres 2 à 5 et le ' +
-        'Livre magique avec ses histoires illustrées et racontées.</p>' +
-      '<button id="premium-paywall-buy" style="cursor:pointer;border:none;' +
-      'background:linear-gradient(160deg,#ffb74d,#f57c00);color:#fff;font-weight:800;' +
-      'font-size:1.05rem;padding:13px 28px;border-radius:14px;box-shadow:0 4px 14px rgba(245,124,0,.5);">' +
-      'Débloquer tout — ' + PREMIUM_PRICE + '</button>' +
-      '<div style="margin-top:12px;font-size:.82rem;opacity:.75;">Paiement unique · accès à vie · sans abonnement</div>' +
-      '<button id="premium-paywall-school" style="margin-top:14px;cursor:pointer;border:none;' +
-      'background:none;color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.85;">' +
-      '🏫 J\'ai un code école</button><br>' +
-      '<button id="premium-paywall-close" style="margin-top:8px;cursor:pointer;border:none;' +
+      '<div style="font-size:46px;line-height:1;margin-bottom:10px;">🏫</div>' +
+      '<h2 style="margin:0 0 6px;font-size:1.3rem;color:#7a4a10;">' + titre + '</h2>' +
+      '<p style="margin:0 0 16px;font-size:.95rem;line-height:1.45;opacity:.9;">' +
+        'Cette aventure est accessible aux <b>écoles et collectivités partenaires</b>. ' +
+        'Si vous êtes enseignant et que votre établissement participe, entrez votre code école.</p>' +
+      '<button id="premium-paywall-school" style="cursor:pointer;border:none;width:100%;' +
+      'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
+      'font-size:1.05rem;padding:14px 24px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.45);">' +
+      'J\'ai un code école 🏫</button>' +
+      '<div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(122,74,16,.25);' +
+      'font-size:.85rem;line-height:1.5;opacity:.8;text-align:left;">' +
+        '<b>Vous êtes une mairie, une école ou un éditeur ?</b><br>' +
+        'Pour faire bénéficier vos classes de l\'application, contactez l\'auteur : ' +
+        '<a href="mailto:aurelienperrier34@gmail.com" style="color:#7a4a10;font-weight:700;">' +
+        'aurelienperrier34@gmail.com</a></div>' +
+      '<button id="premium-paywall-close" style="margin-top:14px;cursor:pointer;border:none;' +
       'background:none;color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.6;">' +
-      'Plus tard</button>' +
+      'Fermer</button>' +
     '</div>';
   ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
   document.body.appendChild(ov);
-  document.getElementById('premium-paywall-buy')?.addEventListener('click', purchasePremium);
   document.getElementById('premium-paywall-school')?.addEventListener('click', showSchoolCodePrompt);
   document.getElementById('premium-paywall-close')?.addEventListener('click', () => ov.remove());
 }
@@ -3740,10 +3781,13 @@ function updateMapState() {
       node.setAttribute('onclick', `showPremiumPaywall(${i})`);
       if (icon) { icon.textContent = '👑'; icon.classList.add('locked-icon'); }
     } else {
-      // Pas encore atteint (progression non faite)
+      // Pas encore atteint (progression non faite). v653 : avant le clic
+      // ne faisait rien (handler vide) -> les enseignants en demo ne
+      // pouvaient pas debloquer via Code ecole. Maintenant on ouvre une
+      // info "termine d'abord le chap X" + bouton Code ecole pour les profs.
       node.classList.remove('node-unlocked', 'node-premium');
       node.classList.add('node-locked');
-      node.removeAttribute('onclick');
+      node.setAttribute('onclick', `showProgressLockInfo(${i})`);
       if (icon) { icon.textContent = '🔒'; icon.classList.add('locked-icon'); }
     }
   }
