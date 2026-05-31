@@ -1779,6 +1779,11 @@ function goToScreen(screenIdentifier, force) {
     return;
   }
 
+  // v663 : stop la musique de victoire si on quitte un ecran win (clic sur
+  // Continuer/Carte/etc). Si on re-rentre sur un win, le handler win plus bas
+  // appelle _playVictoryJingle qui relance proprement.
+  if (typeof _stopVictoryJingle === 'function') _stopVictoryJingle();
+
   // Hide all screens
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
 
@@ -6961,21 +6966,54 @@ function _revealChestBtn(btnId) {
   }, 350);
 }
 
-// v660 : petite musique de victoire (fanfare 5s) jouee a l'entree de chaque
-// ecran de victoire (c1 ecran 7, c2s9, c3s9, c4s8, c5s6). Audio mis en cache
-// au premier appel, joue plusieurs fois sans recharger. Respecte le toggle
-// son global (voicesEnabled).
+// v663 : musique de victoire jouee a l'entree de chaque ecran win (c1
+// ecran 7, c2s9, c3s9, c4s8, c5s6). S'arrete automatiquement quand
+// l'utilisateur clique pour quitter (Continuer / Carte / etc. via le
+// _stopVictoryJingle appele en haut de goToScreen). Fade-out doux en
+// fin naturelle si l'enfant ne clique pas.
 function _playVictoryJingle() {
   if (typeof voicesEnabled === 'function' && !voicesEnabled()) return;
   try {
     if (!window._victoryJingle) {
-      window._victoryJingle = new Audio('assets/victory_jingle.mp3?v=660');
-      window._victoryJingle.volume = 0.6; // laisse de la place aux voix narration
+      window._victoryJingle = new Audio('assets/victory_jingle.mp3?v=663');
+      window._victoryJingle.volume = 0.55; // laisse de la place aux voix narration
       window._victoryJingle.preload = 'auto';
     }
     try { window._victoryJingle.currentTime = 0; } catch (e) {}
+    window._victoryJingle.volume = 0.55; // reset volume au cas ou un fade precedent
     const p = window._victoryJingle.play();
     if (p && p.catch) p.catch(() => {});
+    // Fade-out doux quand le morceau approche de sa fin naturelle (evite
+    // une coupure abrupte si l'enfant ne clique pas Continuer rapidement).
+    if (window._victoryJingleFadeTimer) clearInterval(window._victoryJingleFadeTimer);
+    window._victoryJingleFadeTimer = setInterval(() => {
+      const a = window._victoryJingle;
+      if (!a) return;
+      const remaining = (a.duration || 0) - (a.currentTime || 0);
+      if (remaining > 0 && remaining < 1.5 && a.volume > 0.05) {
+        a.volume = Math.max(0.05, a.volume - 0.04);
+      }
+      if (a.ended || remaining <= 0) {
+        clearInterval(window._victoryJingleFadeTimer);
+        window._victoryJingleFadeTimer = null;
+      }
+    }, 100);
+  } catch (e) {}
+}
+
+// v663 : arrete la musique de victoire (appele en haut de goToScreen pour
+// stopper proprement quand on clique Continuer/Carte/etc. depuis un ecran win).
+function _stopVictoryJingle() {
+  try {
+    if (window._victoryJingleFadeTimer) {
+      clearInterval(window._victoryJingleFadeTimer);
+      window._victoryJingleFadeTimer = null;
+    }
+    if (window._victoryJingle) {
+      try { window._victoryJingle.pause(); } catch (e) {}
+      try { window._victoryJingle.currentTime = 0; } catch (e) {}
+      window._victoryJingle.volume = 0.55;
+    }
   } catch (e) {}
 }
 
