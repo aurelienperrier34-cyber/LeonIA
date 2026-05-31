@@ -1657,35 +1657,29 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
     position: relative !important;
   }
   body.novel-mode #screen-c5s5 .c5-robot-bubble {
-    /* Bulle AU-DESSUS du robot (pas en bas), pour ne pas couvrir le visage
-       de la video. translateX -50% pour centrer + translateY(-100%) pour
-       monter completement au-dessus du conteneur stage. */
+    /* v672 : bulle EN BAS du robot sur mobile (etait au-dessus via
+       translateY(-100%), se faisait couper en haut sur iPhone landscape
+       quand l'espace au-dessus du robot etait insuffisant). */
     position: absolute !important;
-    top: -12px !important;
-    bottom: auto !important;
+    top: auto !important;
+    bottom: -8px !important;
     left: 50% !important;
     right: auto !important;
-    transform: translate(-50%, -100%) !important;
+    transform: translate(-50%, 100%) !important;
     margin-top: 0 !important;
     max-width: 92% !important;
     min-width: min(72vw, 380px) !important;
     z-index: 6;
-    /* Annule l'animation lente .anim-pop-in qui ajoute opacity:0 +
-       animation-delay 0.8s + duree 1.2s -> la bulle disparaissait 800ms
-       a chaque clic puis prenait 1.2s a revenir. On force une apparition
-       quasi-instantanee (0.18s, sans delay). */
-    animation: c5BubblePopFast 0.18s ease-out forwards !important;
+    animation: c5BubblePopFastBottom 0.18s ease-out forwards !important;
     animation-delay: 0s !important;
     opacity: 1 !important;
   }
-  @keyframes c5BubblePopFast {
-    from { transform: translate(-50%, -100%) scale(0.85); opacity: 0; }
-    to   { transform: translate(-50%, -100%) scale(1);    opacity: 1; }
+  @keyframes c5BubblePopFastBottom {
+    from { transform: translate(-50%, 100%) scale(0.85); opacity: 0; }
+    to   { transform: translate(-50%, 100%) scale(1);    opacity: 1; }
   }
-  /* Hack pour relancer l'anim a chaque ajout de la classe anim-pop-in
-     (le pattern remove/void offsetWidth/add du JS appelle a chaque clic). */
   body.novel-mode #screen-c5s5 .c5-robot-bubble.anim-pop-in {
-    animation: c5BubblePopFast 0.18s ease-out forwards !important;
+    animation: c5BubblePopFastBottom 0.18s ease-out forwards !important;
   }
   /* C5S5 mobile : panneau glassmorphism passe en plein ecran pour qu'aucun
      contenu ne soit clippe au-dessus (avant, .game-overlay etait ancre
@@ -1698,7 +1692,10 @@ body.novel-mode .parent-tip { position: absolute; top: 70px; right: 15px; z-inde
     width: 100% !important;
     max-width: none !important;
     transform: none !important;
-    padding: 16px 14px !important;
+    /* v672 : padding-top 16 -> 60px sur mobile pour degager la zone des
+       pastilles fixed (etoile + carte top-left) qui chevauchaient la
+       consigne et les boutons demo "Voir/Ecouter/...". */
+    padding: 60px 14px 16px !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;

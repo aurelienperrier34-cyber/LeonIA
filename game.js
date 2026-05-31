@@ -7089,24 +7089,19 @@ function selectC5Module(btn) {
   saveState();
   // Quand 3 sont choisis : on dévoile le robot
   if (state.c5RobotModules.length === 3) {
-    // v484 : iOS bloque encore le speak() apres setTimeout (gesture window
-    // expire ~4s). v482 a permis le click gesture, mais le speak doit etre
-    // synchrone. Hack iOS-only : speak greeting dans le clic, accepter
-    // overlap audio avec countdown.
+    // v672 : iOS speech-synthesis priming SILENCIEUX (vs v484 qui speakait
+    // le greeting reel pendant le countdown). On joue une utterance vide
+    // volume=0 dans le user gesture -> iOS marque speechSynthesis comme
+    // user-activated. Le vrai greeting joue ensuite dans Phase C apres
+    // countdown sans etre bloque par iOS.
     const isIOSDev = typeof _isIOSDevice === 'function' && _isIOSDevice();
     if (isIOSDev && typeof window.speechSynthesis !== 'undefined') {
       try {
-        const mods = (state.c5RobotModules || []).slice().sort();
-        const key = mods.join('+');
-        const persona = (typeof C5_ROBOT_PERSONAS !== 'undefined' && C5_ROBOT_PERSONAS[key]) || { name: 'Stella' };
-        const greeting = `Bonjour ! Je suis ${persona.name}. Je vais te tenir compagnie.`;
-        const utt = new SpeechSynthesisUtterance(greeting);
-        utt.lang = 'fr-FR';
-        utt.pitch = 1.15;
-        utt.rate = 0.95;
-        utt.volume = 1;
-        window._c5GreetingQueued = true;
-        window.speechSynthesis.speak(utt);
+        const primer = new SpeechSynthesisUtterance(' ');
+        primer.volume = 0;
+        primer.rate = 10; // ultra rapide pour finir vite
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(primer);
       } catch(e) {}
     }
     revealC5Robot();
