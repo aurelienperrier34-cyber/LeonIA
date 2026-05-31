@@ -9521,7 +9521,14 @@ function _c3s2SpawnBubble() {
   b.textContent = word;
   // Position horizontale aléatoire (10% à 80% pour rester dans l'écran)
   b.style.left = (10 + Math.random() * 70) + '%';
-  b.onclick = () => _c3s2PopBubble(b);
+  // v667 : pointerdown au lieu de onclick. La bulle bouge continuellement
+  // (anim 'bottom'). Avec onclick, si mousedown et mouseup ne sont pas sur
+  // le MEME element, le click est annule -> il fallait cliquer 2 fois.
+  // pointerdown se declenche des le contact, couvre souris ET tactile.
+  b.addEventListener('pointerdown', (ev) => {
+    ev.preventDefault();
+    _c3s2PopBubble(b);
+  }, { passive: false });
   arena.appendChild(b);
   // Auto-cleanup après l'animation (v664 : anim 12s -> cleanup 12.2s).
   setTimeout(() => { if (b.parentNode) b.parentNode.removeChild(b); }, 12200);
