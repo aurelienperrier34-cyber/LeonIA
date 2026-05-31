@@ -73,3 +73,19 @@ audit_out/
 audit_map/
 audit_small/
 audit_responsive_lite.py
+audit_map_nodes.py
+
+# === Scripts dev locaux (utilitaires / batch / scratch) ===
+DEMO*.bat
+regen_page.py
+resume_catalog_audio.py
+samples/
+scratch/
+scenar_chap1_prompts.md
+logs/
+package-lock.json
+cloudflared.exe
+demo_seed.py
+generate_leon_writing_still.py
+generate_veo_clip.py
+~$*.docx
