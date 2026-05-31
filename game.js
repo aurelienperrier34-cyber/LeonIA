@@ -7122,7 +7122,11 @@ const C5_MODULE_DATA = {
   speak: { emoji: '💬', name: 'Parler',   video: 'assets/c5s5_robot/robot_speak.mp4?v=462',
            demo: 'Je peux te parler, te raconter des histoires, et répondre à tes questions !' },
   think: { emoji: '🧠', name: 'Réfléchir', video: 'assets/c5s5_robot/robot_think.mp4?v=462',
-           demo: 'Voyons voir... trois plus quatre font sept. Huit fois huit font soixante-quatre ! Je suis très fort en calcul.' },
+           demo:       'Voyons voir... trois plus quatre font sept. Huit fois huit font soixante-quatre ! Je suis très fort en calcul.',
+           // v675 : texte audio separe -> "plusse" force le TTS a prononcer
+           // le 's' final (sinon dit "plu" silencieux, faux en contexte math).
+           // La bulle visuelle affiche le 'demo' correct, l'audio dit le 'demoSpoken'.
+           demoSpoken: 'Voyons voir... trois plusse quatre font sept. Huit fois huit font soixante-quatre ! Je suis très fort en calcul.' },
   act:   { emoji: '💪', name: 'Agir',      video: 'assets/c5s5_robot/robot_act.mp4?v=462',
            demo: 'Je peux ranger ta chambre, attraper des objets, et même cuisiner !' }
 };
@@ -7451,12 +7455,15 @@ function playC5ModuleDemo(mod) {
         }, 350);
       }
     };
-    _c5SpeakAsRobot(data.demo, showContinueBtn);
+    // v675 : utilise demoSpoken pour le TTS si present (variante phonetique
+     // pour forcer la prononciation : ex "trois plusse quatre" vs "trois plus
+     // quatre" affiche). Fallback sur demo si pas de demoSpoken.
+    _c5SpeakAsRobot(data.demoSpoken || data.demo, showContinueBtn);
     // Fallback de securite : si onend ne fire pas (Android tue parfois la
     // speechSynthesis en background), on affiche le bouton apres 10s max.
     setTimeout(showContinueBtn, 10000);
   } else {
-    _c5SpeakAsRobot(data.demo);
+    _c5SpeakAsRobot(data.demoSpoken || data.demo);
   }
 }
 
