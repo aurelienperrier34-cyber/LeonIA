@@ -194,6 +194,15 @@ body {
   font-family: 'Nunito', sans-serif; background-color: var(--cream);
   color: var(--dark); min-height: 100vh; overflow-x: hidden;
   overscroll-behavior-y: none; transition: background-color 0.4s;
+  /* v670 : empeche iOS Safari d'auto-zoomer certains textes (auto Text Size
+     Adjust) en landscape -> bulles de Leon devenaient enormes sur iPhone
+     pendant que la narration restait normale. Force la taille fixe partout. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 /* v569 : fond sombre (au lieu de lavande) -> toute bande residuelle apres
