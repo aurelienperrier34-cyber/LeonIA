@@ -1,0 +1,56 @@
+[23:52:42] PREFLIGHT OK : SA + 12 portraits
+[23:52:42] 
+######################################################################
+[23:52:42] # OVERNIGHT GENERATION START
+[23:52:42] # Cles a traiter : 1
+[23:52:42] # Voix audio : fr-FR-Studio-A
+[23:52:42] # Image verify : ON strict (lax=False)
+[23:52:42] # Audio verify : ON strict (lax=False)
+[23:52:42] # Log file : logs\overnight_20260517_235242.log
+[23:52:42] # Checkpoint : logs\checkpoint.json
+[23:52:42] ######################################################################
+
+[23:52:42] 
+*** [1/1] courte_astronaute_planete_baguette_monstre  (elapsed 0.0h)
+[23:52:42] 
+======================================================================
+>>> START : courte_astronaute_planete_baguette_monstre
+======================================================================
+[23:52:42]   TEXTE : deja present (story.json)
+[23:52:42]   IMAGES : 5 pages a generer/verifier
+[23:52:42]     [1/5] image deja presente, skip
+[23:52:42]     [2/5] image deja presente, skip
+[23:52:42]     [3/5] image deja presente, skip
+[23:53:13]     [4/5] image KO : ['The setting is a forest, which does not match the canonical description of Vega-7 (purple and teal surface, glowing craters, starry space).', 'Grobi is holding a complete golden ring, not a "small, broken piece" as specified in the prompt.']
+[23:53:13]       retry image 2/3
+[23:53:44]     [4/5] image KO : ['Setting is a forest, not the magical planet Vega-7 as described in the canonical information.']
+[23:53:44]       retry image 3/3
+[23:54:06]     [4/5] image KO : ['Wrong setting: The scene is in a forest instead of on Vega-7, the magical planet.']
+[23:54:06]     [4/5] IMAGE ECHEC apres retries
+[23:55:09]     [5/5] image KO : ['Planet Vega-7 has only one golden ring instead of two.', 'Etoile (the wand) is golden/yellow instead of honey-brown wood and lacks the red ribbon.']
+[23:55:09]       retry image 2/3
+[23:55:45]     [5/5] image KO : ["The magic wand 'Etoile' does not match its canonical description (missing wood texture, carvings, red ribbon).", 'The planet Vega-7 only has one ring instead of the canonical two.', "Lea's hair is not curly as described in her canonical appearance."]
+[23:55:45]       retry image 3/3
+[23:56:12]     [5/5] image KO : ['Etoile (wand) design is incorrect (not wood, no carvings, no ribbon).', "Planet Vega-7's surface color is incorrect (pink/red instead of purple/teal).", 'Planet Vega-7 is missing glowing craters.']
+[23:56:12]     [5/5] IMAGE ECHEC apres retries
+[23:56:24]   IMAGES bilan : 3 OK, 2 fail
+[23:56:24]   AUDIO : 5 MP3s a generer/verifier
+[23:57:13]     [1/5] audio KO (92%) wrong=['sept', 'sept', 'Quel'] missing=['7', '7', '«']
+[23:57:13]       retry audio 2/3
+[23:57:24]     [1/5] audio OK (100%)
+[23:57:36]     [2/5] audio OK (100%)
+[23:57:57]     [3/5] audio OK (100%)
+[23:58:20]     [4/5] audio OK (100%)
+[23:58:45]     [5/5] audio KO (98%) wrong=['Vega-7', 'poilus'] missing=[]
+[23:58:45]       retry audio 2/3
+[23:59:03]     [5/5] audio OK (100%)
+[23:59:05]   AUDIO bilan : 5 OK, 0 fail
+[23:59:05] <<< END : courte_astronaute_planete_baguette_monstre -> {'key': 'courte_astronaute_planete_baguette_monstre', 'text': 'skipped', 'images': '3/5', 'audio': '5/5'}
+[23:59:05] 
+######################################################################
+[23:59:05] # OVERNIGHT GENERATION END
+[23:59:05] # Duree : 0.1 heures
+[23:59:05] # Stories tentees : 1
+[23:59:05] # Completed checkpointes : 1
+[23:59:05] # Log file : logs\overnight_20260517_235242.log
+[23:59:05] ######################################################################

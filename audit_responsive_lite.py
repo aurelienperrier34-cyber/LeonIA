@@ -17,7 +17,7 @@ from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
-URL = "http://localhost:8765/index.html?premium=1"
+URL = "https://aurelienperrier34-cyber.github.io/LeonIA/?premium=1"
 OUT = Path("audit_out")
 
 PROFILES = [

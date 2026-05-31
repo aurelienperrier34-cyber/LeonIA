@@ -1,0 +1,14 @@
+{"event": "story_start", "key": "courte_dragon_planete_guitare_monstre", "ts": "2026-05-18T18:40:58.146989"}
+{"event": "audio_failed", "key": "courte_dragon_planete_guitare_monstre", "page": 3, "ts": "2026-05-18T18:43:07.552984"}
+{"event": "audio_failed", "key": "courte_dragon_planete_guitare_monstre", "page": 4, "ts": "2026-05-18T18:44:19.239775"}
+{"event": "audio_failed", "key": "courte_dragon_planete_guitare_monstre", "page": 5, "ts": "2026-05-18T18:45:39.433617"}
+{"event": "story_end", "key": "courte_dragon_planete_guitare_monstre", "stats": {"key": "courte_dragon_planete_guitare_monstre", "text": "skipped", "images": "5/5", "audio": "2/5"}, "ts": "2026-05-18T18:45:41.464984"}
+{"event": "story_start", "key": "courte_dragon_planete_guitare_robot", "ts": "2026-05-18T18:45:41.497226"}
+{"event": "image_failed", "key": "courte_dragon_planete_guitare_robot", "page": 2, "ts": "2026-05-18T18:52:23.825595"}
+{"event": "image_failed", "key": "courte_dragon_planete_guitare_robot", "page": 3, "ts": "2026-05-18T18:56:57.998958"}
+{"event": "image_failed", "key": "courte_dragon_planete_guitare_robot", "page": 4, "ts": "2026-05-18T19:02:19.204833"}
+{"event": "image_failed", "key": "courte_dragon_planete_guitare_robot", "page": 5, "ts": "2026-05-18T19:06:57.774809"}
+{"event": "audio_failed", "key": "courte_dragon_planete_guitare_robot", "page": 5, "ts": "2026-05-18T19:09:43.392728"}
+{"event": "story_end", "key": "courte_dragon_planete_guitare_robot", "stats": {"key": "courte_dragon_planete_guitare_robot", "text": "OK", "images": "1/5", "audio": "4/5"}, "ts": "2026-05-18T19:09:45.430660"}
+{"event": "story_start", "key": "courte_dragon_planete_guitare_fantome", "ts": "2026-05-18T19:09:45.452687"}
+{"event": "image_failed", "key": "courte_dragon_planete_guitare_fantome", "page": 2, "ts": "2026-05-18T19:17:22.328607"}

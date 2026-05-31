@@ -1,0 +1,4 @@
+{"event": "story_start", "key": "courte_astronaute_planete_baguette_monstre", "ts": "2026-05-17T23:52:42.901028"}
+{"event": "image_failed", "key": "courte_astronaute_planete_baguette_monstre", "page": 4, "ts": "2026-05-17T23:54:06.134222"}
+{"event": "image_failed", "key": "courte_astronaute_planete_baguette_monstre", "page": 5, "ts": "2026-05-17T23:56:12.425342"}
+{"event": "story_end", "key": "courte_astronaute_planete_baguette_monstre", "stats": {"key": "courte_astronaute_planete_baguette_monstre", "text": "skipped", "images": "3/5", "audio": "5/5"}, "ts": "2026-05-17T23:59:05.855740"}

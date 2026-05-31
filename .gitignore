@@ -66,5 +66,10 @@ assets/custom/
 KIT_PILOTE.*
 FICHE_COLLEGUE_TESTEUR.*
 PLAN_FINANCEMENT.*
+PITCH_MAIRIE.*
+_build_docs.js
 demo_qr.png
 audit_out/
+audit_map/
+audit_small/
+audit_responsive_lite.py

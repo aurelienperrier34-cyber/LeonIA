@@ -1,0 +1,28 @@
+[23:46:57] PREFLIGHT OK : SA + 12 portraits
+[23:46:57] 
+######################################################################
+[23:46:57] # OVERNIGHT GENERATION START
+[23:46:57] # Cles a traiter : 1
+[23:46:57] # Voix audio : fr-FR-Studio-A
+[23:46:57] # Image verify : ON strict (lax=False)
+[23:46:57] # Audio verify : ON strict (lax=False)
+[23:46:57] # Log file : logs\overnight_20260517_234657.log
+[23:46:57] # Checkpoint : logs\checkpoint.json
+[23:46:57] ######################################################################
+
+[23:46:57] 
+*** [1/1] courte_astronaute_planete_baguette_monstre  (elapsed 0.0h)
+[23:46:57] 
+======================================================================
+>>> START : courte_astronaute_planete_baguette_monstre
+======================================================================
+[23:46:57]   TEXTE : generation Gemini Pro...
+[23:47:32]     OK : 'Léa et le chagrin de Vega-7' (5 pages)
+[23:47:32]   IMAGES : 5 pages a generer/verifier
+[23:48:00]     [1/5] image KO : ['Planet Vega-7 is missing its two thin golden rings around it, as described in the canon and prompt. Instead, it has concentric colored rings on its surface.']
+[23:48:00]       retry image 2/3
+[23:48:21]     [1/5] image KO : ['Vega-7 is missing its two thin golden rings']
+[23:48:21]       retry image 3/3
+[23:49:04]     [1/5] image OK (n/a)
+[23:49:56]     [2/5] image OK (n/a)
+[23:50:56]     [3/5] image OK (n/a)

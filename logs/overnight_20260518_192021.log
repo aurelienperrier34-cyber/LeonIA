@@ -1,0 +1,371 @@
+[19:20:21] PREFLIGHT OK : SA + 12 portraits
+[19:20:21] 
+######################################################################
+[19:20:21] # OVERNIGHT GENERATION START
+[19:20:21] # Cles a traiter : 243
+[19:20:21] # Voix audio par defaut : fr-FR-Neural2-A
+[19:20:21] #   override soir -> fr-FR-Studio-A
+[19:20:21] # Image verify : ON strict (lax=False)
+[19:20:21] # Audio verify : ON strict (lax=False)
+[19:20:21] # Log file : logs\overnight_20260518_192021.log
+[19:20:21] # Checkpoint : logs\checkpoint.json
+[19:20:21] ######################################################################
+
+[19:20:21] 
+*** [1/243] courte_astronaute_planete_baguette_monstre  (elapsed 0.0h)
+[19:20:21]     deja completed selon checkpoint, skip
+[19:20:21] 
+*** [2/243] courte_astronaute_planete_baguette_robot  (elapsed 0.0h)
+[19:20:21]     deja completed selon checkpoint, skip
+[19:20:21] 
+*** [3/243] courte_astronaute_planete_baguette_fantome  (elapsed 0.0h)
+[19:20:21]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [4/243] courte_astronaute_planete_skateboard_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [5/243] courte_astronaute_planete_skateboard_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [6/243] courte_astronaute_planete_skateboard_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [7/243] courte_astronaute_planete_guitare_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [8/243] courte_astronaute_planete_guitare_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [9/243] courte_astronaute_planete_guitare_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [10/243] courte_astronaute_chateau_baguette_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [11/243] courte_astronaute_chateau_baguette_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [12/243] courte_astronaute_chateau_baguette_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [13/243] courte_astronaute_chateau_skateboard_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [14/243] courte_astronaute_chateau_skateboard_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [15/243] courte_astronaute_chateau_skateboard_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [16/243] courte_astronaute_chateau_guitare_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [17/243] courte_astronaute_chateau_guitare_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [18/243] courte_astronaute_chateau_guitare_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [19/243] courte_astronaute_ocean_baguette_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [20/243] courte_astronaute_ocean_baguette_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [21/243] courte_astronaute_ocean_baguette_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [22/243] courte_astronaute_ocean_skateboard_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [23/243] courte_astronaute_ocean_skateboard_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [24/243] courte_astronaute_ocean_skateboard_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [25/243] courte_astronaute_ocean_guitare_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [26/243] courte_astronaute_ocean_guitare_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [27/243] courte_astronaute_ocean_guitare_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [28/243] courte_sorciere_planete_baguette_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [29/243] courte_sorciere_planete_baguette_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [30/243] courte_sorciere_planete_baguette_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [31/243] courte_sorciere_planete_skateboard_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [32/243] courte_sorciere_planete_skateboard_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [33/243] courte_sorciere_planete_skateboard_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [34/243] courte_sorciere_planete_guitare_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [35/243] courte_sorciere_planete_guitare_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [36/243] courte_sorciere_planete_guitare_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [37/243] courte_sorciere_chateau_baguette_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [38/243] courte_sorciere_chateau_baguette_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [39/243] courte_sorciere_chateau_baguette_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [40/243] courte_sorciere_chateau_skateboard_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [41/243] courte_sorciere_chateau_skateboard_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [42/243] courte_sorciere_chateau_skateboard_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [43/243] courte_sorciere_chateau_guitare_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [44/243] courte_sorciere_chateau_guitare_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [45/243] courte_sorciere_chateau_guitare_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [46/243] courte_sorciere_ocean_baguette_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [47/243] courte_sorciere_ocean_baguette_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [48/243] courte_sorciere_ocean_baguette_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [49/243] courte_sorciere_ocean_skateboard_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [50/243] courte_sorciere_ocean_skateboard_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [51/243] courte_sorciere_ocean_skateboard_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [52/243] courte_sorciere_ocean_guitare_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [53/243] courte_sorciere_ocean_guitare_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [54/243] courte_sorciere_ocean_guitare_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [55/243] courte_dragon_planete_baguette_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [56/243] courte_dragon_planete_baguette_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [57/243] courte_dragon_planete_baguette_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [58/243] courte_dragon_planete_skateboard_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [59/243] courte_dragon_planete_skateboard_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [60/243] courte_dragon_planete_skateboard_fantome  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [61/243] courte_dragon_planete_guitare_monstre  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [62/243] courte_dragon_planete_guitare_robot  (elapsed 0.0h)
+[19:20:22]     deja completed selon checkpoint, skip
+[19:20:22] 
+*** [63/243] courte_dragon_planete_guitare_fantome  (elapsed 0.0h)
+[19:20:22] 
+======================================================================
+>>> START : courte_dragon_planete_guitare_fantome
+======================================================================
+[19:20:22]   voix pour ce niveau (courte) : fr-FR-Neural2-A
+[19:20:22]   TEXTE : deja present (story.json)
+[19:20:22]   IMAGES : 5 pages a generer/verifier
+[19:20:22]     [1/5] image deja presente, skip
+[19:20:22]     [2/5] image deja presente, skip
+[19:20:52]     [3/5] image KO : ['Guitare des sept silences is not a crystal guitar, it looks like a standard wooden acoustic guitar.', "Maitre Otho is not translucent and lacks the faded outline of an old craftsman's apron."]
+[19:20:52]       retry image 2/5
+[19:22:28]     [3/5] image KO : ["Maitre Otho's design does not match the reference (missing apron, more human-like, less ethereal).", 'The guitar is a wooden acoustic guitar, not a translucent pale crystal guitar.', "Brio's scales are not pale pastel sky-blue, and horns are not tiny and rounded as described."]
+[19:22:28]       retry image 3/5
+[19:22:59]     [3/5] image KO : ["Maitre Otho's appearance does not match the reference portrait; he is more human-shaped and less simple/round.", 'The guitar is not translucent crystal as described; it appears to be a solid, opaque acoustic guitar.', "Brio's horns are spiky and prominent, not tiny and rounded as specified in the reference."]
+[19:22:59]       retry image 4/5
+[19:23:51]     [3/5] image OK (n/a)
+[19:25:09]     [4/5] image KO : ['Guitare des sept silences is not a translucent crystal guitar; it appears to be a standard wooden acoustic guitar.', "Maitre Otho's face is too simplified, with dot eyes, and lacks the faded outline of an old craftsman's apron.", "Brio's horns and scales are more spiky and defined than the reference's tiny rounded horns and smooth, pale pastel scales."]
+[19:25:09]       retry image 2/5
+[19:26:06]     [4/5] image KO : ['The guitar is not a translucent crystal guitar as specified in the canon and prompt; it appears to be a standard wooden acoustic guitar.', 'Brio is playing the guitar instead of holding it in their lap as described in the prompt.']
+[19:26:06]       retry image 3/5
+[19:26:48]     [4/5] image KO : ['Maitre Otho is completely missing from the scene.', 'The guitar is a standard acoustic guitar, not the specified crystal guitar, and is not glowing.', 'The core interaction between Brio and Maitre Otho is absent.']
+[19:26:48]       retry image 4/5
+[19:27:28]     [4/5] image KO : ["The 'Guitare des sept silences' is depicted as a standard wooden guitar, not a translucent pale crystal body as described in the canon.", 'The planet (Vega-7) is present in the illustration, but it is not mentioned in the page prompt, violating the rule that only explicitly mentioned elements should appear.']
+[19:27:28]       retry image 5/5
+[19:28:01]     [4/5] image KO : ['Maitre Otho is not translucent and lacks ethereal blue-white glow; eyes are black dots instead of pale grey.', 'The guitar is not translucent pale crystal and lacks specific shimmering reflections, appearing as a wooden guitar.', "Brio's horns are more prominent and spiky than 'tiny rounded horns' described in the canon."]
+[19:28:01]     [4/5] IMAGE ECHEC apres retries
+[19:29:00]     [5/5] image OK (n/a)
+[19:29:30]   IMAGES bilan : 4 OK, 1 fail
+[19:29:30]   AUDIO : 5 MP3s a generer/verifier
+[19:29:53]     [1/5] audio KO (99%) wrong=['pétillant'] missing=['pétillants']
+[19:29:53]       retry audio 2/3
+[19:30:07]     [1/5] audio OK (100%)
+[19:30:26]     [2/5] audio OK (100%)
+[19:30:42]     [3/5] audio OK (100%)
+[19:31:21]     [4/5] audio KO (97%) wrong=[] missing=['«', '...', '»']
+[19:31:21]       retry audio 2/3
+[19:31:52]     [4/5] audio KO (97%) wrong=[] missing=['«', '...', '»']
+[19:31:52]       retry audio 3/3
+[19:32:23]     [4/5] audio OK (100%)
+[19:32:38]     [5/5] audio OK (100%)
+[19:32:40]   AUDIO bilan : 5 OK, 0 fail
+[19:32:40] <<< END : courte_dragon_planete_guitare_fantome -> {'key': 'courte_dragon_planete_guitare_fantome', 'text': 'skipped', 'images': '4/5', 'audio': '5/5'}
+[19:32:40] 
+*** [64/243] courte_dragon_chateau_baguette_monstre  (elapsed 0.2h)
+[19:32:40] 
+======================================================================
+>>> START : courte_dragon_chateau_baguette_monstre
+======================================================================
+[19:32:40]   voix pour ce niveau (courte) : fr-FR-Neural2-A
+[19:32:40]   TEXTE : generation Gemini Pro...
+[19:33:20]     OK : 'Brio et le Secret de la Tour Oubliée' (5 pages)
+[19:33:20]   IMAGES : 5 pages a generer/verifier
+[19:33:50]     [1/5] image KO : ['Etoile (wand) does not match canonical description/reference (missing red ribbon, specific wood texture/carvings)']
+[19:33:50]       retry image 2/5
+[19:34:22]     [1/5] image KO : ["Brio's horns are larger and curved, not 'tiny rounded' as per canon description and reference.", "The wand Etoile is missing its specified 'swirling carvings' and 'red ribbon' from the canon description and reference."]
+[19:34:22]       retry image 3/5
+[19:34:47]     [1/5] image KO : ["Brio's horns do not match the reference (they are larger, curved, and golden instead of tiny, rounded, and blue)"]
+[19:34:47]       retry image 4/5
+[19:36:21]     [1/5] image KO : ["Brio's design deviates from the reference (has a head crest, horns are more prominent than 'tiny rounded')", 'Etoile (wand) is missing specified details (swirling carvings, red ribbon)']
+[19:36:21]       retry image 5/5
+[19:37:00]     [1/5] image KO : ['Étoile (the wand) is missing the small red ribbon near the handle, a canonical detail.']
+[19:37:00]     [1/5] IMAGE ECHEC apres retries
+[19:38:00]     [2/5] image KO : ["Brio's horns are significantly larger and more prominent than the 'tiny rounded horns' described in the canon.", 'The wand, Étoile, does not match the canonical description; it lacks the slim wooden design, swirling carvings, and red ribbon.']
+[19:38:00]       retry image 2/5
+[19:38:52]     [2/5] image OK (n/a)
+[19:39:58]     [3/5] image KO : ['Brio is not positioned in the doorway as specified in the prompt; he is fully inside the room.', 'Etoile is missing the red ribbon near the handle and the swirling carvings.']
+[19:39:58]       retry image 2/5
+[19:40:57]     [3/5] image KO : ['Etoile (the wand) does not match its description (missing specific wood, carvings, ribbon).']
+[19:40:57]       retry image 3/5
+[19:49:04]     [3/5] image OK (n/a)
+[19:53:21]     [4/5] image KO : ['Etoile (wand) is missing key details (swirling carvings, red ribbon) and has a different, larger star tip.', "Brio's horns are spiky and blue, not tiny and rounded as described in the canon."]
+[19:53:21]       retry image 2/5
+[19:53:53]     [4/5] image KO : ["Brio's horns are spiky and blue, not tiny, rounded, and light-colored as per reference.", 'The image is not a close-up focusing on the interaction; a castle is prominently featured in the background.', 'The wand, Etoile, is missing the specified red ribbon near the handle.']
+[19:53:53]       retry image 3/5
+[19:54:24]     [4/5] image KO : ['The wand is not Étoile; it lacks the specific design details (five-pointed star tip, red ribbon, swirling carvings).', 'The image is not a close-up focusing on the interaction; the castle is a prominent background element.', "Grobi's expression is a wide, happy smile, not the 'hopeful' look described for the interaction with a broken item."]
+[19:54:24]       retry image 4/5
+[19:55:22]     [4/5] image KO : ["Brio's horns are blue, not golden/brown as specified in the reference portrait.", 'The wand (Etoile) design is incorrect; it lacks the specified honey-brown wood, swirling carvings, and red ribbon.', 'The image is not a close-up view focusing on the interaction; a prominent castle background is present, which was not requested in the scene description.']
+[19:55:22]       retry image 5/5
+[19:56:21]     [4/5] image KO : ["Brio's horns are larger and more pointed/curved than the specified 'tiny rounded horns'.", "Grobi's horns are larger and more prominent than the specified 'short curved horns'.", "Etoile's wand tip has a four-pointed star instead of a five-pointed star."]
+[19:56:21]     [4/5] IMAGE ECHEC apres retries
+[19:57:13]     [5/5] image OK (n/a)
+[19:57:43]   IMAGES bilan : 3 OK, 2 fail
+[19:57:43]   AUDIO : 5 MP3s a generer/verifier
+[19:57:53]     [1/5] audio OK (100%)
+[19:58:14]     [2/5] audio OK (100%)
+[19:58:28]     [3/5] audio OK (100%)
+[19:58:47]     [4/5] audio KO (99%) wrong=['Le'] missing=[]
+[19:58:47]       retry audio 2/3
+[19:59:06]     [4/5] audio KO (99%) wrong=['La'] missing=[]
+[19:59:06]       retry audio 3/3
+[19:59:24]     [4/5] audio KO (99%) wrong=['La'] missing=[]
+[19:59:47]     [5/5] audio KO (99%) wrong=['Mon'] missing=[]
+[19:59:47]       retry audio 2/3
+[20:00:07]     [5/5] audio KO (99%) wrong=['Mon'] missing=['Le']
+[20:00:07]       retry audio 3/3
+[20:00:26]     [5/5] audio KO (99%) wrong=['Mon'] missing=['Le']
+[20:00:28]   AUDIO bilan : 3 OK, 2 fail
+[20:00:28] <<< END : courte_dragon_chateau_baguette_monstre -> {'key': 'courte_dragon_chateau_baguette_monstre', 'text': 'OK', 'images': '3/5', 'audio': '3/5'}
+[20:00:28] 
+*** [65/243] courte_dragon_chateau_baguette_robot  (elapsed 0.7h)
+[20:00:28] 
+======================================================================
+>>> START : courte_dragon_chateau_baguette_robot
+======================================================================
+[20:00:28]   voix pour ce niveau (courte) : fr-FR-Neural2-A
+[20:00:28]   TEXTE : generation Gemini Pro...
+[20:01:10]     OK : 'Brio et l'Ami de Fer-Blanc' (5 pages)
+[20:01:10]   IMAGES : 5 pages a generer/verifier
+[20:01:37]     [1/5] image OK (n/a)
+[20:02:35]     [2/5] image KO : ["Bipboup's eye is not a screen-eye showing a mischievous smile, and its arms are not mechanical pincer arms.", 'Etoile is missing its red ribbon and swirling carvings.']
+[20:02:35]       retry image 2/5
+[20:03:08]     [2/5] image KO : ["Bipboup's smile is depicted below its screen-eye, not within it as described in the prompt and canon.", 'Etoile (the wand) is missing its red ribbon and swirling carvings as specified in its canonical description.', 'The castle in the background does not fully match the canonical description of Belmondrie (e.g., specific tower count, broken windows with magical glow).']
+[20:03:08]       retry image 3/5
+[20:03:41]     [2/5] image KO : ["Bipboup's design (arms, antennas, eye expression) does not match reference."]
+[20:03:41]       retry image 4/5
+[20:05:10]     [2/5] image KO : ["Bipboup's design deviates significantly from reference: the eye is not a screen showing a smile, and the arms are not mechanical pincers.", 'Etoile (the wand) is missing the specified swirling carvings and red ribbon near the handle.']
+[20:05:10]       retry image 5/5
+[20:05:43]     [2/5] image KO : ['Bipboup (the robot villain) is completely missing from the scene.', 'There are two identical dragons present instead of a single Brio.', 'The core action of Bipboup snatching the wand from Brio is not depicted.']
+[20:05:43]     [2/5] IMAGE ECHEC apres retries
+[20:06:42]     [3/5] image OK (n/a)
+[20:07:48]     [4/5] image KO : ['Bipboup is not pointing the wand at his own head as described in the prompt, but rather outwards.', "Brio's expression does not convey a dawning look of understanding and empathy.", "Etoile is missing its red ribbon, and Bipboup's hands are not pincer arms as per canon."]
+[20:07:48]       retry image 2/5
+[20:08:44]     [4/5] image KO : ["Brio's horns are spiky and blue, not tiny rounded and beige as per canon and reference.", 'Bipboup is pointing the wand away from his head, not at his own head as described in the prompt.']
+[20:08:44]       retry image 3/5
+[20:09:41]     [4/5] image KO : ["Bipboup's arms are not mechanical pincer arms as described in the reference.", 'Etoile is missing the small red ribbon near the handle as described in the reference.']
+[20:09:41]       retry image 4/5
+[20:11:09]     [4/5] image KO : ['Bipboup is not pointing the wand at his own head as described in the prompt.']
+[20:11:09]       retry image 5/5
+[20:11:46]     [4/5] image KO : ['Etoile (wand) is missing the red ribbon and swirling carvings.', "Bipboup's screen-eye is not cracked, and his antenna is not flickering dimly.", 'Bipboup is not pointing the wand at his own head.']
+[20:11:46]     [4/5] IMAGE ECHEC apres retries
+[20:12:46]     [5/5] image KO : ["Bipboup's design is incorrect (wrong arms, added wings).", 'Etoile (wand) design is incorrect (missing details).', 'The action described in the prompt is reversed/incorrect (Bipboup holds the wand and touches Brio, instead of Brio holding the wand and touching Bipboup).']
+[20:12:46]       retry image 2/5
+[20:13:50]     [5/5] image KO : ['Belmondrie castle lacks detailed features like ivy, crumbling walls, and magical glow as described in its reference.', "Bipboup's screen-eye shows a happy face instead of a large, happy heart symbol as specified in the scene prompt."]
+[20:13:50]       retry image 3/5
+[20:14:40]     [5/5] image KO : ["Bipboup's blue screen-eye does not show a large, happy heart symbol as specified in the prompt, instead showing a smile."]
+[20:14:40]       retry image 4/5
+[20:16:05]     [5/5] image KO : ['Bipboup, the tin-can robot, is entirely missing from the illustration.', 'The central interaction between Brio and Bipboup with the wand is not depicted.']
+[20:16:05]       retry image 5/5
+[20:16:42]     [5/5] image KO : ["Bipboup's antennas lack glowing yellow light bulbs.", "Bipboup's arms are not mechanical pincer arms.", "Etoile's star tip is not a five-pointed star and lacks a red ribbon."]
+[20:16:42]     [5/5] IMAGE ECHEC apres retries
+[20:17:12]   IMAGES bilan : 2 OK, 3 fail
+[20:17:12]   AUDIO : 5 MP3s a generer/verifier
+[20:17:34]     [1/5] audio OK (100%)
+[20:18:13]     [2/5] audio KO (99%) wrong=['C', 'L', 'I'] missing=['CLING-CLANG-BZZZT']
+[20:18:13]       retry audio 2/3
+[20:18:52]     [2/5] audio KO (98%) wrong=['C', 'L', 'I'] missing=['CLING-CLANG-BZZZT', 'BIP']
+[20:18:52]       retry audio 3/3
+[20:19:26]     [2/5] audio KO (98%) wrong=['C', 'L', 'I'] missing=['CLING-CLANG-BZZZT']
+[20:19:41]     [3/5] audio OK (100%)
+[20:20:25]     [4/5] audio KO (97%) wrong=['Bipbou', 'œil', 'écran'] missing=['Bipboup', 'œil-écran', 'Le']
+[20:20:25]       retry audio 2/3
+[20:21:15]     [4/5] audio KO (98%) wrong=['œil', 'écran', 'La'] missing=['œil-écran', 'Le']
+[20:21:15]       retry audio 3/3
+[20:21:57]     [4/5] audio KO (94%) wrong=['La', 'Bip,', 'boup,'] missing=['«', '»']
+[20:22:30]     [5/5] audio KO (98%) wrong=['Ma', 'Ma', 'ma'] missing=[]
+[20:22:30]       retry audio 2/3
+[20:22:54]     [5/5] audio OK (100%)
+[20:22:56]   AUDIO bilan : 3 OK, 2 fail
+[20:22:56] <<< END : courte_dragon_chateau_baguette_robot -> {'key': 'courte_dragon_chateau_baguette_robot', 'text': 'OK', 'images': '2/5', 'audio': '3/5'}
+[20:22:56] 
+*** [66/243] courte_dragon_chateau_baguette_fantome  (elapsed 1.0h)
+[20:22:56] 
+======================================================================
+>>> START : courte_dragon_chateau_baguette_fantome
+======================================================================
+[20:22:56]   voix pour ce niveau (courte) : fr-FR-Neural2-A
+[20:22:56]   TEXTE : generation Gemini Pro...
+[20:23:40]     OK : 'Brio et l'Artisan Fantôme' (5 pages)
+[20:23:40]   IMAGES : 5 pages a generer/verifier
+[20:23:52] INTERRUPTION manuelle - sauvegarde checkpoint et exit

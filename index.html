@@ -68,7 +68,7 @@
   <!-- Image d'accueil (ecran 0) : preload prioritaire pour l'afficher INSTANTANEMENT
        a la connexion, avant meme le CSS. JPG progressif 288 KB (vs 7 MB PNG avant). -->
   <link rel="preload" as="image" href="assets/leon_bienvenue.jpg" fetchpriority="high">
-  <link rel="stylesheet" href="style.css?v=661">
+  <link rel="stylesheet" href="style.css?v=662">
 </head>
 <body>
 <!-- Overlay "Tourne ton téléphone" (portrait mobile uniquement) -->
@@ -87,7 +87,7 @@
 </div>
 
 <!-- Badge de version : permet de verifier que la derniere build est chargee. -->
-<div class="build-badge" id="build-badge" title="Version chargee">v661</div>
+<div class="build-badge" id="build-badge" title="Version chargee">v662</div>
 
 
 <!-- Bouton flottant : retour à la carte (visible sur tous les tableaux de chapitre) -->
@@ -740,7 +740,7 @@
     <!-- c2s1 : Léon devant la porte de la salle des images -->
     <div class="screen" id="screen-c2s1">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/Leon_devant_porte.mp4?v=462" poster="assets/Leon_devant_porte.png" id="leon-video-c2s1" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <video src="assets/Leon_devant_porte.mp4?v=462" poster="assets/Leon_devant_porte.jpg" id="leon-video-c2s1" class="leon-machine-video" muted loop playsinline preload="auto"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">De retour à l'atelier, Léon t'invite à le suivre vers une porte mystérieuse...</p>
           <p class="dialogue-who">👴 Léon dit :</p>
@@ -755,9 +755,9 @@
     <!-- c2s2 : Présentation de la machine -->
     <div class="screen" id="screen-c2s2">
       <div class="story-scene full-height-scene scene-4-machine">
-        <!-- Poster machine_image.png (1672x941, 16:9) = chevalet + toile magique chap 2.
+        <!-- Poster machine_image.jpg (1672x941, 16:9) = chevalet + toile magique chap 2.
              Converti en background-image CSS au DOMContentLoaded → apparition INSTANTANÉE. -->
-        <video src="assets/Leon_machine_image.mp4?v=462" poster="assets/machine_image.png" id="leon-video-c2s2" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <video src="assets/Leon_machine_image.mp4?v=462" poster="assets/machine_image.jpg" id="leon-video-c2s2" class="leon-machine-video" muted loop playsinline preload="auto"></video>
 
         <!-- 3 hotspots invisibles : pinceau flottant / toile lumineuse / paillettes magiques.
              Revele via loupe magique au survol. Calibrables via toggleC2s2SpotCalib() (console). -->
@@ -810,7 +810,7 @@
     <!-- c2s4 : Apprentissage (millions d'images) -->
     <div class="screen" id="screen-c2s4">
       <div class="story-scene full-height-scene scene-4-machine">
-        <video src="assets/images_millions.mp4?v=462" poster="assets/machine_image.png" id="leon-video-c2s4" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+        <video src="assets/images_millions.mp4?v=462" poster="assets/machine_image.jpg" id="leon-video-c2s4" class="leon-machine-video" muted loop playsinline preload="auto"></video>
         <div class="scene-text scene-4-text">
           <p class="narration">Mais comment la machine sait-elle dessiner ?</p>
           <p class="dialogue-who">👴 Léon explique :</p>
@@ -836,10 +836,10 @@
       <div class="story-scene full-height-scene scene-4-machine">
         <!-- v461 : remplace l'image statique par la video Leon_machine_image
              (re-encodee 5.5->2.2 Mbps, partagee avec c2s2). Poster = meme image
-             machine_image.png pour le fallback. -->
-        <video src="assets/Leon_machine_image.mp4?v=462" poster="assets/machine_image.png" id="leon-video-c2s5" class="leon-machine-video" muted loop playsinline preload="auto"></video>
+             machine_image.jpg pour le fallback. -->
+        <video src="assets/Leon_machine_image.mp4?v=462" poster="assets/machine_image.jpg" id="leon-video-c2s5" class="leon-machine-video" muted loop playsinline preload="auto"></video>
         <!-- Overlay : grille 2x3 des 6 dessins (3 corrects + 3 défectueux) -->
-        <img src="assets/chapitre_2/t5_grid.png?v=1" id="c2s5-grid" class="c2s5-grid-overlay" alt="6 dessins de l'IA">
+        <img src="assets/chapitre_2/t5_grid.jpg?v=1" id="c2s5-grid" class="c2s5-grid-overlay" alt="6 dessins de l'IA">
         <!-- 6 hot-spots invisibles sur la grille — 3 sont défectueux (data-defective="true")
              Calibrables via Alt+F (drag) → calibration.json. -->
         <div class="c2s5-defect-zone" id="c2s5-defect-1" data-defect-id="sun"   data-defective="false" title="Soleil"></div>
@@ -1922,6 +1922,6 @@
 </div>
 
 <script src="calibration.js"></script>
-<script src="game.js?v=661"></script>
+<script src="game.js?v=662"></script>
 </body>
 </html>

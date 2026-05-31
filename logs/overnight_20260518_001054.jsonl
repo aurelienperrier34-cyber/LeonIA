@@ -1,0 +1,307 @@
+{"event": "story_start", "key": "courte_astronaute_planete_baguette_robot", "ts": "2026-05-18T00:10:55.039652"}
+{"event": "image_failed", "key": "courte_astronaute_planete_baguette_robot", "page": 4, "ts": "2026-05-18T00:19:57.416677"}
+{"event": "image_failed", "key": "courte_astronaute_planete_baguette_robot", "page": 5, "ts": "2026-05-18T00:24:27.242748"}
+{"event": "audio_failed", "key": "courte_astronaute_planete_baguette_robot", "page": 2, "ts": "2026-05-18T00:26:39.275698"}
+{"event": "audio_failed", "key": "courte_astronaute_planete_baguette_robot", "page": 3, "ts": "2026-05-18T00:27:46.501764"}
+{"event": "audio_failed", "key": "courte_astronaute_planete_baguette_robot", "page": 5, "ts": "2026-05-18T00:28:55.528310"}
+{"event": "story_end", "key": "courte_astronaute_planete_baguette_robot", "stats": {"key": "courte_astronaute_planete_baguette_robot", "text": "OK", "images": "3/5", "audio": "2/5"}, "ts": "2026-05-18T00:28:57.546104"}
+{"event": "story_start", "key": "courte_astronaute_planete_baguette_fantome", "ts": "2026-05-18T00:28:57.561036"}
+{"event": "image_failed", "key": "courte_astronaute_planete_baguette_fantome", "page": 3, "ts": "2026-05-18T00:39:07.158820"}
+{"event": "image_failed", "key": "courte_astronaute_planete_baguette_fantome", "page": 4, "ts": "2026-05-18T00:44:30.493988"}
+{"event": "audio_failed", "key": "courte_astronaute_planete_baguette_fantome", "page": 2, "ts": "2026-05-18T00:47:41.365634"}
+{"event": "story_end", "key": "courte_astronaute_planete_baguette_fantome", "stats": {"key": "courte_astronaute_planete_baguette_fantome", "text": "OK", "images": "3/5", "audio": "4/5"}, "ts": "2026-05-18T00:48:38.895032"}
+{"event": "story_start", "key": "courte_astronaute_planete_skateboard_monstre", "ts": "2026-05-18T00:48:38.912560"}
+{"event": "image_failed", "key": "courte_astronaute_planete_skateboard_monstre", "page": 3, "ts": "2026-05-18T00:55:43.128163"}
+{"event": "audio_failed", "key": "courte_astronaute_planete_skateboard_monstre", "page": 2, "ts": "2026-05-18T00:59:34.838030"}
+{"event": "audio_failed", "key": "courte_astronaute_planete_skateboard_monstre", "page": 3, "ts": "2026-05-18T01:00:38.196414"}
+{"event": "audio_failed", "key": "courte_astronaute_planete_skateboard_monstre", "page": 4, "ts": "2026-05-18T01:01:51.115932"}
+{"event": "audio_failed", "key": "courte_astronaute_planete_skateboard_monstre", "page": 5, "ts": "2026-05-18T01:03:08.105089"}
+{"event": "story_end", "key": "courte_astronaute_planete_skateboard_monstre", "stats": {"key": "courte_astronaute_planete_skateboard_monstre", "text": "OK", "images": "4/5", "audio": "1/5"}, "ts": "2026-05-18T01:03:10.129108"}
+{"event": "story_start", "key": "courte_astronaute_planete_skateboard_robot", "ts": "2026-05-18T01:03:10.143127"}
+{"event": "image_failed", "key": "courte_astronaute_planete_skateboard_robot", "page": 5, "ts": "2026-05-18T01:20:41.764548"}
+{"event": "audio_failed", "key": "courte_astronaute_planete_skateboard_robot", "page": 1, "ts": "2026-05-18T01:22:10.645023"}
+{"event": "audio_failed", "key": "courte_astronaute_planete_skateboard_robot", "page": 5, "ts": "2026-05-18T01:24:34.973917"}
+{"event": "story_end", "key": "courte_astronaute_planete_skateboard_robot", "stats": {"key": "courte_astronaute_planete_skateboard_robot", "text": "OK", "images": "4/5", "audio": "3/5"}, "ts": "2026-05-18T01:24:36.996846"}
+{"event": "story_start", "key": "courte_astronaute_planete_skateboard_fantome", "ts": "2026-05-18T01:24:37.014254"}
+{"event": "story_end", "key": "courte_astronaute_planete_skateboard_fantome", "stats": {"key": "courte_astronaute_planete_skateboard_fantome", "text": "OK", "images": "5/5", "audio": "5/5"}, "ts": "2026-05-18T01:33:07.440264"}
+{"event": "story_start", "key": "courte_astronaute_planete_guitare_monstre", "ts": "2026-05-18T01:33:07.456956"}
+{"event": "image_failed", "key": "courte_astronaute_planete_guitare_monstre", "page": 3, "ts": "2026-05-18T01:39:23.830436"}
+{"event": "image_failed", "key": "courte_astronaute_planete_guitare_monstre", "page": 4, "ts": "2026-05-18T01:44:39.676102"}
+{"event": "image_failed", "key": "courte_astronaute_planete_guitare_monstre", "page": 5, "ts": "2026-05-18T01:49:32.560442"}
+{"event": "audio_failed", "key": "courte_astronaute_planete_guitare_monstre", "page": 1, "ts": "2026-05-18T01:50:53.793487"}
+{"event": "story_end", "key": "courte_astronaute_planete_guitare_monstre", "stats": {"key": "courte_astronaute_planete_guitare_monstre", "text": "OK", "images": "2/5", "audio": "4/5"}, "ts": "2026-05-18T01:51:54.815852"}
+{"event": "story_start", "key": "courte_astronaute_planete_guitare_robot", "ts": "2026-05-18T01:51:54.834248"}
+{"event": "image_failed", "key": "courte_astronaute_planete_guitare_robot", "page": 2, "ts": "2026-05-18T02:00:35.205088"}
+{"event": "image_failed", "key": "courte_astronaute_planete_guitare_robot", "page": 3, "ts": "2026-05-18T02:05:08.055165"}
+{"event": "image_failed", "key": "courte_astronaute_planete_guitare_robot", "page": 4, "ts": "2026-05-18T02:10:23.131319"}
+{"event": "image_failed", "key": "courte_astronaute_planete_guitare_robot", "page": 5, "ts": "2026-05-18T02:15:00.541101"}
+{"event": "audio_failed", "key": "courte_astronaute_planete_guitare_robot", "page": 1, "ts": "2026-05-18T02:16:57.057319"}
+{"event": "audio_failed", "key": "courte_astronaute_planete_guitare_robot", "page": 3, "ts": "2026-05-18T02:18:11.054276"}
+{"event": "story_end", "key": "courte_astronaute_planete_guitare_robot", "stats": {"key": "courte_astronaute_planete_guitare_robot", "text": "OK", "images": "1/5", "audio": "3/5"}, "ts": "2026-05-18T02:18:38.161141"}
+{"event": "story_start", "key": "courte_astronaute_planete_guitare_fantome", "ts": "2026-05-18T02:18:38.174854"}
+{"event": "image_failed", "key": "courte_astronaute_planete_guitare_fantome", "page": 3, "ts": "2026-05-18T02:27:11.109648"}
+{"event": "image_failed", "key": "courte_astronaute_planete_guitare_fantome", "page": 4, "ts": "2026-05-18T02:32:12.137963"}
+{"event": "image_failed", "key": "courte_astronaute_planete_guitare_fantome", "page": 5, "ts": "2026-05-18T02:37:06.036603"}
+{"event": "audio_failed", "key": "courte_astronaute_planete_guitare_fantome", "page": 5, "ts": "2026-05-18T02:39:43.652700"}
+{"event": "story_end", "key": "courte_astronaute_planete_guitare_fantome", "stats": {"key": "courte_astronaute_planete_guitare_fantome", "text": "OK", "images": "2/5", "audio": "4/5"}, "ts": "2026-05-18T02:39:45.681779"}
+{"event": "story_start", "key": "courte_astronaute_chateau_baguette_monstre", "ts": "2026-05-18T02:39:45.699519"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_baguette_monstre", "page": 2, "ts": "2026-05-18T02:44:58.766767"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_baguette_monstre", "page": 3, "ts": "2026-05-18T02:49:50.637615"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_baguette_monstre", "page": 5, "ts": "2026-05-18T02:55:51.710794"}
+{"event": "story_end", "key": "courte_astronaute_chateau_baguette_monstre", "stats": {"key": "courte_astronaute_chateau_baguette_monstre", "text": "OK", "images": "2/5", "audio": "5/5"}, "ts": "2026-05-18T02:57:33.196782"}
+{"event": "story_start", "key": "courte_astronaute_chateau_baguette_robot", "ts": "2026-05-18T02:57:33.210674"}
+{"event": "audio_failed", "key": "courte_astronaute_chateau_baguette_robot", "page": 3, "ts": "2026-05-18T03:10:44.859163"}
+{"event": "audio_failed", "key": "courte_astronaute_chateau_baguette_robot", "page": 4, "ts": "2026-05-18T03:13:04.639470"}
+{"event": "story_end", "key": "courte_astronaute_chateau_baguette_robot", "stats": {"key": "courte_astronaute_chateau_baguette_robot", "text": "OK", "images": "5/5", "audio": "3/5"}, "ts": "2026-05-18T03:13:22.562544"}
+{"event": "story_start", "key": "courte_astronaute_chateau_baguette_fantome", "ts": "2026-05-18T03:13:22.577115"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_baguette_fantome", "page": 3, "ts": "2026-05-18T03:19:40.210950"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_baguette_fantome", "page": 4, "ts": "2026-05-18T03:24:57.540381"}
+{"event": "audio_failed", "key": "courte_astronaute_chateau_baguette_fantome", "page": 3, "ts": "2026-05-18T03:27:09.170894"}
+{"event": "audio_failed", "key": "courte_astronaute_chateau_baguette_fantome", "page": 5, "ts": "2026-05-18T03:28:40.380171"}
+{"event": "story_end", "key": "courte_astronaute_chateau_baguette_fantome", "stats": {"key": "courte_astronaute_chateau_baguette_fantome", "text": "OK", "images": "3/5", "audio": "3/5"}, "ts": "2026-05-18T03:28:42.410065"}
+{"event": "story_start", "key": "courte_astronaute_chateau_skateboard_monstre", "ts": "2026-05-18T03:28:42.427534"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_skateboard_monstre", "page": 3, "ts": "2026-05-18T03:36:33.958723"}
+{"event": "story_end", "key": "courte_astronaute_chateau_skateboard_monstre", "stats": {"key": "courte_astronaute_chateau_skateboard_monstre", "text": "OK", "images": "4/5", "audio": "5/5"}, "ts": "2026-05-18T03:41:53.455029"}
+{"event": "story_start", "key": "courte_astronaute_chateau_skateboard_robot", "ts": "2026-05-18T03:41:53.470212"}
+{"event": "audio_failed", "key": "courte_astronaute_chateau_skateboard_robot", "page": 4, "ts": "2026-05-18T03:50:01.747817"}
+{"event": "story_end", "key": "courte_astronaute_chateau_skateboard_robot", "stats": {"key": "courte_astronaute_chateau_skateboard_robot", "text": "OK", "images": "5/5", "audio": "4/5"}, "ts": "2026-05-18T03:50:25.312805"}
+{"event": "story_start", "key": "courte_astronaute_chateau_skateboard_fantome", "ts": "2026-05-18T03:50:25.329321"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_skateboard_fantome", "page": 5, "ts": "2026-05-18T04:02:46.525286"}
+{"event": "story_end", "key": "courte_astronaute_chateau_skateboard_fantome", "stats": {"key": "courte_astronaute_chateau_skateboard_fantome", "text": "OK", "images": "4/5", "audio": "5/5"}, "ts": "2026-05-18T04:04:40.113813"}
+{"event": "story_start", "key": "courte_astronaute_chateau_guitare_monstre", "ts": "2026-05-18T04:04:40.123183"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_guitare_monstre", "page": 3, "ts": "2026-05-18T04:11:51.645582"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_guitare_monstre", "page": 4, "ts": "2026-05-18T04:16:36.388633"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_guitare_monstre", "page": 5, "ts": "2026-05-18T04:21:12.514278"}
+{"event": "story_end", "key": "courte_astronaute_chateau_guitare_monstre", "stats": {"key": "courte_astronaute_chateau_guitare_monstre", "text": "OK", "images": "2/5", "audio": "5/5"}, "ts": "2026-05-18T04:23:04.354330"}
+{"event": "story_start", "key": "courte_astronaute_chateau_guitare_robot", "ts": "2026-05-18T04:23:04.368649"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_guitare_robot", "page": 2, "ts": "2026-05-18T04:28:40.911915"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_guitare_robot", "page": 3, "ts": "2026-05-18T04:33:14.866363"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_guitare_robot", "page": 4, "ts": "2026-05-18T04:38:43.223853"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_guitare_robot", "page": 5, "ts": "2026-05-18T04:43:24.320343"}
+{"event": "audio_failed", "key": "courte_astronaute_chateau_guitare_robot", "page": 3, "ts": "2026-05-18T04:45:20.845260"}
+{"event": "audio_failed", "key": "courte_astronaute_chateau_guitare_robot", "page": 4, "ts": "2026-05-18T04:46:11.514481"}
+{"event": "audio_failed", "key": "courte_astronaute_chateau_guitare_robot", "page": 5, "ts": "2026-05-18T04:47:38.881316"}
+{"event": "story_end", "key": "courte_astronaute_chateau_guitare_robot", "stats": {"key": "courte_astronaute_chateau_guitare_robot", "text": "OK", "images": "1/5", "audio": "2/5"}, "ts": "2026-05-18T04:47:40.896030"}
+{"event": "story_start", "key": "courte_astronaute_chateau_guitare_fantome", "ts": "2026-05-18T04:47:40.906752"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_guitare_fantome", "page": 4, "ts": "2026-05-18T05:02:55.120148"}
+{"event": "image_failed", "key": "courte_astronaute_chateau_guitare_fantome", "page": 5, "ts": "2026-05-18T05:07:59.014895"}
+{"event": "audio_failed", "key": "courte_astronaute_chateau_guitare_fantome", "page": 2, "ts": "2026-05-18T05:10:36.986712"}
+{"event": "audio_failed", "key": "courte_astronaute_chateau_guitare_fantome", "page": 3, "ts": "2026-05-18T05:12:54.742275"}
+{"event": "story_end", "key": "courte_astronaute_chateau_guitare_fantome", "stats": {"key": "courte_astronaute_chateau_guitare_fantome", "text": "OK", "images": "3/5", "audio": "3/5"}, "ts": "2026-05-18T05:14:12.467169"}
+{"event": "story_start", "key": "courte_astronaute_ocean_baguette_monstre", "ts": "2026-05-18T05:14:12.482861"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_baguette_monstre", "page": 5, "ts": "2026-05-18T05:24:28.999510"}
+{"event": "story_end", "key": "courte_astronaute_ocean_baguette_monstre", "stats": {"key": "courte_astronaute_ocean_baguette_monstre", "text": "OK", "images": "4/5", "audio": "5/5"}, "ts": "2026-05-18T05:26:15.137408"}
+{"event": "story_start", "key": "courte_astronaute_ocean_baguette_robot", "ts": "2026-05-18T05:26:15.152425"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_baguette_robot", "page": 2, "ts": "2026-05-18T05:33:29.174501"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_baguette_robot", "page": 4, "ts": "2026-05-18T05:40:33.842879"}
+{"event": "audio_failed", "key": "courte_astronaute_ocean_baguette_robot", "page": 2, "ts": "2026-05-18T05:44:18.806513"}
+{"event": "audio_failed", "key": "courte_astronaute_ocean_baguette_robot", "page": 5, "ts": "2026-05-18T05:49:00.295232"}
+{"event": "story_end", "key": "courte_astronaute_ocean_baguette_robot", "stats": {"key": "courte_astronaute_ocean_baguette_robot", "text": "OK", "images": "3/5", "audio": "3/5"}, "ts": "2026-05-18T05:49:02.317913"}
+{"event": "story_start", "key": "courte_astronaute_ocean_baguette_fantome", "ts": "2026-05-18T05:49:02.334004"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_baguette_fantome", "page": 3, "ts": "2026-05-18T05:56:13.202692"}
+{"event": "audio_failed", "key": "courte_astronaute_ocean_baguette_fantome", "page": 4, "ts": "2026-05-18T06:03:20.692456"}
+{"event": "story_end", "key": "courte_astronaute_ocean_baguette_fantome", "stats": {"key": "courte_astronaute_ocean_baguette_fantome", "text": "OK", "images": "4/5", "audio": "4/5"}, "ts": "2026-05-18T06:03:54.697908"}
+{"event": "story_start", "key": "courte_astronaute_ocean_skateboard_monstre", "ts": "2026-05-18T06:03:54.716446"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_skateboard_monstre", "page": 4, "ts": "2026-05-18T06:12:36.426294"}
+{"event": "audio_failed", "key": "courte_astronaute_ocean_skateboard_monstre", "page": 4, "ts": "2026-05-18T06:15:50.843867"}
+{"event": "audio_failed", "key": "courte_astronaute_ocean_skateboard_monstre", "page": 5, "ts": "2026-05-18T06:17:02.218286"}
+{"event": "story_end", "key": "courte_astronaute_ocean_skateboard_monstre", "stats": {"key": "courte_astronaute_ocean_skateboard_monstre", "text": "OK", "images": "4/5", "audio": "3/5"}, "ts": "2026-05-18T06:17:04.238233"}
+{"event": "story_start", "key": "courte_astronaute_ocean_skateboard_robot", "ts": "2026-05-18T06:17:04.252443"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_skateboard_robot", "page": 4, "ts": "2026-05-18T06:28:24.791591"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_skateboard_robot", "page": 5, "ts": "2026-05-18T06:33:12.477363"}
+{"event": "audio_failed", "key": "courte_astronaute_ocean_skateboard_robot", "page": 5, "ts": "2026-05-18T06:36:36.240256"}
+{"event": "story_end", "key": "courte_astronaute_ocean_skateboard_robot", "stats": {"key": "courte_astronaute_ocean_skateboard_robot", "text": "OK", "images": "3/5", "audio": "4/5"}, "ts": "2026-05-18T06:36:38.264832"}
+{"event": "story_start", "key": "courte_astronaute_ocean_skateboard_fantome", "ts": "2026-05-18T06:36:38.280073"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_skateboard_fantome", "page": 4, "ts": "2026-05-18T06:49:27.273077"}
+{"event": "story_end", "key": "courte_astronaute_ocean_skateboard_fantome", "stats": {"key": "courte_astronaute_ocean_skateboard_fantome", "text": "OK", "images": "4/5", "audio": "5/5"}, "ts": "2026-05-18T06:56:11.137355"}
+{"event": "story_start", "key": "courte_astronaute_ocean_guitare_monstre", "ts": "2026-05-18T06:56:11.152939"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_guitare_monstre", "page": 2, "ts": "2026-05-18T07:01:24.568454"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_guitare_monstre", "page": 3, "ts": "2026-05-18T07:06:16.736205"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_guitare_monstre", "page": 4, "ts": "2026-05-18T07:11:49.710714"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_guitare_monstre", "page": 5, "ts": "2026-05-18T07:16:21.819628"}
+{"event": "audio_failed", "key": "courte_astronaute_ocean_guitare_monstre", "page": 3, "ts": "2026-05-18T07:18:01.875869"}
+{"event": "story_end", "key": "courte_astronaute_ocean_guitare_monstre", "stats": {"key": "courte_astronaute_ocean_guitare_monstre", "text": "OK", "images": "1/5", "audio": "4/5"}, "ts": "2026-05-18T07:19:42.271865"}
+{"event": "story_start", "key": "courte_astronaute_ocean_guitare_robot", "ts": "2026-05-18T07:19:42.284414"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_guitare_robot", "page": 2, "ts": "2026-05-18T07:25:57.988630"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_guitare_robot", "page": 3, "ts": "2026-05-18T07:30:52.518966"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_guitare_robot", "page": 4, "ts": "2026-05-18T07:35:49.669876"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_guitare_robot", "page": 5, "ts": "2026-05-18T07:40:51.165068"}
+{"event": "audio_failed", "key": "courte_astronaute_ocean_guitare_robot", "page": 3, "ts": "2026-05-18T07:44:05.494917"}
+{"event": "story_end", "key": "courte_astronaute_ocean_guitare_robot", "stats": {"key": "courte_astronaute_ocean_guitare_robot", "text": "OK", "images": "1/5", "audio": "4/5"}, "ts": "2026-05-18T07:44:42.997191"}
+{"event": "story_start", "key": "courte_astronaute_ocean_guitare_fantome", "ts": "2026-05-18T07:44:43.015190"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_guitare_fantome", "page": 2, "ts": "2026-05-18T07:51:08.041146"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_guitare_fantome", "page": 3, "ts": "2026-05-18T07:56:24.463772"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_guitare_fantome", "page": 4, "ts": "2026-05-18T08:01:03.669973"}
+{"event": "image_failed", "key": "courte_astronaute_ocean_guitare_fantome", "page": 5, "ts": "2026-05-18T08:06:20.334986"}
+{"event": "story_end", "key": "courte_astronaute_ocean_guitare_fantome", "stats": {"key": "courte_astronaute_ocean_guitare_fantome", "text": "OK", "images": "1/5", "audio": "5/5"}, "ts": "2026-05-18T08:09:58.498227"}
+{"event": "story_start", "key": "courte_sorciere_planete_baguette_monstre", "ts": "2026-05-18T08:09:58.513395"}
+{"event": "image_failed", "key": "courte_sorciere_planete_baguette_monstre", "page": 3, "ts": "2026-05-18T08:16:23.848908"}
+{"event": "story_end", "key": "courte_sorciere_planete_baguette_monstre", "stats": {"key": "courte_sorciere_planete_baguette_monstre", "text": "OK", "images": "4/5", "audio": "5/5"}, "ts": "2026-05-18T08:21:43.695476"}
+{"event": "story_start", "key": "courte_sorciere_planete_baguette_robot", "ts": "2026-05-18T08:21:43.711586"}
+{"event": "image_failed", "key": "courte_sorciere_planete_baguette_robot", "page": 3, "ts": "2026-05-18T08:30:19.037190"}
+{"event": "audio_failed", "key": "courte_sorciere_planete_baguette_robot", "page": 2, "ts": "2026-05-18T08:36:18.805700"}
+{"event": "audio_failed", "key": "courte_sorciere_planete_baguette_robot", "page": 5, "ts": "2026-05-18T08:38:26.683251"}
+{"event": "story_end", "key": "courte_sorciere_planete_baguette_robot", "stats": {"key": "courte_sorciere_planete_baguette_robot", "text": "OK", "images": "4/5", "audio": "3/5"}, "ts": "2026-05-18T08:38:28.711454"}
+{"event": "story_start", "key": "courte_sorciere_planete_baguette_fantome", "ts": "2026-05-18T08:38:28.730397"}
+{"event": "image_failed", "key": "courte_sorciere_planete_baguette_fantome", "page": 1, "ts": "2026-05-18T08:42:58.711226"}
+{"event": "image_failed", "key": "courte_sorciere_planete_baguette_fantome", "page": 5, "ts": "2026-05-18T08:54:49.121692"}
+{"event": "story_end", "key": "courte_sorciere_planete_baguette_fantome", "stats": {"key": "courte_sorciere_planete_baguette_fantome", "text": "OK", "images": "3/5", "audio": "5/5"}, "ts": "2026-05-18T08:56:39.065819"}
+{"event": "story_start", "key": "courte_sorciere_planete_skateboard_monstre", "ts": "2026-05-18T08:56:39.082696"}
+{"event": "audio_failed", "key": "courte_sorciere_planete_skateboard_monstre", "page": 3, "ts": "2026-05-18T09:06:16.127023"}
+{"event": "audio_failed", "key": "courte_sorciere_planete_skateboard_monstre", "page": 5, "ts": "2026-05-18T09:07:30.630248"}
+{"event": "story_end", "key": "courte_sorciere_planete_skateboard_monstre", "stats": {"key": "courte_sorciere_planete_skateboard_monstre", "text": "OK", "images": "5/5", "audio": "3/5"}, "ts": "2026-05-18T09:07:32.650470"}
+{"event": "story_start", "key": "courte_sorciere_planete_skateboard_robot", "ts": "2026-05-18T09:07:32.662463"}
+{"event": "image_failed", "key": "courte_sorciere_planete_skateboard_robot", "page": 3, "ts": "2026-05-18T09:17:11.468838"}
+{"event": "image_failed", "key": "courte_sorciere_planete_skateboard_robot", "page": 4, "ts": "2026-05-18T09:22:13.932125"}
+{"event": "audio_failed", "key": "courte_sorciere_planete_skateboard_robot", "page": 5, "ts": "2026-05-18T09:28:05.614541"}
+{"event": "story_end", "key": "courte_sorciere_planete_skateboard_robot", "stats": {"key": "courte_sorciere_planete_skateboard_robot", "text": "OK", "images": "3/5", "audio": "4/5"}, "ts": "2026-05-18T09:28:07.637751"}
+{"event": "story_start", "key": "courte_sorciere_planete_skateboard_fantome", "ts": "2026-05-18T09:28:07.651130"}
+{"event": "image_failed", "key": "courte_sorciere_planete_skateboard_fantome", "page": 5, "ts": "2026-05-18T09:42:17.027716"}
+{"event": "audio_failed", "key": "courte_sorciere_planete_skateboard_fantome", "page": 4, "ts": "2026-05-18T09:44:07.455562"}
+{"event": "story_end", "key": "courte_sorciere_planete_skateboard_fantome", "stats": {"key": "courte_sorciere_planete_skateboard_fantome", "text": "OK", "images": "4/5", "audio": "4/5"}, "ts": "2026-05-18T09:44:22.771440"}
+{"event": "story_start", "key": "courte_sorciere_planete_guitare_monstre", "ts": "2026-05-18T09:44:22.787352"}
+{"event": "image_failed", "key": "courte_sorciere_planete_guitare_monstre", "page": 2, "ts": "2026-05-18T09:53:06.065798"}
+{"event": "image_failed", "key": "courte_sorciere_planete_guitare_monstre", "page": 5, "ts": "2026-05-18T10:05:13.169513"}
+{"event": "audio_failed", "key": "courte_sorciere_planete_guitare_monstre", "page": 5, "ts": "2026-05-18T10:07:51.536369"}
+{"event": "story_end", "key": "courte_sorciere_planete_guitare_monstre", "stats": {"key": "courte_sorciere_planete_guitare_monstre", "text": "OK", "images": "3/5", "audio": "4/5"}, "ts": "2026-05-18T10:07:53.568744"}
+{"event": "story_start", "key": "courte_sorciere_planete_guitare_robot", "ts": "2026-05-18T10:07:53.582195"}
+{"event": "image_failed", "key": "courte_sorciere_planete_guitare_robot", "page": 2, "ts": "2026-05-18T10:17:35.849345"}
+{"event": "image_failed", "key": "courte_sorciere_planete_guitare_robot", "page": 3, "ts": "2026-05-18T10:22:09.656008"}
+{"event": "image_failed", "key": "courte_sorciere_planete_guitare_robot", "page": 4, "ts": "2026-05-18T10:27:06.845892"}
+{"event": "image_failed", "key": "courte_sorciere_planete_guitare_robot", "page": 5, "ts": "2026-05-18T10:32:35.235079"}
+{"event": "audio_failed", "key": "courte_sorciere_planete_guitare_robot", "page": 3, "ts": "2026-05-18T10:35:33.382115"}
+{"event": "audio_failed", "key": "courte_sorciere_planete_guitare_robot", "page": 5, "ts": "2026-05-18T10:37:04.346344"}
+{"event": "story_end", "key": "courte_sorciere_planete_guitare_robot", "stats": {"key": "courte_sorciere_planete_guitare_robot", "text": "OK", "images": "1/5", "audio": "3/5"}, "ts": "2026-05-18T10:37:06.366445"}
+{"event": "story_start", "key": "courte_sorciere_planete_guitare_fantome", "ts": "2026-05-18T10:37:06.379674"}
+{"event": "image_failed", "key": "courte_sorciere_planete_guitare_fantome", "page": 2, "ts": "2026-05-18T10:42:16.347281"}
+{"event": "image_failed", "key": "courte_sorciere_planete_guitare_fantome", "page": 3, "ts": "2026-05-18T10:47:21.235928"}
+{"event": "image_failed", "key": "courte_sorciere_planete_guitare_fantome", "page": 4, "ts": "2026-05-18T10:52:26.995617"}
+{"event": "image_failed", "key": "courte_sorciere_planete_guitare_fantome", "page": 5, "ts": "2026-05-18T10:57:20.366813"}
+{"event": "story_end", "key": "courte_sorciere_planete_guitare_fantome", "stats": {"key": "courte_sorciere_planete_guitare_fantome", "text": "OK", "images": "1/5", "audio": "5/5"}, "ts": "2026-05-18T10:58:58.577887"}
+{"event": "story_start", "key": "courte_sorciere_chateau_baguette_monstre", "ts": "2026-05-18T10:58:58.594549"}
+{"event": "image_failed", "key": "courte_sorciere_chateau_baguette_monstre", "page": 3, "ts": "2026-05-18T11:05:21.626975"}
+{"event": "image_failed", "key": "courte_sorciere_chateau_baguette_monstre", "page": 5, "ts": "2026-05-18T11:14:16.039914"}
+{"event": "story_end", "key": "courte_sorciere_chateau_baguette_monstre", "stats": {"key": "courte_sorciere_chateau_baguette_monstre", "text": "OK", "images": "3/5", "audio": "5/5"}, "ts": "2026-05-18T11:16:52.879410"}
+{"event": "story_start", "key": "courte_sorciere_chateau_baguette_robot", "ts": "2026-05-18T11:16:52.892880"}
+{"event": "image_failed", "key": "courte_sorciere_chateau_baguette_robot", "page": 5, "ts": "2026-05-18T11:26:15.890674"}
+{"event": "audio_failed", "key": "courte_sorciere_chateau_baguette_robot", "page": 1, "ts": "2026-05-18T11:27:28.204746"}
+{"event": "story_end", "key": "courte_sorciere_chateau_baguette_robot", "stats": {"key": "courte_sorciere_chateau_baguette_robot", "text": "OK", "images": "4/5", "audio": "4/5"}, "ts": "2026-05-18T11:28:43.407147"}
+{"event": "story_start", "key": "courte_sorciere_chateau_baguette_fantome", "ts": "2026-05-18T11:28:43.423349"}
+{"event": "image_failed", "key": "courte_sorciere_chateau_baguette_fantome", "page": 4, "ts": "2026-05-18T11:36:51.196150"}
+{"event": "audio_failed", "key": "courte_sorciere_chateau_baguette_fantome", "page": 2, "ts": "2026-05-18T11:41:08.041593"}
+{"event": "audio_failed", "key": "courte_sorciere_chateau_baguette_fantome", "page": 5, "ts": "2026-05-18T11:42:42.696712"}
+{"event": "story_end", "key": "courte_sorciere_chateau_baguette_fantome", "stats": {"key": "courte_sorciere_chateau_baguette_fantome", "text": "OK", "images": "4/5", "audio": "3/5"}, "ts": "2026-05-18T11:42:44.718576"}
+{"event": "story_start", "key": "courte_sorciere_chateau_skateboard_monstre", "ts": "2026-05-18T11:42:44.741019"}
+{"event": "audio_failed", "key": "courte_sorciere_chateau_skateboard_monstre", "page": 4, "ts": "2026-05-18T11:54:24.538264"}
+{"event": "story_end", "key": "courte_sorciere_chateau_skateboard_monstre", "stats": {"key": "courte_sorciere_chateau_skateboard_monstre", "text": "OK", "images": "5/5", "audio": "4/5"}, "ts": "2026-05-18T11:54:44.176544"}
+{"event": "story_start", "key": "courte_sorciere_chateau_skateboard_robot", "ts": "2026-05-18T11:54:44.189134"}
+{"event": "image_failed", "key": "courte_sorciere_chateau_skateboard_robot", "page": 5, "ts": "2026-05-18T12:08:59.577818"}
+{"event": "story_end", "key": "courte_sorciere_chateau_skateboard_robot", "stats": {"key": "courte_sorciere_chateau_skateboard_robot", "text": "OK", "images": "4/5", "audio": "5/5"}, "ts": "2026-05-18T12:12:53.837070"}
+{"event": "story_start", "key": "courte_sorciere_chateau_skateboard_fantome", "ts": "2026-05-18T12:12:53.852473"}
+{"event": "image_failed", "key": "courte_sorciere_chateau_skateboard_fantome", "page": 2, "ts": "2026-05-18T12:18:22.528643"}
+{"event": "image_failed", "key": "courte_sorciere_chateau_skateboard_fantome", "page": 5, "ts": "2026-05-18T12:27:16.702426"}
+{"event": "audio_failed", "key": "courte_sorciere_chateau_skateboard_fantome", "page": 3, "ts": "2026-05-18T12:29:26.266816"}
+{"event": "story_end", "key": "courte_sorciere_chateau_skateboard_fantome", "stats": {"key": "courte_sorciere_chateau_skateboard_fantome", "text": "OK", "images": "3/5", "audio": "4/5"}, "ts": "2026-05-18T12:31:47.984345"}
+{"event": "story_start", "key": "courte_sorciere_chateau_guitare_monstre", "ts": "2026-05-18T12:31:47.996336"}
+{"event": "image_failed", "key": "courte_sorciere_chateau_guitare_monstre", "page": 3, "ts": "2026-05-18T12:38:03.476149"}
+{"event": "image_failed", "key": "courte_sorciere_chateau_guitare_monstre", "page": 4, "ts": "2026-05-18T12:43:23.093022"}
+{"event": "image_failed", "key": "courte_sorciere_chateau_guitare_monstre", "page": 5, "ts": "2026-05-18T12:48:27.383635"}
+{"event": "audio_failed", "key": "courte_sorciere_chateau_guitare_monstre", "page": 2, "ts": "2026-05-18T12:49:44.548912"}
+{"event": "story_end", "key": "courte_sorciere_chateau_guitare_monstre", "stats": {"key": "courte_sorciere_chateau_guitare_monstre", "text": "OK", "images": "2/5", "audio": "4/5"}, "ts": "2026-05-18T12:50:31.245322"}
+{"event": "story_start", "key": "courte_sorciere_chateau_guitare_robot", "ts": "2026-05-18T12:50:31.260027"}
+{"event": "image_failed", "key": "courte_sorciere_chateau_guitare_robot", "page": 1, "ts": "2026-05-18T12:55:02.204900"}
+{"event": "image_failed", "key": "courte_sorciere_chateau_guitare_robot", "page": 3, "ts": "2026-05-18T13:00:46.868528"}
+{"event": "image_failed", "key": "courte_sorciere_chateau_guitare_robot", "page": 4, "ts": "2026-05-18T13:05:45.268987"}
+{"event": "story_end", "key": "courte_sorciere_chateau_guitare_robot", "stats": {"key": "courte_sorciere_chateau_guitare_robot", "text": "OK", "images": "2/5", "audio": "5/5"}, "ts": "2026-05-18T13:09:19.956188"}
+{"event": "story_start", "key": "courte_sorciere_chateau_guitare_fantome", "ts": "2026-05-18T13:09:19.972376"}
+{"event": "image_failed", "key": "courte_sorciere_chateau_guitare_fantome", "page": 4, "ts": "2026-05-18T13:19:47.071518"}
+{"event": "image_failed", "key": "courte_sorciere_chateau_guitare_fantome", "page": 5, "ts": "2026-05-18T13:24:50.801516"}
+{"event": "audio_failed", "key": "courte_sorciere_chateau_guitare_fantome", "page": 3, "ts": "2026-05-18T13:26:48.189517"}
+{"event": "story_end", "key": "courte_sorciere_chateau_guitare_fantome", "stats": {"key": "courte_sorciere_chateau_guitare_fantome", "text": "OK", "images": "3/5", "audio": "4/5"}, "ts": "2026-05-18T13:27:30.194110"}
+{"event": "story_start", "key": "courte_sorciere_ocean_baguette_monstre", "ts": "2026-05-18T13:27:30.208514"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_baguette_monstre", "page": 1, "ts": "2026-05-18T13:32:01.111802"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_baguette_monstre", "page": 4, "ts": "2026-05-18T13:46:52.437172"}
+{"event": "audio_failed", "key": "courte_sorciere_ocean_baguette_monstre", "page": 4, "ts": "2026-05-18T13:51:35.928673"}
+{"event": "audio_failed", "key": "courte_sorciere_ocean_baguette_monstre", "page": 5, "ts": "2026-05-18T13:52:44.395742"}
+{"event": "story_end", "key": "courte_sorciere_ocean_baguette_monstre", "stats": {"key": "courte_sorciere_ocean_baguette_monstre", "text": "OK", "images": "3/5", "audio": "3/5"}, "ts": "2026-05-18T13:52:46.411306"}
+{"event": "story_start", "key": "courte_sorciere_ocean_baguette_robot", "ts": "2026-05-18T13:52:46.422189"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_baguette_robot", "page": 3, "ts": "2026-05-18T14:01:54.905238"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_baguette_robot", "page": 4, "ts": "2026-05-18T14:06:53.335995"}
+{"event": "audio_failed", "key": "courte_sorciere_ocean_baguette_robot", "page": 2, "ts": "2026-05-18T14:09:31.088032"}
+{"event": "story_end", "key": "courte_sorciere_ocean_baguette_robot", "stats": {"key": "courte_sorciere_ocean_baguette_robot", "text": "OK", "images": "3/5", "audio": "4/5"}, "ts": "2026-05-18T14:11:18.230069"}
+{"event": "story_start", "key": "courte_sorciere_ocean_baguette_fantome", "ts": "2026-05-18T14:11:18.248006"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_baguette_fantome", "page": 2, "ts": "2026-05-18T14:16:30.006135"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_baguette_fantome", "page": 3, "ts": "2026-05-18T14:21:58.469360"}
+{"event": "story_end", "key": "courte_sorciere_ocean_baguette_fantome", "stats": {"key": "courte_sorciere_ocean_baguette_fantome", "text": "OK", "images": "3/5", "audio": "5/5"}, "ts": "2026-05-18T14:28:45.602242"}
+{"event": "story_start", "key": "courte_sorciere_ocean_skateboard_monstre", "ts": "2026-05-18T14:28:45.615538"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_skateboard_monstre", "page": 2, "ts": "2026-05-18T14:36:17.356249"}
+{"event": "audio_failed", "key": "courte_sorciere_ocean_skateboard_monstre", "page": 5, "ts": "2026-05-18T14:45:51.777841"}
+{"event": "story_end", "key": "courte_sorciere_ocean_skateboard_monstre", "stats": {"key": "courte_sorciere_ocean_skateboard_monstre", "text": "OK", "images": "4/5", "audio": "4/5"}, "ts": "2026-05-18T14:45:53.796933"}
+{"event": "story_start", "key": "courte_sorciere_ocean_skateboard_robot", "ts": "2026-05-18T14:45:53.809357"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_skateboard_robot", "page": 2, "ts": "2026-05-18T14:53:52.089424"}
+{"event": "audio_failed", "key": "courte_sorciere_ocean_skateboard_robot", "page": 3, "ts": "2026-05-18T14:59:51.633173"}
+{"event": "audio_failed", "key": "courte_sorciere_ocean_skateboard_robot", "page": 4, "ts": "2026-05-18T15:00:52.125017"}
+{"event": "story_end", "key": "courte_sorciere_ocean_skateboard_robot", "stats": {"key": "courte_sorciere_ocean_skateboard_robot", "text": "OK", "images": "4/5", "audio": "3/5"}, "ts": "2026-05-18T15:01:09.196793"}
+{"event": "story_start", "key": "courte_sorciere_ocean_skateboard_fantome", "ts": "2026-05-18T15:01:09.210872"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_skateboard_fantome", "page": 2, "ts": "2026-05-18T15:08:24.927349"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_skateboard_fantome", "page": 3, "ts": "2026-05-18T15:13:45.948047"}
+{"event": "audio_failed", "key": "courte_sorciere_ocean_skateboard_fantome", "page": 2, "ts": "2026-05-18T15:20:48.327677"}
+{"event": "audio_failed", "key": "courte_sorciere_ocean_skateboard_fantome", "page": 4, "ts": "2026-05-18T15:22:30.652165"}
+{"event": "story_end", "key": "courte_sorciere_ocean_skateboard_fantome", "stats": {"key": "courte_sorciere_ocean_skateboard_fantome", "text": "OK", "images": "3/5", "audio": "3/5"}, "ts": "2026-05-18T15:23:02.287822"}
+{"event": "story_start", "key": "courte_sorciere_ocean_guitare_monstre", "ts": "2026-05-18T15:23:02.301729"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_guitare_monstre", "page": 3, "ts": "2026-05-18T15:33:18.928138"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_guitare_monstre", "page": 4, "ts": "2026-05-18T15:36:02.393862"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_guitare_monstre", "page": 5, "ts": "2026-05-18T15:40:34.903356"}
+{"event": "audio_failed", "key": "courte_sorciere_ocean_guitare_monstre", "page": 2, "ts": "2026-05-18T15:42:18.418737"}
+{"event": "story_end", "key": "courte_sorciere_ocean_guitare_monstre", "stats": {"key": "courte_sorciere_ocean_guitare_monstre", "text": "OK", "images": "2/5", "audio": "4/5"}, "ts": "2026-05-18T15:43:23.681085"}
+{"event": "story_start", "key": "courte_sorciere_ocean_guitare_robot", "ts": "2026-05-18T15:43:23.694751"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_guitare_robot", "page": 1, "ts": "2026-05-18T15:48:06.425357"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_guitare_robot", "page": 3, "ts": "2026-05-18T15:53:36.199419"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_guitare_robot", "page": 4, "ts": "2026-05-18T15:58:34.914777"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_guitare_robot", "page": 5, "ts": "2026-05-18T16:04:05.790755"}
+{"event": "audio_failed", "key": "courte_sorciere_ocean_guitare_robot", "page": 3, "ts": "2026-05-18T16:06:38.919068"}
+{"event": "story_end", "key": "courte_sorciere_ocean_guitare_robot", "stats": {"key": "courte_sorciere_ocean_guitare_robot", "text": "OK", "images": "1/5", "audio": "4/5"}, "ts": "2026-05-18T16:07:14.696607"}
+{"event": "story_start", "key": "courte_sorciere_ocean_guitare_fantome", "ts": "2026-05-18T16:07:14.714762"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_guitare_fantome", "page": 2, "ts": "2026-05-18T16:12:45.035929"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_guitare_fantome", "page": 3, "ts": "2026-05-18T16:18:06.229824"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_guitare_fantome", "page": 4, "ts": "2026-05-18T16:22:34.815603"}
+{"event": "image_failed", "key": "courte_sorciere_ocean_guitare_fantome", "page": 5, "ts": "2026-05-18T16:27:36.626488"}
+{"event": "audio_failed", "key": "courte_sorciere_ocean_guitare_fantome", "page": 3, "ts": "2026-05-18T16:29:32.950210"}
+{"event": "story_end", "key": "courte_sorciere_ocean_guitare_fantome", "stats": {"key": "courte_sorciere_ocean_guitare_fantome", "text": "OK", "images": "1/5", "audio": "4/5"}, "ts": "2026-05-18T16:31:04.232402"}
+{"event": "story_start", "key": "courte_dragon_planete_baguette_monstre", "ts": "2026-05-18T16:31:04.249836"}
+{"event": "image_failed", "key": "courte_dragon_planete_baguette_monstre", "page": 2, "ts": "2026-05-18T16:38:24.758695"}
+{"event": "audio_failed", "key": "courte_dragon_planete_baguette_monstre", "page": 5, "ts": "2026-05-18T16:45:55.999131"}
+{"event": "story_end", "key": "courte_dragon_planete_baguette_monstre", "stats": {"key": "courte_dragon_planete_baguette_monstre", "text": "OK", "images": "4/5", "audio": "4/5"}, "ts": "2026-05-18T16:45:58.021861"}
+{"event": "story_start", "key": "courte_dragon_planete_baguette_robot", "ts": "2026-05-18T16:45:58.037337"}
+{"event": "image_failed", "key": "courte_dragon_planete_baguette_robot", "page": 1, "ts": "2026-05-18T16:50:18.276553"}
+{"event": "image_failed", "key": "courte_dragon_planete_baguette_robot", "page": 3, "ts": "2026-05-18T16:59:09.257036"}
+{"event": "audio_failed", "key": "courte_dragon_planete_baguette_robot", "page": 4, "ts": "2026-05-18T17:03:51.245038"}
+{"event": "audio_failed", "key": "courte_dragon_planete_baguette_robot", "page": 5, "ts": "2026-05-18T17:05:26.677714"}
+{"event": "story_end", "key": "courte_dragon_planete_baguette_robot", "stats": {"key": "courte_dragon_planete_baguette_robot", "text": "OK", "images": "3/5", "audio": "3/5"}, "ts": "2026-05-18T17:05:28.701233"}
+{"event": "story_start", "key": "courte_dragon_planete_baguette_fantome", "ts": "2026-05-18T17:05:28.718766"}
+{"event": "image_failed", "key": "courte_dragon_planete_baguette_fantome", "page": 1, "ts": "2026-05-18T17:09:37.258995"}
+{"event": "image_failed", "key": "courte_dragon_planete_baguette_fantome", "page": 3, "ts": "2026-05-18T17:19:43.876716"}
+{"event": "image_failed", "key": "courte_dragon_planete_baguette_fantome", "page": 4, "ts": "2026-05-18T17:24:40.532298"}
+{"event": "image_failed", "key": "courte_dragon_planete_baguette_fantome", "page": 5, "ts": "2026-05-18T17:29:40.579674"}
+{"event": "audio_failed", "key": "courte_dragon_planete_baguette_fantome", "page": 3, "ts": "2026-05-18T17:31:20.929316"}
+{"event": "audio_failed", "key": "courte_dragon_planete_baguette_fantome", "page": 5, "ts": "2026-05-18T17:33:20.741561"}
+{"event": "story_end", "key": "courte_dragon_planete_baguette_fantome", "stats": {"key": "courte_dragon_planete_baguette_fantome", "text": "OK", "images": "1/5", "audio": "3/5"}, "ts": "2026-05-18T17:33:22.760870"}
+{"event": "story_start", "key": "courte_dragon_planete_skateboard_monstre", "ts": "2026-05-18T17:33:22.774419"}
+{"event": "image_failed", "key": "courte_dragon_planete_skateboard_monstre", "page": 2, "ts": "2026-05-18T17:38:58.575069"}
+{"event": "story_end", "key": "courte_dragon_planete_skateboard_monstre", "stats": {"key": "courte_dragon_planete_skateboard_monstre", "text": "OK", "images": "4/5", "audio": "5/5"}, "ts": "2026-05-18T17:45:11.125745"}
+{"event": "story_start", "key": "courte_dragon_planete_skateboard_robot", "ts": "2026-05-18T17:45:11.139343"}
+{"event": "image_failed", "key": "courte_dragon_planete_skateboard_robot", "page": 3, "ts": "2026-05-18T17:52:23.331896"}
+{"event": "image_failed", "key": "courte_dragon_planete_skateboard_robot", "page": 5, "ts": "2026-05-18T17:58:33.366220"}
+{"event": "audio_failed", "key": "courte_dragon_planete_skateboard_robot", "page": 5, "ts": "2026-05-18T18:02:11.066146"}
+{"event": "story_end", "key": "courte_dragon_planete_skateboard_robot", "stats": {"key": "courte_dragon_planete_skateboard_robot", "text": "OK", "images": "3/5", "audio": "4/5"}, "ts": "2026-05-18T18:02:13.121170"}
+{"event": "story_start", "key": "courte_dragon_planete_skateboard_fantome", "ts": "2026-05-18T18:02:13.166822"}
+{"event": "image_failed", "key": "courte_dragon_planete_skateboard_fantome", "page": 4, "ts": "2026-05-18T18:12:44.440458"}
+{"event": "audio_failed", "key": "courte_dragon_planete_skateboard_fantome", "page": 2, "ts": "2026-05-18T18:15:19.339804"}
+{"event": "audio_failed", "key": "courte_dragon_planete_skateboard_fantome", "page": 3, "ts": "2026-05-18T18:16:35.402282"}
+{"event": "audio_failed", "key": "courte_dragon_planete_skateboard_fantome", "page": 4, "ts": "2026-05-18T18:17:46.673759"}
+{"event": "story_end", "key": "courte_dragon_planete_skateboard_fantome", "stats": {"key": "courte_dragon_planete_skateboard_fantome", "text": "OK", "images": "4/5", "audio": "2/5"}, "ts": "2026-05-18T18:18:12.063709"}
+{"event": "story_start", "key": "courte_dragon_planete_guitare_monstre", "ts": "2026-05-18T18:18:12.094270"}
+{"event": "image_failed", "key": "courte_dragon_planete_guitare_monstre", "page": 2, "ts": "2026-05-18T18:23:57.695160"}
+{"event": "image_failed", "key": "courte_dragon_planete_guitare_monstre", "page": 3, "ts": "2026-05-18T18:28:25.122487"}
+{"event": "image_failed", "key": "courte_dragon_planete_guitare_monstre", "page": 4, "ts": "2026-05-18T18:33:26.175206"}
+{"event": "image_failed", "key": "courte_dragon_planete_guitare_monstre", "page": 5, "ts": "2026-05-18T18:38:47.732319"}

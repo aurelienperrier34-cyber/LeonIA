@@ -1067,7 +1067,7 @@ body.novel-mode .dialogue-bubble::before {
 
 /* Overlay : grille 2x3 des 6 dessins, posee par-dessus la toile magique
    du fond statique. Position calibrable manuellement (par defaut centree
-   sur la toile dans machine_image.png). */
+   sur la toile dans machine_image.jpg). */
 .c2s5-grid-overlay {
   position: absolute;
   top: 6%;

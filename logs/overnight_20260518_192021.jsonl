@@ -1,0 +1,17 @@
+{"event": "story_start", "key": "courte_dragon_planete_guitare_fantome", "ts": "2026-05-18T19:20:22.604792"}
+{"event": "image_failed", "key": "courte_dragon_planete_guitare_fantome", "page": 4, "ts": "2026-05-18T19:28:01.726455"}
+{"event": "story_end", "key": "courte_dragon_planete_guitare_fantome", "stats": {"key": "courte_dragon_planete_guitare_fantome", "text": "skipped", "images": "4/5", "audio": "5/5"}, "ts": "2026-05-18T19:32:40.154465"}
+{"event": "story_start", "key": "courte_dragon_chateau_baguette_monstre", "ts": "2026-05-18T19:32:40.177116"}
+{"event": "image_failed", "key": "courte_dragon_chateau_baguette_monstre", "page": 1, "ts": "2026-05-18T19:37:01.009174"}
+{"event": "image_failed", "key": "courte_dragon_chateau_baguette_monstre", "page": 4, "ts": "2026-05-18T19:56:21.458617"}
+{"event": "audio_failed", "key": "courte_dragon_chateau_baguette_monstre", "page": 4, "ts": "2026-05-18T19:59:24.931586"}
+{"event": "audio_failed", "key": "courte_dragon_chateau_baguette_monstre", "page": 5, "ts": "2026-05-18T20:00:26.215091"}
+{"event": "story_end", "key": "courte_dragon_chateau_baguette_monstre", "stats": {"key": "courte_dragon_chateau_baguette_monstre", "text": "OK", "images": "3/5", "audio": "3/5"}, "ts": "2026-05-18T20:00:28.232958"}
+{"event": "story_start", "key": "courte_dragon_chateau_baguette_robot", "ts": "2026-05-18T20:00:28.247049"}
+{"event": "image_failed", "key": "courte_dragon_chateau_baguette_robot", "page": 2, "ts": "2026-05-18T20:05:43.706558"}
+{"event": "image_failed", "key": "courte_dragon_chateau_baguette_robot", "page": 4, "ts": "2026-05-18T20:11:46.390217"}
+{"event": "image_failed", "key": "courte_dragon_chateau_baguette_robot", "page": 5, "ts": "2026-05-18T20:16:42.934221"}
+{"event": "audio_failed", "key": "courte_dragon_chateau_baguette_robot", "page": 2, "ts": "2026-05-18T20:19:26.703368"}
+{"event": "audio_failed", "key": "courte_dragon_chateau_baguette_robot", "page": 4, "ts": "2026-05-18T20:21:57.391091"}
+{"event": "story_end", "key": "courte_dragon_chateau_baguette_robot", "stats": {"key": "courte_dragon_chateau_baguette_robot", "text": "OK", "images": "2/5", "audio": "3/5"}, "ts": "2026-05-18T20:22:56.762281"}
+{"event": "story_start", "key": "courte_dragon_chateau_baguette_fantome", "ts": "2026-05-18T20:22:56.776607"}
