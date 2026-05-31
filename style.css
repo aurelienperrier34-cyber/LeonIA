@@ -1783,7 +1783,13 @@ body.dev-marker #entry-marker { display: block; }
 }
 /* Scale down to create the depth/perspective illusion of walking away */
 .hero-idle-street.walk-towards-shop {
-    transform: translate(-100%, -70px) scale(0.4);
+    /* v655 : -7vh au lieu de -70px (hardcode). Le -70px etait calibre pour
+       un viewport desktop ~1000px (= 7%), mais sur iPhone landscape ~400px
+       il representait 17% -> le perso partait BIEN trop haut, au-dessus
+       de la porte. Avec vh, l'offset reste 7% du viewport sur tout
+       support -> arrive correctement devant la porte sur PC, iPad, Pixel
+       et iPhone. Clamp pour eviter les extremes (mini 30px, max 90px). */
+    transform: translate(-100%, clamp(-90px, -7vh, -30px)) scale(0.4);
     opacity: 0.9;
 }
 /* MOBILE/TOUCH UNIQUEMENT : Remi/perso au depart positionne 40px plus bas
