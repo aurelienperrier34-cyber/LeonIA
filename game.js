@@ -6975,7 +6975,7 @@ function _playVictoryJingle() {
   if (typeof voicesEnabled === 'function' && !voicesEnabled()) return;
   try {
     if (!window._victoryJingle) {
-      window._victoryJingle = new Audio('assets/victory_jingle.mp3?v=663');
+      window._victoryJingle = new Audio('assets/victory_jingle.mp3?v=665');
       window._victoryJingle.volume = 0.55; // laisse de la place aux voix narration
       window._victoryJingle.preload = 'auto';
     }
