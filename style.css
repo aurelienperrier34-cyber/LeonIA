@@ -1042,6 +1042,12 @@ body.novel-mode #screen-c5s4 .dialogue-bubble {
   body.novel-mode #screen-c4s6 .dialogue-bubble,
   body.novel-mode #screen-c5s4 .dialogue-bubble {
     bottom: 40px !important;
+    /* v671 : padding et font reduits sur mobile (etaient 18x24px + 1.15rem
+       du defaut = bulle trop grande qui couvrait l'image sur iPhone landscape). */
+    padding: 8px 14px !important;
+    font-size: 0.88rem !important;
+    line-height: 1.35 !important;
+    max-width: min(92%, 560px) !important;
   }
 }
 /* Adaptation des textes au fond noir */
