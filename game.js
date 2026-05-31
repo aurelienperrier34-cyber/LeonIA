@@ -3474,35 +3474,40 @@ function walkToShopAndEnter() {
   vid2.style.display = 'block';
   vid2.style.opacity = '1';
 
-  // v655 : warm-up audio sans play() reel. L'ancienne version (play muted +
-  // pause + unmute) provoquait sur iPhone une "fuite audio" : si la sequence
-  // se desynchronisait, l'audio de l'ecran 3 (Leon presente la machine)
-  // jouait pendant que l'enfant marchait encore dans la rue.
-  // Solution : on charge juste l'audio (load) dans le user gesture. iOS
-  // marque l'element comme user-activated sans jamais jouer un son.
+  // v660 : warm-up audio via WebAudio API au lieu de play()/pause() sur les
+  // audios reels. L'ancienne approche (play muted/volume:0 + pause) laissait
+  // s'echapper "Ha un explorateur" sur iPhone -> Leon parlait pendant la marche.
+  // WebAudio API resume() unlocks l'audio iOS sans jouer aucun son specifique.
+  // Les audios reels jouent ensuite normalement quand goToScreen(3) le demande.
   try {
+    if (!window._audioCtxUnlocked) {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (Ctx) {
+        if (!window._sharedAudioCtx) window._sharedAudioCtx = new Ctx();
+        const ctx = window._sharedAudioCtx;
+        if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+        // Joue un silence d'1 sample pour confirmer l'activation iOS sans
+        // emettre de son audible. Buffer vide = silence garanti.
+        try {
+          const buf = ctx.createBuffer(1, 1, 22050);
+          const src = ctx.createBufferSource();
+          src.buffer = buf;
+          src.connect(ctx.destination);
+          src.start(0);
+        } catch (e) {}
+        window._audioCtxUnlocked = true;
+      }
+    }
+    // Pre-charge en plus les audios de l'ecran 3 (sans les jouer) : iOS marque
+    // les elements comme prets via load(), pas besoin de play().
     if (typeof voicesEnabled === 'function' && voicesEnabled() && typeof getVoice === 'function') {
-      const _warmList = [
+      const _preload = [
         getVoice('voix_narrateur_3', 'assets/voix_narrateur_3.mp3'),
         getVoice('voix_leon_3',      'assets/Voix_leon_3.mp3')
       ];
-      _warmList.forEach(a => {
-        if (!a) return;
-        try {
-          // load() seul suffit sur la plupart des navigateurs. Sur iOS, on
-          // utilise un play() volume:0 + pause IMMEDIAT synchrone pour
-          // marquer user-activated sans laisser le temps a un son d'etre
-          // emis. Volume:0 (pas muted) coupe le son meme si pause foire.
-          a.volume = 0;
-          a.load();
-          const p = a.play();
-          if (p && p.then) p.then(() => { try { a.pause(); a.currentTime = 0; a.volume = 1; } catch(e){} })
-                            .catch(() => { try { a.volume = 1; } catch(e){} });
-          else { try { a.pause(); a.currentTime = 0; a.volume = 1; } catch(e){} }
-        } catch(e) { try { a.volume = 1; } catch(e2){} }
-      });
+      _preload.forEach(a => { if (a) { try { a.load(); } catch (e) {} } });
     }
-  } catch(e) {}
+  } catch (e) {}
 
   // Position cible = marker destination heros (calibre par l'utilisateur).
   // v386 : on re-applique applyHeroDestPos juste avant de lire la position —
