@@ -2893,6 +2893,7 @@ function goToScreen(screenIdentifier, force) {
     if (typeof awardLegendaryLeonIfPerfect === 'function') awardLegendaryLeonIfPerfect();
     if (typeof updateStarBadge === 'function') updateStarBadge();
     if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
+    if (typeof _playVictoryJingle === 'function') _playVictoryJingle();
   }
 
   // ============================================================
@@ -2975,6 +2976,7 @@ function goToScreen(screenIdentifier, force) {
     if (typeof awardLegendaryLeonIfPerfect === 'function') awardLegendaryLeonIfPerfect();
     if (typeof updateStarBadge === 'function') updateStarBadge();
     if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
+    if (typeof _playVictoryJingle === 'function') _playVictoryJingle();
   }
 
   // ============================================================
@@ -3085,6 +3087,7 @@ function goToScreen(screenIdentifier, force) {
     // pouvait afficher l'ancien total / etre mal positionnee dans certains cas.
     if (typeof updateStarBadge === 'function') updateStarBadge();
     if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
+    if (typeof _playVictoryJingle === 'function') _playVictoryJingle();
   }
 
   // Victoire chapitre 2
@@ -3121,6 +3124,7 @@ function goToScreen(screenIdentifier, force) {
     if (typeof awardLegendaryLeonIfPerfect === 'function') awardLegendaryLeonIfPerfect();
     if (typeof updateStarBadge === 'function') updateStarBadge();
     if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
+    if (typeof _playVictoryJingle === 'function') _playVictoryJingle();
   }
 
   if (screenIdentifier === 8) {
@@ -3188,6 +3192,7 @@ function goToScreen(screenIdentifier, force) {
     if (typeof awardLegendaryLeonIfPerfect === 'function') awardLegendaryLeonIfPerfect();
     if (typeof updateStarBadge === 'function') updateStarBadge();
     if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
+    if (typeof _playVictoryJingle === 'function') _playVictoryJingle();
   }
 
   const isMap = screenIdentifier === 'map';
@@ -6954,6 +6959,24 @@ function _revealChestBtn(btnId) {
       btn.scrollIntoView();
     }
   }, 350);
+}
+
+// v660 : petite musique de victoire (fanfare 5s) jouee a l'entree de chaque
+// ecran de victoire (c1 ecran 7, c2s9, c3s9, c4s8, c5s6). Audio mis en cache
+// au premier appel, joue plusieurs fois sans recharger. Respecte le toggle
+// son global (voicesEnabled).
+function _playVictoryJingle() {
+  if (typeof voicesEnabled === 'function' && !voicesEnabled()) return;
+  try {
+    if (!window._victoryJingle) {
+      window._victoryJingle = new Audio('assets/victory_jingle.mp3?v=660');
+      window._victoryJingle.volume = 0.6; // laisse de la place aux voix narration
+      window._victoryJingle.preload = 'auto';
+    }
+    try { window._victoryJingle.currentTime = 0; } catch (e) {}
+    const p = window._victoryJingle.play();
+    if (p && p.catch) p.catch(() => {});
+  } catch (e) {}
 }
 
 // updateStarBadge() : met a jour tous les compteurs d'etoiles affiches dans
