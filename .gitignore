@@ -68,7 +68,9 @@ FICHE_COLLEGUE_TESTEUR.*
 PLAN_FINANCEMENT.*
 PITCH_MAIRIE.*
 CANDIDATURE_GOOGLE_EDU.*
+DOCS_RGPD.*
 _build_docs.js
+_build_rgpd.js
 demo_qr.png
 audit_out/
 audit_map/
