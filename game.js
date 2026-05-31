@@ -2288,14 +2288,26 @@ function goToScreen(screenIdentifier, force) {
       }
 
       let _seekRetries = 0;
+      // v656 : detection iOS Safari (le seek peut ne jamais firer 'seeked'
+      // sur certaines versions -> les 6 retries echouent et on revelait la
+      // frame 0 = avatar de FACE avec fond opaque. Sur iOS specifiquement
+      // on prefere garder le perso CACHE en idle plutot que montrer l'avatar
+      // de face. Le perso apparait au clic sur la porte (debut animation
+      // de marche), ou il joue les bonnes frames de dos.
+      const _isIOS = typeof _isIOSDevice === 'function' ? _isIOSDevice() :
+        /iPhone|iPad|iPod/.test(navigator.userAgent || '');
       const reveal = () => {
-        // BLINDAGE : ne jamais reveler avant currentTime > 0.5s. Si pas encore,
-        // on relance un seek et on ne fait RIEN d'autre — la fonction sera
-        // rappelee par l'event 'seeked' suivant.
         if (vid2.currentTime < 0.5) {
           if (_seekRetries++ > 6) {
-            // Apres 6 retries (~3s), on abandonne et on revele quand meme :
-            // mieux vaut un avatar de face momentane qu'une rue vide bloquee.
+            // Sur iOS : on n'affiche RIEN plutot qu'un avatar de face. Le
+            // perso apparait correctement au clic sur la porte (marche).
+            if (_isIOS) {
+              console.warn('[s2] iOS seek echec apres 6 retries -> on garde le perso cache (apparaitra au clic).');
+              vid2.style.display = 'none';
+              vid2.style.opacity = '0';
+              return;
+            }
+            // Hors iOS : reveal force (mieux vaut un perso momentane qu'une rue vide).
             console.warn('[s2] reveal force apres 6 retries, currentTime=' + vid2.currentTime);
           } else {
             const target = Math.min(1.2, (vid2.duration || 2) - 0.05);
