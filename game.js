@@ -7439,7 +7439,17 @@ function playC5ModuleDemo(mod) {
       if (shown) return;
       shown = true;
       const continueBtn = document.getElementById('btn-to-c5s6');
-      if (continueBtn) continueBtn.classList.add('show-btn');
+      if (continueBtn) {
+        continueBtn.classList.add('show-btn');
+        // v673 : sur mobile/iPhone, le contenu de la panel c5s5 est plus
+        // grand que le viewport (overflow-y:auto). Le bouton Continuer en
+        // bas est invisible sans scroll. On scrolle automatiquement vers le
+        // bouton apres l'avoir revele.
+        setTimeout(() => {
+          try { continueBtn.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+          catch (e) { try { continueBtn.scrollIntoView(); } catch (e2) {} }
+        }, 350);
+      }
     };
     _c5SpeakAsRobot(data.demo, showContinueBtn);
     // Fallback de securite : si onend ne fire pas (Android tue parfois la
