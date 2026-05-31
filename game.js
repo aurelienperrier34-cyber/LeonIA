@@ -2893,7 +2893,6 @@ function goToScreen(screenIdentifier, force) {
     if (typeof awardLegendaryLeonIfPerfect === 'function') awardLegendaryLeonIfPerfect();
     if (typeof updateStarBadge === 'function') updateStarBadge();
     if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
-    if (typeof _playVictoryJingle === 'function') _playVictoryJingle();
   }
 
   // ============================================================
@@ -2976,7 +2975,6 @@ function goToScreen(screenIdentifier, force) {
     if (typeof awardLegendaryLeonIfPerfect === 'function') awardLegendaryLeonIfPerfect();
     if (typeof updateStarBadge === 'function') updateStarBadge();
     if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
-    if (typeof _playVictoryJingle === 'function') _playVictoryJingle();
   }
 
   // ============================================================
@@ -3087,7 +3085,6 @@ function goToScreen(screenIdentifier, force) {
     // pouvait afficher l'ancien total / etre mal positionnee dans certains cas.
     if (typeof updateStarBadge === 'function') updateStarBadge();
     if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
-    if (typeof _playVictoryJingle === 'function') _playVictoryJingle();
   }
 
   // Victoire chapitre 2
@@ -3124,7 +3121,6 @@ function goToScreen(screenIdentifier, force) {
     if (typeof awardLegendaryLeonIfPerfect === 'function') awardLegendaryLeonIfPerfect();
     if (typeof updateStarBadge === 'function') updateStarBadge();
     if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
-    if (typeof _playVictoryJingle === 'function') _playVictoryJingle();
   }
 
   if (screenIdentifier === 8) {
@@ -3192,7 +3188,6 @@ function goToScreen(screenIdentifier, force) {
     if (typeof awardLegendaryLeonIfPerfect === 'function') awardLegendaryLeonIfPerfect();
     if (typeof updateStarBadge === 'function') updateStarBadge();
     if (typeof applyStarCornerPosition === 'function') applyStarCornerPosition();
-    if (typeof _playVictoryJingle === 'function') _playVictoryJingle();
   }
 
   const isMap = screenIdentifier === 'map';
@@ -3287,14 +3282,18 @@ function goToScreen(screenIdentifier, force) {
     // IMPORTANT : le CSS a `height: 100dvh !important` qui bat un style inline
     // normal. Il faut donc utiliser setProperty(..., 'important') pour gagner.
     function fixMapVH() {
-      // v649 : on REMET le JS fixMapVH parce que la CSS position:fixed inset:0
-      // seule n'a pas suffi (user feedback : bande noire persistante). Chrome
-      // calcule 100vh a une valeur differente de innerHeight au premier paint
-      // sur certains setups. Le JS mesure et applique la VRAIE valeur.
+      // v645 : la map est maintenant en position:fixed inset:0 dans la CSS
+      // -> ancree au viewport, aucun mismatch possible. Le JS fixMapVH
+      // appliquait des styles inline qui finissaient par creer un OFFSET
+      // (innerHeight stale durant fullscreenchange, +2px sur la mauvaise
+      // dimension, etc.). On le neutralise completement : la CSS suffit.
+      return;
       if (!screenMap) return;
-      // v649 : utilise EXACTEMENT innerHeight (mesure JS, pas 100vh CSS qui
-      // peut etre miscalcule par Chrome au premier paint).
-      const h = window.innerHeight;
+      // Padding +2px : compense les ecarts de 1 px entre 100dvh et innerHeight
+      // (Chrome arrondit, devicePixelRatio non entier sur certains zooms,
+      // etc.). Le overflow:hidden ci-dessous absorbe ces 2 px en trop, ce
+      // qui garantit AUCUN gap en bas mais aussi aucune cassure visuelle.
+      const h = window.innerHeight + 2;
       const w = window.innerWidth;
       screenMap.style.setProperty('height', h + 'px', 'important');
       screenMap.style.setProperty('min-height', h + 'px', 'important');
@@ -3374,26 +3373,12 @@ function goToScreen(screenIdentifier, force) {
     // fixMapVH() restait celle d'avant l'evenement -> bande violette en bas.
     window._refixMap = fixMapVHGuarded;
     fixMapVHGuarded();
-    // v650 : rAF boucle pendant 30 frames (~500 ms) qui re-applique fixMapVH
-    // a CHAQUE frame. C'est la seule approche fiable apres feedback user :
-    // le bug "bande noire fixee par ouverture DevTools" indique que Chrome
-    // ne calcule pas la layout correctement au premier paint et ne re-apply
-    // pas une simple modif de style. Forcer a chaque frame contourne ce
-    // probleme - le 1er paint est wrong, mais les paints suivants ont la
-    // bonne dimension parce qu'on les pousse explicitement.
-    let _frameI = 0;
-    function _fixMapLoop() {
-      if (!document.body.classList.contains('map-mode')) return;
-      // visualViewport est plus fiable au premier paint que innerHeight
-      const h = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
-      const sm = document.getElementById('screen-map');
-      if (sm && Math.abs(sm.getBoundingClientRect().height - h) > 1) {
-        if (typeof window._refixMap === 'function') window._refixMap();
-      }
-      _frameI++;
-      if (_frameI < 30) requestAnimationFrame(_fixMapLoop);
-    }
-    requestAnimationFrame(_fixMapLoop);
+    requestAnimationFrame(fixMapVHGuarded);
+    // Filet sur DESKTOP aussi : 200ms apres l'entree, on re-fixe si dimensions
+    // ont change (ex : retour de personnages -> animation slideUpFade en
+    // cours, viewport en transition). Le guard SKIPPE l'appel si rien n'a
+    // bouge -> pas de tressautement, juste un filet de securite.
+    setTimeout(fixMapVHGuarded, 200);
     if (_isTouch) {
       setTimeout(fixMapVHGuarded, 400);
       setTimeout(fixMapVHGuarded, 1000);
@@ -6959,24 +6944,6 @@ function _revealChestBtn(btnId) {
       btn.scrollIntoView();
     }
   }, 350);
-}
-
-// v660 : petite musique de victoire (fanfare 5s) jouee a l'entree de chaque
-// ecran de victoire (c1 ecran 7, c2s9, c3s9, c4s8, c5s6). Audio mis en cache
-// au premier appel, joue plusieurs fois sans recharger. Respecte le toggle
-// son global (voicesEnabled).
-function _playVictoryJingle() {
-  if (typeof voicesEnabled === 'function' && !voicesEnabled()) return;
-  try {
-    if (!window._victoryJingle) {
-      window._victoryJingle = new Audio('assets/victory_jingle.mp3?v=660');
-      window._victoryJingle.volume = 0.6; // laisse de la place aux voix narration
-      window._victoryJingle.preload = 'auto';
-    }
-    try { window._victoryJingle.currentTime = 0; } catch (e) {}
-    const p = window._victoryJingle.play();
-    if (p && p.catch) p.catch(() => {});
-  } catch (e) {}
 }
 
 // updateStarBadge() : met a jour tous les compteurs d'etoiles affiches dans
