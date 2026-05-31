@@ -1916,7 +1916,10 @@ async function hbGenerate() {
     const res = await fetch(getBackendUrl() + '/api/create-hero', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(Object.assign({ license: getLicenseCode() }, params)),
+      body: JSON.stringify(Object.assign({
+        license: getLicenseCode(),
+        student_id: getStudentId(),   // v697 : quota par eleve
+      }, params)),
     });
     const data = await res.json().catch(() => ({}));
     document.getElementById('hero-loading')?.remove();
@@ -10698,9 +10701,130 @@ let creatorState = {
   isAnimating: false
 };
 
+// v697 : gestion identification eleve (student_id en localStorage)
+function getStudentId() {
+  try { return localStorage.getItem('ia_student_id') || ''; }
+  catch (e) { return ''; }
+}
+function setStudentId(sid) {
+  try {
+    if (sid) localStorage.setItem('ia_student_id', sid);
+    else localStorage.removeItem('ia_student_id');
+  } catch (e) {}
+}
+function getStudentName() {
+  try { return localStorage.getItem('ia_student_name') || ''; }
+  catch (e) { return ''; }
+}
+function setStudentName(name) {
+  try {
+    if (name) localStorage.setItem('ia_student_name', name);
+    else localStorage.removeItem('ia_student_name');
+  } catch (e) {}
+}
+window.getStudentId = getStudentId;
+window.setStudentId = setStudentId;
+
+// Overlay "Qui es-tu ?" affiche au 1er acces au Livre Magique sans identification.
+async function showStudentPicker(onPicked) {
+  document.getElementById('student-picker')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'student-picker';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99998;display:flex;flex-direction:column;' +
+    'align-items:center;justify-content:center;padding:24px 16px;' +
+    'background:linear-gradient(160deg,#1a0d2e 0%,#2a1850 60%,#1a0d2e 100%);' +
+    'color:#fff8ee;overflow-y:auto;');
+  ov.innerHTML =
+    '<h2 style="font-family:Baloo 2,inherit;color:#FFE166;font-size:clamp(1.4rem,3vw,2rem);' +
+    'margin:0 0 8px;text-align:center;">Qui es-tu ? 🌟</h2>' +
+    '<p style="margin:0 0 22px;font-size:clamp(.9rem,1.5vw,1.05rem);opacity:.85;' +
+    'text-align:center;max-width:560px;">Clique sur ton prénom pour commencer ton histoire.</p>' +
+    '<div id="student-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));' +
+    'gap:10px;max-width:780px;width:100%;">' +
+    '<div style="grid-column:1/-1;text-align:center;opacity:.6;padding:30px;">Chargement…</div>' +
+    '</div>';
+  document.body.appendChild(ov);
+  try {
+    const r = await fetch(getBackendUrl() + '/api/class/students?license=' +
+                          encodeURIComponent(getLicenseCode()));
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const d = await r.json();
+    const grid = document.getElementById('student-grid');
+    grid.innerHTML = '';
+    (d.students || []).forEach(s => {
+      const b = document.createElement('button');
+      const empty = s.heroes_left <= 0 && s.stories_left <= 0;
+      b.setAttribute('style',
+        'cursor:pointer;background:rgba(255,255,255,.08);color:#fff8ee;' +
+        'border:2px solid rgba(255,225,102,.4);border-radius:14px;padding:14px 8px;' +
+        'font-family:inherit;font-size:1rem;transition:all .15s ease;display:flex;' +
+        'flex-direction:column;align-items:center;gap:6px;' +
+        (empty ? 'opacity:0.45;' : ''));
+      b.innerHTML = '<span style="font-size:2rem;line-height:1;">' + s.avatar + '</span>' +
+        '<span style="font-weight:700;">' + s.name + '</span>' +
+        '<span style="font-size:.72rem;opacity:.7;">' +
+        (empty ? 'Quota plein' : (s.heroes_left + ' héros · ' + s.stories_left + ' histoires')) +
+        '</span>';
+      b.addEventListener('mouseenter', () => { b.style.background = 'rgba(255,225,102,.18)'; b.style.transform = 'translateY(-2px)'; });
+      b.addEventListener('mouseleave', () => { b.style.background = 'rgba(255,255,255,.08)'; b.style.transform = 'none'; });
+      b.addEventListener('click', () => {
+        setStudentId(s.id);
+        setStudentName(s.name);
+        ov.remove();
+        if (onPicked) onPicked(s);
+      });
+      grid.appendChild(b);
+    });
+    if (!d.students || d.students.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;opacity:.6;padding:30px;">' +
+        'Aucun élève configuré. L\'enseignant doit d\'abord créer les profils via /teacher.html</div>';
+    }
+  } catch (e) {
+    document.getElementById('student-grid').innerHTML =
+      '<div style="grid-column:1/-1;text-align:center;color:#ff7e6b;padding:30px;">' +
+      'Erreur : ' + e.message + '<br><small>Le serveur de Léon est-il bien lancé ?</small></div>';
+  }
+}
+window.showStudentPicker = showStudentPicker;
+window.openCreatorMode = function() { return openCreatorMode(); };
+
+// Met a jour le badge "élève actif" dans la topbar du picker
+function updateStudentBadge() {
+  const badge = document.getElementById('student-badge');
+  const text = document.getElementById('student-badge-text');
+  if (!badge || !text) return;
+  const sid = getStudentId();
+  const sname = getStudentName();
+  if (sid && sname) {
+    text.textContent = '👤 ' + sname;
+    badge.style.display = '';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+window.updateStudentBadge = updateStudentBadge;
+
+// Clic sur le badge : permet de changer d'élève (fin de séance)
+function changeStudent() {
+  if (!confirm('Changer d\'élève ? (Tu retrouveras tes héros la prochaine fois que tu choisiras ton prénom)')) return;
+  setStudentId(''); setStudentName('');
+  updateStudentBadge();
+  showStudentPicker(() => {
+    updateStudentBadge();
+    if (typeof initCreatorPick === 'function') initCreatorPick();
+  });
+}
+window.changeStudent = changeStudent;
+
 function openCreatorMode() {
   // Verrou Premium : le Livre magique fait partie du contenu payant.
   if (!isPremium()) { showPremiumPaywall('book'); goToScreen('map'); return; }
+  // v697 : identification eleve obligatoire AVANT d'entrer dans le Livre Magique
+  if (!getStudentId()) {
+    showStudentPicker(() => openCreatorMode());
+    return;
+  }
   goToScreen('creator');
   // v500 : le double rAF du v490 ne suffit pas avec le nouveau layout
   // position:absolute. On poll en rAF jusqu'a ce que l'ecran soit reellement
@@ -10747,7 +10871,9 @@ let pickBookState = { currentStep: 0, isFlipping: false, swipeWired: false };
 let creatorCustomHeroes = [];
 async function fetchCustomHeroes() {
   try {
-    const r = await fetch(getBackendUrl() + '/api/state?license=' + encodeURIComponent(getLicenseCode()));
+    // v697 : student_id ajoute -> filtre les heros DE cet eleve uniquement
+    const sidParam = getStudentId() ? '&student_id=' + encodeURIComponent(getStudentId()) : '';
+    const r = await fetch(getBackendUrl() + '/api/state?license=' + encodeURIComponent(getLicenseCode()) + sidParam);
     if (!r.ok) { creatorCustomHeroes = []; return; }
     const d = await r.json();
     creatorCustomHeroes = d.heroes || [];
@@ -10773,6 +10899,8 @@ function initCreatorPick() {
   document.getElementById('creator-pick').hidden = false;
   document.getElementById('creator-loading').hidden = true;
   document.getElementById('creator-book').hidden = true;
+  // v697 : badge eleve actif
+  if (typeof updateStudentBadge === 'function') updateStudentBadge();
   // Build livre
   renderPickBook();
   attachPickSwipe();
@@ -11203,6 +11331,7 @@ async function generateCustomStoryViaBackend(heroId) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         license: getLicenseCode(), hero_id: heroId,
+        student_id: getStudentId(),  // v697 : quota par eleve
         place: creatorState.place, item: creatorState.item,
         villain: creatorState.villain, level: creatorState.level || 'courte',
       }),

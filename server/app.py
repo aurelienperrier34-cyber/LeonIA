@@ -295,12 +295,52 @@ def state():
     if not _valid_license(code):
         return jsonify({"error": "licence invalide"}), 403
     data, code = _license_record(code)
+    # v697 : si student_id fourni, filtre les heros DE cet eleve uniquement
+    student_id = (request.args.get("student_id", "") or "").strip()
+    heroes = _list_heroes(code)
+    if student_id:
+        # Filtre cote serveur en relisant le student_id de chaque hero.json
+        filtered = []
+        for h in heroes:
+            try:
+                hj = (CUSTOM_DIR / h["hero_id"] / "hero.json")
+                if hj.exists():
+                    meta = json.loads(hj.read_text(encoding="utf-8"))
+                    if meta.get("student_id") == student_id:
+                        filtered.append(h)
+            except Exception:
+                pass
+        heroes = filtered
     return jsonify({
         "license": code,
         "plumes": data[code]["plumes"],
         "heroes_max": data[code].get("heroes_max", HEROES_MAX),
-        "heroes": _list_heroes(code),
+        "heroes": heroes,
     })
+
+
+# v697 : endpoint PUBLIC pour la liste des prenoms de la classe (accessible
+# sans code prof, depuis l'app eleve). Ne renvoie QUE prenom + avatar +
+# quota restant -> assez pour le picker eleve, pas de donnees sensibles.
+@app.get("/api/class/students")
+def class_students():
+    code = request.args.get("license", "")
+    if not _valid_license(code):
+        return jsonify({"error": "licence invalide"}), 403
+    data, code = _license_record(code)
+    profiles = data[code].get("profiles", {})
+    students = []
+    for sid, p in sorted(profiles.items(),
+                         key=lambda x: int(x[0][1:]) if x[0][1:].isdigit() else 99):
+        stats = _student_stats(code, sid)
+        students.append({
+            "id": sid,
+            "name": p.get("name", sid),
+            "avatar": p.get("avatar", "👤"),
+            "heroes_left": max(0, p.get("heroes_max", HEROES_PER_STUDENT) - stats["heroes"]),
+            "stories_left": max(0, p.get("stories_max", STORIES_PER_STUDENT) - stats["stories"]),
+        })
+    return jsonify({"license": code, "students": students})
 
 
 @app.post("/api/create-hero")
@@ -393,7 +433,21 @@ def create_story():
         return jsonify({"error": "licence invalide"}), 403
     data, code = _license_record(code)
 
-    # Quota : 1 plume requise
+    # v697 : quota PAR PROFIL ELEVE pour les histoires aussi
+    student_id = (body.get("student_id") or "").strip()
+    if student_id:
+        profiles = data[code].get("profiles", {})
+        if student_id not in profiles:
+            return jsonify({"error": "eleve_inconnu",
+                            "message": "Profil eleve inconnu."}), 404
+        stats = _student_stats(code, student_id)
+        max_s = profiles[student_id].get("stories_max", STORIES_PER_STUDENT)
+        if stats["stories"] >= max_s:
+            return jsonify({"error": "limite_histoires_eleve", "message":
+                            f"Tu as deja vecu {max_s} histoires. Demande a ta "
+                            "maitresse ou ton maitre de creer une autre classe."}), 409
+
+    # Quota legacy classe (plumes) garde par retro-compat
     if data[code]["plumes"] < 1:
         return jsonify({"error": "plumes", "message": "Plus de plumes disponibles."}), 402
 
