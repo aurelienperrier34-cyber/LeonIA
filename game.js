@@ -3452,11 +3452,12 @@ function walkToShopAndEnter() {
   if (window._signPointerTimer) { clearTimeout(window._signPointerTimer); window._signPointerTimer = null; }
   if (!vid2 || !sign || !scene) return;
 
-  // v410 : warm-up audio atelier dans le user gesture du clic sur la porte.
-  // Sans ca, sur iOS Safari, le play() differe (apres 8s de marche) est
-  // refuse par la policy autoplay -> son atelier ne demarre pas. En jouant
-  // brievement les audios maintenant (puis pause immediate), iOS marque les
-  // elements audio comme user-activated -> play() ulterieur OK.
+  // v655 : warm-up audio sans play() reel. L'ancienne version (play muted +
+  // pause + unmute) provoquait sur iPhone une "fuite audio" : si la sequence
+  // se desynchronisait, l'audio de l'ecran 3 (Leon presente la machine)
+  // jouait pendant que l'enfant marchait encore dans la rue.
+  // Solution : on charge juste l'audio (load) dans le user gesture. iOS
+  // marque l'element comme user-activated sans jamais jouer un son.
   try {
     if (typeof voicesEnabled === 'function' && voicesEnabled() && typeof getVoice === 'function') {
       const _warmList = [
@@ -3466,12 +3467,17 @@ function walkToShopAndEnter() {
       _warmList.forEach(a => {
         if (!a) return;
         try {
-          a.muted = true;
+          // load() seul suffit sur la plupart des navigateurs. Sur iOS, on
+          // utilise un play() volume:0 + pause IMMEDIAT synchrone pour
+          // marquer user-activated sans laisser le temps a un son d'etre
+          // emis. Volume:0 (pas muted) coupe le son meme si pause foire.
+          a.volume = 0;
+          a.load();
           const p = a.play();
-          if (p && p.then) p.then(() => { try { a.pause(); a.currentTime = 0; a.muted = false; } catch(e){} })
-                            .catch(() => { try { a.muted = false; } catch(e){} });
-          else { try { a.pause(); a.currentTime = 0; a.muted = false; } catch(e){} }
-        } catch(e) { try { a.muted = false; } catch(e2){} }
+          if (p && p.then) p.then(() => { try { a.pause(); a.currentTime = 0; a.volume = 1; } catch(e){} })
+                            .catch(() => { try { a.volume = 1; } catch(e){} });
+          else { try { a.pause(); a.currentTime = 0; a.volume = 1; } catch(e){} }
+        } catch(e) { try { a.volume = 1; } catch(e2){} }
       });
     }
   } catch(e) {}
