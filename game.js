@@ -3464,6 +3464,16 @@ function walkToShopAndEnter() {
   if (window._signPointerTimer) { clearTimeout(window._signPointerTimer); window._signPointerTimer = null; }
   if (!vid2 || !sign || !scene) return;
 
+  // v658 : assure que vid2 est visible AU CLIC, peu importe ce qu'a fait le
+  // reveal() en idle. Sur iOS si le seek a echoue, v657 garde le perso cache
+  // pendant l'idle -> il faut le forcer visible ici sinon la marche se joue
+  // invisible. play() va naturellement avancer la video au-dela de la frame 0
+  // (en quelques 100ms), donc on n'aura pas le bug "avatar de face" trop
+  // visible. Mieux vaut un perso visible (parfois avec un flash de frame 0)
+  // qu'un perso invisible toute la marche.
+  vid2.style.display = 'block';
+  vid2.style.opacity = '1';
+
   // v655 : warm-up audio sans play() reel. L'ancienne version (play muted +
   // pause + unmute) provoquait sur iPhone une "fuite audio" : si la sequence
   // se desynchronisait, l'audio de l'ecran 3 (Leon presente la machine)
