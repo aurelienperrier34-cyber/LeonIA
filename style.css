@@ -6821,11 +6821,19 @@ body.novel-mode .c3s3-game {
   /* v664 : ralentit 8s -> 12s pour donner le temps de cliquer. */
   animation: c3s2-rise 12s linear forwards;
   user-select: none;
-  /* Zone de tap etendue INVISIBLE autour de la bulle (16px). Les enfants
-     visent au centre, pas precis sur le bord. outline transparent = hit area
-     etendue sans agrandir le visuel ni chevaucher les autres bulles. */
-  outline: 16px solid transparent;
-  outline-offset: -16px;
+  /* v667 : hit area etendue via padding negatif sur ::before invisible.
+     outline (v664-v666) ne capturait PAS les pointer events, c'etait
+     decoratif uniquement. Le ::before transparent capture les clics
+     dans une zone 16px plus large, et le pointerdown trigger sur la
+     bulle parente (CSS pseudo-element = event target = parent). */
+}
+.c3s2-bubble::before {
+  content: '';
+  position: absolute;
+  inset: -16px;
+  pointer-events: auto;
+  border-radius: inherit;
+  background: transparent;
 }
 .c3s2-bubble:hover {
   background: rgba(76,195,247,0.55);
