@@ -6802,16 +6802,17 @@ body.novel-mode .c3s3-game {
   position: absolute;
   pointer-events: auto;
   cursor: pointer;
-  /* v664 : padding et taille AUGMENTES (enfants 5-9 ans tactile / petits ecrans).
-     Ancien : padding 10x18, font 1.1rem -> cible ~30x100px, trop petite. */
-  padding: 14px 24px;
+  /* v665 : revert taille visuelle au format d'origine (user feedback :
+     bulles trop grosses et se chevauchaient). On garde uniquement la zone
+     de tap etendue INVISIBLE et l'anim ralentie. */
+  padding: 10px 18px;
   border-radius: 999px;
-  background: rgba(76,195,247,0.42);
-  border: 3px solid rgba(76,195,247,0.95);
+  background: rgba(76,195,247,0.32);
+  border: 2.5px solid rgba(76,195,247,0.85);
   color: white;
   font-family: 'Baloo 2', cursive;
   font-weight: 800;
-  font-size: 1.35rem;
+  font-size: 1.1rem;
   white-space: nowrap;
   box-shadow: 0 6px 20px rgba(76,195,247,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
   backdrop-filter: blur(8px);
@@ -6820,11 +6821,11 @@ body.novel-mode .c3s3-game {
   /* v664 : ralentit 8s -> 12s pour donner le temps de cliquer. */
   animation: c3s2-rise 12s linear forwards;
   user-select: none;
-  /* Zone de tap etendue invisible autour de la bulle (18px) : les enfants
+  /* Zone de tap etendue INVISIBLE autour de la bulle (16px). Les enfants
      visent au centre, pas precis sur le bord. outline transparent = hit area
-     etendue sans agrandir le visuel. */
-  outline: 18px solid transparent;
-  outline-offset: -18px;
+     etendue sans agrandir le visuel ni chevaucher les autres bulles. */
+  outline: 16px solid transparent;
+  outline-offset: -16px;
 }
 .c3s2-bubble:hover {
   background: rgba(76,195,247,0.55);
