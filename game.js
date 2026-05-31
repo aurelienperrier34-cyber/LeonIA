@@ -9523,8 +9523,8 @@ function _c3s2SpawnBubble() {
   b.style.left = (10 + Math.random() * 70) + '%';
   b.onclick = () => _c3s2PopBubble(b);
   arena.appendChild(b);
-  // Auto-cleanup après l'animation (4.5s)
-  setTimeout(() => { if (b.parentNode) b.parentNode.removeChild(b); }, 8200);
+  // Auto-cleanup après l'animation (v664 : anim 12s -> cleanup 12.2s).
+  setTimeout(() => { if (b.parentNode) b.parentNode.removeChild(b); }, 12200);
 }
 
 function _c3s2PopBubble(b) {
