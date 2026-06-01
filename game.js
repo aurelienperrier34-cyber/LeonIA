@@ -10787,7 +10787,9 @@ async function showStudentPicker(onPicked) {
   }
 }
 window.showStudentPicker = showStudentPicker;
-window.openCreatorMode = function() { return openCreatorMode(); };
+// NB : openCreatorMode est deja globalement accessible (function declaration).
+// L'ecraser via window.openCreatorMode = function() {...} creait une boucle
+// infinie (Maximum call stack exceeded) lors du clic depuis index.html onclick.
 
 // Met a jour le badge "élève actif" dans la topbar du picker
 function updateStudentBadge() {
