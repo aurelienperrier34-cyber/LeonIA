@@ -30,6 +30,7 @@ Lancement (local) :
 """
 
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -42,6 +43,9 @@ from flask import Flask, request, jsonify, send_from_directory, abort
 from flask_cors import CORS
 
 import threading
+import secrets as _secrets
+import hashlib
+import bcrypt as _bcrypt
 
 import requests as _rq
 
@@ -135,6 +139,22 @@ DEFAULT_AVATARS = [
 FORCE_SHORT_STORY = True
 PORT = 8787
 
+# v701 : configuration auth enseignant (Brevo + sessions cookie)
+ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "")  # protege /api/admin/* (a definir en prod)
+BREVO_API_KEY = os.getenv("BREVO_API_KEY", "")
+BREVO_SENDER_EMAIL = os.getenv("BREVO_SENDER_EMAIL", "aurelienperrier34@gmail.com")
+BREVO_SENDER_NAME = os.getenv("BREVO_SENDER_NAME", "IA — Le monde de Léon")
+SESSION_DURATION_S = 24 * 3600          # 24h
+INVITE_DURATION_S = 24 * 3600           # 24h pour activer un invite
+RESET_DURATION_S = 3600                 # 1h pour reset le password
+
+# Rate limit en memoire : {ip: [timestamps]}
+_RATELIMIT_LOGIN = {}
+_RATELIMIT_FORGOT = {}
+
+# Sessions actives en memoire : {session_token: {license, expires_at}}
+_SESSIONS = {}
+
 # Projet PRINCIPAL (le worktree est sous <main>/.claude/worktrees/<id>).
 # Sert de REPLI pour les assets presents seulement cote main (ex: catalogue
 # des 243 histoires) -> evite de dupliquer 765 Mo dans le worktree.
@@ -162,6 +182,178 @@ def _load_quota():
 
 def _save_quota(data):
     QUOTA_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+# ============================================================
+# v701 : auth enseignant (bcrypt + tokens + sessions + rate limit + emails)
+# ============================================================
+def _hash_password(password):
+    """Hash bcrypt (12 rounds) du mot de passe en clair."""
+    return _bcrypt.hashpw(password.encode("utf-8"), _bcrypt.gensalt(rounds=12)).decode("utf-8")
+
+
+def _verify_password(password, hash_str):
+    """Verifie un mot de passe contre le hash bcrypt stocke."""
+    try:
+        return _bcrypt.checkpw(password.encode("utf-8"), hash_str.encode("utf-8"))
+    except Exception:
+        return False
+
+
+def _gen_token(nbytes=24):
+    """Genere un token URL-safe (~32 chars)."""
+    return _secrets.token_urlsafe(nbytes)
+
+
+def _client_ip():
+    """Recupere l'IP client (gere les proxies via X-Forwarded-For)."""
+    fwd = request.headers.get("X-Forwarded-For", "")
+    if fwd:
+        return fwd.split(",")[0].strip()
+    return request.remote_addr or "unknown"
+
+
+def _rate_limit(bucket, ip, max_attempts, window_s):
+    """Limite (max_attempts) par IP sur (window_s). Renvoie True si AUTORISE."""
+    now = int(time.time())
+    arr = bucket.get(ip, [])
+    arr = [t for t in arr if now - t < window_s]
+    if len(arr) >= max_attempts:
+        bucket[ip] = arr
+        return False
+    arr.append(now)
+    bucket[ip] = arr
+    return True
+
+
+def _find_license_by_email(email):
+    """Cherche la 1re licence ayant cet email comme teacher_email."""
+    if not email: return None
+    email = email.strip().lower()
+    data = _load_quota()
+    for code, rec in data.items():
+        if (rec.get("teacher_email") or "").lower() == email:
+            return code
+    return None
+
+
+def _find_license_by_token(token_field, token_value):
+    """Cherche la licence ayant tel invite_token / reset_token."""
+    if not token_value: return None
+    data = _load_quota()
+    for code, rec in data.items():
+        if rec.get(token_field) == token_value:
+            return code
+    return None
+
+
+def _create_session(license_code):
+    """Cree une session pour cette licence, renvoie le token."""
+    token = _gen_token(32)
+    _SESSIONS[token] = {
+        "license": license_code,
+        "expires_at": int(time.time()) + SESSION_DURATION_S,
+    }
+    return token
+
+
+def _get_session(token):
+    """Renvoie la session si valide, sinon None (et purge si expiree)."""
+    if not token: return None
+    sess = _SESSIONS.get(token)
+    if not sess: return None
+    if sess["expires_at"] < int(time.time()):
+        _SESSIONS.pop(token, None)
+        return None
+    return sess
+
+
+def _destroy_session(token):
+    _SESSIONS.pop(token, None)
+
+
+def _session_cookie_kwargs():
+    """Cookie sécurise : HttpOnly, SameSite=Strict, Secure en HTTPS."""
+    is_https = request.is_secure or request.headers.get("X-Forwarded-Proto") == "https"
+    return {
+        "max_age": SESSION_DURATION_S,
+        "httponly": True,
+        "samesite": "Strict",
+        "secure": is_https,
+        "path": "/",
+    }
+
+
+def _send_email_brevo(to_email, to_name, subject, html_body):
+    """Envoie un email via Brevo API. Renvoie (ok, error_msg)."""
+    if not BREVO_API_KEY:
+        # Mode dev sans Brevo : on log dans la console
+        print(f"\n[email DEV - Brevo non configure]\n  TO: {to_email}\n  SUBJECT: {subject}\n  BODY (extrait): {html_body[:200]}...\n")
+        return True, "DEV mode (no Brevo)"
+    try:
+        r = _rq.post("https://api.brevo.com/v3/smtp/email",
+                     json={
+                         "sender": {"email": BREVO_SENDER_EMAIL, "name": BREVO_SENDER_NAME},
+                         "to": [{"email": to_email, "name": to_name or to_email}],
+                         "subject": subject,
+                         "htmlContent": html_body,
+                     },
+                     headers={"api-key": BREVO_API_KEY,
+                              "Content-Type": "application/json",
+                              "accept": "application/json"},
+                     timeout=15)
+        if 200 <= r.status_code < 300:
+            return True, ""
+        return False, f"Brevo {r.status_code}: {r.text[:200]}"
+    except Exception as e:
+        return False, str(e)
+
+
+def _email_invite_html(teacher_name, class_name, invite_url):
+    """Template HTML de l'email d'invitation."""
+    name = teacher_name or "Madame, Monsieur"
+    cn = class_name or "votre classe"
+    return f"""
+<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;color:#3a2a1a;">
+  <div style="background:linear-gradient(160deg,#FFE166,#F0B848);padding:24px;text-align:center;border-radius:12px 12px 0 0;">
+    <h1 style="margin:0;color:#7a4a10;font-size:1.6rem;">IA : Le monde de Léon</h1>
+    <p style="margin:6px 0 0;color:#7a4a10;opacity:.85;">Bienvenue dans l'aventure pédagogique</p>
+  </div>
+  <div style="background:#fff;padding:28px 24px;border-radius:0 0 12px 12px;border:1px solid #e0d8c0;">
+    <p>Bonjour {name},</p>
+    <p>Votre compte enseignant pour la classe <b>{cn}</b> est prêt à être activé.</p>
+    <p>Cliquez sur le bouton ci-dessous pour <b>choisir votre mot de passe</b> et accéder à votre tableau de bord :</p>
+    <div style="text-align:center;margin:28px 0;">
+      <a href="{invite_url}" style="display:inline-block;background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;text-decoration:none;font-weight:700;padding:14px 32px;border-radius:10px;font-size:1rem;">Activer mon compte</a>
+    </div>
+    <p style="font-size:.85rem;opacity:.7;">Ce lien est valable <b>24 heures</b>. Passé ce délai, vous pourrez en demander un nouveau.</p>
+    <hr style="border:none;border-top:1px solid #e0d8c0;margin:24px 0;">
+    <p style="font-size:.8rem;opacity:.6;">Si vous n'êtes pas à l'origine de cette demande, ignorez simplement cet email.</p>
+  </div>
+</div>
+"""
+
+
+def _email_reset_html(reset_url):
+    """Template HTML de l'email de reset password."""
+    return f"""
+<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;color:#3a2a1a;">
+  <div style="background:linear-gradient(160deg,#FFE166,#F0B848);padding:24px;text-align:center;border-radius:12px 12px 0 0;">
+    <h1 style="margin:0;color:#7a4a10;font-size:1.6rem;">Réinitialisation de mot de passe</h1>
+  </div>
+  <div style="background:#fff;padding:28px 24px;border-radius:0 0 12px 12px;border:1px solid #e0d8c0;">
+    <p>Bonjour,</p>
+    <p>Vous avez demandé à réinitialiser le mot de passe de votre compte enseignant <b>IA : Le monde de Léon</b>.</p>
+    <p>Cliquez ci-dessous pour choisir un nouveau mot de passe :</p>
+    <div style="text-align:center;margin:28px 0;">
+      <a href="{reset_url}" style="display:inline-block;background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;text-decoration:none;font-weight:700;padding:14px 32px;border-radius:10px;">Choisir un nouveau mot de passe</a>
+    </div>
+    <p style="font-size:.85rem;opacity:.7;">Ce lien est valable <b>1 heure</b>.</p>
+    <hr style="border:none;border-top:1px solid #e0d8c0;margin:24px 0;">
+    <p style="font-size:.8rem;opacity:.6;">Si vous n'êtes pas à l'origine de cette demande, ignorez cet email. Votre mot de passe actuel reste inchangé.</p>
+  </div>
+</div>
+"""
 
 
 def _valid_license(code):
@@ -589,23 +781,258 @@ def delete_hero(hero_id):
 # ============================================================
 @app.post("/api/teacher/login")
 def teacher_login():
-    """Verifie qu'un code prof est valide. Renvoie la licence ecole associee."""
+    """v701 : login enseignant en 2 modes.
+       - Mode v2 (production) : email + password -> cree une session cookie 24h
+       - Mode legacy (tests/dev) : teacher_code (PROF-XXX) sans password
+                                   -> mappe sur licence ECOLE-XXX (PROF-DEMO)
+    Rate limit : 5 essais / 15 min par IP."""
     body = request.get_json(force=True, silent=True) or {}
-    teacher_code = body.get("teacher_code", "")
+    ip = _client_ip()
+    if not _rate_limit(_RATELIMIT_LOGIN, ip, 5, 15 * 60):
+        return jsonify({"error": "rate_limit",
+                        "message": "Trop d'essais. Réessayez dans quelques minutes."}), 429
+
+    email = (body.get("email", "") or "").strip().lower()
+    password = body.get("password", "") or ""
+    teacher_code = body.get("teacher_code", "") or ""
+
+    # Mode v2 : email + password
+    if email and password:
+        license_code = _find_license_by_email(email)
+        if not license_code:
+            return jsonify({"error": "invalid", "message": "Email ou mot de passe incorrect."}), 403
+        data, license_code = _license_record(license_code)
+        rec = data[license_code]
+        h = rec.get("teacher_password_hash", "")
+        if not h or not _verify_password(password, h):
+            return jsonify({"error": "invalid", "message": "Email ou mot de passe incorrect."}), 403
+        # Cree session + pose cookie
+        tok = _create_session(license_code)
+        resp = jsonify({"ok": True, "license": license_code,
+                        "class_name": rec.get("class_name", "")})
+        resp.set_cookie("teacher_session", tok, **_session_cookie_kwargs())
+        return resp
+
+    # Mode legacy : teacher_code (sans mdp), backward-compat avec PROF-DEMO
+    if teacher_code:
+        license_code = _teacher_code_to_license(teacher_code)
+        if not license_code or not _valid_license(license_code):
+            return jsonify({"error": "code prof invalide"}), 403
+        tok = _create_session(license_code)
+        resp = jsonify({"ok": True, "license": license_code, "mode": "legacy"})
+        resp.set_cookie("teacher_session", tok, **_session_cookie_kwargs())
+        return resp
+
+    return jsonify({"error": "missing_credentials",
+                    "message": "Email + mot de passe (ou code enseignant) requis."}), 400
+
+
+@app.post("/api/teacher/logout")
+def teacher_logout():
+    """v701 : detruit la session cookie."""
+    tok = request.cookies.get("teacher_session", "")
+    _destroy_session(tok)
+    resp = jsonify({"ok": True})
+    resp.set_cookie("teacher_session", "", max_age=0, path="/")
+    return resp
+
+
+@app.post("/api/teacher/forgot-password")
+def teacher_forgot_password():
+    """v701 : envoie un email de reset (token 1h). Reponse standardisee
+    pour eviter l'enumeration des comptes."""
+    body = request.get_json(force=True, silent=True) or {}
+    ip = _client_ip()
+    if not _rate_limit(_RATELIMIT_FORGOT, ip, 3, 3600):
+        return jsonify({"error": "rate_limit",
+                        "message": "Trop de demandes. Réessayez dans une heure."}), 429
+    email = (body.get("email", "") or "").strip().lower()
+    if not email:
+        return jsonify({"error": "missing_email"}), 400
+
+    license_code = _find_license_by_email(email)
+    if license_code:
+        data, license_code = _license_record(license_code)
+        rec = data[license_code]
+        token = _gen_token(24)
+        rec["reset_token"] = token
+        rec["reset_expires_at"] = int(time.time()) + RESET_DURATION_S
+        _save_quota(data)
+        # URL de reset : pointe sur teacher.html
+        base = (body.get("base_url", "") or "").strip().rstrip("/") or \
+               request.url_root.rstrip("/")
+        reset_url = f"{base}/teacher.html?reset={token}"
+        ok, err = _send_email_brevo(email, "", "Réinitialisation de mot de passe — Léon",
+                                    _email_reset_html(reset_url))
+        if not ok:
+            print(f"[forgot-password] envoi email echoue : {err}")
+    # Reponse identique que l'email existe ou non (anti-enumeration)
+    return jsonify({"ok": True,
+                    "message": "Si cet email correspond à un compte enseignant, "
+                               "un email de réinitialisation vient d'être envoyé."})
+
+
+@app.post("/api/teacher/reset-password")
+def teacher_reset_password():
+    """v701 : finalise le reset avec le token + nouveau mot de passe."""
+    body = request.get_json(force=True, silent=True) or {}
+    token = body.get("reset_token", "") or ""
+    new_password = body.get("password", "") or ""
+    if not token or not new_password:
+        return jsonify({"error": "missing"}), 400
+    if len(new_password) < 8:
+        return jsonify({"error": "weak", "message":
+                        "Le mot de passe doit faire au moins 8 caractères."}), 400
+    license_code = _find_license_by_token("reset_token", token)
+    if not license_code:
+        return jsonify({"error": "invalid_token", "message":
+                        "Lien invalide ou expiré. Demandez un nouveau lien."}), 403
+    data, license_code = _license_record(license_code)
+    rec = data[license_code]
+    if rec.get("reset_expires_at", 0) < int(time.time()):
+        return jsonify({"error": "expired", "message":
+                        "Le lien a expiré. Demandez un nouveau lien."}), 403
+    rec["teacher_password_hash"] = _hash_password(new_password)
+    rec["reset_token"] = None
+    rec["reset_expires_at"] = None
+    _save_quota(data)
+    return jsonify({"ok": True, "message": "Mot de passe mis à jour. Vous pouvez vous connecter."})
+
+
+@app.post("/api/teacher/accept-invite")
+def teacher_accept_invite():
+    """v701 : finalise l'invitation = activation du compte avec mdp choisi."""
+    body = request.get_json(force=True, silent=True) or {}
+    token = body.get("invite_token", "") or ""
+    password = body.get("password", "") or ""
+    if not token or not password:
+        return jsonify({"error": "missing"}), 400
+    if len(password) < 8:
+        return jsonify({"error": "weak", "message":
+                        "Le mot de passe doit faire au moins 8 caractères."}), 400
+    license_code = _find_license_by_token("invite_token", token)
+    if not license_code:
+        return jsonify({"error": "invalid_token", "message":
+                        "Lien invalide ou expiré. Contactez l'éditeur pour un nouveau."}), 403
+    data, license_code = _license_record(license_code)
+    rec = data[license_code]
+    if rec.get("invite_expires_at", 0) < int(time.time()):
+        return jsonify({"error": "expired", "message":
+                        "Lien expiré. Contactez l'éditeur pour un nouveau."}), 403
+    rec["teacher_password_hash"] = _hash_password(password)
+    rec["teacher_activated_at"] = int(time.time())
+    rec["invite_token"] = None
+    rec["invite_expires_at"] = None
+    _save_quota(data)
+    # Cree directement une session : l'enseignant est connecte
+    tok = _create_session(license_code)
+    resp = jsonify({"ok": True, "license": license_code,
+                    "class_name": rec.get("class_name", "")})
+    resp.set_cookie("teacher_session", tok, **_session_cookie_kwargs())
+    return resp
+
+
+@app.post("/api/admin/create-license")
+def admin_create_license():
+    """v701 : ADMIN. Cree une licence + invite enseignant + envoie email.
+    Protege par ADMIN_TOKEN (header X-Admin-Token)."""
+    if not ADMIN_TOKEN:
+        return jsonify({"error": "admin_token_not_configured",
+                        "message": "Le serveur n'a pas de ADMIN_TOKEN configure (.env)."}), 503
+    sent = request.headers.get("X-Admin-Token", "")
+    if sent != ADMIN_TOKEN:
+        return jsonify({"error": "forbidden"}), 403
+
+    body = request.get_json(force=True, silent=True) or {}
+    teacher_email = (body.get("email", "") or "").strip().lower()
+    teacher_name = (body.get("name", "") or "").strip()
+    class_name = (body.get("class_name", "") or "").strip()
+    if not teacher_email:
+        return jsonify({"error": "missing_email"}), 400
+
+    # Genere un code licence pseudo-aleatoire (8 chars)
+    suffix = _gen_token(6).upper().replace("-", "").replace("_", "")[:8]
+    license_code = f"ECOLE-{suffix}"
+    data = _load_quota()
+    if license_code in data:
+        return jsonify({"error": "collision"}), 500
+    data[license_code] = {
+        "plumes": PLUMES_INIT, "heroes_max": HEROES_MAX,
+        "class_name": class_name,
+        "teacher_email": teacher_email,
+        "teacher_name": teacher_name,
+        "teacher_password_hash": "",
+        "invite_token": _gen_token(24),
+        "invite_expires_at": int(time.time()) + INVITE_DURATION_S,
+        "teacher_invited_at": int(time.time()),
+    }
+    _save_quota(data)
+    # Force migration profiles
+    _license_record(license_code)
+
+    # Email d'invitation
+    base = (body.get("base_url", "") or "").strip().rstrip("/") or \
+           request.url_root.rstrip("/")
+    invite_url = f"{base}/teacher.html?invite={data[license_code]['invite_token']}"
+    ok, err = _send_email_brevo(teacher_email, teacher_name,
+                                "Activez votre compte — IA : Le monde de Léon",
+                                _email_invite_html(teacher_name, class_name, invite_url))
+    return jsonify({
+        "ok": True,
+        "license": license_code,
+        "invite_url": invite_url,
+        "email_sent": ok,
+        "email_error": err if not ok else "",
+    })
+
+
+@app.get("/api/teacher/me")
+def teacher_me():
+    """v701 : info de session courante (license + class_name + teacher_email)."""
+    tok = request.cookies.get("teacher_session", "")
+    sess = _get_session(tok)
+    if not sess:
+        return jsonify({"error": "not_authenticated"}), 401
+    data, license_code = _license_record(sess["license"])
+    rec = data[license_code]
+    return jsonify({
+        "license": license_code,
+        "class_name": rec.get("class_name", ""),
+        "teacher_email": rec.get("teacher_email", ""),
+        "teacher_name": rec.get("teacher_name", ""),
+        "expires_at": sess["expires_at"],
+    })
+
+
+def _resolve_teacher_license():
+    """v701 : helper pour les endpoints teacher.
+    Renvoie license_code si auth OK, sinon None.
+    Accepte 2 modes :
+      - session cookie (v2, prefere)
+      - teacher_code dans query/body (legacy, retro-compat avec PROF-DEMO)"""
+    tok = request.cookies.get("teacher_session", "")
+    sess = _get_session(tok)
+    if sess:
+        return sess["license"]
+    # Fallback legacy : teacher_code
+    teacher_code = (request.args.get("teacher_code", "") or "")
+    if not teacher_code and request.method != "GET":
+        body = request.get_json(silent=True) or {}
+        teacher_code = body.get("teacher_code", "") or ""
     license_code = _teacher_code_to_license(teacher_code)
-    if not license_code or not _valid_license(license_code):
-        return jsonify({"error": "code prof invalide"}), 403
-    return jsonify({"ok": True, "license": license_code})
+    if license_code and _valid_license(license_code):
+        return license_code
+    return None
 
 
 @app.get("/api/teacher/students")
 def teacher_students():
     """Liste les 25 profils eleves de la classe + stats (heros, histoires).
-    v698 : renvoie aussi le nom de la classe."""
-    teacher_code = request.args.get("teacher_code", "")
-    license_code = _teacher_code_to_license(teacher_code)
-    if not license_code or not _valid_license(license_code):
-        return jsonify({"error": "code prof invalide"}), 403
+    v698 : renvoie aussi le nom de la classe.
+    v701 : accepte session cookie OU teacher_code legacy."""
+    license_code = _resolve_teacher_license()
+    if not license_code:
+        return jsonify({"error": "non_authentifie"}), 403
     data, license_code = _license_record(license_code)
     profiles = data[license_code].get("profiles", {})
     students = []
@@ -631,12 +1058,12 @@ def teacher_students():
 
 @app.put("/api/teacher/class")
 def teacher_class_update():
-    """v698 : modifie le nom de la classe (ex: 'CE1 Madame Dupont')."""
+    """v698 : modifie le nom de la classe (ex: 'CE1 Madame Dupont').
+    v701 : accepte session cookie OU teacher_code legacy."""
+    license_code = _resolve_teacher_license()
+    if not license_code:
+        return jsonify({"error": "non_authentifie"}), 403
     body = request.get_json(force=True, silent=True) or {}
-    teacher_code = body.get("teacher_code", "")
-    license_code = _teacher_code_to_license(teacher_code)
-    if not license_code or not _valid_license(license_code):
-        return jsonify({"error": "code prof invalide"}), 403
     data, license_code = _license_record(license_code)
     new_name = (body.get("class_name", "") or "").strip()[:60]
     data[license_code]["class_name"] = new_name
@@ -646,12 +1073,12 @@ def teacher_class_update():
 
 @app.put("/api/teacher/students/<sid>")
 def teacher_update_student(sid):
-    """Modifie le prenom (et eventuellement l'avatar) d'un eleve."""
+    """Modifie le prenom (et eventuellement l'avatar) d'un eleve.
+    v701 : accepte session cookie OU teacher_code legacy."""
+    license_code = _resolve_teacher_license()
+    if not license_code:
+        return jsonify({"error": "non_authentifie"}), 403
     body = request.get_json(force=True, silent=True) or {}
-    teacher_code = body.get("teacher_code", "")
-    license_code = _teacher_code_to_license(teacher_code)
-    if not license_code or not _valid_license(license_code):
-        return jsonify({"error": "code prof invalide"}), 403
     data, license_code = _license_record(license_code)
     profiles = data[license_code].setdefault("profiles", {})
     if sid not in profiles:
@@ -672,11 +1099,11 @@ def teacher_qrcodes_pdf():
     Chaque QR code encode l'URL :
       <origin>/?student=<sid>&license=<code>
     Quand l'eleve scanne, il est identifie automatiquement -> entree directe
-    dans le Livre Magique."""
-    teacher_code = request.args.get("teacher_code", "")
-    license_code = _teacher_code_to_license(teacher_code)
-    if not license_code or not _valid_license(license_code):
-        return jsonify({"error": "code prof invalide"}), 403
+    dans le Livre Magique.
+    v701 : accepte session cookie OU teacher_code legacy."""
+    license_code = _resolve_teacher_license()
+    if not license_code:
+        return jsonify({"error": "non_authentifie"}), 403
     # Base URL : par defaut l'origine de la requete (utile en local).
     # En prod, le prof peut surcharger via ?base_url=https://iamondedeleon.fr
     base_url = (request.args.get("base_url", "") or "").strip().rstrip("/")
@@ -782,11 +1209,11 @@ def teacher_qrcodes_pdf():
 def teacher_student_pdf(sid):
     """v698 : exporte en PDF toutes les histoires d'un eleve.
     Format : couverture (nom classe + prenom + avatar + date) + pour chaque
-    histoire titre + pages avec image + texte."""
-    teacher_code = request.args.get("teacher_code", "")
-    license_code = _teacher_code_to_license(teacher_code)
-    if not license_code or not _valid_license(license_code):
-        return jsonify({"error": "code prof invalide"}), 403
+    histoire titre + pages avec image + texte.
+    v701 : accepte session cookie OU teacher_code legacy."""
+    license_code = _resolve_teacher_license()
+    if not license_code:
+        return jsonify({"error": "non_authentifie"}), 403
     data, license_code = _license_record(license_code)
     profiles = data[license_code].get("profiles", {})
     if sid not in profiles:
@@ -934,11 +1361,11 @@ def teacher_student_pdf(sid):
 @app.delete("/api/teacher/students/<sid>/heroes")
 def teacher_reset_student(sid):
     """Supprime tous les heros (et leurs histoires) d'un eleve. Le quota se
-    recalcule automatiquement (basé sur les hero.json existants)."""
-    teacher_code = request.args.get("teacher_code", "")
-    license_code = _teacher_code_to_license(teacher_code)
-    if not license_code or not _valid_license(license_code):
-        return jsonify({"error": "code prof invalide"}), 403
+    recalcule automatiquement (basé sur les hero.json existants).
+    v701 : accepte session cookie OU teacher_code legacy."""
+    license_code = _resolve_teacher_license()
+    if not license_code:
+        return jsonify({"error": "non_authentifie"}), 403
     import shutil
     removed = 0
     if CUSTOM_DIR.exists():

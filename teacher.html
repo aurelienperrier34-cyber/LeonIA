@@ -51,6 +51,13 @@
     margin-top: 18px; font-size: 0.82rem; color: #8a5a20;
     background: rgba(255,255,255,0.5); padding: 10px; border-radius: 8px;
   }
+  /* v701 : liens d'action (mot de passe oublié, mode legacy) */
+  .link-btn {
+    background: none; border: none; color: #7a4a10; text-decoration: underline;
+    cursor: pointer; font-family: inherit; font-size: 0.88rem; padding: 6px;
+    margin-top: 10px; display: block; width: 100%;
+  }
+  .link-btn:hover { color: #5a3608; }
   .login-err {
     margin: 14px 0; padding: 10px; border-radius: 8px;
     background: rgba(220,50,50,0.18); color: #b3001b;
@@ -170,19 +177,81 @@
 </header>
 
 <main id="main">
-  <!-- ===== LOGIN ===== -->
+  <!-- ===== LOGIN (v701 : email + mdp, code legacy en repli) ===== -->
   <div id="view-login">
     <div class="login-card">
-      <h2>Tableau de bord</h2>
-      <p>Entrez votre code enseignant pour gérer les prénoms de vos élèves et suivre leurs créations.</p>
+      <h2>Espace enseignant</h2>
+      <p>Connectez-vous pour gérer votre classe et suivre les créations.</p>
       <form id="login-form">
-        <input id="login-code" type="text" placeholder="PROF-XXXX" autocomplete="off" required>
+        <input id="login-email" type="email" placeholder="Email" autocomplete="username" required>
+        <input id="login-password" type="password" placeholder="Mot de passe" autocomplete="current-password" required>
         <div id="login-err" class="login-err" style="display:none"></div>
-        <button type="submit">Accéder au tableau de bord</button>
+        <button type="submit">Se connecter</button>
       </form>
+      <button id="link-forgot" type="button" class="link-btn">Mot de passe oublié&nbsp;?</button>
+      <div class="hint">
+        💡 Mode démo : utilisez le bouton ci-dessous pour entrer avec un code legacy (sans email).
+        <button id="link-legacy" type="button" class="link-btn">Connexion par code (démo)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== LOGIN LEGACY (code seul, sans mot de passe) ===== -->
+  <div id="view-login-legacy" style="display:none">
+    <div class="login-card">
+      <h2>Connexion par code</h2>
+      <p>Mode démo / legacy. Entrez un code enseignant.</p>
+      <form id="login-legacy-form">
+        <input id="login-legacy-code" type="text" placeholder="PROF-XXXX" autocomplete="off" required>
+        <div id="login-legacy-err" class="login-err" style="display:none"></div>
+        <button type="submit">Entrer</button>
+      </form>
+      <button id="link-back-to-login" type="button" class="link-btn">← Retour à la connexion normale</button>
       <div class="hint">
         💡 Pour la démo, utilisez <b>PROF-DEMO</b> (donne accès à la classe ECOLE-DEMO).
       </div>
+    </div>
+  </div>
+
+  <!-- ===== FORGOT PASSWORD ===== -->
+  <div id="view-forgot" style="display:none">
+    <div class="login-card">
+      <h2>Mot de passe oublié</h2>
+      <p>Entrez votre email. Si un compte y est associé, vous recevrez un lien de réinitialisation valable 1 heure.</p>
+      <form id="forgot-form">
+        <input id="forgot-email" type="email" placeholder="Email" required>
+        <div id="forgot-msg" class="login-err" style="display:none"></div>
+        <button type="submit">Envoyer le lien</button>
+      </form>
+      <button id="link-forgot-back" type="button" class="link-btn">← Retour à la connexion</button>
+    </div>
+  </div>
+
+  <!-- ===== ACCEPT INVITE (depuis email d'invitation) ===== -->
+  <div id="view-invite" style="display:none">
+    <div class="login-card">
+      <h2>Activer votre compte 🎉</h2>
+      <p>Choisissez un mot de passe pour votre compte enseignant. <br>Minimum 8 caractères.</p>
+      <form id="invite-form">
+        <input id="invite-password" type="password" placeholder="Mot de passe (min 8 caractères)" minlength="8" required>
+        <input id="invite-password-confirm" type="password" placeholder="Confirmation" minlength="8" required>
+        <div id="invite-err" class="login-err" style="display:none"></div>
+        <button type="submit">Activer mon compte</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== RESET PASSWORD (depuis email de reset) ===== -->
+  <div id="view-reset" style="display:none">
+    <div class="login-card">
+      <h2>Nouveau mot de passe</h2>
+      <p>Choisissez un nouveau mot de passe (minimum 8 caractères).</p>
+      <form id="reset-form">
+        <input id="reset-password" type="password" placeholder="Nouveau mot de passe" minlength="8" required>
+        <input id="reset-password-confirm" type="password" placeholder="Confirmation" minlength="8" required>
+        <div id="reset-err" class="login-err" style="display:none"></div>
+        <button type="submit">Valider</button>
+      </form>
     </div>
   </div>
 
@@ -236,48 +305,170 @@ const AVATARS = [
 let TEACHER_CODE = '';
 let CURRENT_LICENSE = '';
 
-// ===== LOGIN =====
-function showLoginError(msg) {
-  const e = document.getElementById('login-err');
-  e.textContent = msg; e.style.display = 'block';
+// ===== HELPERS UI =====
+function showView(id) {
+  ['view-login', 'view-login-legacy', 'view-forgot', 'view-invite', 'view-reset', 'view-dashboard']
+    .forEach(v => { const el = document.getElementById(v); if (el) el.style.display = (v === id ? '' : 'none'); });
 }
-function hideLoginError() {
-  document.getElementById('login-err').style.display = 'none';
+function showErr(elId, msg, ok) {
+  const e = document.getElementById(elId);
+  if (!e) return;
+  e.textContent = msg;
+  e.style.display = 'block';
+  e.style.background = ok ? 'rgba(126,200,80,0.2)' : 'rgba(220,50,50,0.18)';
+  e.style.color = ok ? '#a8e870' : '#b3001b';
+  e.style.borderColor = ok ? 'rgba(126,200,80,0.4)' : 'rgba(220,50,50,0.4)';
 }
+function hideErr(elId) { const e = document.getElementById(elId); if (e) e.style.display = 'none'; }
 
+// ===== ROUTAGE PAR URL ?invite=... ?reset=... =====
+(function route() {
+  const usp = new URLSearchParams(location.search);
+  const invite = usp.get('invite');
+  const reset = usp.get('reset');
+  if (invite) {
+    window._INVITE_TOKEN = invite;
+    showView('view-invite');
+    return;
+  }
+  if (reset) {
+    window._RESET_TOKEN = reset;
+    showView('view-reset');
+    return;
+  }
+  // Sinon : essaie l'auto-login via cookie session existant
+  fetch(API + '/api/teacher/me', { credentials: 'include' })
+    .then(r => r.ok ? r.json() : null)
+    .then(d => {
+      if (d && d.license) {
+        CURRENT_LICENSE = d.license;
+        showDashboard();
+      } else {
+        showView('view-login');
+      }
+    })
+    .catch(() => showView('view-login'));
+})();
+
+// ===== LOGIN v2 (email + mdp) =====
 document.getElementById('login-form').addEventListener('submit', async (ev) => {
   ev.preventDefault();
-  hideLoginError();
-  const code = document.getElementById('login-code').value.trim().toUpperCase();
+  hideErr('login-err');
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  if (!email || !password) return;
+  try {
+    const r = await fetch(API + '/api/teacher/login', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      credentials: 'include',
+      body: JSON.stringify({email, password}),
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) { showErr('login-err', d.message || d.error || 'Identifiants incorrects.'); return; }
+    CURRENT_LICENSE = d.license;
+    showDashboard();
+  } catch (e) {
+    showErr('login-err', 'Serveur injoignable. ' + e.message);
+  }
+});
+
+// ===== LOGIN LEGACY (code seul, démo / tests) =====
+document.getElementById('link-legacy').addEventListener('click', () => { hideErr('login-err'); showView('view-login-legacy'); });
+document.getElementById('link-back-to-login').addEventListener('click', () => { hideErr('login-legacy-err'); showView('view-login'); });
+document.getElementById('login-legacy-form').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  hideErr('login-legacy-err');
+  const code = document.getElementById('login-legacy-code').value.trim().toUpperCase();
   if (!code) return;
   try {
     const r = await fetch(API + '/api/teacher/login', {
       method: 'POST', headers: {'Content-Type': 'application/json'},
+      credentials: 'include',
       body: JSON.stringify({teacher_code: code}),
     });
     const d = await r.json().catch(() => ({}));
-    if (!r.ok) { showLoginError(d.message || d.error || 'Code invalide.'); return; }
-    TEACHER_CODE = code;
+    if (!r.ok) { showErr('login-legacy-err', d.message || d.error || 'Code invalide.'); return; }
     CURRENT_LICENSE = d.license;
-    try { sessionStorage.setItem('teacher_code', code); } catch(e){}
     showDashboard();
   } catch (e) {
-    showLoginError('Serveur injoignable. ' + e.message);
+    showErr('login-legacy-err', 'Serveur injoignable. ' + e.message);
   }
 });
 
-// Auto-login si code en session
-try {
-  const saved = sessionStorage.getItem('teacher_code');
-  if (saved) { document.getElementById('login-code').value = saved; }
-} catch(e){}
+// ===== FORGOT PASSWORD =====
+document.getElementById('link-forgot').addEventListener('click', () => { hideErr('login-err'); showView('view-forgot'); });
+document.getElementById('link-forgot-back').addEventListener('click', () => { hideErr('forgot-msg'); showView('view-login'); });
+document.getElementById('forgot-form').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  hideErr('forgot-msg');
+  const email = document.getElementById('forgot-email').value.trim();
+  if (!email) return;
+  try {
+    const r = await fetch(API + '/api/teacher/forgot-password', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email, base_url: location.origin}),
+    });
+    const d = await r.json().catch(() => ({}));
+    showErr('forgot-msg', d.message || 'Demande envoyée.', true);
+  } catch (e) {
+    showErr('forgot-msg', 'Serveur injoignable. ' + e.message);
+  }
+});
+
+// ===== ACCEPT INVITE =====
+document.getElementById('invite-form').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  hideErr('invite-err');
+  const p1 = document.getElementById('invite-password').value;
+  const p2 = document.getElementById('invite-password-confirm').value;
+  if (p1 !== p2) { showErr('invite-err', 'Les deux mots de passe ne correspondent pas.'); return; }
+  if (p1.length < 8) { showErr('invite-err', 'Mot de passe trop court (8 caractères min).'); return; }
+  try {
+    const r = await fetch(API + '/api/teacher/accept-invite', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      credentials: 'include',
+      body: JSON.stringify({invite_token: window._INVITE_TOKEN, password: p1}),
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) { showErr('invite-err', d.message || d.error || 'Erreur.'); return; }
+    CURRENT_LICENSE = d.license;
+    // Nettoie l'URL
+    try { history.replaceState(null, '', location.pathname); } catch(e){}
+    showDashboard();
+  } catch (e) {
+    showErr('invite-err', 'Serveur injoignable. ' + e.message);
+  }
+});
+
+// ===== RESET PASSWORD =====
+document.getElementById('reset-form').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  hideErr('reset-err');
+  const p1 = document.getElementById('reset-password').value;
+  const p2 = document.getElementById('reset-password-confirm').value;
+  if (p1 !== p2) { showErr('reset-err', 'Les deux mots de passe ne correspondent pas.'); return; }
+  if (p1.length < 8) { showErr('reset-err', 'Mot de passe trop court.'); return; }
+  try {
+    const r = await fetch(API + '/api/teacher/reset-password', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({reset_token: window._RESET_TOKEN, password: p1}),
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) { showErr('reset-err', d.message || d.error || 'Erreur.'); return; }
+    // Nettoie URL et retourne au login
+    try { history.replaceState(null, '', location.pathname); } catch(e){}
+    showErr('reset-err', 'Mot de passe mis à jour ! Vous pouvez vous connecter.', true);
+    setTimeout(() => showView('view-login'), 1800);
+  } catch (e) {
+    showErr('reset-err', 'Serveur injoignable. ' + e.message);
+  }
+});
 
 // ===== DASHBOARD =====
 function showDashboard() {
-  document.getElementById('view-login').style.display = 'none';
-  document.getElementById('view-dashboard').style.display = '';
+  showView('view-dashboard');
   document.getElementById('header-meta').textContent =
-    'Connecté : ' + TEACHER_CODE + ' → ' + CURRENT_LICENSE;
+    'Classe : ' + CURRENT_LICENSE;
   loadStudents();
 }
 
@@ -285,7 +476,7 @@ async function loadStudents() {
   document.getElementById('loading').style.display = '';
   document.getElementById('tbl').style.display = 'none';
   try {
-    const r = await fetch(API + '/api/teacher/students?teacher_code=' + encodeURIComponent(TEACHER_CODE));
+    const r = await fetch(API + '/api/teacher/students', { credentials: 'include' });
     if (!r.ok) {
       if (r.status === 403) { logout(); return; }
       throw new Error('HTTP ' + r.status);
@@ -305,7 +496,8 @@ async function saveClassName(name) {
   try {
     const r = await fetch(API + '/api/teacher/class', {
       method: 'PUT', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({teacher_code: TEACHER_CODE, class_name: name}),
+      credentials: 'include',
+      body: JSON.stringify({class_name: name}),
     });
     if (r.ok) flashStatus('Classe renommée ✓');
     else flashStatus('Erreur', true);
@@ -355,9 +547,8 @@ function openQrCodesDialog() {
   document.getElementById('qr-go').addEventListener('click', () => {
     const baseUrl = document.getElementById('qr-base-url').value.trim();
     dlg.remove();
-    const url = API + '/api/teacher/qrcodes.pdf?teacher_code=' +
-                encodeURIComponent(TEACHER_CODE) +
-                '&base_url=' + encodeURIComponent(baseUrl);
+    // v701 : pas de teacher_code en URL — la session cookie suffit
+    const url = API + '/api/teacher/qrcodes.pdf?base_url=' + encodeURIComponent(baseUrl);
     window.open(url, '_blank');
   });
 }
@@ -404,7 +595,8 @@ async function saveStudent(sid, fields) {
   try {
     const r = await fetch(API + '/api/teacher/students/' + sid, {
       method: 'PUT', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(Object.assign({teacher_code: TEACHER_CODE}, fields)),
+      credentials: 'include',
+      body: JSON.stringify(fields),
     });
     if (r.ok) flashStatus('Enregistré ✓');
     else flashStatus('Erreur', true);
@@ -414,7 +606,7 @@ async function saveStudent(sid, fields) {
 async function resetStudent(sid) {
   if (!confirm('Supprimer tous les héros et histoires de cet élève ? Action irréversible.')) return;
   try {
-    const r = await fetch(API + '/api/teacher/students/' + sid + '/heroes?teacher_code=' + encodeURIComponent(TEACHER_CODE), {method: 'DELETE'});
+    const r = await fetch(API + '/api/teacher/students/' + sid + '/heroes', {method: 'DELETE', credentials: 'include'});
     if (r.ok) { flashStatus('Reset effectué ✓'); loadStudents(); }
     else flashStatus('Erreur reset', true);
   } catch (e) { flashStatus('Erreur réseau', true); }
@@ -498,9 +690,8 @@ function openExportDialog() {
     if (stnum > 0) {
       btn.addEventListener('click', () => {
         dlg.remove();
-        const url = API + '/api/teacher/student/' + s.id + '/stories.pdf?teacher_code=' +
-                    encodeURIComponent(TEACHER_CODE);
-        // Open in new tab -> download
+        // v701 : pas de teacher_code en URL — la session cookie suffit (meme origine)
+        const url = API + '/api/teacher/student/' + s.id + '/stories.pdf';
         window.open(url, '_blank');
       });
     }
@@ -511,13 +702,13 @@ function openExportDialog() {
 }
 
 // ===== LOGOUT =====
-function logout() {
-  TEACHER_CODE = '';
+async function logout() {
+  try {
+    await fetch(API + '/api/teacher/logout', { method: 'POST', credentials: 'include' });
+  } catch(e){}
   CURRENT_LICENSE = '';
-  try { sessionStorage.removeItem('teacher_code'); } catch(e){}
-  document.getElementById('view-dashboard').style.display = 'none';
-  document.getElementById('view-login').style.display = '';
   document.getElementById('header-meta').textContent = '';
+  showView('view-login');
 }
 document.getElementById('btn-logout').addEventListener('click', logout);
 </script>
