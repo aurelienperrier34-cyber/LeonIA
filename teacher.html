@@ -92,6 +92,27 @@
   .btn-pdf:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(76,162,47,.45); }
   .btn-qr { background: linear-gradient(160deg, #5b9bd5, #2e6cb5); }
   .btn-qr:hover { box-shadow: 0 4px 12px rgba(46,108,181,.5); }
+  .btn-preview { background: linear-gradient(160deg, #b76dd5, #6b3b8f); }
+  .btn-preview:hover { box-shadow: 0 4px 12px rgba(107,59,143,.5); }
+  /* v702 : bannière "Premiers pas" en accueil dashboard */
+  .onboarding {
+    position: relative;
+    background: linear-gradient(160deg, rgba(255,225,102,0.15), rgba(255,180,80,0.08));
+    border: 1.5px solid rgba(255,225,102,0.4);
+    border-radius: 14px; padding: 18px 22px; margin-bottom: 22px;
+  }
+  .onboarding h2 { margin: 0 0 8px; font-size: 1.15rem; color: #FFE166; font-weight: 800; }
+  .onboarding p  { margin: 0 0 10px; font-size: 0.94rem; line-height: 1.5; color: #f4eeda; }
+  .onboarding ol { margin: 0 0 10px; padding-left: 22px; font-size: 0.94rem; line-height: 1.7; color: #f4eeda; }
+  .onboarding ol b { color: #FFE166; }
+  .onboarding .onb-meta { font-size: 0.84rem; opacity: 0.75; margin-top: 8px; }
+  .onb-x {
+    position: absolute; top: 8px; right: 10px;
+    background: none; border: none; color: #fff8ee; opacity: 0.6;
+    font-size: 1.4rem; cursor: pointer; line-height: 1;
+    padding: 4px 8px; border-radius: 6px;
+  }
+  .onb-x:hover { opacity: 1; background: rgba(255,255,255,0.08); }
   .btn-logout {
     background: rgba(255,255,255,0.1); color: #f4eeda;
     border: 1.5px solid rgba(255,255,255,0.25); border-radius: 10px;
@@ -257,12 +278,26 @@
 
   <!-- ===== DASHBOARD ===== -->
   <div id="view-dashboard" style="display:none">
-    <!-- v698 : nom de la classe modifiable -->
+    <!-- v702 : guide "Premiers pas" affiché au premier accès -->
+    <div id="onboarding-banner" class="onboarding">
+      <button id="onb-dismiss" type="button" class="onb-x" title="Masquer">×</button>
+      <h2>🎉 Bienvenue dans votre tableau de bord</h2>
+      <p>Voici comment démarrer en 3 étapes&nbsp;:</p>
+      <ol>
+        <li><b>Renommez vos élèves</b> dans le tableau ci-dessous (cliquez sur "Élève 1", "Élève 2", …).</li>
+        <li><b>Imprimez les cartes QR</b> via le bouton <b>🎫 Cartes QR</b> en haut à droite. Découpez et distribuez-en une à chaque élève.</li>
+        <li><b>L'élève scanne sa carte</b> avec la caméra de la tablette ou du PC&nbsp;: il entre directement dans le Livre Magique sans rien taper.</li>
+      </ol>
+      <p class="onb-meta">À tout moment, vous pouvez exporter les histoires d'un élève en PDF (<b>📄 Export PDF</b>) ou voir l'application comme un élève (bouton ci-dessous).</p>
+    </div>
+
+    <!-- v698 : nom de la classe modifiable + v702 actions -->
     <div class="class-name-row">
       <label for="class-name-input">Nom de la classe :</label>
       <input id="class-name-input" type="text" maxlength="60" placeholder="ex: CE1 Madame Dupont">
       <button id="btn-export-pdf" class="btn-pdf" type="button" title="Exporter les histoires d'un élève en PDF">📄 Export PDF…</button>
       <button id="btn-qrcodes" class="btn-pdf btn-qr" type="button" title="Imprimer la planche A4 de cartes QR (1 par élève)">🎫 Cartes QR</button>
+      <button id="btn-preview-app" class="btn-pdf btn-preview" type="button" title="Ouvrir l'application comme si vous étiez un élève (nouvel onglet)">👁️ Voir comme un élève</button>
     </div>
     <div class="toolbar">
       <div class="hint">
@@ -510,6 +545,24 @@ document.getElementById('class-name-input').addEventListener('change', (e) => {
 document.getElementById('btn-export-pdf').addEventListener('click', () => openExportDialog());
 // v698 : QR codes
 document.getElementById('btn-qrcodes').addEventListener('click', () => openQrCodesDialog());
+// v702 : voir l'app comme un élève (mode aperçu, création désactivée)
+document.getElementById('btn-preview-app').addEventListener('click', () => {
+  const url = location.origin + '/?teacher_preview=1&license=' + encodeURIComponent(CURRENT_LICENSE);
+  window.open(url, '_blank');
+});
+// v702 : dismiss onboarding banner (mémorisé en localStorage par licence)
+(function setupOnboarding() {
+  const banner = document.getElementById('onboarding-banner');
+  if (!banner) return;
+  const key = 'ia_onb_dismissed_' + (CURRENT_LICENSE || 'default');
+  try {
+    if (localStorage.getItem(key) === '1') banner.style.display = 'none';
+  } catch (e) {}
+  document.getElementById('onb-dismiss')?.addEventListener('click', () => {
+    banner.style.display = 'none';
+    try { localStorage.setItem(key, '1'); } catch (e) {}
+  });
+})();
 
 function openQrCodesDialog() {
   const dlg = document.createElement('div');

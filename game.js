@@ -535,6 +535,26 @@ function restoreState() {
 
 // Init
 document.addEventListener("DOMContentLoaded", () => {
+  // v702 : mode TEACHER PREVIEW. URL ?teacher_preview=1&license=ECOLE-XXX
+  // -> active la licence, debloque la navigation, mais BLOQUE la creation
+  // de heros et d'histoires (qui consommerait le quota des eleves).
+  try {
+    const usp0 = new URLSearchParams(location.search);
+    if (usp0.get('teacher_preview') === '1') {
+      const lic = usp0.get('license');
+      if (lic && typeof activateSchoolLicense === 'function') {
+        activateSchoolLicense(lic);
+      }
+      try {
+        localStorage.setItem('ia_teacher_preview', '1');
+        // En mode preview, pas de student_id imposé : on peut naviguer librement
+        localStorage.removeItem('ia_student_id');
+        localStorage.removeItem('ia_student_name');
+      } catch (e) {}
+      try { history.replaceState(null, '', location.pathname); } catch (e) {}
+    }
+  } catch (e) {}
+
   // v698 : QR code eleve. URL ?student=eX&license=ECOLE-XXX -> identifie
   // l'eleve directement et entre dans le Livre Magique. Permet aux enfants
   // de scanner une carte papier au lieu de chercher leur prenom dans une
@@ -578,6 +598,8 @@ document.addEventListener("DOMContentLoaded", () => {
   grantInitialPlumes();            // offre PLUMES_FREE_GIFT a la 1re ouverture
   state.plumes = getPlumes();      // source de verite = localStorage 'ia_plumes'
   updatePlumesUI();
+  // v702 : affiche le bandeau "mode aperçu" si l'enseignant est en preview
+  if (typeof ensureTeacherPreviewBadge === 'function') ensureTeacherPreviewBadge();
   if (!subtitlesEnabled()) document.body.classList.add('cc-off');
   if (state.characterType) document.body.classList.add('has-character');
   updateAVToggles();
@@ -1479,9 +1501,54 @@ function hbSteps() {
   return s;
 }
 
+// v702 : helper "mode enseignant" (preview, lecture seule pour la creation)
+function isTeacherPreview() {
+  try { return localStorage.getItem('ia_teacher_preview') === '1'; }
+  catch (e) { return false; }
+}
+function exitTeacherPreview() {
+  try { localStorage.removeItem('ia_teacher_preview'); } catch (e) {}
+  document.getElementById('teacher-preview-banner')?.remove();
+}
+window.isTeacherPreview = isTeacherPreview;
+window.exitTeacherPreview = exitTeacherPreview;
+
+// v702 : badge permanent en haut de l'app quand l'enseignant est en mode preview
+function ensureTeacherPreviewBadge() {
+  if (!isTeacherPreview()) {
+    document.getElementById('teacher-preview-banner')?.remove();
+    return;
+  }
+  if (document.getElementById('teacher-preview-banner')) return;
+  const bar = document.createElement('div');
+  bar.id = 'teacher-preview-banner';
+  bar.setAttribute('style',
+    'position:fixed;top:0;left:0;right:0;z-index:99996;' +
+    'background:linear-gradient(90deg,#7ec850,#4ca22f);color:#fff;' +
+    'padding:6px 16px;font-size:.85rem;font-family:inherit;font-weight:700;' +
+    'text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.25);' +
+    'display:flex;align-items:center;justify-content:center;gap:14px;');
+  bar.innerHTML =
+    '<span>👁️ Mode aperçu enseignant — la création est désactivée</span>' +
+    '<button onclick="exitTeacherPreview();location.reload();" ' +
+    'style="background:rgba(0,0,0,.2);color:#fff;border:1px solid rgba(255,255,255,.4);' +
+    'padding:3px 10px;border-radius:6px;font-size:.78rem;cursor:pointer;font-family:inherit;">' +
+    'Quitter le mode aperçu</button>';
+  document.body.appendChild(bar);
+}
+window.ensureTeacherPreviewBadge = ensureTeacherPreviewBadge;
+
 function openHeroBuilder() {
   // Premium : la creation fait partie du contenu payant.
   if (!isPremium()) { showPremiumPaywall('book'); goToScreen('map'); return; }
+  // v702 : mode enseignant -> bloque la creation (preserve le quota eleves)
+  if (isTeacherPreview()) {
+    alert("Mode aperçu enseignant : la création de héros est désactivée " +
+          "pour ne pas consommer le quota de vos élèves.\n\n" +
+          "Pour tester la création complète, ouvrez l'application sous le " +
+          "profil d'un élève (depuis sa carte QR).");
+    return;
+  }
   // v685 : verrou 3 perso max par eleve. La carte "Creer" est masquee a 3 mais
   // si on arrive ici par un autre chemin (ex: console, raccourci), on bloque.
   const HEROES_LIMIT = 3;
@@ -10862,7 +10929,8 @@ function openCreatorMode() {
   // Verrou Premium : le Livre magique fait partie du contenu payant.
   if (!isPremium()) { showPremiumPaywall('book'); goToScreen('map'); return; }
   // v697 : identification eleve obligatoire AVANT d'entrer dans le Livre Magique
-  if (!getStudentId()) {
+  // v702 : sauf en mode enseignant (preview), ou on saute le picker
+  if (!getStudentId() && !isTeacherPreview()) {
     showStudentPicker(() => openCreatorMode());
     return;
   }
@@ -11352,6 +11420,14 @@ async function generateCreatorStory() {
 // Genere une histoire CUSTOM via le backend (heros cree par l'enfant).
 // Debite 1 plume cote serveur, puis affiche l'histoire dans le lecteur.
 async function generateCustomStoryViaBackend(heroId) {
+  // v702 : mode enseignant -> bloque la generation (preserve le quota eleves)
+  if (isTeacherPreview()) {
+    alert("Mode aperçu enseignant : la génération d'histoires est désactivée " +
+          "pour ne pas consommer le quota de vos élèves.\n\n" +
+          "Pour tester une génération complète, ouvrez l'application sous le " +
+          "profil d'un élève (depuis sa carte QR).");
+    return;
+  }
   document.getElementById('creator-pick').hidden = true;
   document.getElementById('creator-loading').hidden = false;
   // Message d'attente adapte (la generation custom prend ~1-2 min)
