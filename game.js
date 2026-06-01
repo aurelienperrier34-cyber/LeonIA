@@ -1985,36 +1985,37 @@ function showPremiumPaywall(feature) {
     'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
     'justify-content:center;background:rgba(20,10,35,0.82);' +
     'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
-  // v653 : pivot B2G (vente mairie / ecole). On retire le bouton "Debloquer
-  // tout 4,99 EUR" (Stripe pas integre + brouille le positionnement aupres
-  // des collectivites). Le Code ecole devient l'action principale.
+  // v699 : message recentre sur la carte QR (mode QR-first). Le code ecole
+  // devient un fallback discret pour les cas exotiques (carte perdue, pas
+  // d'imprimante...). En production, les eleves utilisent leurs cartes QR
+  // distribuees par l'enseignant -> ils n'arrivent JAMAIS sur ce paywall.
   ov.innerHTML =
     '<div style="max-width:460px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
     'border:3px solid #e0a23a;border-radius:22px;padding:28px 26px;text-align:center;' +
     'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
-      '<div style="font-size:46px;line-height:1;margin-bottom:10px;">🏫</div>' +
+      '<div style="font-size:46px;line-height:1;margin-bottom:10px;">🎫</div>' +
       '<h2 style="margin:0 0 6px;font-size:1.3rem;color:#7a4a10;">' + titre + '</h2>' +
-      '<p style="margin:0 0 16px;font-size:.95rem;line-height:1.45;opacity:.9;">' +
-        'Cette aventure est accessible aux <b>écoles et collectivités partenaires</b>. ' +
-        'Si vous êtes enseignant et que votre établissement participe, entrez votre code école.</p>' +
-      '<button id="premium-paywall-school" style="cursor:pointer;border:none;width:100%;' +
+      '<p style="margin:0 0 18px;font-size:.95rem;line-height:1.5;opacity:.9;">' +
+        '<b>Pour entrer dans le monde de Léon, scanne ta carte d\'accès.</b><br>' +
+        'Si tu n\'as pas ta carte, demande à ton maître ou ta maîtresse de t\'en donner une.</p>' +
+      '<button id="premium-paywall-close-main" style="cursor:pointer;border:none;width:100%;' +
       'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
       'font-size:1.05rem;padding:14px 24px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.45);">' +
-      'J\'ai un code école 🏫</button>' +
+      'D\'accord 👍</button>' +
+      '<button id="premium-paywall-school" style="margin-top:12px;cursor:pointer;border:none;' +
+      'background:none;color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.65;">' +
+      'J\'ai un code école (sans carte)</button>' +
       '<div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(122,74,16,.25);' +
       'font-size:.85rem;line-height:1.5;opacity:.8;text-align:left;">' +
         '<b>Vous êtes une mairie, une école ou un éditeur ?</b><br>' +
         'Pour faire bénéficier vos classes de l\'application, contactez l\'auteur : ' +
         '<a href="mailto:aurelienperrier34@gmail.com" style="color:#7a4a10;font-weight:700;">' +
         'aurelienperrier34@gmail.com</a></div>' +
-      '<button id="premium-paywall-close" style="margin-top:14px;cursor:pointer;border:none;' +
-      'background:none;color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.6;">' +
-      'Fermer</button>' +
     '</div>';
   ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
   document.body.appendChild(ov);
   document.getElementById('premium-paywall-school')?.addEventListener('click', showSchoolCodePrompt);
-  document.getElementById('premium-paywall-close')?.addEventListener('click', () => ov.remove());
+  document.getElementById('premium-paywall-close-main')?.addEventListener('click', () => ov.remove());
 }
 window.showPremiumPaywall = showPremiumPaywall;
 
