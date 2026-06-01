@@ -176,7 +176,25 @@ except Exception:
     MAIN_DIR = None
 
 app = Flask(__name__)
-CORS(app)   # autorise le front (autre origine/port) a appeler l'API
+# v704 : CORS avec credentials (cookies de session) -> on doit lister les
+# origines AUTORISEES explicitement (impossible d'avoir Allow-Origin:* avec
+# credentials:include cote navigateur). On accepte :
+#  - GitHub Pages (prod statique)
+#  - localhost (dev local)
+#  - URL ngrok actuelle (test collegues)
+# CORS_ORIGINS dans .env pour surcharger (ex: prod Cloud Run)
+_cors_origins_env = os.getenv("CORS_ORIGINS", "")
+if _cors_origins_env:
+    _cors_origins = [o.strip() for o in _cors_origins_env.split(",") if o.strip()]
+else:
+    _cors_origins = [
+        "https://aurelienperrier34-cyber.github.io",
+        "http://localhost:8787",
+        "http://127.0.0.1:8787",
+        "https://marauding-tree-calamari.ngrok-free.dev",
+    ]
+CORS(app, origins=_cors_origins, supports_credentials=True)
+print(f"[CORS] origines autorisees : {_cors_origins}")
 
 
 # ============================================================
