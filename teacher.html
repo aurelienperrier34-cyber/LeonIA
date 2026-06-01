@@ -64,6 +64,25 @@
   .toolbar .hint {
     font-size: 0.88rem; opacity: 0.75; max-width: 600px;
   }
+  /* v698 : nom de classe + export */
+  .class-name-row {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 18px; flex-wrap: wrap;
+  }
+  .class-name-row label { font-size: 0.88rem; opacity: 0.75; }
+  .class-name-row input {
+    background: rgba(255,255,255,0.08); color: #fff8ee;
+    border: 1.5px solid rgba(255,225,102,0.4); border-radius: 8px;
+    padding: 8px 12px; font-family: inherit; font-size: 1rem;
+    flex: 1; max-width: 360px; min-width: 200px;
+  }
+  .class-name-row input:focus { outline: none; border-color: #FFE166; background: rgba(255,255,255,0.12); }
+  .btn-pdf {
+    background: linear-gradient(160deg, #7ec850, #4ca22f); color: #fff;
+    border: none; border-radius: 8px; padding: 8px 14px;
+    font-family: inherit; font-size: 0.92rem; font-weight: 700; cursor: pointer;
+  }
+  .btn-pdf:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(76,162,47,.45); }
   .btn-logout {
     background: rgba(255,255,255,0.1); color: #f4eeda;
     border: 1.5px solid rgba(255,255,255,0.25); border-radius: 10px;
@@ -167,6 +186,12 @@
 
   <!-- ===== DASHBOARD ===== -->
   <div id="view-dashboard" style="display:none">
+    <!-- v698 : nom de la classe modifiable -->
+    <div class="class-name-row">
+      <label for="class-name-input">Nom de la classe :</label>
+      <input id="class-name-input" type="text" maxlength="60" placeholder="ex: CE1 Madame Dupont">
+      <button id="btn-export-pdf" class="btn-pdf" type="button" title="Exporter les histoires d'un élève en PDF">📄 Export PDF…</button>
+    </div>
     <div class="toolbar">
       <div class="hint">
         Modifiez les prénoms de vos élèves directement dans le tableau.
@@ -263,11 +288,31 @@ async function loadStudents() {
       throw new Error('HTTP ' + r.status);
     }
     const d = await r.json();
+    // v698 : nom de la classe
+    const cnInput = document.getElementById('class-name-input');
+    if (cnInput) cnInput.value = d.class_name || '';
     renderTable(d.students || []);
   } catch (e) {
     document.getElementById('loading').textContent = 'Erreur : ' + e.message;
   }
 }
+
+// v698 : sauvegarde du nom de classe
+async function saveClassName(name) {
+  try {
+    const r = await fetch(API + '/api/teacher/class', {
+      method: 'PUT', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({teacher_code: TEACHER_CODE, class_name: name}),
+    });
+    if (r.ok) flashStatus('Classe renommée ✓');
+    else flashStatus('Erreur', true);
+  } catch (e) { flashStatus('Erreur réseau', true); }
+}
+
+document.getElementById('class-name-input').addEventListener('change', (e) => {
+  saveClassName(e.target.value.trim());
+});
+document.getElementById('btn-export-pdf').addEventListener('click', () => openExportDialog());
 
 function quotaCell(n, max) {
   const pct = max > 0 ? (n / max) * 100 : 0;
@@ -355,6 +400,67 @@ function openAvatarPicker(sid) {
 document.getElementById('avatar-picker').addEventListener('click', (e) => {
   if (e.target.id === 'avatar-picker') e.target.classList.remove('show');
 });
+
+// ===== EXPORT PDF (v698) =====
+function openExportDialog() {
+  // Recharge depuis le DOM la liste des élèves (déjà rendue par le tableau)
+  const rows = document.querySelectorAll('#tbody tr');
+  if (rows.length === 0) { alert('Aucun élève chargé.'); return; }
+  const list = [];
+  rows.forEach(tr => {
+    const sid = tr.dataset.sid;
+    const inp = tr.querySelector('input.name-input');
+    const avatar = tr.querySelector('.avatar')?.textContent || '👤';
+    const qtxt = tr.querySelectorAll('.quota-cell span.quota-full, .quota-cell span.quota-mid, .quota-cell span.quota-ok');
+    const heroes = qtxt[0]?.textContent || '0/3';
+    const stories = qtxt[1]?.textContent || '0/3';
+    list.push({ id: sid, name: inp?.value || sid, avatar, heroes, stories });
+  });
+  // Modal
+  const dlg = document.createElement('div');
+  dlg.id = 'export-dlg';
+  dlg.setAttribute('style',
+    'position:fixed;inset:0;z-index:1100;background:rgba(10,5,20,0.85);' +
+    'display:flex;align-items:center;justify-content:center;padding:4vw;');
+  dlg.innerHTML =
+    '<div style="background:#1a0d2e;border:2px solid #FFE166;border-radius:14px;' +
+    'max-width:520px;width:100%;max-height:80vh;overflow:auto;padding:22px;">' +
+    '<h3 style="margin:0 0 12px;color:#FFE166;">Exporter en PDF</h3>' +
+    '<p style="margin:0 0 14px;font-size:.9rem;opacity:.8;">Choisis un élève. ' +
+    'Le PDF contiendra toutes ses histoires (couverture + texte + illustrations).</p>' +
+    '<div id="export-list" style="display:flex;flex-direction:column;gap:6px;"></div>' +
+    '<button id="export-cancel" style="margin-top:14px;background:transparent;color:#fff;' +
+    'border:1px solid rgba(255,255,255,.3);padding:8px 14px;border-radius:8px;' +
+    'cursor:pointer;font-family:inherit;">Annuler</button>' +
+    '</div>';
+  document.body.appendChild(dlg);
+  const listEl = document.getElementById('export-list');
+  list.forEach(s => {
+    const stnum = parseInt((s.stories.split('/')[0]) || '0', 10);
+    const btn = document.createElement('button');
+    btn.disabled = stnum === 0;
+    btn.setAttribute('style',
+      'cursor:pointer;background:rgba(255,255,255,.06);color:#fff8ee;' +
+      'border:1px solid rgba(255,225,102,.3);border-radius:8px;padding:10px 12px;' +
+      'font-family:inherit;text-align:left;display:flex;align-items:center;gap:10px;' +
+      (stnum === 0 ? 'opacity:.4;cursor:not-allowed;' : ''));
+    btn.innerHTML = '<span style="font-size:1.4rem">' + s.avatar + '</span>' +
+      '<span style="flex:1;font-weight:700">' + s.name + '</span>' +
+      '<span style="font-size:.85rem;opacity:.7">' + s.stories + ' histoire(s)</span>';
+    if (stnum > 0) {
+      btn.addEventListener('click', () => {
+        dlg.remove();
+        const url = API + '/api/teacher/student/' + s.id + '/stories.pdf?teacher_code=' +
+                    encodeURIComponent(TEACHER_CODE);
+        // Open in new tab -> download
+        window.open(url, '_blank');
+      });
+    }
+    listEl.appendChild(btn);
+  });
+  document.getElementById('export-cancel').addEventListener('click', () => dlg.remove());
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.remove(); });
+}
 
 // ===== LOGOUT =====
 function logout() {

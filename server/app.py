@@ -197,11 +197,12 @@ def _license_record(code):
     """Retourne (et cree si besoin) la fiche quota d'une licence valide.
     v680 : migration auto vers le format "profiles" (25 eleves) si pas encore
     present. Le quota plumes global est conserve pour retro-compat mais c'est
-    maintenant le quota PAR PROFIL ELEVE qui fait foi."""
+    maintenant le quota PAR PROFIL ELEVE qui fait foi.
+    v698 : ajout du champ class_name (nom de la classe, modifiable par le prof)."""
     code = (code or "").strip().upper()
     data = _load_quota()
     if code not in data:
-        data[code] = {"plumes": PLUMES_INIT, "heroes_max": HEROES_MAX}
+        data[code] = {"plumes": PLUMES_INIT, "heroes_max": HEROES_MAX, "class_name": ""}
     # Migration : si profiles absent, initialise 25 eleves avec prenoms par defaut
     rec = data[code]
     if "profiles" not in rec or not isinstance(rec.get("profiles"), dict):
@@ -599,7 +600,8 @@ def teacher_login():
 
 @app.get("/api/teacher/students")
 def teacher_students():
-    """Liste les 25 profils eleves de la classe + stats (heros, histoires)."""
+    """Liste les 25 profils eleves de la classe + stats (heros, histoires).
+    v698 : renvoie aussi le nom de la classe."""
     teacher_code = request.args.get("teacher_code", "")
     license_code = _teacher_code_to_license(teacher_code)
     if not license_code or not _valid_license(license_code):
@@ -620,10 +622,26 @@ def teacher_students():
         })
     return jsonify({
         "license": license_code,
+        "class_name": data[license_code].get("class_name", ""),
         "students": students,
         "heroes_per_student": HEROES_PER_STUDENT,
         "stories_per_student": STORIES_PER_STUDENT,
     })
+
+
+@app.put("/api/teacher/class")
+def teacher_class_update():
+    """v698 : modifie le nom de la classe (ex: 'CE1 Madame Dupont')."""
+    body = request.get_json(force=True, silent=True) or {}
+    teacher_code = body.get("teacher_code", "")
+    license_code = _teacher_code_to_license(teacher_code)
+    if not license_code or not _valid_license(license_code):
+        return jsonify({"error": "code prof invalide"}), 403
+    data, license_code = _license_record(license_code)
+    new_name = (body.get("class_name", "") or "").strip()[:60]
+    data[license_code]["class_name"] = new_name
+    _save_quota(data)
+    return jsonify({"ok": True, "class_name": new_name})
 
 
 @app.put("/api/teacher/students/<sid>")
@@ -646,6 +664,159 @@ def teacher_update_student(sid):
         profiles[sid]["avatar"] = new_avatar
     _save_quota(data)
     return jsonify({"ok": True, "student": profiles[sid]})
+
+
+@app.get("/api/teacher/student/<sid>/stories.pdf")
+def teacher_student_pdf(sid):
+    """v698 : exporte en PDF toutes les histoires d'un eleve.
+    Format : couverture (nom classe + prenom + avatar + date) + pour chaque
+    histoire titre + pages avec image + texte."""
+    teacher_code = request.args.get("teacher_code", "")
+    license_code = _teacher_code_to_license(teacher_code)
+    if not license_code or not _valid_license(license_code):
+        return jsonify({"error": "code prof invalide"}), 403
+    data, license_code = _license_record(license_code)
+    profiles = data[license_code].get("profiles", {})
+    if sid not in profiles:
+        return jsonify({"error": "eleve inconnu"}), 404
+    profile = profiles[sid]
+    class_name = data[license_code].get("class_name", "") or license_code
+
+    # Collecte les heros + histoires de cet eleve
+    heroes_data = []
+    for hdir in sorted(CUSTOM_DIR.iterdir()) if CUSTOM_DIR.exists() else []:
+        hj = hdir / "hero.json"
+        if not hj.exists():
+            continue
+        try:
+            meta = json.loads(hj.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if meta.get("license") != license_code or meta.get("student_id") != sid:
+            continue
+        stories = []
+        sdir = hdir / "stories"
+        if sdir.exists():
+            for st in sorted(sdir.iterdir()):
+                if not st.is_dir(): continue
+                sj = st / "story.json"
+                if not sj.exists(): continue
+                try:
+                    s = json.loads(sj.read_text(encoding="utf-8"))
+                    s["_dir"] = st
+                    stories.append(s)
+                except Exception:
+                    pass
+        heroes_data.append({
+            "hero_id": meta["hero_id"],
+            "name": meta.get("name", ""),
+            "portrait": hdir / "portrait.jpg",
+            "stories": stories,
+        })
+
+    # Genere le PDF
+    from io import BytesIO
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib.units import cm
+    from reportlab.lib.colors import HexColor
+    from reportlab.pdfgen import canvas as pdfcanvas
+    from reportlab.lib.utils import ImageReader
+    from reportlab.pdfbase.pdfmetrics import stringWidth
+
+    buf = BytesIO()
+    c = pdfcanvas.Canvas(buf, pagesize=A4)
+    W, H = A4
+
+    def wrap_text(text, font, size, max_w):
+        words = (text or "").split()
+        lines, cur = [], ""
+        for w in words:
+            test = (cur + " " + w).strip()
+            if stringWidth(test, font, size) <= max_w:
+                cur = test
+            else:
+                if cur: lines.append(cur)
+                cur = w
+        if cur: lines.append(cur)
+        return lines
+
+    # === COUVERTURE ===
+    c.setFillColor(HexColor("#2A1850"))
+    c.rect(0, 0, W, H, stroke=0, fill=1)
+    c.setFillColor(HexColor("#FFE166"))
+    c.setFont("Helvetica-Bold", 36)
+    c.drawCentredString(W/2, H - 5*cm, "IA : Le monde de Léon")
+    c.setFillColor(HexColor("#FFF8EE"))
+    c.setFont("Helvetica", 22)
+    c.drawCentredString(W/2, H - 7*cm, "Histoires de " + (profile.get("name", "") or sid))
+    c.setFont("Helvetica", 80)
+    c.drawCentredString(W/2, H/2 + 1*cm, profile.get("avatar", "👤"))
+    c.setFont("Helvetica", 16)
+    c.drawCentredString(W/2, H/2 - 3*cm, class_name)
+    c.setFont("Helvetica-Oblique", 12)
+    c.setFillColor(HexColor("#B0A0D0"))
+    nb_h = len(heroes_data); nb_s = sum(len(h["stories"]) for h in heroes_data)
+    c.drawCentredString(W/2, 3*cm, f"{nb_h} héros · {nb_s} histoires")
+    c.showPage()
+
+    # === HISTOIRES ===
+    for hero in heroes_data:
+        for story in hero["stories"]:
+            # Page titre de l'histoire
+            c.setFillColor(HexColor("#FFF8EE"))
+            c.rect(0, 0, W, H, stroke=0, fill=1)
+            c.setFillColor(HexColor("#7A4A10"))
+            c.setFont("Helvetica-Bold", 28)
+            for li, ln in enumerate(wrap_text(story.get("title", "Histoire"), "Helvetica-Bold", 28, W - 4*cm)):
+                c.drawCentredString(W/2, H/2 + 3*cm - li*1.2*cm, ln)
+            c.setFillColor(HexColor("#A07050"))
+            c.setFont("Helvetica-Oblique", 13)
+            c.drawCentredString(W/2, H/2 - 2*cm,
+                "Une aventure de " + hero["name"] + " — " + (profile.get("name") or sid))
+            c.showPage()
+
+            # Pages de l'histoire (image + texte)
+            for idx, page in enumerate(story.get("pages", []), 1):
+                img_path = story["_dir"] / f"page{idx}.jpg"
+                if img_path.exists():
+                    try:
+                        img = ImageReader(str(img_path))
+                        # Image en haut, 16:9, occupe ~45% de la hauteur
+                        img_w, img_h = W - 4*cm, (W - 4*cm) * 9 / 16
+                        c.drawImage(img, 2*cm, H - 2*cm - img_h, img_w, img_h, preserveAspectRatio=True)
+                        text_y = H - 2*cm - img_h - 1.5*cm
+                    except Exception:
+                        text_y = H - 4*cm
+                else:
+                    text_y = H - 4*cm
+                # Texte sous l'image
+                c.setFillColor(HexColor("#3A2A1A"))
+                c.setFont("Helvetica", 11)
+                txt = (page.get("text", "") or "").replace("<br><br>", "\n\n").replace("<br>", "\n")
+                # Strip basic HTML
+                import re as _re
+                txt = _re.sub(r"<[^>]+>", "", txt)
+                paragraphs = txt.split("\n\n")
+                y = text_y
+                for para in paragraphs:
+                    for ln in wrap_text(para.replace("\n", " ").strip(), "Helvetica", 11, W - 4*cm):
+                        if y < 2*cm: break
+                        c.drawString(2*cm, y, ln)
+                        y -= 0.42*cm
+                    y -= 0.3*cm
+                # Numero de page en bas
+                c.setFillColor(HexColor("#8A7060"))
+                c.setFont("Helvetica-Oblique", 9)
+                c.drawCentredString(W/2, 1.2*cm,
+                    f"{story.get('title', '')[:50]} — page {idx} / {len(story.get('pages', []))}")
+                c.showPage()
+
+    c.save()
+    buf.seek(0)
+    fname = f"histoires_{profile.get('name', sid).replace(' ', '_')}.pdf"
+    from flask import Response
+    return Response(buf.getvalue(), mimetype="application/pdf",
+                    headers={"Content-Disposition": f'attachment; filename="{fname}"'})
 
 
 @app.delete("/api/teacher/students/<sid>/heroes")
