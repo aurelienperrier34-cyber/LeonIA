@@ -1778,6 +1778,11 @@ function hbParams() {
 // ============================================================
 // URL configurable : localhost par defaut (pilote), Cloud Run plus tard via
 //   localStorage.setItem('ia_backend_url', 'https://...')
+// v703 : URL du backend de prod (ngrok pour la phase test collegues).
+// Quand on est sur github.io, on pointe vers cette URL ngrok.
+// Pour switcher : modifier cette constante (ou override via localStorage).
+const NGROK_BACKEND_URL = 'https://marauding-tree-calamari.ngrok-free.dev';
+
 function getBackendUrl() {
   // Par defaut : MEME ORIGINE que la page (le serveur sert l'app + l'API).
   // -> marche depuis n'importe quel appareil du reseau (PC, Pixel, tablette...)
@@ -1787,6 +1792,11 @@ function getBackendUrl() {
     const override = localStorage.getItem('ia_backend_url');
     if (override) return override;
   } catch (e) {}
+  // v703 : si on est sur GitHub Pages (prod statique), on bascule sur le
+  // backend ngrok / Cloud Run (defini par NGROK_BACKEND_URL).
+  if (location && location.host && location.host.endsWith('github.io')) {
+    return NGROK_BACKEND_URL;
+  }
   if (location && location.origin && location.origin.indexOf('http') === 0) {
     return location.origin;
   }

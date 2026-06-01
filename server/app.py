@@ -127,6 +127,12 @@ PLUMES_INIT = 75
 HEROES_PER_STUDENT = 3
 STORIES_PER_STUDENT = 3
 STUDENTS_PER_CLASS = 25
+
+# v703 : pour la phase test collegues, certaines licences sont marquees
+# test_mode=true et ont des quotas REDUITS (1 perso + 1 histoire par profil).
+# Permet de bornier le cout IA pendant les retours pilotes.
+HEROES_PER_STUDENT_TEST = 1
+STORIES_PER_STUDENT_TEST = 1
 # Avatars par defaut quand une classe est initialisee (1 par eleve)
 DEFAULT_AVATARS = [
     "🦊","🐻","🐰","🦁","🐼","🐸","🐵","🦉","🐯","🦄",
@@ -452,12 +458,16 @@ def _license_record(code):
     elif rec["profiles"]:
         # Met a jour les champs heroes_max/stories_max si manquants (anciens
         # profils avec juste plumes). On garde le name/avatar saisis par le prof.
+        # v703 : si test_mode active, applique les quotas test reduits.
+        is_test = bool(rec.get("test_mode", False))
+        h_max = HEROES_PER_STUDENT_TEST if is_test else HEROES_PER_STUDENT
+        s_max = STORIES_PER_STUDENT_TEST if is_test else STORIES_PER_STUDENT
         changed = False
         for sid, p in rec["profiles"].items():
-            if "heroes_max" not in p:
-                p["heroes_max"] = HEROES_PER_STUDENT; changed = True
-            if "stories_max" not in p:
-                p["stories_max"] = STORIES_PER_STUDENT; changed = True
+            if p.get("heroes_max") != h_max:
+                p["heroes_max"] = h_max; changed = True
+            if p.get("stories_max") != s_max:
+                p["stories_max"] = s_max; changed = True
         if changed:
             _save_quota(data)
     return data, code
@@ -1034,12 +1044,15 @@ def admin_create_license():
     data = _load_quota()
     if license_code in data:
         return jsonify({"error": "collision"}), 500
+    # v703 : test_mode optionnel (bornier les couts pendant la phase test collegues)
+    test_mode = bool(body.get("test_mode", False))
     data[license_code] = {
         "plumes": PLUMES_INIT, "heroes_max": HEROES_MAX,
         "class_name": class_name,
         "teacher_email": teacher_email,
         "teacher_name": teacher_name,
         "teacher_password_hash": "",
+        "test_mode": test_mode,
         "invite_token": _gen_token(24),
         "invite_expires_at": int(time.time()) + INVITE_DURATION_S,
         "teacher_invited_at": int(time.time()),
