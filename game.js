@@ -535,6 +535,44 @@ function restoreState() {
 
 // Init
 document.addEventListener("DOMContentLoaded", () => {
+  // v698 : QR code eleve. URL ?student=eX&license=ECOLE-XXX -> identifie
+  // l'eleve directement et entre dans le Livre Magique. Permet aux enfants
+  // de scanner une carte papier au lieu de chercher leur prenom dans une
+  // grille a chaque session.
+  try {
+    const usp = new URLSearchParams(location.search);
+    const sid = usp.get('student');
+    const lic = usp.get('license');
+    if (sid && /^e\d+$/.test(sid)) {
+      // Active la licence ecole (debloque premium + bypass paywall)
+      if (lic && typeof activateSchoolLicense === 'function') {
+        activateSchoolLicense(lic);
+      }
+      try { localStorage.setItem('ia_student_id', sid); } catch (e) {}
+      // Va chercher le nom de l'eleve depuis le backend (pour le badge)
+      fetch((location.origin || '') + '/api/class/students?license=' + encodeURIComponent(lic || ''))
+        .then(r => r.json()).then(d => {
+          const stu = (d.students || []).find(s => s.id === sid);
+          if (stu) {
+            try { localStorage.setItem('ia_student_name', stu.name); } catch (e) {}
+          }
+          // Nettoie l'URL (retire les params pour eviter les re-redirections)
+          try { history.replaceState(null, '', location.pathname); } catch (e) {}
+          // Va directement dans le Livre Magique
+          if (typeof openCreatorMode === 'function') {
+            setTimeout(() => openCreatorMode(), 200);
+          }
+        })
+        .catch(() => {
+          // Fallback : meme sans le nom, on rentre direct
+          try { history.replaceState(null, '', location.pathname); } catch (e) {}
+          if (typeof openCreatorMode === 'function') {
+            setTimeout(() => openCreatorMode(), 200);
+          }
+        });
+    }
+  } catch (e) {}
+
   restoreState();
   state.isPremium = isPremium();   // source de verite = localStorage / ?premium=1
   grantInitialPlumes();            // offre PLUMES_FREE_GIFT a la 1re ouverture

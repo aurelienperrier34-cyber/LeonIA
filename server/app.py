@@ -666,6 +666,118 @@ def teacher_update_student(sid):
     return jsonify({"ok": True, "student": profiles[sid]})
 
 
+@app.get("/api/teacher/qrcodes.pdf")
+def teacher_qrcodes_pdf():
+    """v698 : genere une planche A4 de 25 QR codes (1 par eleve) a imprimer.
+    Chaque QR code encode l'URL :
+      <origin>/?student=<sid>&license=<code>
+    Quand l'eleve scanne, il est identifie automatiquement -> entree directe
+    dans le Livre Magique."""
+    teacher_code = request.args.get("teacher_code", "")
+    license_code = _teacher_code_to_license(teacher_code)
+    if not license_code or not _valid_license(license_code):
+        return jsonify({"error": "code prof invalide"}), 403
+    # Base URL : par defaut l'origine de la requete (utile en local).
+    # En prod, le prof peut surcharger via ?base_url=https://iamondedeleon.fr
+    base_url = (request.args.get("base_url", "") or "").strip().rstrip("/")
+    if not base_url:
+        base_url = request.url_root.rstrip("/")
+
+    data, license_code = _license_record(license_code)
+    profiles = data[license_code].get("profiles", {})
+    class_name = data[license_code].get("class_name", "") or license_code
+
+    from io import BytesIO
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib.units import cm, mm
+    from reportlab.lib.colors import HexColor
+    from reportlab.pdfgen import canvas as pdfcanvas
+    from reportlab.lib.utils import ImageReader
+    import qrcode
+
+    buf = BytesIO()
+    c = pdfcanvas.Canvas(buf, pagesize=A4)
+    W, H = A4   # 595 x 842 pt
+
+    # En-tete
+    c.setFillColor(HexColor("#7A4A10"))
+    c.setFont("Helvetica-Bold", 14)
+    c.drawString(1.5*cm, H - 1.5*cm, "Cartes d'accès — " + class_name)
+    c.setFont("Helvetica", 9)
+    c.setFillColor(HexColor("#888888"))
+    c.drawString(1.5*cm, H - 2*cm,
+        "Découpez et plastifiez chaque carte. L'élève la scanne avec la caméra "
+        "pour entrer directement dans son espace.")
+
+    # Grille 5 x 5
+    COLS, ROWS = 5, 5
+    PAGE_MARGIN_X = 1.5*cm
+    PAGE_MARGIN_TOP = 2.6*cm
+    PAGE_MARGIN_BOTTOM = 1.5*cm
+    cell_w = (W - 2 * PAGE_MARGIN_X) / COLS
+    cell_h = (H - PAGE_MARGIN_TOP - PAGE_MARGIN_BOTTOM) / ROWS
+
+    # Tri des profils par index numerique
+    sorted_profiles = sorted(profiles.items(),
+                             key=lambda x: int(x[0][1:]) if x[0][1:].isdigit() else 99)
+    for i, (sid, p) in enumerate(sorted_profiles[:COLS*ROWS]):
+        col = i % COLS
+        row = i // COLS
+        x = PAGE_MARGIN_X + col * cell_w
+        y_top = H - PAGE_MARGIN_TOP - row * cell_h
+        y_bottom = y_top - cell_h
+
+        # Cadre carte (pointilles pour decoupage)
+        c.setStrokeColor(HexColor("#CCCCCC"))
+        c.setDash(2, 2)
+        c.rect(x + 2*mm, y_bottom + 2*mm, cell_w - 4*mm, cell_h - 4*mm)
+        c.setDash()
+
+        # Genere QR code
+        url = f"{base_url}/?student={sid}&license={license_code}"
+        qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_M,
+                           box_size=10, border=2)
+        qr.add_data(url); qr.make(fit=True)
+        img = qr.make_image(fill_color="#1A0D2E", back_color="white")
+        # Sauve en buffer PIL -> ImageReader
+        img_buf = BytesIO()
+        img.save(img_buf, format="PNG")
+        img_buf.seek(0)
+        qr_img = ImageReader(img_buf)
+
+        # Place le QR (centre haut de la cellule)
+        qr_size = min(cell_w - 8*mm, cell_h - 22*mm)
+        qr_x = x + (cell_w - qr_size) / 2
+        qr_y = y_top - 4*mm - qr_size
+        c.drawImage(qr_img, qr_x, qr_y, qr_size, qr_size)
+
+        # Avatar (en haut a droite) + prenom (centre bas)
+        c.setFillColor(HexColor("#1A0D2E"))
+        c.setFont("Helvetica", 14)
+        c.drawString(x + cell_w - 9*mm, y_top - 5*mm, p.get("avatar", "👤"))
+
+        c.setFillColor(HexColor("#1A0D2E"))
+        c.setFont("Helvetica-Bold", 11)
+        name = p.get("name", sid)[:18]
+        # Centre le prenom
+        from reportlab.pdfbase.pdfmetrics import stringWidth
+        tw = stringWidth(name, "Helvetica-Bold", 11)
+        c.drawString(x + (cell_w - tw) / 2, qr_y - 6*mm, name)
+
+    # Pied de page
+    c.setFont("Helvetica-Oblique", 7)
+    c.setFillColor(HexColor("#AAAAAA"))
+    c.drawCentredString(W/2, 1*cm,
+        f"IA : Le monde de Léon — Cartes d'accès — {license_code} — {base_url}")
+
+    c.save()
+    buf.seek(0)
+    fname = f"cartes_QR_{license_code}.pdf"
+    from flask import Response
+    return Response(buf.getvalue(), mimetype="application/pdf",
+                    headers={"Content-Disposition": f'attachment; filename="{fname}"'})
+
+
 @app.get("/api/teacher/student/<sid>/stories.pdf")
 def teacher_student_pdf(sid):
     """v698 : exporte en PDF toutes les histoires d'un eleve.
