@@ -155,6 +155,11 @@ _RATELIMIT_FORGOT = {}
 # Sessions actives en memoire : {session_token: {license, expires_at}}
 _SESSIONS = {}
 
+# v702 : code classe court (4 chars) pour l'eleve qui n'a pas son QR code.
+# Alphabet sans caracteres ambigus (pas de O/0, I/1, L) -> dictee facile.
+CLASS_CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"
+CLASS_CODE_LENGTH = 4
+
 # Projet PRINCIPAL (le worktree est sous <main>/.claude/worktrees/<id>).
 # Sert de REPLI pour les assets presents seulement cote main (ex: catalogue
 # des 243 histoires) -> evite de dupliquer 765 Mo dans le worktree.
@@ -203,6 +208,39 @@ def _verify_password(password, hash_str):
 def _gen_token(nbytes=24):
     """Genere un token URL-safe (~32 chars)."""
     return _secrets.token_urlsafe(nbytes)
+
+
+def _gen_class_code(length=CLASS_CODE_LENGTH):
+    """Genere un code classe court (ex: K7H2) avec un alphabet sans
+    caracteres ambigus -> facile a dicter et a taper par les eleves."""
+    return "".join(_secrets.choice(CLASS_CODE_ALPHABET) for _ in range(length))
+
+
+def _find_license_by_class_code(class_code):
+    """Cherche la licence ayant ce code classe court."""
+    if not class_code: return None
+    c = class_code.strip().upper()
+    data = _load_quota()
+    for code, rec in data.items():
+        if (rec.get("class_code") or "").upper() == c:
+            return code
+    return None
+
+
+def _ensure_class_code(rec, data):
+    """Garantit qu'un class_code existe pour cette licence. Gere la collision
+    (cas extrêmement rare avec 923k combinaisons mais robustesse)."""
+    if rec.get("class_code"):
+        return rec["class_code"]
+    existing = {r.get("class_code") for r in data.values() if r.get("class_code")}
+    for _ in range(20):
+        cc = _gen_class_code()
+        if cc not in existing:
+            rec["class_code"] = cc
+            return cc
+    # Fallback (statistiquement impossible)
+    rec["class_code"] = _gen_class_code(6)
+    return rec["class_code"]
 
 
 def _client_ip():
@@ -397,6 +435,10 @@ def _license_record(code):
         data[code] = {"plumes": PLUMES_INIT, "heroes_max": HEROES_MAX, "class_name": ""}
     # Migration : si profiles absent, initialise 25 eleves avec prenoms par defaut
     rec = data[code]
+    # v702 : code classe court (genere a la migration si absent)
+    if not rec.get("class_code"):
+        _ensure_class_code(rec, data)
+        _save_quota(data)
     if "profiles" not in rec or not isinstance(rec.get("profiles"), dict):
         rec["profiles"] = {}
         for i in range(1, STUDENTS_PER_CLASS + 1):
@@ -510,6 +552,42 @@ def state():
         "heroes_max": data[code].get("heroes_max", HEROES_MAX),
         "heroes": heroes,
     })
+
+
+# v702 : endpoint PUBLIC pour resoudre un code classe court -> licence.
+# L'eleve tape K7H2 dans l'app -> on lui renvoie le license_code complet
+# (ECOLE-XXX) qu'il pourra utiliser ensuite avec /api/class/students.
+@app.get("/api/class/by-code")
+def class_by_code():
+    code = (request.args.get("code", "") or "").strip().upper()
+    if len(code) < 3:
+        return jsonify({"error": "invalid_format"}), 400
+    license_code = _find_license_by_class_code(code)
+    if not license_code:
+        return jsonify({"error": "not_found",
+                        "message": "Code classe inconnu. Vérifie auprès de ton "
+                                   "maître ou ta maîtresse."}), 404
+    data, license_code = _license_record(license_code)
+    return jsonify({
+        "license": license_code,
+        "class_name": data[license_code].get("class_name", ""),
+        "class_code": data[license_code].get("class_code", ""),
+    })
+
+
+@app.post("/api/teacher/regenerate-class-code")
+def teacher_regenerate_class_code():
+    """v702 : regenere le code classe court (au cas ou il aurait fuite)."""
+    license_code = _resolve_teacher_license()
+    if not license_code:
+        return jsonify({"error": "non_authentifie"}), 403
+    data, license_code = _license_record(license_code)
+    rec = data[license_code]
+    # Force la regeneration meme si un code existe deja
+    rec["class_code"] = ""
+    new_code = _ensure_class_code(rec, data)
+    _save_quota(data)
+    return jsonify({"ok": True, "class_code": new_code})
 
 
 # v697 : endpoint PUBLIC pour la liste des prenoms de la classe (accessible
@@ -1050,6 +1128,7 @@ def teacher_students():
     return jsonify({
         "license": license_code,
         "class_name": data[license_code].get("class_name", ""),
+        "class_code": data[license_code].get("class_code", ""),
         "students": students,
         "heroes_per_student": HEROES_PER_STUDENT,
         "stories_per_student": STORIES_PER_STUDENT,

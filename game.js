@@ -2065,13 +2065,17 @@ function showPremiumPaywall(feature) {
       '<p style="margin:0 0 18px;font-size:.95rem;line-height:1.5;opacity:.9;">' +
         '<b>Pour entrer dans le monde de Léon, scanne ta carte d\'accès.</b><br>' +
         'Si tu n\'as pas ta carte, demande à ton maître ou ta maîtresse de t\'en donner une.</p>' +
-      '<button id="premium-paywall-close-main" style="cursor:pointer;border:none;width:100%;' +
+      '<button id="premium-paywall-code" style="cursor:pointer;border:none;width:100%;' +
       'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
       'font-size:1.05rem;padding:14px 24px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.45);">' +
-      'D\'accord 👍</button>' +
+      'Entrer avec un code de classe 🔑</button>' +
+      '<button id="premium-paywall-close-main" style="margin-top:10px;cursor:pointer;border:none;width:100%;' +
+      'background:rgba(122,74,16,.08);color:#7a4a10;font-weight:700;' +
+      'font-size:.95rem;padding:11px 24px;border-radius:14px;">' +
+      'Plus tard 👋</button>' +
       '<button id="premium-paywall-school" style="margin-top:12px;cursor:pointer;border:none;' +
-      'background:none;color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.65;">' +
-      'J\'ai un code école (sans carte)</button>' +
+      'background:none;color:#7a4a10;font-size:.78rem;text-decoration:underline;opacity:.55;">' +
+      'J\'ai un long code école (mode avancé)</button>' +
       '<div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(122,74,16,.25);' +
       'font-size:.85rem;line-height:1.5;opacity:.8;text-align:left;">' +
         '<b>Vous êtes une mairie, une école ou un éditeur ?</b><br>' +
@@ -2081,9 +2085,79 @@ function showPremiumPaywall(feature) {
     '</div>';
   ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
   document.body.appendChild(ov);
+  document.getElementById('premium-paywall-code')?.addEventListener('click', () => {
+    ov.remove(); showClassCodePrompt();
+  });
   document.getElementById('premium-paywall-school')?.addEventListener('click', showSchoolCodePrompt);
   document.getElementById('premium-paywall-close-main')?.addEventListener('click', () => ov.remove());
 }
+
+// v702 : modal de saisie du CODE CLASSE court (4 caracteres K7H2)
+function showClassCodePrompt() {
+  document.getElementById('class-code-prompt')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'class-code-prompt';
+  ov.setAttribute('style',
+    'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
+    'justify-content:center;background:rgba(20,10,35,0.82);' +
+    'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:5vw;');
+  ov.innerHTML =
+    '<div style="max-width:420px;width:100%;background:linear-gradient(160deg,#fff8ee,#ffe9c7);' +
+    'border:3px solid #e0a23a;border-radius:22px;padding:28px 26px;text-align:center;' +
+    'box-shadow:0 20px 60px rgba(0,0,0,.5);font-family:inherit;color:#4a2f12;">' +
+      '<div style="font-size:46px;line-height:1;margin-bottom:10px;">🔑</div>' +
+      '<h2 style="margin:0 0 6px;font-size:1.3rem;color:#7a4a10;">Code de ta classe</h2>' +
+      '<p style="margin:0 0 16px;font-size:.92rem;opacity:.85;line-height:1.4;">' +
+        'Ton enseignant t\'a donné un code de <b>4 caractères</b>.<br>Tape-le ici&nbsp;:</p>' +
+      '<input id="class-code-input" type="text" maxlength="6" autocomplete="off" ' +
+      'style="width:100%;padding:14px 16px;font-size:1.6rem;letter-spacing:6px;' +
+      'text-align:center;text-transform:uppercase;border:2px solid #d4a76a;' +
+      'border-radius:12px;font-family:inherit;font-weight:800;color:#5a3608;' +
+      'background:#fff;margin-bottom:12px;">' +
+      '<div id="class-code-err" style="display:none;background:rgba(220,50,50,.12);' +
+      'border:1px solid rgba(220,50,50,.4);color:#b3001b;padding:8px 12px;border-radius:8px;' +
+      'font-size:.85rem;margin-bottom:10px;"></div>' +
+      '<button id="class-code-go" style="cursor:pointer;border:none;width:100%;' +
+      'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
+      'font-size:1.05rem;padding:13px 24px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.45);">' +
+      'Valider 🚀</button>' +
+      '<button id="class-code-cancel" style="margin-top:10px;cursor:pointer;border:none;' +
+      'background:none;color:#7a4a10;font-size:.85rem;text-decoration:underline;opacity:.6;">' +
+      'Annuler</button>' +
+    '</div>';
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  const inp = document.getElementById('class-code-input');
+  inp.focus();
+  inp.addEventListener('input', () => { inp.value = inp.value.toUpperCase(); });
+  const showErr = (msg) => {
+    const e = document.getElementById('class-code-err');
+    e.textContent = msg; e.style.display = 'block';
+  };
+  const tryCode = async () => {
+    const code = (inp.value || '').trim().toUpperCase();
+    if (code.length < 3) { showErr('Code trop court.'); return; }
+    try {
+      const r = await fetch(getBackendUrl() + '/api/class/by-code?code=' + encodeURIComponent(code));
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) { showErr(d.message || 'Code inconnu.'); return; }
+      // Active la licence + ouvre le picker des prenoms
+      if (typeof activateSchoolLicense === 'function') activateSchoolLicense(d.license);
+      ov.remove();
+      if (typeof showStudentPicker === 'function') {
+        showStudentPicker(() => {
+          if (typeof openCreatorMode === 'function') openCreatorMode();
+        });
+      }
+    } catch (e) {
+      showErr('Serveur injoignable. ' + e.message);
+    }
+  };
+  document.getElementById('class-code-go').addEventListener('click', tryCode);
+  inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryCode(); });
+  document.getElementById('class-code-cancel').addEventListener('click', () => ov.remove());
+}
+window.showClassCodePrompt = showClassCodePrompt;
 window.showPremiumPaywall = showPremiumPaywall;
 
 // Start a mapped chapter
