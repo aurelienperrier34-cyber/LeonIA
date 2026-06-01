@@ -364,7 +364,12 @@
 </div>
 
 <script>
-const API = location.origin;
+// v705 : si on est sur GitHub Pages (prod statique), on tape vers le
+// backend ngrok / Cloud Run. Sinon (local), meme origine.
+const NGROK_BACKEND_URL = 'https://marauding-tree-calamari.ngrok-free.dev';
+const API = (location.host && location.host.endsWith('github.io'))
+  ? NGROK_BACKEND_URL
+  : location.origin;
 const AVATARS = [
   "🦊","🐻","🐰","🦁","🐼","🐸","🐵","🦉","🐯","🦄",
   "🐶","🐱","🐧","🐢","🦋","🐝","🐙","🦖","🐳","🦅",
