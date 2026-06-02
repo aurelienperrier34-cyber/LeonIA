@@ -334,9 +334,8 @@
       <button id="btn-regenerate-cc" class="btn-pdf" type="button" title="Génère un nouveau code (l'ancien sera invalide immédiatement)">↻ Régénérer</button>
     </div>
     <div class="toolbar">
-      <div class="hint">
+      <div class="hint" id="toolbar-hint">
         Modifiez les prénoms de vos élèves directement dans le tableau.
-        Chaque élève peut créer <b>3 héros</b> qui vivront <b>1 histoire</b> chacun.
       </div>
       <div>
         <span id="save-status" class="save-status">Enregistré ✓</span>
@@ -562,7 +561,22 @@ async function loadStudents() {
     // v702 : code classe court
     const ccEl = document.getElementById('cc-value');
     if (ccEl) ccEl.textContent = d.class_code || '—';
-    renderTable(d.students || []);
+    // v708 : hint dynamique selon le quota réel (test_mode = 1+1 vs normal 3+1)
+    const students = d.students || [];
+    const hMax = (students[0] && students[0].heroes_max) || 3;
+    const sMax = (students[0] && students[0].stories_max) || 1;
+    const hintEl = document.getElementById('toolbar-hint');
+    if (hintEl) {
+      const isTest = (hMax === 1 && sMax === 1);
+      const heroLbl = hMax === 1 ? '<b>1 héros</b>' : ('<b>' + hMax + ' héros</b>');
+      const storyLbl = sMax === 1 ? '<b>1 histoire</b>' : ('<b>' + sMax + ' histoires</b>');
+      hintEl.innerHTML =
+        'Modifiez les prénoms de vos élèves directement dans le tableau. ' +
+        'Chaque élève peut créer ' + heroLbl + ' qui vivra' +
+        (hMax === 1 ? '' : 'ont') + ' ' + storyLbl + ' chacun.' +
+        (isTest ? ' <span style="color:#FFE166;font-weight:700">(quota réduit : mode test pilote)</span>' : '');
+    }
+    renderTable(students);
   } catch (e) {
     document.getElementById('loading').textContent = 'Erreur : ' + e.message;
   }
