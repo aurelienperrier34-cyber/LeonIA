@@ -1779,6 +1779,25 @@ function hbParams() {
 // Pour switcher : modifier cette constante (ou override via localStorage).
 const NGROK_BACKEND_URL = 'https://marauding-tree-calamari.ngrok-free.dev';
 
+// v712 : wrap fetch pour ajouter le header anti-warning ngrok sur les
+// requetes vers le tunnel. Sans ce header, ngrok-free.dev affiche une
+// page HTML d'avertissement au navigateur -> casse CORS.
+(function() {
+  const _origFetch = window.fetch.bind(window);
+  window.fetch = function(url, init) {
+    init = init || {};
+    init.headers = init.headers || {};
+    if (typeof url === 'string' && url.includes('ngrok-free')) {
+      if (init.headers instanceof Headers) {
+        init.headers.set('ngrok-skip-browser-warning', '1');
+      } else {
+        init.headers['ngrok-skip-browser-warning'] = '1';
+      }
+    }
+    return _origFetch(url, init);
+  };
+})();
+
 function getBackendUrl() {
   // Par defaut : MEME ORIGINE que la page (le serveur sert l'app + l'API).
   // -> marche depuis n'importe quel appareil du reseau (PC, Pixel, tablette...)

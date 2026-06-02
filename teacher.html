@@ -380,6 +380,23 @@ const NGROK_BACKEND_URL = 'https://marauding-tree-calamari.ngrok-free.dev';
 const API = (location.host && location.host.endsWith('github.io'))
   ? NGROK_BACKEND_URL
   : location.origin;
+
+// v712 : wrap fetch pour ajouter le header anti-warning ngrok
+// (sans ce header, ngrok-free.dev affiche une page HTML d'avertissement
+// au navigateur -> casse CORS car cette page n'a pas les headers Allow-Origin)
+const _origFetch = window.fetch.bind(window);
+window.fetch = function(url, init) {
+  init = init || {};
+  init.headers = init.headers || {};
+  if (typeof url === 'string' && url.includes('ngrok-free')) {
+    if (init.headers instanceof Headers) {
+      init.headers.set('ngrok-skip-browser-warning', '1');
+    } else {
+      init.headers['ngrok-skip-browser-warning'] = '1';
+    }
+  }
+  return _origFetch(url, init);
+};
 const AVATARS = [
   "🦊","🐻","🐰","🦁","🐼","🐸","🐵","🦉","🐯","🦄",
   "🐶","🐱","🐧","🐢","🦋","🐝","🐙","🦖","🐳","🦅",

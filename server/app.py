@@ -193,7 +193,10 @@ else:
         "http://127.0.0.1:8787",
         "https://marauding-tree-calamari.ngrok-free.dev",
     ]
-CORS(app, origins=_cors_origins, supports_credentials=True)
+CORS(app, origins=_cors_origins, supports_credentials=True,
+     allow_headers=["Content-Type", "Authorization", "X-Admin-Token",
+                    "ngrok-skip-browser-warning"],
+     expose_headers=["Content-Disposition"])
 print(f"[CORS] origines autorisees : {_cors_origins}")
 
 
