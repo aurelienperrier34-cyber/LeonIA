@@ -69,8 +69,10 @@ PLAN_FINANCEMENT.*
 PITCH_MAIRIE.*
 CANDIDATURE_GOOGLE_EDU.*
 DOCS_RGPD.*
+INSTALL_TABLETTE.*
 _build_docs.js
 _build_rgpd.js
+_build_install_guide.py
 demo_qr.png
 audit_out/
 audit_map/
