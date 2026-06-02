@@ -1053,8 +1053,22 @@ def admin_create_license():
     teacher_email = (body.get("email", "") or "").strip().lower()
     teacher_name = (body.get("name", "") or "").strip()
     class_name = (body.get("class_name", "") or "").strip()
+    force = bool(body.get("force_duplicate", False))   # v707 : override anti-doublon
     if not teacher_email:
         return jsonify({"error": "missing_email"}), 400
+
+    # v707 : check anti-doublon par email (sauf si force=True)
+    existing_code = _find_license_by_email(teacher_email)
+    if existing_code and not force:
+        data_check, _ = _license_record(existing_code)
+        rec_existing = data_check[existing_code]
+        return jsonify({
+            "error": "email_already_exists",
+            "message": "Cet email est déjà associé à une licence active.",
+            "existing_license": existing_code,
+            "existing_class_code": rec_existing.get("class_code", ""),
+            "existing_activated": bool(rec_existing.get("teacher_activated_at")),
+        }), 409
 
     # Genere un code licence pseudo-aleatoire (8 chars)
     suffix = _gen_token(6).upper().replace("-", "").replace("_", "")[:8]
