@@ -547,9 +547,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       try {
         localStorage.setItem('ia_teacher_preview', '1');
-        // En mode preview, pas de student_id imposé : on peut naviguer librement
-        localStorage.removeItem('ia_student_id');
-        localStorage.removeItem('ia_student_name');
+        // v712 : profil enseignant dedie ePR (quota 1+1 separe des eleves).
+        // L'enseignant peut creer SON heros et SON histoire pour vraiment
+        // tester la promesse sans piquer le quota d'un eleve.
+        localStorage.setItem('ia_student_id', 'ePR');
+        localStorage.setItem('ia_student_name', 'Enseignant·e');
       } catch (e) {}
       try { history.replaceState(null, '', location.pathname); } catch (e) {}
     }
@@ -1529,7 +1531,7 @@ function ensureTeacherPreviewBadge() {
     'text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.25);' +
     'display:flex;align-items:center;justify-content:center;gap:14px;');
   bar.innerHTML =
-    '<span>👁️ Mode aperçu enseignant — la création est désactivée</span>' +
+    '<span>🧑‍🏫 Mode aperçu enseignant — vos créations (1 héros + 1 histoire) sont séparées du quota des élèves</span>' +
     '<button onclick="exitTeacherPreview();location.reload();" ' +
     'style="background:rgba(0,0,0,.2);color:#fff;border:1px solid rgba(255,255,255,.4);' +
     'padding:3px 10px;border-radius:6px;font-size:.78rem;cursor:pointer;font-family:inherit;">' +
@@ -1541,20 +1543,14 @@ window.ensureTeacherPreviewBadge = ensureTeacherPreviewBadge;
 function openHeroBuilder() {
   // Premium : la creation fait partie du contenu payant.
   if (!isPremium()) { showPremiumPaywall('book'); goToScreen('map'); return; }
-  // v702 : mode enseignant -> bloque la creation (preserve le quota eleves)
-  if (isTeacherPreview()) {
-    alert("Mode aperçu enseignant : la création de héros est désactivée " +
-          "pour ne pas consommer le quota de vos élèves.\n\n" +
-          "Pour tester la création complète, ouvrez l'application sous le " +
-          "profil d'un élève (depuis sa carte QR).");
-    return;
-  }
+  // v712 : mode aperçu enseignant -> utilise profil ePR (quota 1+1 dedie),
+  // permet de tester la creation complete sans piquer aux eleves.
   // v685 : verrou 3 perso max par eleve. La carte "Creer" est masquee a 3 mais
   // si on arrive ici par un autre chemin (ex: console, raccourci), on bloque.
   const HEROES_LIMIT = 3;
   if ((window.creatorCustomHeroes || []).length >= HEROES_LIMIT) {
     alert("Tu as déjà créé " + HEROES_LIMIT + " héros (la limite). " +
-          "Demande à ton maître ou ta maîtresse d'en supprimer un avant d'en créer un nouveau.");
+          "Demande à ton enseignant·e d'en supprimer un avant d'en créer un nouveau.");
     return;
   }
   hbState.step = 0;
@@ -2074,7 +2070,7 @@ function showPremiumPaywall(feature) {
       '<h2 style="margin:0 0 6px;font-size:1.3rem;color:#7a4a10;">' + titre + '</h2>' +
       '<p style="margin:0 0 18px;font-size:.95rem;line-height:1.5;opacity:.9;">' +
         '<b>Pour entrer dans le monde de Léon, scanne ta carte d\'accès.</b><br>' +
-        'Si tu n\'as pas ta carte, demande à ton maître ou ta maîtresse de t\'en donner une.</p>' +
+        'Si tu n\'as pas ta carte, demande à ton enseignant·e de t\'en donner une.</p>' +
       '<button id="premium-paywall-code" style="cursor:pointer;border:none;width:100%;' +
       'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
       'font-size:1.05rem;padding:14px 24px;border-radius:14px;box-shadow:0 4px 14px rgba(76,162,47,.45);">' +
@@ -11504,14 +11500,7 @@ async function generateCreatorStory() {
 // Genere une histoire CUSTOM via le backend (heros cree par l'enfant).
 // Debite 1 plume cote serveur, puis affiche l'histoire dans le lecteur.
 async function generateCustomStoryViaBackend(heroId) {
-  // v702 : mode enseignant -> bloque la generation (preserve le quota eleves)
-  if (isTeacherPreview()) {
-    alert("Mode aperçu enseignant : la génération d'histoires est désactivée " +
-          "pour ne pas consommer le quota de vos élèves.\n\n" +
-          "Pour tester une génération complète, ouvrez l'application sous le " +
-          "profil d'un élève (depuis sa carte QR).");
-    return;
-  }
+  // v712 : mode aperçu enseignant -> utilise profil ePR (quota 1+1 dedie).
   document.getElementById('creator-pick').hidden = true;
   document.getElementById('creator-loading').hidden = false;
   // Message d'attente adapte (la generation custom prend ~1-2 min)

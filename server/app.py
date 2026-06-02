@@ -477,15 +477,39 @@ def _license_record(code):
                 "stories_max": STORIES_PER_STUDENT,
             }
         _save_quota(data)
-    elif rec["profiles"]:
+    # v712 : profil enseignant dedie (ePR) — 1 heros + 1 histoire pour tester
+    # l'app sans consommer le quota des eleves. Cree a la migration et
+    # garanti ensuite.
+    if "ePR" not in rec.get("profiles", {}):
+        rec.setdefault("profiles", {})["ePR"] = {
+            "name": "Enseignant·e",
+            "avatar": "🧑‍🏫",
+            "heroes_max": 1,
+            "stories_max": 1,
+            "is_teacher": True,
+        }
+        _save_quota(data)
+    elif not rec["profiles"]["ePR"].get("is_teacher"):
+        # Patch profils ePR existants (migration progressive)
+        rec["profiles"]["ePR"]["is_teacher"] = True
+        rec["profiles"]["ePR"]["heroes_max"] = 1
+        rec["profiles"]["ePR"]["stories_max"] = 1
+        _save_quota(data)
+    if rec["profiles"]:
         # Met a jour les champs heroes_max/stories_max si manquants (anciens
         # profils avec juste plumes). On garde le name/avatar saisis par le prof.
         # v703 : si test_mode active, applique les quotas test reduits.
+        # v712 : ePR garde TOUJOURS 1+1, peu importe test_mode
         is_test = bool(rec.get("test_mode", False))
         h_max = HEROES_PER_STUDENT_TEST if is_test else HEROES_PER_STUDENT
         s_max = STORIES_PER_STUDENT_TEST if is_test else STORIES_PER_STUDENT
         changed = False
         for sid, p in rec["profiles"].items():
+            if p.get("is_teacher"):
+                # ePR : quota fixe 1+1, jamais modifie par le mode test
+                if p.get("heroes_max") != 1: p["heroes_max"] = 1; changed = True
+                if p.get("stories_max") != 1: p["stories_max"] = 1; changed = True
+                continue
             if p.get("heroes_max") != h_max:
                 p["heroes_max"] = h_max; changed = True
             if p.get("stories_max") != s_max:
@@ -635,6 +659,9 @@ def class_students():
     students = []
     for sid, p in sorted(profiles.items(),
                          key=lambda x: int(x[0][1:]) if x[0][1:].isdigit() else 99):
+        # v712 : on cache le profil enseignant dans le picker eleve
+        if p.get("is_teacher"):
+            continue
         stats = _student_stats(code, sid)
         students.append({
             "id": sid,
@@ -666,8 +693,8 @@ def create_hero():
         max_h = profiles[student_id].get("heroes_max", HEROES_PER_STUDENT)
         if stats["heroes"] >= max_h:
             return jsonify({"error": "limite_heros_eleve", "message":
-                            f"Tu as deja {max_h} heros. Demande a ta maitresse "
-                            "ou ton maitre d'en supprimer un."}), 409
+                            f"Tu as deja {max_h} heros. Demande a ton "
+                            "enseignant·e d'en supprimer un."}), 409
     else:
         # Back-compat : sans student_id, quota global classe (ancien comportement)
         if len(_list_heroes(code)) >= data[code].get("heroes_max", HEROES_MAX):
@@ -748,7 +775,7 @@ def create_story():
         if stats["stories"] >= max_s:
             return jsonify({"error": "limite_histoires_eleve", "message":
                             f"Tu as deja vecu {max_s} histoires. Demande a ta "
-                            "maitresse ou ton maitre de creer une autre classe."}), 409
+                            "enseignant·e de creer une autre classe."}), 409
 
     # Quota legacy classe (plumes) garde par retro-compat
     if data[code]["plumes"] < 1:
@@ -1163,12 +1190,19 @@ def teacher_students():
     data, license_code = _license_record(license_code)
     profiles = data[license_code].get("profiles", {})
     students = []
-    for sid, p in sorted(profiles.items(), key=lambda x: int(x[0][1:]) if x[0][1:].isdigit() else 99):
+    # v712 : tri = ePR en premier (profil enseignant), puis e1..eN par index num
+    def _sort_key(item):
+        sid = item[0]
+        if sid == "ePR": return (-1, 0)
+        if sid[1:].isdigit(): return (1, int(sid[1:]))
+        return (2, sid)
+    for sid, p in sorted(profiles.items(), key=_sort_key):
         stats = _student_stats(license_code, sid)
         students.append({
             "id": sid,
             "name": p.get("name", sid),
             "avatar": p.get("avatar", "👤"),
+            "is_teacher": bool(p.get("is_teacher", False)),
             "heroes": stats["heroes"],
             "heroes_max": p.get("heroes_max", HEROES_PER_STUDENT),
             "stories": stats["stories"],
@@ -1197,6 +1231,74 @@ def teacher_class_update():
     data[license_code]["class_name"] = new_name
     _save_quota(data)
     return jsonify({"ok": True, "class_name": new_name})
+
+
+@app.post("/api/teacher/students")
+def teacher_add_student():
+    """v712 : ajoute un nouvel eleve (au-dela des 25 par defaut). ID auto
+    (e26, e27, ...) en cherchant le prochain libre."""
+    license_code = _resolve_teacher_license()
+    if not license_code:
+        return jsonify({"error": "non_authentifie"}), 403
+    data, license_code = _license_record(license_code)
+    profiles = data[license_code].setdefault("profiles", {})
+    # Trouve le prochain ID libre (e26, e27...)
+    existing_nums = []
+    for sid in profiles.keys():
+        if sid.startswith("e") and sid[1:].isdigit():
+            existing_nums.append(int(sid[1:]))
+    next_num = (max(existing_nums) + 1) if existing_nums else 1
+    new_sid = f"e{next_num}"
+    body = request.get_json(force=True, silent=True) or {}
+    name = (body.get("name", "") or "").strip()[:24] or f"Élève {next_num}"
+    avatar = (body.get("avatar", "") or "").strip()[:6] or \
+             DEFAULT_AVATARS[(next_num - 1) % len(DEFAULT_AVATARS)]
+    is_test = bool(data[license_code].get("test_mode", False))
+    h_max = HEROES_PER_STUDENT_TEST if is_test else HEROES_PER_STUDENT
+    s_max = STORIES_PER_STUDENT_TEST if is_test else STORIES_PER_STUDENT
+    profiles[new_sid] = {
+        "name": name,
+        "avatar": avatar,
+        "heroes_max": h_max,
+        "stories_max": s_max,
+    }
+    _save_quota(data)
+    return jsonify({"ok": True, "student": {
+        "id": new_sid, "name": name, "avatar": avatar,
+        "heroes": 0, "heroes_max": h_max,
+        "stories": 0, "stories_max": s_max,
+        "is_teacher": False,
+    }})
+
+
+@app.delete("/api/teacher/students/<sid>")
+def teacher_delete_student(sid):
+    """v712 : supprime un eleve (ses heros + son profil)."""
+    license_code = _resolve_teacher_license()
+    if not license_code:
+        return jsonify({"error": "non_authentifie"}), 403
+    if sid == "ePR":
+        return jsonify({"error": "cant_delete_teacher",
+                        "message": "Impossible de supprimer le profil enseignant."}), 400
+    data, license_code = _license_record(license_code)
+    profiles = data[license_code].get("profiles", {})
+    if sid not in profiles:
+        return jsonify({"error": "eleve_introuvable"}), 404
+    # Supprime aussi les heros + histoires lies
+    import shutil
+    if CUSTOM_DIR.exists():
+        for hdir in list(CUSTOM_DIR.iterdir()):
+            hj = hdir / "hero.json"
+            if not hj.exists(): continue
+            try:
+                h = json.loads(hj.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            if h.get("license") == license_code and h.get("student_id") == sid:
+                shutil.rmtree(hdir, ignore_errors=True)
+    del profiles[sid]
+    _save_quota(data)
+    return jsonify({"ok": True})
 
 
 @app.put("/api/teacher/students/<sid>")

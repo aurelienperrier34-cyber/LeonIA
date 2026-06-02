@@ -159,6 +159,13 @@
     font-size: 0.96rem; vertical-align: middle;
   }
   table.students tr:hover { background: rgba(255,225,102,0.06); }
+  /* v712 : ligne du profil enseignant — fond légèrement doré pour distinguer */
+  table.students tr.row-teacher {
+    background: linear-gradient(90deg, rgba(255,225,102,0.12), rgba(255,225,102,0.04));
+    border-top: 2px solid rgba(255,225,102,0.3);
+    border-bottom: 2px solid rgba(255,225,102,0.3);
+  }
+  table.students tr.row-teacher:hover { background: rgba(255,225,102,0.18); }
   .avatar { font-size: 1.8rem; line-height: 1; cursor: pointer; user-select: none; }
   .avatar:hover { transform: scale(1.15); }
   input.name-input {
@@ -350,11 +357,15 @@
           <th>Prénom</th>
           <th style="width:160px">Héros créés</th>
           <th style="width:160px">Histoires lues</th>
-          <th style="width:120px">Actions</th>
+          <th style="width:140px">Actions</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
     </table>
+    <!-- v712 : bouton ajout élève hors quota 25 -->
+    <div style="margin-top:16px;text-align:center;">
+      <button id="btn-add-student" class="btn-pdf" style="background:linear-gradient(160deg,#7ec850,#4ca22f);" type="button" title="Ajouter un élève (au-delà des 25 par défaut)">+ Ajouter un élève</button>
+    </div>
   </div>
 </main>
 
@@ -611,6 +622,9 @@ document.getElementById('btn-preview-app').addEventListener('click', () => {
   window.open(url, '_blank');
 });
 
+// v712 : ajouter un élève (26e+)
+document.getElementById('btn-add-student').addEventListener('click', addStudent);
+
 // v702 : régénération du code classe
 document.getElementById('btn-regenerate-cc').addEventListener('click', async () => {
   if (!confirm('Régénérer le code classe ? L\'ancien sera invalide immédiatement et les élèves devront utiliser le nouveau.')) return;
@@ -695,12 +709,27 @@ function renderTable(students) {
   students.forEach(s => {
     const tr = document.createElement('tr');
     tr.dataset.sid = s.id;
+    const isTeacher = !!s.is_teacher;
+    const sidNum = (s.id && /^e\d+$/.test(s.id)) ? parseInt(s.id.slice(1), 10) : 0;
+    const isExtraStudent = !isTeacher && sidNum > 25;  // au-dela des 25 par defaut
+    if (isTeacher) tr.classList.add('row-teacher');
+    // v712 : actions diffèrent selon le type de profil
+    let actions;
+    if (isTeacher) {
+      actions = '<button class="btn-reset" data-sid="' + s.id + '">↻ Reset</button>';
+    } else if (isExtraStudent) {
+      actions = '<button class="btn-reset" data-sid="' + s.id + '">↻ Reset</button>' +
+                '<button class="btn-del-student" data-sid="' + s.id + '" title="Supprimer cet élève" style="margin-left:4px;background:transparent;border:1px solid rgba(220,50,50,0.5);color:#ff9b8d;border-radius:6px;padding:5px 8px;cursor:pointer;font-size:0.8rem;">🗑</button>';
+    } else {
+      actions = '<button class="btn-reset" data-sid="' + s.id + '">↻ Reset</button>';
+    }
     tr.innerHTML =
       '<td><span class="avatar" data-sid="' + s.id + '" title="Changer l\'avatar">' + s.avatar + '</span></td>' +
-      '<td><input class="name-input" data-sid="' + s.id + '" value="' + s.name.replace(/"/g, '&quot;') + '" maxlength="24"></td>' +
+      '<td><input class="name-input" data-sid="' + s.id + '" value="' + s.name.replace(/"/g, '&quot;') +
+        '" maxlength="24"' + (isTeacher ? ' style="font-style:italic;color:#FFE166;"' : '') + '></td>' +
       '<td class="quota-cell">' + quotaCell(s.heroes, s.heroes_max) + '</td>' +
       '<td class="quota-cell">' + quotaCell(s.stories, s.stories_max) + '</td>' +
-      '<td><button class="btn-reset" data-sid="' + s.id + '">↻ Reset</button></td>';
+      '<td>' + actions + '</td>';
     tbody.appendChild(tr);
   });
   // Wire name input changes
@@ -715,8 +744,37 @@ function renderTable(students) {
   tbody.querySelectorAll('.btn-reset').forEach(btn => {
     btn.addEventListener('click', () => resetStudent(btn.dataset.sid));
   });
+  // v712 : wire delete buttons (élèves ajoutés au-delà des 25)
+  tbody.querySelectorAll('.btn-del-student').forEach(btn => {
+    btn.addEventListener('click', () => deleteStudent(btn.dataset.sid));
+  });
   document.getElementById('loading').style.display = 'none';
   document.getElementById('tbl').style.display = '';
+}
+
+// v712 : ajout d'un élève au-delà des 25 par défaut
+async function addStudent() {
+  try {
+    const r = await fetch(API + '/api/teacher/students', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      credentials: 'include',
+      body: JSON.stringify({}),
+    });
+    if (r.ok) {
+      flashStatus('Élève ajouté ✓');
+      loadStudents();
+    } else flashStatus('Erreur', true);
+  } catch (e) { flashStatus('Erreur réseau', true); }
+}
+async function deleteStudent(sid) {
+  if (!confirm('Supprimer cet élève et toutes ses créations ? Action irréversible.')) return;
+  try {
+    const r = await fetch(API + '/api/teacher/students/' + sid, {
+      method: 'DELETE', credentials: 'include',
+    });
+    if (r.ok) { flashStatus('Élève supprimé ✓'); loadStudents(); }
+    else flashStatus('Erreur', true);
+  } catch (e) { flashStatus('Erreur réseau', true); }
 }
 
 async function saveStudent(sid, fields) {
