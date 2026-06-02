@@ -353,24 +353,41 @@ def _session_cookie_kwargs():
     }
 
 
-def _send_email_brevo(to_email, to_name, subject, html_body):
-    """Envoie un email via Brevo API. Renvoie (ok, error_msg)."""
+def _send_email_brevo(to_email, to_name, subject, html_body, attachments=None):
+    """Envoie un email via Brevo API. Renvoie (ok, error_msg).
+    v717 : support des pieces jointes (attachments = liste de chemins fichiers
+    sur disque -> encodage base64 + ajout dans le payload Brevo)."""
     if not BREVO_API_KEY:
         # Mode dev sans Brevo : on log dans la console
         print(f"\n[email DEV - Brevo non configure]\n  TO: {to_email}\n  SUBJECT: {subject}\n  BODY (extrait): {html_body[:200]}...\n")
         return True, "DEV mode (no Brevo)"
     try:
+        payload = {
+            "sender": {"email": BREVO_SENDER_EMAIL, "name": BREVO_SENDER_NAME},
+            "to": [{"email": to_email, "name": to_name or to_email}],
+            "subject": subject,
+            "htmlContent": html_body,
+        }
+        # v717 : pieces jointes (auto-base64 depuis les chemins disque)
+        if attachments:
+            import base64
+            atts = []
+            for path in attachments:
+                p = Path(path)
+                if not p.exists():
+                    print(f"[email] attachment introuvable, ignore: {p}")
+                    continue
+                with open(p, "rb") as f:
+                    content = base64.b64encode(f.read()).decode("ascii")
+                atts.append({"name": p.name, "content": content})
+            if atts:
+                payload["attachment"] = atts
         r = _rq.post("https://api.brevo.com/v3/smtp/email",
-                     json={
-                         "sender": {"email": BREVO_SENDER_EMAIL, "name": BREVO_SENDER_NAME},
-                         "to": [{"email": to_email, "name": to_name or to_email}],
-                         "subject": subject,
-                         "htmlContent": html_body,
-                     },
+                     json=payload,
                      headers={"api-key": BREVO_API_KEY,
                               "Content-Type": "application/json",
                               "accept": "application/json"},
-                     timeout=15)
+                     timeout=20)
         if 200 <= r.status_code < 300:
             return True, ""
         return False, f"Brevo {r.status_code}: {r.text[:200]}"
@@ -397,6 +414,10 @@ def _email_invite_html(teacher_name, class_name, invite_url):
     </div>
     <p style="font-size:.85rem;opacity:.7;">Ce lien est valable <b>24 heures</b>. Passé ce délai, vous pourrez en demander un nouveau.</p>
     <hr style="border:none;border-top:1px solid #e0d8c0;margin:24px 0;">
+    <p style="font-size:.92rem;color:#4a3a20;background:#fffae0;padding:12px 14px;border-radius:8px;border-left:3px solid #FFE166;">
+      📋 <b>Phase pilote</b> — vous trouverez en pièce jointe une fiche de témoignage à remplir
+      après avoir testé l'app en classe. Vos retours sont précieux pour faire évoluer l'outil.
+    </p>
     <p style="font-size:.8rem;opacity:.6;">Si vous n'êtes pas à l'origine de cette demande, ignorez simplement cet email.</p>
   </div>
 </div>
@@ -1131,9 +1152,15 @@ def admin_create_license():
     base = (body.get("base_url", "") or "").strip().rstrip("/") or \
            request.url_root.rstrip("/")
     invite_url = f"{base}/teacher.html?invite={data[license_code]['invite_token']}"
+    # v717 : joint la fiche de temoignage si elle existe (phase test pilote)
+    attachments = []
+    fiche_path = ROOT / "FICHE_TEMOIGNAGE.docx"
+    if fiche_path.exists():
+        attachments.append(str(fiche_path))
     ok, err = _send_email_brevo(teacher_email, teacher_name,
                                 "Activez votre compte — IA : Le monde de Léon",
-                                _email_invite_html(teacher_name, class_name, invite_url))
+                                _email_invite_html(teacher_name, class_name, invite_url),
+                                attachments=attachments)
     return jsonify({
         "ok": True,
         "license": license_code,

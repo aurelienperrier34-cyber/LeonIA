@@ -70,9 +70,11 @@ PITCH_MAIRIE.*
 CANDIDATURE_GOOGLE_EDU.*
 DOCS_RGPD.*
 INSTALL_TABLETTE.*
+FICHE_TEMOIGNAGE.*
 _build_docs.js
 _build_rgpd.js
 _build_install_guide.py
+_build_temoignage.py
 demo_qr.png
 audit_out/
 audit_map/
