@@ -604,6 +604,21 @@ document.addEventListener("DOMContentLoaded", () => {
   if (typeof ensureTeacherPreviewBadge === 'function') ensureTeacherPreviewBadge();
   // v715 : sur iPad/iPhone Safari NON installé, proposer l'installation
   if (typeof maybeShowIosInstallPrompt === 'function') maybeShowIosInstallPrompt();
+  // v716 : "Qui es-tu ?" dès le démarrage si premium actif et pas encore
+  // d'élève identifié (et pas en mode aperçu enseignant). Cohérent avec
+  // Lalilo / Pix : l'élève choisit son prénom 1 fois en début de séance.
+  if (state.isPremium && !isTeacherPreview() && !getStudentId() &&
+      typeof showStudentPicker === 'function') {
+    // Léger délai pour laisser la map se rendre d'abord, puis overlay par-dessus
+    setTimeout(() => {
+      if (!getStudentId()) {  // safety : si quelqu'un a fait setStudentId entre-temps
+        showStudentPicker(() => {
+          // L'élève a choisi son prénom : il reste sur la map, libre de naviguer
+          if (typeof updateStudentBadge === 'function') updateStudentBadge();
+        });
+      }
+    }, 500);
+  }
   if (!subtitlesEnabled()) document.body.classList.add('cc-off');
   if (state.characterType) document.body.classList.add('has-character');
   updateAVToggles();
