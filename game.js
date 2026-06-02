@@ -602,6 +602,8 @@ document.addEventListener("DOMContentLoaded", () => {
   updatePlumesUI();
   // v702 : affiche le bandeau "mode aperçu" si l'enseignant est en preview
   if (typeof ensureTeacherPreviewBadge === 'function') ensureTeacherPreviewBadge();
+  // v715 : sur iPad/iPhone Safari NON installé, proposer l'installation
+  if (typeof maybeShowIosInstallPrompt === 'function') maybeShowIosInstallPrompt();
   if (!subtitlesEnabled()) document.body.classList.add('cc-off');
   if (state.characterType) document.body.classList.add('has-character');
   updateAVToggles();
@@ -1514,6 +1516,52 @@ function exitTeacherPreview() {
 }
 window.isTeacherPreview = isTeacherPreview;
 window.exitTeacherPreview = exitTeacherPreview;
+
+// v715 : prompt d'installation iOS — sur iPad/iPhone Safari NON installé,
+// affiche une bulle qui explique comment ajouter à l'écran d'accueil pour
+// avoir un vrai plein écran. Dismissable, mémorisé en localStorage.
+function maybeShowIosInstallPrompt() {
+  const ua = navigator.userAgent || '';
+  const isIOS = /iPhone|iPad|iPod/i.test(ua) && !window.MSStream;
+  const isInStandalone =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+  let dismissed = false;
+  try { dismissed = localStorage.getItem('ia_ios_install_dismissed') === '1'; } catch (e) {}
+  if (!isIOS || isInStandalone || dismissed) return;
+  // Apparait 3 secondes apres l'arrivee (laisse le user voir la map d'abord)
+  setTimeout(() => {
+    if (document.getElementById('ios-install-bubble')) return;
+    const div = document.createElement('div');
+    div.id = 'ios-install-bubble';
+    div.setAttribute('style',
+      'position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom));' +
+      'transform:translateX(-50%);z-index:99997;' +
+      'background:linear-gradient(160deg,#fff8ee,#ffe9c7);color:#4a2f12;' +
+      'border:2px solid #e0a23a;border-radius:14px;' +
+      'box-shadow:0 12px 32px rgba(0,0,0,.35);' +
+      'padding:14px 18px;max-width:420px;width:92%;font-size:.92rem;' +
+      'font-family:inherit;line-height:1.45;');
+    div.innerHTML =
+      '<button id="ios-install-x" style="position:absolute;top:6px;right:8px;' +
+      'background:none;border:none;color:#7a4a10;font-size:1.3rem;cursor:pointer;' +
+      'padding:2px 8px;opacity:.6;">×</button>' +
+      '<div style="display:flex;align-items:center;gap:12px;">' +
+        '<div style="font-size:2.2rem;line-height:1;">📲</div>' +
+        '<div>' +
+          '<b style="color:#7a4a10">Ajoutez Léon à l\'écran d\'accueil</b><br>' +
+          '<small style="opacity:.85">Pour un mode plein écran. Touchez ' +
+          '<b>Partager</b> ⬆️ puis <b>"Sur l\'écran d\'accueil"</b>.</small>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(div);
+    document.getElementById('ios-install-x').addEventListener('click', () => {
+      div.remove();
+      try { localStorage.setItem('ia_ios_install_dismissed', '1'); } catch (e) {}
+    });
+  }, 3000);
+}
+window.maybeShowIosInstallPrompt = maybeShowIosInstallPrompt;
 
 // v702 : badge permanent en haut de l'app quand l'enseignant est en mode preview
 function ensureTeacherPreviewBadge() {
