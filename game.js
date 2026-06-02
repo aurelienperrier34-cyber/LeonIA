@@ -1931,8 +1931,8 @@ function showHeroLoading(name) {
     'left:50%;top:45%;transform:translate(-50%,-50%);' +
     'width:22vmin;height:22vmin;border-radius:50%;' +
     'overflow:hidden;z-index:2;"></div>' +
-    // TEXTE en bas
-    '<div style="position:absolute;left:50%;bottom:3vh;transform:translateX(-50%);' +
+    // TEXTE en bas (v713 : remonte a 10vh pour laisser place au bouton Genial)
+    '<div id="hero-orb-textblock" style="position:absolute;left:50%;bottom:10vh;transform:translateX(-50%);' +
     'text-align:center;color:#fff8ee;text-shadow:0 2px 12px rgba(0,0,0,.85);' +
     'padding:0 4vw;max-width:680px;z-index:3;">' +
       '<h2 id="hero-orb-title" style="margin:0 0 4px;' +
@@ -1962,17 +1962,27 @@ function showHeroLoading(name) {
     document.head.appendChild(st);
   }
   document.body.appendChild(ov);
-  // v695 : passe en mode FULLSCREEN navigateur (masque la barre d'adresse).
-  // Le user-gesture (clic "Donne vie a mon heros") est requis -> ok puisqu'on
-  // est juste apres le clic. En cas d'echec (API bloquee, deja en FS, etc.),
-  // on ignore silencieusement.
-  try {
-    const el = document.documentElement;
-    if (!document.fullscreenElement) {
+  // v695 / v713 : passe en mode FULLSCREEN navigateur (masque la barre d'adresse).
+  // Le user-gesture (clic "Donne vie a mon heros") est requis. Si echec, on
+  // installe un fallback : 1er clic n'importe ou sur l'overlay retente.
+  const tryFullscreen = () => {
+    try {
+      const el = document.documentElement;
+      if (document.fullscreenElement) return true;
       const req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen;
-      if (req) req.call(el).catch(() => {});
-    }
-  } catch (e) {}
+      if (req) {
+        const p = req.call(el);
+        if (p && p.catch) p.catch(() => {});
+        return true;
+      }
+    } catch (e) {}
+    return false;
+  };
+  tryFullscreen();
+  // Fallback : si on n'est toujours pas en plein ecran, on retente au 1er clic
+  if (!document.fullscreenElement) {
+    ov.addEventListener('click', tryFullscreen, { once: true });
+  }
 }
 
 function showHeroError(msg) {
@@ -1986,9 +1996,11 @@ function showHeroError(msg) {
   document.getElementById('hero-error-close').addEventListener('click', () => ov.remove());
 }
 
-function showHeroResult(data) {
+async function showHeroResult(data) {
   // v682 : le portrait apparait DANS l'orbe (deja positionnee dans l'image
   // d'atelier au centre 50%/55%). Effet revelation magique : blur->net + scale.
+  // v713 : fetch + blob URL pour bypass la warning page ngrok-free.dev
+  // sur les balises <img> (qui ne peuvent pas envoyer de header custom).
   const url = getBackendUrl() + data.portrait_url;
   let orb = document.getElementById('hero-orb');
   let loadingOv = document.getElementById('hero-loading');
@@ -1997,9 +2009,21 @@ function showHeroResult(data) {
     orb = document.getElementById('hero-orb');
     loadingOv = document.getElementById('hero-loading');
   }
+  // Cas ngrok : fetch via JS (notre wrapper ajoute le header skip-warning)
+  // -> recoit une vraie image -> blob URL -> injectable dans <img>
+  let imgSrc = url;
+  if (url.includes('ngrok-free')) {
+    try {
+      const r = await fetch(url, { credentials: 'include' });
+      if (r.ok) {
+        const blob = await r.blob();
+        imgSrc = URL.createObjectURL(blob);
+      }
+    } catch (e) { console.warn('blob fetch failed, fallback direct URL:', e); }
+  }
   // Injecte le portrait dans le slot (deja positionne sur l'orbe de l'image)
   orb.innerHTML =
-    '<img src="' + url + '" alt="' + (data.name || '').replace(/"/g, '&quot;') +
+    '<img src="' + imgSrc + '" alt="' + (data.name || '').replace(/"/g, '&quot;') +
     '" style="width:100%;height:100%;object-fit:cover;display:block;' +
     'border-radius:50%;' +
     'animation:heroPortraitReveal 1.2s cubic-bezier(.16,.84,.44,1) both;">';
@@ -2016,12 +2040,13 @@ function showHeroResult(data) {
     const btn = document.createElement('button');
     btn.id = 'hero-result-close';
     btn.setAttribute('style',
+      // v713 : bouton en bas mais à 2vh, texte remonte à 10vh -> plus de chevauchement
       'position:absolute;left:50%;bottom:max(2vh,env(safe-area-inset-bottom,0));' +
       'transform:translateX(-50%);' +
       'cursor:pointer;border:none;' +
       'background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;font-weight:800;' +
-      'font-size:clamp(0.95rem,1.6vw,1.1rem);padding:12px 30px;border-radius:14px;' +
-      'box-shadow:0 4px 14px rgba(76,162,47,.45);font-family:inherit;z-index:3;');
+      'font-size:clamp(0.95rem,1.6vw,1.1rem);padding:14px 36px;border-radius:14px;' +
+      'box-shadow:0 4px 14px rgba(76,162,47,.45);font-family:inherit;z-index:4;');
     btn.textContent = 'Génial ! 😍';
     btn.addEventListener('click', () => {
       loadingOv.remove();
