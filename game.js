@@ -1927,10 +1927,12 @@ function showHeroLoading(name) {
     // MICRO-ECLATS twinkle
     twinkles +
     // SLOT du portrait (vide pendant loading)
+    // v713 : 22vmin -> 30vmin pour remplir vraiment l'orbe lumineuse
     '<div id="hero-orb" style="position:absolute;' +
     'left:50%;top:45%;transform:translate(-50%,-50%);' +
-    'width:22vmin;height:22vmin;border-radius:50%;' +
-    'overflow:hidden;z-index:2;"></div>' +
+    'width:30vmin;height:30vmin;border-radius:50%;' +
+    'overflow:hidden;z-index:2;' +
+    'box-shadow:0 0 40px 8px rgba(255,220,120,0.4);"></div>' +
     // TEXTE en bas (v713 : remonte a 10vh pour laisser place au bouton Genial)
     '<div id="hero-orb-textblock" style="position:absolute;left:50%;bottom:10vh;transform:translateX(-50%);' +
     'text-align:center;color:#fff8ee;text-shadow:0 2px 12px rgba(0,0,0,.85);' +
