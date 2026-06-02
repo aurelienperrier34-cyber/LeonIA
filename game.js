@@ -11688,8 +11688,11 @@ function _buildPlaceholderStory() {
 
 // === PHASE 3 : LIVRE 3D === ==================================
 // Etat audio : autoplay toggle persiste en localStorage entre sessions
+// v711 : autoplay activé par défaut (UX enfant : l'histoire se déclenche
+// toute seule, comme un livre audio). L'utilisateur peut désactiver via le
+// bouton 🔁 ; sa préférence est mémorisée en localStorage.
 const bookAudioState = {
-  autoplay: localStorage.getItem('book_autoplay') === 'true',
+  autoplay: localStorage.getItem('book_autoplay') !== 'false',  // default = true
   eventsWired: false
 };
 
@@ -11807,7 +11810,18 @@ function loadBookAudioForPage(idx) {
     if (token !== _bookAudioToken) return;
     setAudioButtonState('ready');
     if (bookAudioState.autoplay) {
-      audio.play().catch(e => console.warn('autoplay denied:', e.message));
+      audio.play().catch(e => {
+        console.warn('autoplay denied:', e.message);
+        // v711 : fallback si autoplay bloque par le navigateur (politique
+        // user-gesture). On fait pulser le bouton ▶ pour attirer l'oeil.
+        // La pulse s'arrete des que l'enfant clique dessus.
+        const btn = document.getElementById('book-audio-toggle');
+        if (btn && !btn.classList.contains('pulse-attention')) {
+          btn.classList.add('pulse-attention');
+          btn.addEventListener('click', () =>
+            btn.classList.remove('pulse-attention'), { once: true });
+        }
+      });
     }
   }, { once: true });
   // Custom : la narration est peut-etre encore en cours de generation -> retry

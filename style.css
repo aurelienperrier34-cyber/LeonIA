@@ -9705,6 +9705,15 @@ body:has(#screen-creator.active) #global-star-corner {
   color: #999;
   cursor: not-allowed;
 }
+/* v711 : pulse "attention" si autoplay bloque par le navigateur -> attire
+   l'oeil de l'enfant vers le bouton ▶. S'arrete au 1er clic. */
+@keyframes pulseAttention {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,225,102,0.85); }
+  50%      { transform: scale(1.12); box-shadow: 0 0 0 14px rgba(255,225,102,0); }
+}
+.book-audio-toggle.pulse-attention {
+  animation: pulseAttention 1.3s ease-in-out infinite;
+}
 .book-autoplay-toggle {
   background: rgba(20,10,30,0.7);
   color: #d4a14e;
