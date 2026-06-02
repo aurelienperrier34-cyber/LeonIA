@@ -335,12 +335,16 @@ def _destroy_session(token):
 
 
 def _session_cookie_kwargs():
-    """Cookie sécurise : HttpOnly, SameSite=Strict, Secure en HTTPS."""
+    """Cookie session.
+    v708 : SameSite=None+Secure en HTTPS (autorise cross-origin necessaire
+    pour github.io front -> ngrok/cloud-run API). En HTTP local, on garde
+    SameSite=Lax (cross-origin GET autorise, suffisant car on est meme origine
+    sur localhost). Strict bloquait les sessions en cross-origin = NetworkError."""
     is_https = request.is_secure or request.headers.get("X-Forwarded-Proto") == "https"
     return {
         "max_age": SESSION_DURATION_S,
         "httponly": True,
-        "samesite": "Strict",
+        "samesite": "None" if is_https else "Lax",
         "secure": is_https,
         "path": "/",
     }

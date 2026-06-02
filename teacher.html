@@ -602,8 +602,12 @@ document.getElementById('btn-export-pdf').addEventListener('click', () => openEx
 // v698 : QR codes
 document.getElementById('btn-qrcodes').addEventListener('click', () => openQrCodesDialog());
 // v702 : voir l'app comme un élève (mode aperçu, création désactivée)
+// v708 : construit l'URL en gardant le path (gere github.io/LeonIA/)
 document.getElementById('btn-preview-app').addEventListener('click', () => {
-  const url = location.origin + '/?teacher_preview=1&license=' + encodeURIComponent(CURRENT_LICENSE);
+  // Sur github.io/LeonIA/teacher.html -> /LeonIA/?teacher_preview=...
+  // Sur localhost:8787/teacher.html    -> /?teacher_preview=...
+  const appBase = location.href.replace(/teacher\.html.*$/, '');
+  const url = appBase + '?teacher_preview=1&license=' + encodeURIComponent(CURRENT_LICENSE);
   window.open(url, '_blank');
 });
 
