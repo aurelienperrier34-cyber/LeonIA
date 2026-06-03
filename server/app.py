@@ -453,13 +453,36 @@ def _email_invite_html(teacher_name, class_name, invite_url):
       <li>Un bouton <b>« 👁️ Voir comme un élève »</b> en haut à droite, pour tester l'app vous-même avant la classe</li>
     </ul>
 
+    <h3 style="margin:18px 0 10px;color:#7a4a10;font-size:1.05rem;">📱 L'adresse de l'app à donner aux élèves</h3>
+    <div style="background:#fffae0;padding:12px 14px;border-radius:8px;border-left:3px solid #FFE166;margin:6px 0 14px;">
+      <p style="margin:0;font-size:.95rem;">
+        <b>https://aurelienperrier34-cyber.github.io/LeonIA/</b>
+      </p>
+      <p style="margin:6px 0 0;font-size:.85rem;opacity:.75;">
+        Même adresse pour tous les élèves. Aucune installation, ça s'ouvre dans le navigateur (Chrome, Safari, Edge…).
+      </p>
+    </div>
+
     <h3 style="margin:18px 0 10px;color:#7a4a10;font-size:1.05rem;">👧 Faire entrer les élèves dans l'application</h3>
     <p style="margin:6px 0;font-size:.95rem;">Deux méthodes au choix :</p>
     <ol style="margin:6px 0 14px 18px;font-size:.92rem;line-height:1.5;">
-      <li><b>Avec le code classe</b> (style Lalilo) : les élèves vont sur l'app, tapent les 4 caractères du code, puis sélectionnent leur prénom dans la liste</li>
-      <li><b>Avec les QR codes</b> : un par élève à scanner (idéal sur tablette / iPad), l'élève arrive directement sur son profil</li>
+      <li><b>Avec le code classe</b> (style Lalilo) : les élèves ouvrent l'adresse ci-dessus, tapent les 4 caractères du code, puis sélectionnent leur prénom dans la liste</li>
+      <li><b>Avec les QR codes</b> : un par élève à scanner (idéal sur tablette / iPad), l'élève arrive directement sur son profil sans rien taper</li>
     </ol>
-    <p style="margin:6px 0;font-size:.9rem;">L'app fonctionne sur tablette, ordinateur et smartphone (Chrome / Safari).</p>
+
+    <h3 style="margin:18px 0 10px;color:#7a4a10;font-size:1.05rem;">💡 Sur iPad/tablette — installer comme une vraie app</h3>
+    <p style="margin:6px 0 14px;font-size:.92rem;line-height:1.5;">
+      Pour un affichage plein écran (sans la barre d'adresse Safari/Chrome), une fois sur l'app :<br>
+      <b>Safari (iPad)</b> : icône Partager <span style="background:#f0f0f0;padding:2px 6px;border-radius:4px;">⬆️</span> en bas → « Sur l'écran d'accueil ».<br>
+      <b>Chrome (Android/PC)</b> : menu ⋮ → « Installer l'application ».<br>
+      L'app apparaîtra alors comme une icône classique, comme une app installée.
+    </p>
+
+    <p style="margin:6px 0;font-size:.92rem;">
+      <b>Pour vous reconnecter à votre tableau de bord enseignant</b> plus tard :
+      <a href="https://aurelienperrier34-cyber.github.io/LeonIA/teacher.html" style="color:#4ca22f;">https://aurelienperrier34-cyber.github.io/LeonIA/teacher.html</a>
+      (avec votre email et le mot de passe que vous venez de choisir).
+    </p>
 
     <hr style="border:none;border-top:1px solid #e0d8c0;margin:24px 0;">
 
