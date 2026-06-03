@@ -35,6 +35,22 @@ import sys
 import time
 from pathlib import Path
 
+# v718 : abstraction storage (local FS ou Cloud Storage selon CLOUD_STORAGE_BUCKET)
+# Import compatible mode standalone (python server/app.py) ET package (gunicorn server.app:app)
+try:
+    from . import storage as _storage  # package mode (Cloud Run via gunicorn)
+except ImportError:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import storage as _storage  # standalone mode (python server/app.py)
+
+# v718 : racine du projet (pour chemins relatifs dans le sync GCS)
+_LOCAL_ROOT_PATH = Path(__file__).resolve().parent.parent
+# v718 : au 1er demarrage Cloud Run, migre quota.json du conteneur vers GCS
+_storage.bootstrap_from_local("server/quota.json")
+# v718 : restaure tous les heros/histoires depuis GCS au demarrage de l'instance
+# Cloud Run (le FS du conteneur est ephemere apres cold start)
+_storage.sync_dir_from_gcs("assets/custom")
+
 ROOT = Path(__file__).resolve().parent.parent          # racine du projet
 # Les modules de generation sont a la racine -> on l'ajoute au path AVANT import.
 sys.path.insert(0, str(ROOT))
@@ -204,16 +220,21 @@ print(f"[CORS] origines autorisees : {_cors_origins}")
 # Licence + quota (stockage local JSON ; -> Firestore en prod)
 # ============================================================
 def _load_quota():
-    if QUOTA_FILE.exists():
-        try:
-            return json.loads(QUOTA_FILE.read_text(encoding="utf-8"))
-        except Exception:
-            pass
+    """v718 : lecture via abstraction storage (local FS ou Cloud Storage)."""
+    txt = _storage.read_text("server/quota.json")
+    if txt:
+        try: return json.loads(txt)
+        except Exception: pass
     return {}
 
 
 def _save_quota(data):
-    QUOTA_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    """v718 : ecriture via abstraction storage."""
+    _storage.write_text(
+        "server/quota.json",
+        json.dumps(data, ensure_ascii=False, indent=2),
+        content_type="application/json",
+    )
 
 
 # ============================================================
@@ -755,14 +776,19 @@ def create_hero():
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "hero.json").write_text(
         json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    # v718 : sync vers GCS apres creation (no-op en mode local)
+    _storage.sync_dir_to_gcs(f"assets/custom/{hero_id}")
 
     return jsonify({"hero_id": hero_id, "name": name,
                     "portrait_url": f"/custom/{hero_id}/portrait.jpg", "canon": canon})
 
 
 def _generate_assets_bg(story, out_dir, hero, place, item, villain):
-    """Thread de fond : genere image + narration MP3 pour chaque page."""
+    """Thread de fond : genere image + narration MP3 pour chaque page.
+    v718 : sync vers GCS apres chaque page (incremental) pour minimiser
+    la perte en cas de redemarrage Cloud Run."""
     pages = story.get("pages", [])
+    rel_out = out_dir.relative_to(_LOCAL_ROOT_PATH).as_posix()
     for idx, page in enumerate(pages, 1):
         try:
             gcs.gen_page_image(page, idx, len(pages), hero, place, item, villain,
@@ -776,6 +802,9 @@ def _generate_assets_bg(story, out_dir, hero, place, item, villain):
                                 voice=CUSTOM_VOICE, speaking_rate=0.95)
         except Exception as e:
             print(f"[bg] audio page{idx} err: {e}")
+        # Sync incremental vers GCS (1 page a la fois)
+        try: _storage.sync_dir_to_gcs(rel_out)
+        except Exception as e: print(f"[bg] sync GCS page{idx} err: {e}")
     print(f"[bg] termine : {out_dir.name}")
 
 

@@ -2,4 +2,9 @@ flask
 flask-cors
 requests
 google-auth
+google-cloud-storage
 python-dotenv
+bcrypt
+qrcode[pil]
+reportlab
+gunicorn

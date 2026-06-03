@@ -1,0 +1,67 @@
+# Git
+.git
+.gitignore
+
+# Claude / éditeurs
+.claude
+.cursor
+.vscode
+.idea
+
+# Python caches
+__pycache__
+*.pyc
+.venv
+venv
+
+# Tests Playwright
+node_modules
+tests/screenshots
+tests/playwright-report
+tests/test-results
+playwright-report
+test-results
+
+# Documents business (gitignored, pas besoin dans le conteneur)
+PLAN_FINANCEMENT.*
+PITCH_MAIRIE.*
+KIT_PILOTE.*
+FICHE_COLLEGUE_TESTEUR.*
+CANDIDATURE_GOOGLE_EDU.*
+DOCS_RGPD.*
+INSTALL_TABLETTE.*
+FICHE_TEMOIGNAGE.*
+_build_*.js
+_build_*.py
+_send_*.py
+
+# Scripts dev locaux
+DEMO*.bat
+samples/
+scratch/
+logs/
+_test_flux/
+_shot*.js
+_diag*.js
+audit_*.py
+audit_out/
+audit_map/
+audit_small/
+
+# Admin local (jamais en prod)
+admin.html
+
+# Secrets / config locale (Cloud Run utilise des variables d'env)
+.env
+.env.local
+
+# Backups
+*.bak
+*.backup
+files.zip
+
+# Cloudflared
+cloudflared.exe
+
+# Logs serveur
+server/quota.json.bak
