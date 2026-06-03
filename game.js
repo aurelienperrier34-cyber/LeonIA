@@ -1837,10 +1837,11 @@ function hbParams() {
 // ============================================================
 // URL configurable : localhost par defaut (pilote), Cloud Run plus tard via
 //   localStorage.setItem('ia_backend_url', 'https://...')
-// v703 : URL du backend de prod (ngrok pour la phase test collegues).
-// Quand on est sur github.io, on pointe vers cette URL ngrok.
+// v703 : URL du backend de prod.
+// v719 : migre de ngrok (PC perso 24/7) vers Cloud Run (europe-west9, Paris).
+// Le nom de la constante est historique, c'est bien l'URL Cloud Run qui est utilisee.
 // Pour switcher : modifier cette constante (ou override via localStorage).
-const NGROK_BACKEND_URL = 'https://marauding-tree-calamari.ngrok-free.dev';
+const NGROK_BACKEND_URL = 'https://leon-backend-1016571435139.europe-west9.run.app';
 
 // v712 : wrap fetch pour ajouter le header anti-warning ngrok sur les
 // requetes vers le tunnel. Sans ce header, ngrok-free.dev affiche une

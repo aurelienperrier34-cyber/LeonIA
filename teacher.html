@@ -376,7 +376,8 @@
 <script>
 // v705 : si on est sur GitHub Pages (prod statique), on tape vers le
 // backend ngrok / Cloud Run. Sinon (local), meme origine.
-const NGROK_BACKEND_URL = 'https://marauding-tree-calamari.ngrok-free.dev';
+// v719 : Cloud Run (europe-west9 Paris) remplace ngrok
+const NGROK_BACKEND_URL = 'https://leon-backend-1016571435139.europe-west9.run.app';
 const API = (location.host && location.host.endsWith('github.io'))
   ? NGROK_BACKEND_URL
   : location.origin;
