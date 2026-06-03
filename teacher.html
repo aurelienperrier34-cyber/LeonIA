@@ -364,7 +364,7 @@
     </table>
     <!-- v712 : bouton ajout élève hors quota 25 -->
     <div style="margin-top:16px;text-align:center;">
-      <button id="btn-add-student" class="btn-pdf" style="background:linear-gradient(160deg,#7ec850,#4ca22f);" type="button" title="Ajouter un élève (au-delà des 25 par défaut)">+ Ajouter un élève</button>
+      <button id="btn-add-student" class="btn-pdf" style="background:linear-gradient(160deg,#7ec850,#4ca22f);" type="button" title="Ajouter un élève (au-delà des 25 par défaut, jusqu'à 30 max)">+ Ajouter un élève</button>
     </div>
   </div>
 </main>
@@ -781,7 +781,17 @@ async function addStudent() {
     if (r.ok) {
       flashStatus('Élève ajouté ✓');
       loadStudents();
-    } else flashStatus('Erreur', true);
+    } else {
+      // v720 : plafond de 30 eleves
+      try {
+        const j = await r.json();
+        if (j && j.error === 'limite_atteinte') {
+          alert(j.message || 'Limite de 30 élèves atteinte.');
+          return;
+        }
+      } catch (_) {}
+      flashStatus('Erreur', true);
+    }
   } catch (e) { flashStatus('Erreur réseau', true); }
 }
 async function deleteStudent(sid) {

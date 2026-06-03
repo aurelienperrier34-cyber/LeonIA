@@ -143,6 +143,10 @@ PLUMES_INIT = 75
 HEROES_PER_STUDENT = 3
 STORIES_PER_STUDENT = 3
 STUDENTS_PER_CLASS = 25
+# v720 : plafond dur d'eleves par classe (au-dela = rare en primaire, et
+# limite l'abus de quota par licence). L'enseignant peut ajouter au-dela
+# de 25 (effectifs charges) jusqu'a STUDENTS_MAX_PER_CLASS.
+STUDENTS_MAX_PER_CLASS = 30
 
 # v703 : pour la phase test collegues, certaines licences sont marquees
 # test_mode=true et ont des quotas REDUITS (1 perso + 1 histoire par profil).
@@ -1295,12 +1299,23 @@ def teacher_class_update():
 @app.post("/api/teacher/students")
 def teacher_add_student():
     """v712 : ajoute un nouvel eleve (au-dela des 25 par defaut). ID auto
-    (e26, e27, ...) en cherchant le prochain libre."""
+    (e26, e27, ...) en cherchant le prochain libre.
+    v720 : plafond de 30 eleves (rare au-dela en primaire).
+    Le profil enseignant (is_teacher=True, ex: ePR) ne compte pas."""
     license_code = _resolve_teacher_license()
     if not license_code:
         return jsonify({"error": "non_authentifie"}), 403
     data, license_code = _license_record(license_code)
     profiles = data[license_code].setdefault("profiles", {})
+    # v720 : compte les eleves reels (hors profil enseignant ePR)
+    student_count = sum(1 for sid, p in profiles.items()
+                        if not p.get("is_teacher") and sid != "ePR")
+    if student_count >= STUDENTS_MAX_PER_CLASS:
+        return jsonify({
+            "error": "limite_atteinte",
+            "message": (f"Limite de {STUDENTS_MAX_PER_CLASS} eleves atteinte. "
+                        "Au-dela, contacte-moi pour une licence multi-classes.")
+        }), 400
     # Trouve le prochain ID libre (e26, e27...)
     existing_nums = []
     for sid in profiles.keys():
