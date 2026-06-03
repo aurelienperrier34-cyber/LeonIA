@@ -43,8 +43,13 @@ for candidate in [
         print(f"[env] loaded {candidate}")
         break
 
+# v718 : check non-fatal (le module est aussi importe pour STORIES par
+# generate_story_audio.py / app.py qui n'ont pas besoin de Leonardo).
+# Seules les fonctions qui appellent vraiment l'API Leonardo crasheront
+# si la cle manque au moment de l'appel.
 if not os.getenv("LEONARDO_API_KEY"):
-    sys.exit("ERREUR : LEONARDO_API_KEY introuvable dans .env")
+    print("[generate_story_images] WARN : LEONARDO_API_KEY absente "
+          "- gen_image_story() echouera si appelee, mais STORIES reste importable")
 
 # On adapte la fonction generer_image de gen_image.py SANS injecter MASTER_LEON
 # (les illustrations d histoires de la Fabrique n ont pas Leon dedans, on a

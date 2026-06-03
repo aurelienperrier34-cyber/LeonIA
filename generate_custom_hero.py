@@ -55,16 +55,24 @@ URL_TPL = ("https://{r}-aiplatform.googleapis.com/v1/projects/{p}/locations/{r}/
 
 
 def _lazy_auth():
-    """Charge la service account a la demande (evite l'erreur en --print-only)."""
+    """Charge la service account a la demande (evite l'erreur en --print-only).
+    v718 : fallback sur ADC (Application Default Credentials) si pas de
+    service-account.json -> permet Cloud Run avec SA attachee."""
     import requests  # noqa
     from google.oauth2 import service_account as _sa
     from google.auth.transport.requests import Request as _AuthRequest
-    sa_file = Path("service-account.json")
-    if not sa_file.exists():
-        sys.exit("ERREUR : service-account.json introuvable")
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
-    creds = _sa.Credentials.from_service_account_file(str(sa_file), scopes=scopes)
-    project = json.loads(sa_file.read_text(encoding="utf-8"))["project_id"]
+    sa_file = Path("service-account.json")
+    if sa_file.exists():
+        creds = _sa.Credentials.from_service_account_file(str(sa_file), scopes=scopes)
+        project = json.loads(sa_file.read_text(encoding="utf-8"))["project_id"]
+        return creds, project, _AuthRequest
+    # Cloud Run : ADC via SA attachee au service
+    import google.auth as _gauth
+    creds, project = _gauth.default(scopes=scopes)
+    # ADC ne fournit pas toujours le project_id -> fallback sur env
+    if not project:
+        project = os.getenv("GOOGLE_CLOUD_PROJECT", "livre-magique")
     return creds, project, _AuthRequest
 
 

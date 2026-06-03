@@ -57,12 +57,9 @@ except Exception as _e:
     _HAS_AUDIO_VERIFIER = False
 
 # ============================================================
-# Auth : on reutilise le service account utilise pour Gemini Image
+# Auth : service-account.json en local, ADC (Application Default
+# Credentials) sur Cloud Run (la SA est attachee au service)
 # ============================================================
-_SA_FILE = Path("service-account.json")
-if not _SA_FILE.exists():
-    sys.exit("ERREUR : service-account.json introuvable a la racine du projet")
-
 try:
     from google.oauth2 import service_account as _sa
     from google.auth.transport.requests import Request as _AuthRequest
@@ -71,9 +68,16 @@ except ImportError:
     sys.exit("ERREUR : pip install google-auth google-auth-httplib2")
 
 _SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
-_SA_CREDS = _sa.Credentials.from_service_account_file(str(_SA_FILE), scopes=_SCOPES)
-_SA_PROJECT = _json.loads(_SA_FILE.read_text(encoding="utf-8")).get("project_id")
-print(f"[auth] Service Account (project={_SA_PROJECT})")
+_SA_FILE = Path("service-account.json")
+if _SA_FILE.exists():
+    _SA_CREDS = _sa.Credentials.from_service_account_file(str(_SA_FILE), scopes=_SCOPES)
+    _SA_PROJECT = _json.loads(_SA_FILE.read_text(encoding="utf-8")).get("project_id")
+    print(f"[auth] Service Account file (project={_SA_PROJECT})")
+else:
+    # v718 : Cloud Run -> ADC via google.auth.default()
+    import google.auth as _gauth
+    _SA_CREDS, _SA_PROJECT = _gauth.default(scopes=_SCOPES)
+    print(f"[auth] Application Default Credentials (project={_SA_PROJECT})")
 
 
 def _get_token():

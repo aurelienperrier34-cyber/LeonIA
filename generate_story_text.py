@@ -48,12 +48,18 @@ def _init_sa():
     global _SA_CREDS, _SA_PROJECT
     if _SA_CREDS is not None:
         return
-    if not _SA_FILE.exists():
-        raise RuntimeError("service-account.json introuvable a la racine")
-    from google.oauth2 import service_account as _sa
     _SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
-    _SA_CREDS = _sa.Credentials.from_service_account_file(str(_SA_FILE), scopes=_SCOPES)
-    _SA_PROJECT = json.loads(_SA_FILE.read_text(encoding="utf-8"))["project_id"]
+    from google.oauth2 import service_account as _sa
+    if _SA_FILE.exists():
+        _SA_CREDS = _sa.Credentials.from_service_account_file(str(_SA_FILE), scopes=_SCOPES)
+        _SA_PROJECT = json.loads(_SA_FILE.read_text(encoding="utf-8"))["project_id"]
+        return
+    # v718 : Cloud Run -> ADC
+    import google.auth as _gauth
+    _SA_CREDS, _SA_PROJECT = _gauth.default(scopes=_SCOPES)
+    if not _SA_PROJECT:
+        import os as _os
+        _SA_PROJECT = _os.getenv("GOOGLE_CLOUD_PROJECT", "livre-magique")
 
 # Endpoint Vertex AI pour Gemini Pro text
 VERTEX_REGION = "us-central1"
