@@ -171,7 +171,9 @@ BREVO_API_KEY = os.getenv("BREVO_API_KEY", "")
 BREVO_SENDER_EMAIL = os.getenv("BREVO_SENDER_EMAIL", "aurelienperrier34@gmail.com")
 BREVO_SENDER_NAME = os.getenv("BREVO_SENDER_NAME", "IA — Le monde de Léon")
 SESSION_DURATION_S = 24 * 3600          # 24h
-INVITE_DURATION_S = 24 * 3600           # 24h pour activer un invite
+# v720 : 7 jours pour activer un invite (phase test : enseignants ne
+# verifient pas leur mail dans la journee). Etait 24h, trop court en pratique.
+INVITE_DURATION_S = 7 * 24 * 3600
 RESET_DURATION_S = 3600                 # 1h pour reset le password
 
 # Rate limit en memoire : {ip: [timestamps]}
@@ -1197,6 +1199,65 @@ def admin_create_license():
     return jsonify({
         "ok": True,
         "license": license_code,
+        "invite_url": invite_url,
+        "email_sent": ok,
+        "email_error": err if not ok else "",
+    })
+
+
+@app.post("/api/admin/resend-invite")
+def admin_resend_invite():
+    """v720 : renvoie une invitation a un enseignant existant.
+    Genere un nouveau invite_token (et expires_at) et reenvoie le mail.
+    Utile quand le 1er lien a expire ou n'est jamais arrive.
+
+    Body : {"license": "ECOLE-XXX"} OU {"email": "prof@ecole.fr"}
+    Optionnel : {"base_url": "https://aurelienperrier34-cyber.github.io/LeonIA"}
+    """
+    if not ADMIN_TOKEN:
+        return jsonify({"error": "admin_token_not_configured"}), 503
+    sent = request.headers.get("X-Admin-Token", "")
+    if sent != ADMIN_TOKEN:
+        return jsonify({"error": "forbidden"}), 403
+
+    body = request.get_json(force=True, silent=True) or {}
+    license_code = (body.get("license", "") or "").strip().upper()
+    email = (body.get("email", "") or "").strip().lower()
+    if not license_code and email:
+        license_code = _find_license_by_email(email) or ""
+    if not license_code:
+        return jsonify({"error": "missing_license_or_email"}), 400
+
+    data, license_code = _license_record(license_code)
+    rec = data[license_code]
+    # Genere un token frais
+    rec["invite_token"] = _gen_token(24)
+    rec["invite_expires_at"] = int(time.time()) + INVITE_DURATION_S
+    rec["teacher_invited_at"] = int(time.time())
+    # On efface l'eventuel password hash : la procedure d'acceptation va en
+    # generer un nouveau. Si l'enseignant avait deja un compte actif, il
+    # devra simplement re-cliquer le lien et redefinir un mot de passe.
+    # (Si tu veux preserver l'existant, retire la ligne suivante.)
+    # rec["teacher_password_hash"] = ""
+    _save_quota(data)
+
+    base = (body.get("base_url", "") or "").strip().rstrip("/") or \
+           request.url_root.rstrip("/")
+    invite_url = f"{base}/teacher.html?invite={rec['invite_token']}"
+    attachments = []
+    fiche_path = ROOT / "FICHE_TEMOIGNAGE.docx"
+    if fiche_path.exists():
+        attachments.append(str(fiche_path))
+    ok, err = _send_email_brevo(
+        rec.get("teacher_email", ""), rec.get("teacher_name", ""),
+        "Activez votre compte — IA : Le monde de Léon (nouveau lien)",
+        _email_invite_html(rec.get("teacher_name", ""),
+                           rec.get("class_name", ""), invite_url),
+        attachments=attachments)
+    return jsonify({
+        "ok": True,
+        "license": license_code,
+        "email": rec.get("teacher_email", ""),
         "invite_url": invite_url,
         "email_sent": ok,
         "email_error": err if not ok else "",
