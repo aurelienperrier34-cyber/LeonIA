@@ -423,7 +423,8 @@ def _send_email_brevo(to_email, to_name, subject, html_body, attachments=None):
 
 
 def _email_invite_html(teacher_name, class_name, invite_url):
-    """Template HTML de l'email d'invitation."""
+    """Template HTML de l'email d'invitation.
+    v721 : ajoute une section 'Comment faire tester aux eleves' + duree 7 jours."""
     name = teacher_name or "Madame, Monsieur"
     cn = class_name or "votre classe"
     return f"""
@@ -439,8 +440,29 @@ def _email_invite_html(teacher_name, class_name, invite_url):
     <div style="text-align:center;margin:28px 0;">
       <a href="{invite_url}" style="display:inline-block;background:linear-gradient(160deg,#7ec850,#4ca22f);color:#fff;text-decoration:none;font-weight:700;padding:14px 32px;border-radius:10px;font-size:1rem;">Activer mon compte</a>
     </div>
-    <p style="font-size:.85rem;opacity:.7;">Ce lien est valable <b>24 heures</b>. Passé ce délai, vous pourrez en demander un nouveau.</p>
+    <p style="font-size:.85rem;opacity:.7;">Ce lien est valable <b>7 jours</b>. Passé ce délai, vous pourrez en demander un nouveau.</p>
+
     <hr style="border:none;border-top:1px solid #e0d8c0;margin:24px 0;">
+
+    <h3 style="margin:0 0 10px;color:#7a4a10;font-size:1.05rem;">🧭 Une fois connecté(e)</h3>
+    <p style="margin:6px 0;font-size:.95rem;">Sur votre <b>tableau de bord enseignant</b> vous trouverez :</p>
+    <ul style="margin:6px 0 14px 18px;font-size:.92rem;line-height:1.5;">
+      <li>Un <b>code classe à 4 caractères</b> (ex : <code style="background:#fffae0;padding:1px 6px;border-radius:4px;">K7H2</code>) à partager avec vos élèves</li>
+      <li>La liste des <b>25 profils élèves</b> pré-créés (vous pouvez renommer chacun, ajouter d'autres élèves jusqu'à 30)</li>
+      <li>Un bouton <b>« 📄 Imprimer les QR codes »</b> : une feuille A4 avec un QR code par élève, à découper et distribuer</li>
+      <li>Un bouton <b>« 👁️ Voir comme un élève »</b> en haut à droite, pour tester l'app vous-même avant la classe</li>
+    </ul>
+
+    <h3 style="margin:18px 0 10px;color:#7a4a10;font-size:1.05rem;">👧 Faire entrer les élèves dans l'application</h3>
+    <p style="margin:6px 0;font-size:.95rem;">Deux méthodes au choix :</p>
+    <ol style="margin:6px 0 14px 18px;font-size:.92rem;line-height:1.5;">
+      <li><b>Avec le code classe</b> (style Lalilo) : les élèves vont sur l'app, tapent les 4 caractères du code, puis sélectionnent leur prénom dans la liste</li>
+      <li><b>Avec les QR codes</b> : un par élève à scanner (idéal sur tablette / iPad), l'élève arrive directement sur son profil</li>
+    </ol>
+    <p style="margin:6px 0;font-size:.9rem;">L'app fonctionne sur tablette, ordinateur et smartphone (Chrome / Safari).</p>
+
+    <hr style="border:none;border-top:1px solid #e0d8c0;margin:24px 0;">
+
     <p style="font-size:.92rem;color:#4a3a20;background:#fffae0;padding:12px 14px;border-radius:8px;border-left:3px solid #FFE166;">
       📋 <b>Phase pilote</b> — vous trouverez en pièce jointe une fiche de témoignage à remplir
       après avoir testé l'app en classe. Vos retours sont précieux pour faire évoluer l'outil.
