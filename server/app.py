@@ -213,7 +213,12 @@ else:
         "https://aurelienperrier34-cyber.github.io",
         "http://localhost:8787",
         "http://127.0.0.1:8787",
-        "https://marauding-tree-calamari.ngrok-free.dev",
+        "http://localhost:8000",  # python -m http.server
+        "http://127.0.0.1:8000",
+        # v722 : "null" autorise les pages ouvertes en file:// (ex: admin.html
+        # double-clique depuis le disque). L'authentification reste assuree par
+        # ADMIN_TOKEN sur les endpoints sensibles.
+        "null",
     ]
 CORS(app, origins=_cors_origins, supports_credentials=True,
      allow_headers=["Content-Type", "Authorization", "X-Admin-Token",
