@@ -7657,7 +7657,7 @@ const C5_MODULE_DATA = {
   speak: { emoji: '💬', name: 'Parler',   video: 'assets/c5s5_robot/robot_speak.mp4?v=462',
            demo: 'Je peux te parler, te raconter des histoires, et répondre à tes questions !' },
   think: { emoji: '🧠', name: 'Réfléchir', video: 'assets/c5s5_robot/robot_think.mp4?v=462',
-           demo:       'Voyons voir... trois plus quatre font sept. Huit fois huit font soixante-quatre ! Je suis très fort en calcul.',
+           demo:       'Voyons voir... trois plus quatre font sept. Huit fois huit font soixante-quatre ! Je suis très doué en calcul.',
            // v675 : texte audio separe -> "plusse" force le TTS a prononcer
            // le 's' final (sinon dit "plu" silencieux, faux en contexte math).
            // v722 : "fort en calcul" -> "doue en calcul". Le TTS faisait une
