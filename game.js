@@ -7660,8 +7660,10 @@ const C5_MODULE_DATA = {
            demo:       'Voyons voir... trois plus quatre font sept. Huit fois huit font soixante-quatre ! Je suis très fort en calcul.',
            // v675 : texte audio separe -> "plusse" force le TTS a prononcer
            // le 's' final (sinon dit "plu" silencieux, faux en contexte math).
+           // v722 : "fort en calcul" -> "doue en calcul". Le TTS faisait une
+           // fausse liaison "fort_en" qui s'entendait "forte".
            // La bulle visuelle affiche le 'demo' correct, l'audio dit le 'demoSpoken'.
-           demoSpoken: 'Voyons voir... trois plusse quatre font sept. Huit fois huit font soixante-quatre ! Je suis très fort en calcul.' },
+           demoSpoken: 'Voyons voir... trois plusse quatre font sept. Huit fois huit font soixante-quatre ! Je suis très doué en calcul.' },
   act:   { emoji: '💪', name: 'Agir',      video: 'assets/c5s5_robot/robot_act.mp4?v=462',
            demo: 'Je peux ranger ta chambre, attraper des objets, et même cuisiner !' }
 };
