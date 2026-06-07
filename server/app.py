@@ -71,7 +71,15 @@ from stories_db import LEVEL_PAGES
 from generate_story_audio import synthesize_page, clean_html_for_tts
 from generate_story_text import _token as _mod_token, _vertex_url as _mod_url
 
-CUSTOM_VOICE = "fr-FR-Studio-A"   # voix narration (comme le catalogue)
+# v723 : voix narration (alignees sur le catalogue, qui est en Chirp3-HD).
+# La voix par defaut (feminine = Lena) est la meme que celle du catalogue,
+# la voix masculine (Leo) est l'equivalent masculin de la meme famille.
+# Bug corrige : avant v723 CUSTOM_VOICE valait "fr-FR-Studio-A" mais le
+# catalogue avait ete regenere en Chirp3-HD-Aoede (cf. commit dbce621),
+# donc les histoires personnalisees sonnaient differemment du catalogue.
+VOICE_LENA = "fr-FR-Chirp3-HD-Aoede"     # F, defaut
+VOICE_LEO  = "fr-FR-Chirp3-HD-Charon"    # H
+CUSTOM_VOICE = VOICE_LENA   # alias historique = voix par defaut
 
 
 # ============================================================
@@ -839,10 +847,16 @@ def create_hero():
                     "portrait_url": f"/custom/{hero_id}/portrait.jpg", "canon": canon})
 
 
-def _generate_assets_bg(story, out_dir, hero, place, item, villain):
+def _generate_assets_bg(story, out_dir, hero, place, item, villain,
+                        voice_gender="F"):
     """Thread de fond : genere image + narration MP3 pour chaque page.
     v718 : sync vers GCS apres chaque page (incremental) pour minimiser
-    la perte en cas de redemarrage Cloud Run."""
+    la perte en cas de redemarrage Cloud Run.
+    v723 : voice_gender='F'/'M' choisit Lena/Leo. Le suffix '_m' est
+    applique aux fichiers audio masculins pour pouvoir coexister avec
+    la version feminine."""
+    voice = VOICE_LEO if voice_gender == "M" else VOICE_LENA
+    audio_suffix = "_m" if voice_gender == "M" else ""
     pages = story.get("pages", [])
     rel_out = out_dir.relative_to(_LOCAL_ROOT_PATH).as_posix()
     for idx, page in enumerate(pages, 1):
@@ -854,14 +868,14 @@ def _generate_assets_bg(story, out_dir, hero, place, item, villain):
         try:
             txt = clean_html_for_tts(page.get("text", ""))
             if txt:
-                synthesize_page(txt, out_dir / f"page{idx}.mp3",
-                                voice=CUSTOM_VOICE, speaking_rate=0.95)
+                synthesize_page(txt, out_dir / f"page{idx}{audio_suffix}.mp3",
+                                voice=voice, speaking_rate=0.95)
         except Exception as e:
             print(f"[bg] audio page{idx} err: {e}")
         # Sync incremental vers GCS (1 page a la fois)
         try: _storage.sync_dir_to_gcs(rel_out)
         except Exception as e: print(f"[bg] sync GCS page{idx} err: {e}")
-    print(f"[bg] termine : {out_dir.name}")
+    print(f"[bg] termine : {out_dir.name} (voix={voice_gender})")
 
 
 @app.post("/api/create-story")
@@ -895,6 +909,10 @@ def create_story():
     level = body.get("level", "courte")
     if level not in LEVEL_PAGES:
         return jsonify({"error": "level invalide"}), 400
+    # v723 : choix de la voix narrateur (F=Lena par defaut / M=Leo)
+    voice_gender = str(body.get("voice_gender", "F")).upper()
+    if voice_gender not in ("F", "M"):
+        voice_gender = "F"
     # v676 : modele economique -> on force "courte" (5 pages) pour reduire les
     # couts d'images. Les niveaux longs restent dispo via pack rallonge futur.
     if FORCE_SHORT_STORY and level != "courte":
@@ -949,7 +967,7 @@ def create_story():
     # et charge chaque page (image + narration) au fur et a mesure (progressif).
     threading.Thread(
         target=_generate_assets_bg,
-        args=(story, out_dir, hero, place, item, villain),
+        args=(story, out_dir, hero, place, item, villain, voice_gender),
         daemon=True,
     ).start()
 

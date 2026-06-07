@@ -35,6 +35,10 @@ def main():
                     help="re-genere meme si le mp3 existe (necessaire pour changer de voix)")
     ap.add_argument("--delay", type=float, default=0.25,
                     help="delai entre 2 appels TTS")
+    # v723 : suffix pour generer une 2e version (ex: _m pour la voix masculine)
+    ap.add_argument("--suffix", default="",
+                    help="suffix ajoute au nom de fichier MP3 (ex: '_m' "
+                         "pour generer page1_m.mp3 a cote de page1.mp3)")
     args = ap.parse_args()
 
     base = Path(args.dir)
@@ -61,7 +65,7 @@ def main():
         except Exception as e:
             print(f"  [skip] {d.name}: {e}"); continue
         for i, p in enumerate(story.get("pages", []), 1):
-            dest = d / f"page{i}.mp3"
+            dest = d / f"page{i}{args.suffix}.mp3"
             if dest.exists() and not args.force:
                 continue
             txt = clean_html_for_tts(p.get("text", ""))
