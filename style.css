@@ -9622,19 +9622,28 @@ body:has(#screen-creator.active) #global-star-corner {
   /* v555 : transition pour fade-in/out */
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
-/* v556 : UI auto-hide quand l'utilisateur lit tranquillement.
-   Opacity 0.18 (pas 0) -> les boutons restent visibles ET cliquables, juste
-   faded pour ne pas distraire. Solution Netflix-like. */
+/* v723 : UI auto-hide aggressif - les boutons disparaissent completement
+   et le texte recupere l'espace de leur padding. C'est le comportement
+   d'origine de v555 (avant l'attenuation par v556 qui laissait opacity 0.18).
+   Au mouvement / touch, les boutons reapparaissent ET le padding revient. */
 .creator-phase-book.ui-hidden .book-nav,
 .creator-phase-book.ui-hidden .book-close,
 .creator-phase-book.ui-hidden .creator-restart {
-  opacity: 0.18;
-  transition: opacity 0.6s ease;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
-.creator-phase-book.ui-hidden .book-nav:hover,
-.creator-phase-book.ui-hidden .book-close:hover,
-.creator-phase-book.ui-hidden .creator-restart:hover {
-  opacity: 1;
+.creator-phase-book.ui-hidden .book-nav { transform: translate(-50%, 8px); }
+/* v723 : reduit drastiquement le padding-bottom quand les boutons sont caches
+   pour que le texte gagne l'espace. Sans ca, le padding reserve l'espace meme
+   quand les boutons sont invisibles -> texte coince. */
+.creator-phase-book.ui-hidden .book-text-zone {
+  padding-bottom: clamp(20px, 2vw, 30px);
+  transition: padding-bottom 0.6s ease;
+}
+.creator-phase-book .book-text-zone {
+  transition: padding-bottom 0.4s ease;
 }
 .creator-phase-book .book-close,
 .creator-phase-book .creator-restart {
