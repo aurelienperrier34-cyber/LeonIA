@@ -9009,6 +9009,42 @@ body:has(#screen-creator.active) #global-star-corner {
   white-space: nowrap;
 }
 
+/* v724 : selecteur de voix (Lena / Leo) - rangee de 2 boutons compacts */
+.pick-voice-row {
+  display: flex;
+  gap: clamp(8px, 1.5vw, 14px);
+  justify-content: center;
+  margin: clamp(4px, 0.8vw, 8px) 0;
+}
+.pick-voice-btn {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 0.7vw, 7px);
+  background: rgba(255, 240, 200, 0.5);
+  color: #4a2a14;
+  border: 2px solid rgba(120, 80, 40, 0.45);
+  border-radius: 999px;
+  padding: clamp(4px, 0.7vw, 7px) clamp(10px, 1.6vw, 16px);
+  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-size: clamp(0.78rem, 1.1vw, 0.95rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.pick-voice-btn:hover {
+  background: rgba(255, 240, 200, 0.8);
+  border-color: rgba(120, 80, 40, 0.7);
+  transform: translateY(-1px);
+}
+.pick-voice-btn.selected {
+  background: linear-gradient(135deg, #f5c374 0%, #d4a14e 100%);
+  color: #20100a;
+  border-color: #5a3a1a;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.pick-voice-emoji { font-size: 1.1em; }
+.pick-voice-label { letter-spacing: 0.02em; }
+
 /* v539 : bouton "Ecrire mon histoire" redesigne (livre magique CTA) */
 .pick-go {
   /* v543 : marges reduites + padding tight pour tenir dans la page */

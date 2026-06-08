@@ -10994,10 +10994,22 @@ const CREATOR_PLACEHOLDER_EMOJI = {
 let creatorState = {
   hero: null, place: null, item: null, villain: null,
   level: 'courte',    // courte | soir | aventure
+  // v724 : voix de narration ('F' = Lena / 'M' = Leo). Defaut F (catalogue
+  // historique). Affecte la generation custom (envoye au backend) ET la
+  // lecture catalogue (suffix _m applique cote front).
+  voiceGender: 'F',
   story: null,        // l objet histoire courante
   currentPage: 0,
   isAnimating: false
 };
+
+// v724 : helper - transforme une URL audio "page1.mp3" en "page1_m.mp3" si
+// voix masculine choisie. Avec fallback sur F si _m absent (cas des
+// histoires legacy comme dragon_chateau_guitare_fantome sans story.json).
+function applyVoiceSuffix(url) {
+  if (creatorState.voiceGender !== 'M') return url;
+  return url.replace(/\.mp3(\?[^.]*)?$/i, '_m.mp3$1');
+}
 
 // v697 : gestion identification eleve (student_id en localStorage)
 function getStudentId() {
@@ -11268,6 +11280,21 @@ function renderPickBook() {
             ${levelBtnHtml('soir')}
             ${levelBtnHtml('aventure')}
           </div>
+          <!-- v724 : selecteur de voix (Lena F / Leo M) - radio buttons compacts -->
+          <div class="pick-voice-row" role="radiogroup" aria-label="Choisis la voix qui lit l'histoire">
+            <button class="pick-voice-btn ${creatorState.voiceGender === 'F' ? 'selected' : ''}"
+                    data-voice="F" type="button" role="radio"
+                    aria-checked="${creatorState.voiceGender === 'F'}">
+              <span class="pick-voice-emoji">🎀</span>
+              <span class="pick-voice-label">Léna</span>
+            </button>
+            <button class="pick-voice-btn ${creatorState.voiceGender === 'M' ? 'selected' : ''}"
+                    data-voice="M" type="button" role="radio"
+                    aria-checked="${creatorState.voiceGender === 'M'}">
+              <span class="pick-voice-emoji">🎩</span>
+              <span class="pick-voice-label">Léo</span>
+            </button>
+          </div>
           <button class="pick-go" id="creator-go-btn" type="button" onclick="generateCreatorStory()">
             <img class="pick-go-icon" src="assets/picker/write_btn.png?v=539" alt=""
                  onerror="this.style.display='none'; var em=this.nextElementSibling; if(em) em.style.display='inline';">
@@ -11378,6 +11405,17 @@ function renderPickBook() {
       creatorState.level = btn.dataset.level;
       pagesEl.querySelectorAll('.pick-level-item').forEach(b =>
         b.classList.toggle('selected', b === btn));
+    };
+  });
+  // v724 : wire les boutons de choix de voix (Lena / Leo)
+  pagesEl.querySelectorAll('.pick-voice-btn').forEach(btn => {
+    btn.onclick = () => {
+      creatorState.voiceGender = btn.dataset.voice;
+      pagesEl.querySelectorAll('.pick-voice-btn').forEach(b => {
+        const selected = b === btn;
+        b.classList.toggle('selected', selected);
+        b.setAttribute('aria-checked', selected ? 'true' : 'false');
+      });
     };
   });
 
@@ -11636,6 +11674,7 @@ async function generateCustomStoryViaBackend(heroId) {
         student_id: getStudentId(),  // v697 : quota par eleve
         place: creatorState.place, item: creatorState.item,
         villain: creatorState.villain, level: creatorState.level || 'courte',
+        voice_gender: creatorState.voiceGender || 'F',  // v724
       }),
     });
     const d = await r.json().catch(() => ({}));
@@ -11651,12 +11690,14 @@ async function generateCustomStoryViaBackend(heroId) {
     const sresp = await fetch(getBackendUrl() + d.story_url);
     const data = await sresp.json();
     const base = getBackendUrl() + '/custom/' + d.story_dir + '/';
+    // v724 : le backend a genere les MP3 avec le suffix _m si voiceGender=M
+    const audioSuffix = (creatorState.voiceGender === 'M') ? '_m' : '';
     creatorState.story = {
       title: data.title || 'Mon histoire',
       pages: (data.pages || []).map((pg, i) => ({
         text: pg.text || '',
         image: base + 'page' + (i + 1) + '.jpg',
-        audio: base + 'page' + (i + 1) + '.mp3',
+        audio: base + 'page' + (i + 1) + audioSuffix + '.mp3',
       })),
     };
     creatorState.assetsFolder = null;   // audio fourni par page.audio (URL backend)
@@ -11898,7 +11939,11 @@ function loadBookAudioForPage(idx) {
   let url = null;
   let isCustom = false;
   if (page && page.audio) { url = page.audio; isCustom = true; }
-  else if (creatorState.assetsFolder) { url = 'assets/stories/' + creatorState.assetsFolder + '/page' + (idx + 1) + '.mp3'; }
+  else if (creatorState.assetsFolder) {
+    // v724 : catalogue - applique le suffix _m si voix masculine choisie
+    const suffix = (creatorState.voiceGender === 'M') ? '_m' : '';
+    url = 'assets/stories/' + creatorState.assetsFolder + '/page' + (idx + 1) + suffix + '.mp3';
+  }
   if (!url) { setAudioButtonState('unavailable'); return; }
   const token = ++_bookAudioToken;
   audio.pause();
@@ -11926,9 +11971,20 @@ function loadBookAudioForPage(idx) {
     }
   }, { once: true });
   // Custom : la narration est peut-etre encore en cours de generation -> retry
+  // v724 : si url contient _m.mp3 et 404, fallback sur .mp3 (voix F). Cas
+  // typique : histoire legacy comme dragon_chateau_guitare_fantome qui n'a
+  // pas ete regeneree en voix masculine.
   audio.addEventListener('error', function _err() {
     audio.removeEventListener('error', _err);
     if (token !== _bookAudioToken) return;
+    if (url.includes('_m.mp3')) {
+      const fallbackUrl = url.replace('_m.mp3', '.mp3');
+      console.warn('[audio] voix M absente, fallback sur voix F :', fallbackUrl);
+      audio.src = fallbackUrl;
+      audio.load();
+      setAudioButtonState('loading');
+      return;
+    }
     if (isCustom) {
       setAudioButtonState('loading');
       setTimeout(() => { if (token === _bookAudioToken) loadBookAudioForPage(idx); }, 5000);
