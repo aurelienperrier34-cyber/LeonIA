@@ -1,0 +1,81 @@
+# .gcloudignore — controle ce qui est uploade vers Cloud Build.
+# ATTENTION : quand ce fichier existe, gcloud n'utilise PLUS .gitignore.
+# Il faut donc re-exclure ici les secrets et caches.
+#
+# Principe : le conteneur backend n'a besoin que du code Python, de
+# server/, et de assets/items/ (portraits de reference pour la generation
+# Gemini). Le catalogue d'histoires (835 Mo) est servi par GitHub Pages,
+# pas par Cloud Run -> exclu. Resultat : upload ~100 Mo au lieu de ~1 Go.
+
+# --- Secrets (CRITIQUE - ne jamais uploader) ---
+.env
+.env.local
+service-account.json
+server/quota.json
+server/quota.json.bak
+
+# --- Git / editeurs / caches ---
+.git
+.gitignore
+.gcloudignore
+.claude
+.cursor
+.vscode
+.idea
+__pycache__
+*.pyc
+.venv
+venv
+node_modules
+
+# --- LE GROS MORCEAU : catalogue servi par GitHub Pages, pas par Cloud Run ---
+assets/stories/
+
+# --- Assets frontend inutiles au backend ---
+assets/ui/
+assets/picker/
+chapters/
+references_leon/
+
+# --- Dev / audits / tests locaux ---
+tests/
+audit_out/
+audit_map/
+audit_small/
+samples/
+scratch/
+logs/
+_test_flux/
+_shot*.js
+_diag*.js
+_build_*.js
+_build_*.py
+_test_*.py
+audit_*.py
+demo_*.py
+generate_veo_clip.py
+generate_leon_writing_still.py
+resume_catalog_audio.py
+sample_*.mp3
+
+# --- Documents business (gitignored, jamais en prod) ---
+# NB : FICHE_TEMOIGNAGE.docx n'est PAS exclue - le backend l'attache aux
+# mails d'invitation (formulaire vierge, rien de sensible).
+PLAN_FINANCEMENT.*
+PITCH_MAIRIE.*
+KIT_PILOTE.*
+FICHE_COLLEGUE_TESTEUR.*
+CANDIDATURE_GOOGLE_EDU.*
+DOCS_RGPD.*
+INSTALL_TABLETTE.*
+Dossier_IEN_*.docx
+LICENSE.docx
+
+# --- Executables / binaires locaux ---
+cloudflared.exe
+ngrok.exe
+*.bat
+files.zip
+*.bak
+*.backup
+demo_qr.png

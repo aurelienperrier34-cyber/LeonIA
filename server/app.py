@@ -417,17 +417,29 @@ def _send_email_brevo(to_email, to_name, subject, html_body, attachments=None):
             "htmlContent": html_body,
         }
         # v717 : pieces jointes (auto-base64 depuis les chemins disque)
+        # v726 : fallback GCS. Les docs gitignored (ex: FICHE_TEMOIGNAGE.docx)
+        # sont absents du conteneur Cloud Run (le clone git ne les a pas).
+        # On les cherche alors dans le bucket, a la racine, par nom de fichier.
         if attachments:
             import base64
             atts = []
             for path in attachments:
                 p = Path(path)
-                if not p.exists():
-                    print(f"[email] attachment introuvable, ignore: {p}")
+                content_bytes = None
+                if p.exists():
+                    content_bytes = p.read_bytes()
+                else:
+                    try:
+                        content_bytes = _storage.read_bytes(p.name)
+                        if content_bytes:
+                            print(f"[email] attachment charge depuis GCS: {p.name}")
+                    except Exception as e:
+                        print(f"[email] lecture GCS {p.name} echouee: {e}")
+                if not content_bytes:
+                    print(f"[email] attachment introuvable (disque + GCS), ignore: {p}")
                     continue
-                with open(p, "rb") as f:
-                    content = base64.b64encode(f.read()).decode("ascii")
-                atts.append({"name": p.name, "content": content})
+                atts.append({"name": p.name,
+                             "content": base64.b64encode(content_bytes).decode("ascii")})
             if atts:
                 payload["attachment"] = atts
         r = _rq.post("https://api.brevo.com/v3/smtp/email",
@@ -1279,11 +1291,11 @@ def admin_create_license():
     base = (body.get("base_url", "") or "").strip().rstrip("/") or \
            request.url_root.rstrip("/")
     invite_url = f"{base}/teacher.html?invite={data[license_code]['invite_token']}"
-    # v717 : joint la fiche de temoignage si elle existe (phase test pilote)
-    attachments = []
-    fiche_path = ROOT / "FICHE_TEMOIGNAGE.docx"
-    if fiche_path.exists():
-        attachments.append(str(fiche_path))
+    # v717 : joint la fiche de temoignage (phase test pilote).
+    # v726 : on passe toujours le chemin - _send_email_brevo cherche sur
+    # disque PUIS dans le bucket GCS (le .docx est gitignored donc absent
+    # du conteneur Cloud Run ; il doit etre uploade a la racine du bucket).
+    attachments = [str(ROOT / "FICHE_TEMOIGNAGE.docx")]
     ok, err = _send_email_brevo(teacher_email, teacher_name,
                                 "Activez votre compte — IA : Le monde de Léon",
                                 _email_invite_html(teacher_name, class_name, invite_url),
@@ -1336,10 +1348,8 @@ def admin_resend_invite():
     base = (body.get("base_url", "") or "").strip().rstrip("/") or \
            request.url_root.rstrip("/")
     invite_url = f"{base}/teacher.html?invite={rec['invite_token']}"
-    attachments = []
-    fiche_path = ROOT / "FICHE_TEMOIGNAGE.docx"
-    if fiche_path.exists():
-        attachments.append(str(fiche_path))
+    # v726 : chemin toujours passe, fallback GCS gere par _send_email_brevo
+    attachments = [str(ROOT / "FICHE_TEMOIGNAGE.docx")]
     ok, err = _send_email_brevo(
         rec.get("teacher_email", ""), rec.get("teacher_name", ""),
         "Activez votre compte — IA : Le monde de Léon (nouveau lien)",

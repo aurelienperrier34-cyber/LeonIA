@@ -30,7 +30,8 @@ FICHE_COLLEGUE_TESTEUR.*
 CANDIDATURE_GOOGLE_EDU.*
 DOCS_RGPD.*
 INSTALL_TABLETTE.*
-FICHE_TEMOIGNAGE.*
+# FICHE_TEMOIGNAGE.docx volontairement INCLUSE : le backend l'attache aux
+# mails d'invitation (v717). L'exclure = invitations sans piece jointe.
 _build_*.js
 _build_*.py
 _send_*.py
