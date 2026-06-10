@@ -187,6 +187,14 @@ RESET_DURATION_S = 3600                 # 1h pour reset le password
 # Rate limit en memoire : {ip: [timestamps]}
 _RATELIMIT_LOGIN = {}
 _RATELIMIT_FORGOT = {}
+# v725 : anti-enumeration du code classe (4 car.) et de la liste des prenoms.
+# Empeche un script de balayer les codes pour recuperer des listes d'eleves.
+# Limites GENEREUSES car une ecole derriere un NAT partage une seule IP
+# publique : une classe entiere (30 eleves) peut se connecter en meme temps.
+# Meme genereuses, elles rendent le balayage des ~900k codes possibles
+# (alphabet 31 car. ^ 4) impraticable (des centaines d'heures).
+_RATELIMIT_CLASSCODE = {}     # /api/class/by-code
+_RATELIMIT_STUDENTS = {}      # /api/class/students
 
 # Sessions actives en memoire : {session_token: {license, expires_at}}
 _SESSIONS = {}
@@ -724,6 +732,14 @@ def state():
 # (ECOLE-XXX) qu'il pourra utiliser ensuite avec /api/class/students.
 @app.get("/api/class/by-code")
 def class_by_code():
+    # v725 : anti-enumeration. Le code classe fait 4 caracteres -> un script
+    # pourrait balayer l'espace pour resoudre des licences et lister des
+    # eleves. 60/min par IP : large pour une classe entiere derriere un NAT
+    # scolaire, mais bloque un balayage automatise (900k codes -> >250h).
+    ip = _client_ip()
+    if not _rate_limit(_RATELIMIT_CLASSCODE, ip, 60, 60):
+        return jsonify({"error": "too_many_requests",
+                        "message": "Trop d'essais. Réessaie dans une minute."}), 429
     code = (request.args.get("code", "") or "").strip().upper()
     if len(code) < 3:
         return jsonify({"error": "invalid_format"}), 400
@@ -731,7 +747,7 @@ def class_by_code():
     if not license_code:
         return jsonify({"error": "not_found",
                         "message": "Code classe inconnu. Vérifie auprès de ton "
-                                   "maître ou ta maîtresse."}), 404
+                                   "enseignant·e."}), 404
     data, license_code = _license_record(license_code)
     return jsonify({
         "license": license_code,
@@ -760,6 +776,14 @@ def teacher_regenerate_class_code():
 # quota restant -> assez pour le picker eleve, pas de donnees sensibles.
 @app.get("/api/class/students")
 def class_students():
+    # v725 : meme protection anti-enumeration que /api/class/by-code. Renvoie
+    # des prenoms d'eleves (donnee personnelle), donc on borne le balayage.
+    # 120/min (bucket dedie) : large pour une classe entiere qui ouvre le
+    # picker en meme temps derriere un NAT scolaire, restrictif pour un scraper.
+    ip = _client_ip()
+    if not _rate_limit(_RATELIMIT_STUDENTS, ip, 120, 60):
+        return jsonify({"error": "too_many_requests",
+                        "message": "Trop d'essais. Réessaie dans une minute."}), 429
     code = request.args.get("license", "")
     if not _valid_license(code):
         return jsonify({"error": "licence invalide"}), 403
