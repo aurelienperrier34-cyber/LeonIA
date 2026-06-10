@@ -11580,14 +11580,30 @@ function attachPickSwipe() {
 // === PHASE 2 : LOADING + LOAD STORY === ======================
 // v529 : refacto async pour fetch les story.json generees par le pipeline overnight
 async function generateCreatorStory() {
+  // v725 : garde anti-double-clic. Un enfant qui double-tape "Ecrire mon
+  // histoire" lancait 2 generations -> 2 plumes debitees + 2 quotas histoire
+  // consommes (fatal en mode pilote ou le quota est de 1).
+  if (creatorState.generating) return;
+  creatorState.generating = true;
+  const goBtn = document.getElementById('creator-go-btn');
+  if (goBtn) goBtn.disabled = true;
+  const releaseGenLock = () => {
+    creatorState.generating = false;
+    if (goBtn) goBtn.disabled = false;
+  };
   if (!creatorState.hero || !creatorState.place || !creatorState.item || !creatorState.villain) {
     const err = document.getElementById('creator-error-msg');
     if (err) err.textContent = '⚠️ Choisis un élément dans chaque catégorie !';
+    releaseGenLock();
     return;
   }
   // HEROS CUSTOM : on genere l'histoire via le backend (debit 1 plume)
   if (creatorState.hero.indexOf('custom:') === 0) {
-    return generateCustomStoryViaBackend(creatorState.hero.slice('custom:'.length));
+    try {
+      return await generateCustomStoryViaBackend(creatorState.hero.slice('custom:'.length));
+    } finally {
+      releaseGenLock();
+    }
   }
   // Show loading, hide pick
   document.getElementById('creator-pick').hidden = true;
@@ -11644,6 +11660,7 @@ async function generateCreatorStory() {
     creatorState.assetsFolder = assetsFolder;
     creatorState.currentPage = 0;
     showCreatorBook();
+    releaseGenLock();
   }, 800);
 }
 
