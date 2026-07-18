@@ -1017,25 +1017,14 @@ function updateName() {
 }
 
 // ============================================================
-// PREMIUM — acces au contenu payant (chapitres 2-5 + Livre magique)
+// DEVPOST DEMO — acces illimite au contenu (chapitres 2-5 + Livre magique)
 // ============================================================
-// Source de verite : localStorage 'ia_premium' === '1' (persiste a la
-// fermeture de l'onglet). La monnaie de creation d'histoires s'appellera
-// "plumes" (a venir, phase paiement).
-//
-// >>> POUR DEVELOPPER / TESTER : tout debloquer facilement <<<
-//   - tape  unlockPremium()  dans la console du navigateur, OU
-//   - ouvre l'app avec  ?premium=1  dans l'URL
-//   - tape  lockPremium()  pour re-verrouiller et revoir les cadenas.
-// ============================================================
-// Prix de l'achat unique (debloque tout le contenu Premium, a vie).
-const PREMIUM_PRICE = '4,99 €';
+// Cette branche est destinee a la demonstration Devpost : tout le parcours
+// pedagogique est ouvert des le lancement, sans parametre d'URL ni achat.
+const PREMIUM_PRICE = 'Accès inclus';
 
 function isPremium() {
-  try {
-    if (new URLSearchParams(location.search).get('premium') === '1') return true;
-    return localStorage.getItem('ia_premium') === '1';
-  } catch (e) { return false; }
+  return true;
 }
 
 // Applique (ou retire) le statut Premium : persistance + state + rafraichit l'UI.
@@ -12192,4 +12181,3 @@ function restartCreatorPick() {
   if (audio) { audio.pause(); audio.src = ''; }
   initCreatorPick();
 }
-
