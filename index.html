@@ -74,13 +74,13 @@
   <meta name="theme-color" content="#000000">
   <title>Le Labo de l'IA</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <!-- v554 : preload de l'image de fond Leon (picker) pour affichage instantane -->
-  <link rel="preload" as="image" href="assets/leon_holds_book.jpg?v=581">
-  <!-- v713 : preload de l'orbe de creation perso (image lourde, evite le flash noir) -->
-  <link rel="preload" as="image" href="assets/ui/orb_empty.jpg?v=684" fetchpriority="high">
   <!-- Image d'accueil (ecran 0) : preload prioritaire pour l'afficher INSTANTANEMENT
        a la connexion, avant meme le CSS. JPG progressif 288 KB (vs 7 MB PNG avant). -->
   <link rel="preload" as="image" href="assets/leon_bienvenue.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/intro_fille.webp" type="image/webp">
+  <link rel="preload" as="image" href="assets/intro_garcon.webp" type="image/webp">
+  <link rel="preload" as="image" href="assets/intro_renard.webp" type="image/webp">
+  <link rel="preload" as="image" href="assets/intro_robot.webp" type="image/webp">
   <link rel="stylesheet" href="style.css?v=724">
 </head>
 <body>
@@ -152,10 +152,10 @@
       <div class="intro-container">
         <h1 class="intro-title">Le Labo de <span>l'IA</span></h1>
         <div class="intro-visual">
-          <img src="assets/avatar_fille_1776108656117.png?v=2" class="intro-avatar anim-float1" alt="Fille">
-          <img src="assets/avatar_garcon_1776108702967.png?v=2" class="intro-avatar anim-float2" alt="Garçon">
-          <img src="assets/avatar_renard_1776108778358.png?v=2" class="intro-avatar anim-float1" alt="Renard">
-          <img src="assets/avatar_robot_1776108872947.png?v=2"  class="intro-avatar anim-float2" alt="Robot">
+          <img src="assets/intro_fille.webp" width="100" height="100" class="intro-avatar anim-float1" alt="Fille" fetchpriority="high">
+          <img src="assets/intro_garcon.webp" width="100" height="100" class="intro-avatar anim-float2" alt="Garçon" fetchpriority="high">
+          <img src="assets/intro_renard.webp" width="100" height="100" class="intro-avatar anim-float1" alt="Renard" fetchpriority="high">
+          <img src="assets/intro_robot.webp" width="100" height="100" class="intro-avatar anim-float2" alt="Robot" fetchpriority="high">
         </div>
         <p class="intro-subtitle">Apprendre à utiliser l'Intelligence Artificielle en s'amusant !</p>
         <button class="btn btn-primary btn-large btn-bounce mt-md" onclick="enterFullscreen(); goToScreen(1)">Démarrer l'Aventure 🚀</button>
