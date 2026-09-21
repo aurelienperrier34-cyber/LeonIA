@@ -31,8 +31,8 @@ node_modules
 # --- LE GROS MORCEAU : catalogue servi par GitHub Pages, pas par Cloud Run ---
 assets/stories/
 
-# --- Assets frontend inutiles au backend ---
-assets/ui/
+# --- Assets frontend lourds inutiles au backend ---
+# assets/ui reste inclus : Cloud Run sert aussi l'interface web.
 assets/picker/
 chapters/
 references_leon/
