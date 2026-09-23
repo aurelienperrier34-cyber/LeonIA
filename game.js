@@ -10107,6 +10107,7 @@ const C4S2_QUESTIONS = {
 let _c4s2Recognition = null;
 let _c4s2Listening = false;
 let _c4s2TypewriterTimer = null;
+let _c4s2TypewriterRun = 0;
 let _c4s2PendingQid = null; // v443 : qid en attente, declenche dans SR.onend (iOS audio session)
 
 function resetC4s2Game() {
@@ -10115,6 +10116,7 @@ function resetC4s2Game() {
   // Stoppe la reco vocale si en cours
   _c4s2StopMic();
   // Stoppe le typewriter si en cours
+  _c4s2TypewriterRun++;
   if (_c4s2TypewriterTimer) { clearTimeout(_c4s2TypewriterTimer); _c4s2TypewriterTimer = null; }
   const pill   = document.getElementById('c4s2-game-pill');
   const bubble = document.getElementById('c4s2-bot-bubble');
@@ -10336,6 +10338,7 @@ function _c4s2HintNoMatch() {
   text.classList.remove('thinking');
   text.textContent = 'Hmm, je n\'ai pas bien entendu… Touche une question 👇 ou réessaie !';
   // efface après 3s
+  _c4s2TypewriterRun++;
   if (_c4s2TypewriterTimer) clearTimeout(_c4s2TypewriterTimer);
   _c4s2TypewriterTimer = setTimeout(() => {
     if (text.textContent.startsWith('Hmm')) text.textContent = '';
@@ -10370,11 +10373,13 @@ function c4s2AskQuestion(qid, cardEl) {
   if (video) {
     try { video.currentTime = 0; video.play().catch(()=>{}); } catch(e) {}
   }
+  const typewriterRun = ++_c4s2TypewriterRun;
   if (_c4s2TypewriterTimer) clearTimeout(_c4s2TypewriterTimer);
   _c4s2TypewriterTimer = setTimeout(() => {
+    if (typewriterRun !== _c4s2TypewriterRun) return;
     // Phase 2 : Bot répond avec typewriter (la voix tourne deja en parallele)
     if (text) { text.classList.remove('thinking'); text.textContent = ''; }
-    _c4s2Typewriter(answer, 0);
+    _c4s2Typewriter(answer, 0, typewriterRun);
   }, 1200);
 }
 
@@ -10449,9 +10454,19 @@ function _stripEmoji(text) {
   }
 }
 
-function _c4s2Typewriter(fullText, i) {
+function _c4s2Typewriter(fullText, i, runId) {
+  if (runId !== _c4s2TypewriterRun) return;
   const text = document.getElementById('c4s2-bot-text');
   if (!text) return;
+  // Sur mobile/tablette, l'ajout caractère par caractère provoque des traces
+  // graphiques (lettres doublées/triplées) sur certains moteurs Chromium.
+  // Le texte complet en une fois évite ce défaut tout en gardant la voix.
+  const isTouchOnly = i === 0 && typeof window !== 'undefined' && window.matchMedia
+    && window.matchMedia('(pointer: coarse) and (hover: none)').matches;
+  if (isTouchOnly) {
+    text.textContent = fullText;
+    i = fullText.length;
+  }
   if (i >= fullText.length) {
     // Compteur + check completion
     const counter = document.getElementById('c4s2-asked-count');
@@ -10459,6 +10474,7 @@ function _c4s2Typewriter(fullText, i) {
     if (counter) counter.textContent = count;
     // Pause la vidéo de Bot une fois la réponse terminée (laisse 1s avant)
     _c4s2TypewriterTimer = setTimeout(() => {
+      if (runId !== _c4s2TypewriterRun) return;
       const video = document.getElementById('c4s2-bot-video');
       if (video) { try { video.pause(); } catch(e) {} }
     }, 1000);
@@ -10470,7 +10486,7 @@ function _c4s2Typewriter(fullText, i) {
     return;
   }
   text.textContent = fullText.slice(0, i + 1);
-  _c4s2TypewriterTimer = setTimeout(() => _c4s2Typewriter(fullText, i + 1), 32);
+  _c4s2TypewriterTimer = setTimeout(() => _c4s2Typewriter(fullText, i + 1, runId), 32);
 }
 
 function completeC4s2Game() {

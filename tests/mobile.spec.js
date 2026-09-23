@@ -262,7 +262,32 @@ test.describe('Audio', () => {
 });
 
 // =====================================================================
-// 5) Calibration device-aware : vérifie que les sauvegardes mobile
+// 5) Chapitre 4 : réponses de Bot lisibles sur écran tactile
+// =====================================================================
+test.describe('Chapitre 4 — questions à Bot', () => {
+  test('affiche une seule réponse complète sans lettres fantômes', async ({ page }) => {
+    await disableVoicesBeforeGoto(page);
+    await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
+    await page.waitForFunction(() => typeof window.c4s2AskQuestion === 'function');
+
+    await page.evaluate(() => {
+      window.resetC4s2Game();
+      window.activateC4s2Game();
+      const ciel = document.querySelector('.c4s2-q-card[data-qid="ciel"]');
+      const chocolat = document.querySelector('.c4s2-q-card[data-qid="chocolat"]');
+      window.c4s2AskQuestion('ciel', ciel);
+      setTimeout(() => window.c4s2AskQuestion('chocolat', chocolat), 100);
+    });
+
+    await page.waitForTimeout(1450);
+    await expect(page.locator('#c4s2-bot-text')).toHaveText(
+      "C'est sucré et marron ! 🍫 Mais doucement les caries !"
+    );
+  });
+});
+
+// =====================================================================
+// 6) Calibration device-aware : vérifie que les sauvegardes mobile
 //    n'écrasent pas les clés desktop
 // =====================================================================
 test.describe('Calibrations mobile vs desktop', () => {
