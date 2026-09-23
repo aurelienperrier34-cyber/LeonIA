@@ -8011,7 +8011,7 @@ function playC5ModuleDemo(mod) {
 const ARTICLES_CATALOG = [
   // Accessoires avatar (équipables) - icones watercolor reutilisees du builder
   { id: 'cap-leon',      kind: 'accessory', slot: 'hat',     emoji: '🧢', img: 'assets/ui/builder/accessory_casquette.jpg', name: 'Cap de Léon',           cost:  8, desc: 'La même casquette à patches que Léon !' },
-  { id: 'magic-hat',     kind: 'accessory', slot: 'hat',     emoji: '🎩', img: 'assets/ui/builder/accessory_chapeau.jpg',   name: 'Chapeau de magicien',  cost:  8, desc: 'Pour faire chic et mystérieux.' },
+  { id: 'magic-hat',     kind: 'accessory', slot: 'hat',     emoji: '🎩', img: 'assets/ui/accessories/magic-hat.png', sprite: 'assets/ui/accessories/magic-hat.png', sizeRatio: 0.72, anchorYOffsetPct: -25, name: 'Chapeau de magicien', cost: 8, desc: 'Pour faire chic et mystérieux.' },
   { id: 'crown',         kind: 'accessory', slot: 'hat',     emoji: '👑', img: 'assets/ui/builder/accessory_couronne.jpg',  name: 'Couronne dorée',       cost: 20, desc: 'Article premium qui brille.' },
   { id: 'glasses-ai',    kind: 'accessory', slot: 'glasses', emoji: '🕶️', img: 'assets/ui/builder/accessory_lunettes.jpg', name: 'Lunettes IA',           cost:  6, desc: 'Lunettes futuristes lumineuses.' },
   { id: 'cape-hero',     kind: 'accessory', slot: 'cape',    emoji: '🧥', img: 'assets/ui/builder/accessory_echarpe.jpg',   name: 'Pull du héros',         cost: 12, desc: 'Un pull rouge confortable, parfait pour aventurier.' },
@@ -8161,13 +8161,19 @@ function applyAvatarAccessoriesEverywhere() {
       const profile = ACCESSORY_PROFILES[slot];
       if (!profile) return;
 
-      const acc = document.createElement('span');
+      const acc = document.createElement(item.sprite ? 'img' : 'span');
       acc.className = 'avatar-accessory accessory-' + slot + ' accessory--' + item.id;
-      acc.textContent = item.emoji;
+      if (item.sprite) {
+        acc.src = item.sprite;
+        acc.alt = '';
+        acc.draggable = false;
+      } else {
+        acc.textContent = item.emoji;
+      }
       
-      const size = imgW * profile.sizeRatio;
+      const size = imgW * (item.sizeRatio || profile.sizeRatio);
       
-      const yPct = getOverrides(slot, host);
+      const yPct = getOverrides(slot, host) + (item.anchorYOffsetPct || 0);
 
       // Application des styles inline (le coeur du système responsive universel)
       Object.assign(acc.style, {
@@ -8175,14 +8181,17 @@ function applyAvatarAccessoriesEverywhere() {
         left: profile.anchorXpct + '%',
         top: yPct + '%',
         transform: 'translate(-50%, -50%)', // Centre parfaitement sur le point d'ancrage
-        fontSize: size + 'px',
+        fontSize: item.sprite ? '' : size + 'px',
         pointerEvents: 'none',
         zIndex: '10',
         lineHeight: '1',
         textShadow: '0 2px 5px rgba(0,0,0,0.3)',
+        filter: item.sprite ? 'drop-shadow(0 2px 3px rgba(0,0,0,0.3))' : '',
+        objectFit: item.sprite ? 'contain' : '',
         display: 'block',
         margin: '0', padding: '0',
-        width: 'auto', height: 'auto'
+        width: item.sprite ? size + 'px' : 'auto',
+        height: item.sprite ? size + 'px' : 'auto'
       });
 
       target.appendChild(acc);
